@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" customClass="OneToTenView" customModule="Feedback" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="516" height="141"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="407-fw-PyS">
+                    <rect key="frame" x="30" y="10" width="456" height="120"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="120" id="4hx-77-E4L"/>
+                    </constraints>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="15" minimumInteritemSpacing="15" id="lcH-6U-osW">
+                        <size key="itemSize" width="40" height="40"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <connections>
+                        <outlet property="dataSource" destination="iN0-l3-epB" id="9yV-Cc-BlC"/>
+                        <outlet property="delegate" destination="iN0-l3-epB" id="i8U-2s-imh"/>
+                    </connections>
+                </collectionView>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="407-fw-PyS" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="b1g-xW-qF8"/>
+                <constraint firstAttribute="bottom" secondItem="407-fw-PyS" secondAttribute="bottom" constant="10" id="erJ-eQ-Ixn"/>
+                <constraint firstItem="407-fw-PyS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="30" id="kcY-3S-TZb"/>
+                <constraint firstAttribute="trailing" secondItem="407-fw-PyS" secondAttribute="trailing" constant="30" id="ydc-8K-WeC"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="collectionView" destination="407-fw-PyS" id="QdD-p3-5jC"/>
+                <outlet property="collectionViewHeightConstraint" destination="4hx-77-E4L" id="bj8-yd-H25"/>
+            </connections>
+            <point key="canvasLocation" x="278.26086956521743" y="-104.12946428571428"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" customClass="EmojiView" customModule="Feedback" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="516" height="85"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="2KT-2a-WFg">
+                    <rect key="frame" x="128" y="10" width="260" height="40"/>
+                    <subviews>
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rUb-4Z-Nnu" customClass="EmojiButton" customModule="Feedback" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="VGv-ZO-aBq"/>
+                                <constraint firstAttribute="width" constant="40" id="x9e-w3-Ls3"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" title="☹️"/>
+                            <connections>
+                                <action selector="onSelectButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="ZaL-vj-uM7"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oYP-Bm-s4S" customClass="EmojiButton" customModule="Feedback" customModuleProvider="target">
+                            <rect key="frame" x="55" y="0.0" width="40" height="40"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="QcJ-Sy-ZJm"/>
+                                <constraint firstAttribute="height" constant="40" id="Yoi-qK-AhV"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" title="🙁"/>
+                            <connections>
+                                <action selector="onSelectButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="FHW-TC-4n7"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zIU-vb-cGJ" customClass="EmojiButton" customModule="Feedback" customModuleProvider="target">
+                            <rect key="frame" x="110" y="0.0" width="40" height="40"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="0Kz-2G-njG"/>
+                                <constraint firstAttribute="height" constant="40" id="hWq-7Y-P3i"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" title="😐"/>
+                            <connections>
+                                <action selector="onSelectButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="Lj7-UN-Q3v"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TSX-Ik-pYO" customClass="EmojiButton" customModule="Feedback" customModuleProvider="target">
+                            <rect key="frame" x="165" y="0.0" width="40" height="40"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="HEP-1b-IgI"/>
+                                <constraint firstAttribute="height" constant="40" id="wOU-iC-nJj"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" title="🙂"/>
+                            <connections>
+                                <action selector="onSelectButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="lyg-i2-o3u"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HIU-S5-QaF" customClass="EmojiButton" customModule="Feedback" customModuleProvider="target">
+                            <rect key="frame" x="220" y="0.0" width="40" height="40"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="6NI-iu-Qvb"/>
+                                <constraint firstAttribute="width" constant="40" id="X4e-mX-nYA"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" title="😊"/>
+                            <connections>
+                                <action selector="onSelectButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="OiQ-yF-scr"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="X2F-mT-dS2"/>
+                    </constraints>
+                </stackView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Very dissatisfied" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w6x-zr-O2a">
+                    <rect key="frame" x="108" y="60" width="80" height="12"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                    <color key="textColor" red="0.52941176470588236" green="0.52941176470588236" blue="0.52941176470588236" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Very satisfied" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="46o-6Y-1Hg">
+                    <rect key="frame" x="335" y="60" width="66" height="12"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                    <color key="textColor" red="0.52941176469999995" green="0.52941176469999995" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="HIU-S5-QaF" firstAttribute="centerX" secondItem="46o-6Y-1Hg" secondAttribute="centerX" id="99C-6m-Ask"/>
+                <constraint firstItem="w6x-zr-O2a" firstAttribute="top" secondItem="2KT-2a-WFg" secondAttribute="bottom" constant="10" id="9vG-gu-u9G"/>
+                <constraint firstItem="2KT-2a-WFg" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Fss-CL-BAH"/>
+                <constraint firstItem="rUb-4Z-Nnu" firstAttribute="centerX" secondItem="w6x-zr-O2a" secondAttribute="centerX" id="Hdh-a0-lZW"/>
+                <constraint firstAttribute="bottom" secondItem="2KT-2a-WFg" secondAttribute="bottom" constant="35" id="RSH-5F-WEc"/>
+                <constraint firstItem="46o-6Y-1Hg" firstAttribute="top" secondItem="2KT-2a-WFg" secondAttribute="bottom" constant="10" id="XCU-pW-9fa"/>
+                <constraint firstItem="2KT-2a-WFg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="iwq-9d-7Mv"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="stackView1" destination="2KT-2a-WFg" id="SeU-B0-WgG"/>
+            </connections>
+            <point key="canvasLocation" x="278.26086956521743" y="-106.13839285714285"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

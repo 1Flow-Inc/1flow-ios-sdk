@@ -29,6 +29,8 @@
 
 /* Begin PBXFileReference section */
 		0892DBABDE71D5D7BF1F3F7E /* Pods-1Flow_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1Flow_Tests.debug.xcconfig"; path = "Target Support Files/Pods-1Flow_Tests/Pods-1Flow_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		4385C28726BAEE11008619AC /* Purchase.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Purchase.podspec; sourceTree = "<group>"; };
+		4385C28826BAEE1C008619AC /* Survey.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Survey.podspec; sourceTree = "<group>"; };
 		4F23405AE36D6647A29A8B9F /* Pods-1Flow_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1Flow_Tests.release.xcconfig"; path = "Target Support Files/Pods-1Flow_Tests/Pods-1Flow_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		5D90DEBFAC69FB42E4D2BFA1 /* Pods_1Flow_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_1Flow_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD01AFB9204008FA782 /* 1Flow_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 1Flow_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -42,11 +44,11 @@
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		6E329F3232B14AEBE7023E86 /* Pods-1Flow_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1Flow_Example.debug.xcconfig"; path = "Target Support Files/Pods-1Flow_Example/Pods-1Flow_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		732D123B7093B43BCB54EB11 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		732D123B7093B43BCB54EB11 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		BECAD99124CB15DBE9CDDD38 /* Pods-1Flow_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1Flow_Example.release.xcconfig"; path = "Target Support Files/Pods-1Flow_Example/Pods-1Flow_Example.release.xcconfig"; sourceTree = "<group>"; };
-		C6F53CCB08F67F9DDF265694 /* 1Flow.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = 1Flow.podspec; path = ../1Flow.podspec; sourceTree = "<group>"; };
+		C6F53CCB08F67F9DDF265694 /* 1Flow.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = 1Flow.podspec; path = ../1Flow.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		C87D34E27D5414369E0CECAA /* Pods_1Flow_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_1Flow_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EB8DCF240D85B640A67F1FE1 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		EB8DCF240D85B640A67F1FE1 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,8 @@
 			isa = PBXGroup;
 			children = (
 				C6F53CCB08F67F9DDF265694 /* 1Flow.podspec */,
+				4385C28726BAEE11008619AC /* Purchase.podspec */,
+				4385C28826BAEE1C008619AC /* Survey.podspec */,
 				EB8DCF240D85B640A67F1FE1 /* README.md */,
 				732D123B7093B43BCB54EB11 /* LICENSE */,
 			);
@@ -156,7 +160,6 @@
 				0892DBABDE71D5D7BF1F3F7E /* Pods-1Flow_Tests.debug.xcconfig */,
 				4F23405AE36D6647A29A8B9F /* Pods-1Flow_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -227,6 +230,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
