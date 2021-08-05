@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Purchase'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'InApp purchase with local receipt verification.'
 
 # This description is used to generate tags and improve search results.
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
 
   s.description      = 'Used to hanlde subscription InApp purchase with local receipt verification.'
 
-  s.homepage         = 'https://github.com/1Flow-Inc/OneFlow'
+  s.homepage         = 'https://github.com/1Flow-Inc/1Flow'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'rohantryskybox' => 'rohan@tryskybox.com' }
