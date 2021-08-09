@@ -12,6 +12,8 @@ class SurveyManager: NSObject {
     var surveyList: SurveyListResponse?
     var surveyWindow: UIWindow?
     private var temporaryEventArray: [String]?
+    var isNetworkReachable = false
+    var pendingSurveySubmission: [String: SurveySubmitRequest]?
     var submittedSurveyIDs: [String]? {
         didSet {
             FBLogs("submittedSurveyIDs saved")
@@ -25,12 +27,33 @@ class SurveyManager: NSObject {
         if let submittedSurvey = UserDefaults.standard.value(forKey: "FBSubmittedSurveyIDs") as? [String] {
             self.submittedSurveyIDs = submittedSurvey
         }
-        self.fetchAllSurvey()
     }
     
+    func configureSurveys() {
+        if self.surveyList == nil && self.isNetworkReachable == true {
+            self.fetchAllSurvey()
+        }
+    }
+    
+    func networkStatusChanged(_ isReachable: Bool) {
+        self.isNetworkReachable = isReachable
+        if isReachable == true {
+            self.configureSurveys()
+            self.uploadPendingSurveyIfAvailable()
+        }
+    }
+    private func uploadPendingSurveyIfAvailable() {
+        if let pendigSurveys = self.pendingSurveySubmission, pendigSurveys.count > 0 {
+            if ProjectDetailsController.shared.analytic_user_id != nil {
+                pendigSurveys.forEach { (key: String, value: SurveySubmitRequest) in
+                    self.submitTheSurveyToServer(key, surveyResponse: value)
+                }
+            }
+        }
+    }
     func fetchAllSurvey() {
+        FBLogs("Fetch Survey called")
         apiController.getAllSurveys { [weak self] isSuccess, error, data in
-            
             guard let self = self else {
                 return
             }
@@ -61,7 +84,6 @@ class SurveyManager: NSObject {
             for eventName in eventsArray {
                 if let triggeredSurvey = surveyList?.result.first(where:  {$0.trigger_event_name == eventName }) {
                     self.temporaryEventArray = nil
-//                    self.startSurvey(triggeredSurvey)
                     if let submittedIDs = self.submittedSurveyIDs, submittedIDs.contains(triggeredSurvey._id) {
                         FBLogs("Survey already submitted. Do nothing.")
                     } else {
@@ -92,6 +114,11 @@ class SurveyManager: NSObject {
     }
     
     func startSurvey(_ survey: SurveyListResponse.Survey) {
+        if ProjectDetailsController.shared.analytic_user_id == nil {
+            return
+        }
+        FeedbackController.recordEventName(kEventNameSurveyImpression, parameters: ["survey_id": survey._id])
+        
         var surveyAnswers = [SurveySubmitRequest.Answer]()
         let semaphore = DispatchSemaphore(value: 0)
         var shouldContinueLoop = true
@@ -177,6 +204,20 @@ class SurveyManager: NSObject {
 //        }
         
         let surveyResponse = SurveySubmitRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyAnswers)
+        if self.isNetworkReachable == false {
+            if self.pendingSurveySubmission == nil {
+                self.pendingSurveySubmission = [survey._id : surveyResponse]
+            } else {
+                self.pendingSurveySubmission![survey._id] = surveyResponse
+            }
+            return
+        } else {
+            self.submitTheSurveyToServer(survey._id, surveyResponse: surveyResponse)
+        }
+    }
+    
+    func submitTheSurveyToServer(_ surveyID: String, surveyResponse:SurveySubmitRequest) {
+        
         apiController.submitSurveyResponse(surveyResponse) { [weak self] isSuccess, error, data in
             
             guard let self = self else {
@@ -184,10 +225,11 @@ class SurveyManager: NSObject {
             }
             if isSuccess == true, let data = data {
                 if self.submittedSurveyIDs == nil {
-                    self.submittedSurveyIDs = [survey._id]
+                    self.submittedSurveyIDs = [surveyID]
                 } else {
-                    self.submittedSurveyIDs?.append(survey._id)
+                    self.submittedSurveyIDs?.append(surveyID)
                 }
+                self.pendingSurveySubmission?.removeValue(forKey: surveyID)
                 do {
                     if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
                         FBLogs(json)

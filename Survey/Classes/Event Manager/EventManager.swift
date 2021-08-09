@@ -14,7 +14,7 @@ class EventManager: NSObject {
     private var eventsArray = [[String: Any]]()
     var uploadTimer: Timer?
 //    let screenTrackingController = ScreenTrackingController()
-    
+    var isNetworkReachable = false
     override init() {
         super.init()
         FBLogs("Event manager initialized")
@@ -23,26 +23,62 @@ class EventManager: NSObject {
     func configure() {
         FBLogs("Event Manager configure called")
         self.createAnalyticsSession()
+        self.surveyManager.isNetworkReachable = true
+        self.surveyManager.configureSurveys()
+    }
+    
+    @objc func applicationBecomeActive() {
+        FBLogs("applicationBecomeActive")
+        if ProjectDetailsController.shared.analytics_session_id != nil && self.isNetworkReachable == true {
+            self.startUploadTimer()
+        }
+    }
+    
+    @objc func applicationMovedToBackground() {
+        FBLogs("Application moved to background")
+        if ProjectDetailsController.shared.analytics_session_id != nil, self.isNetworkReachable == true {
+            FBAPIController().uploadAllPendingEvents()
+        }
+        FBLogs("Timer invalidate")
+        self.uploadTimer?.invalidate()
+        self.uploadTimer = nil
+    }
+    
+    func networkStatusChanged(_ isReachable: Bool) {
+        self.isNetworkReachable = isReachable
+        self.surveyManager.networkStatusChanged(isReachable)
+        if isReachable == true {
+            if ProjectDetailsController.shared.analytics_session_id != nil {
+                self.startUploadTimer()
+            }
+        } else {
+            self.uploadTimer?.invalidate()
+            self.uploadTimer = nil
+        }
     }
     
     private func createAnalyticsSession() {
-        let sessionRequest = CreateSessionRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id ?? "", system_id: ProjectDetailsController.shared.uniqID)
-        
-        FBAPIController().createSession(sessionRequest) { [weak self] isSuccess, error, data in
-            if isSuccess == true, let data = data {
-                do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                        FBLogs(json)
-                        if let result = json["result"] as? [String: Any], let _id = result["_id"] as? String {
-                            ProjectDetailsController.shared.analytics_session_id = _id
-                            guard let self = self else { return }
-                            self.startEventManager()
+        if ProjectDetailsController.shared.analytics_session_id == nil {
+            let sessionRequest = CreateSessionRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id ?? "", system_id: ProjectDetailsController.shared.uniqID)
+            
+            FBAPIController().createSession(sessionRequest) { [weak self] isSuccess, error, data in
+                if isSuccess == true, let data = data {
+                    do {
+                        if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
+                            FBLogs(json)
+                            if let result = json["result"] as? [String: Any], let _id = result["_id"] as? String {
+                                ProjectDetailsController.shared.analytics_session_id = _id
+                                guard let self = self else { return }
+                                self.startEventManager()
+                            }
                         }
+                    } catch {
+                        FBLogs(error)
                     }
-                } catch {
-                    FBLogs(error)
                 }
             }
+        } else {
+            self.startEventManager()
         }
     }
     
@@ -91,23 +127,13 @@ class EventManager: NSObject {
         
     }
     
-    @objc func applicationBecomeActive() {
-        FBLogs("applicationBecomeActive")
-        self.startUploadTimer()
-    }
-    
-    @objc func applicationMovedToBackground() {
-        FBLogs("Application moved to background")
-        FBAPIController().uploadAllPendingEvents()
-        FBLogs("Timer invalidate")
-        self.uploadTimer?.invalidate()
-        self.uploadTimer = nil
-//        self.sendEventsToServer()
-    }
-    
     private func startUploadTimer() {
         FBLogs("Timer start")
         DispatchQueue.main.async { [self] in
+            if self.uploadTimer != nil, self.uploadTimer?.isValid == true {
+                self.uploadTimer?.invalidate()
+                self.uploadTimer = nil
+            }
             self.uploadTimer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(sendEventsToServer), userInfo: nil, repeats: true)
         }
     }
@@ -145,6 +171,8 @@ class EventManager: NSObject {
                                 let totalCount = self.eventsArray.count
                                 if (totalCount - uploadedEvents) > 0 {
                                     self.eventsArray = self.eventsArray.suffix(totalCount - uploadedEvents)
+                                } else { //if (totalCount - uploadedEvents) == 0 {
+                                    self.eventsArray.removeAll()
                                 }
                                 
                                 UserDefaults.standard.setValue(self.eventsArray, forKey: "FBPendingEventsList")

@@ -38,16 +38,7 @@ class ProjectDetailsController: NSObject {
             }
         }
     }
-    
-    var analytic_user_id: String? {
-        set {
-            UserDefaults.standard.set(newValue, forKey: "analytic_user_id")
-        }
-        get {
-            return UserDefaults.standard.value(forKey: "analytic_user_id") as? String
-        }
-    }
-    
+    var analytic_user_id: String?
     var analytics_session_id: String?
     
     private func resetUserData() {
