@@ -12,6 +12,7 @@ struct SurveySubmitRequest: Codable {
     var survey_id: String
     var os: String = "iOS"
     var answers: [Answer]?
+    var session_id: String?
     
     struct Answer: Codable {
         var screen_id: String

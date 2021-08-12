@@ -13,7 +13,23 @@ class SurveyManager: NSObject {
     var surveyWindow: UIWindow?
     private var temporaryEventArray: [String]?
     var isNetworkReachable = false
-    var pendingSurveySubmission: [String: SurveySubmitRequest]?
+    var pendingSurveySubmission: [String: SurveySubmitRequest]? {
+        set {
+            if let value = newValue, value.count > 0 {
+                UserDefaults.standard.set(try? PropertyListEncoder().encode(value), forKey:"pendingSurveySubmission")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "pendingSurveySubmission")
+            }
+        }
+        
+        get {
+            if let data = UserDefaults.standard.value(forKey:"pendingSurveySubmission") as? Data {
+                let pendingSurvey = try? PropertyListDecoder().decode([String: SurveySubmitRequest].self, from: data)
+                return pendingSurvey
+            }
+            return nil
+        }
+    }
     var submittedSurveyIDs: [String]? {
         didSet {
             FBLogs("submittedSurveyIDs saved")
@@ -33,15 +49,16 @@ class SurveyManager: NSObject {
         if self.surveyList == nil && self.isNetworkReachable == true {
             self.fetchAllSurvey()
         }
+        if self.isNetworkReachable == true {
+            self.uploadPendingSurveyIfAvailable()
+        }
     }
     
     func networkStatusChanged(_ isReachable: Bool) {
         self.isNetworkReachable = isReachable
-        if isReachable == true {
-            self.configureSurveys()
-            self.uploadPendingSurveyIfAvailable()
-        }
+        self.configureSurveys()
     }
+    
     private func uploadPendingSurveyIfAvailable() {
         if let pendigSurveys = self.pendingSurveySubmission, pendigSurveys.count > 0 {
             if ProjectDetailsController.shared.analytic_user_id != nil {
@@ -51,7 +68,7 @@ class SurveyManager: NSObject {
             }
         }
     }
-    func fetchAllSurvey() {
+    private func fetchAllSurvey() {
         FBLogs("Fetch Survey called")
         apiController.getAllSurveys { [weak self] isSuccess, error, data in
             guard let self = self else {
@@ -79,7 +96,7 @@ class SurveyManager: NSObject {
         }
     }
     
-    func checkAfterSurveyLoadForExistingEvents() {
+    private func checkAfterSurveyLoadForExistingEvents() {
         if let eventsArray = self.temporaryEventArray {
             for eventName in eventsArray {
                 if let triggeredSurvey = surveyList?.result.first(where:  {$0.trigger_event_name == eventName }) {
@@ -113,7 +130,7 @@ class SurveyManager: NSObject {
         }
     }
     
-    func startSurvey(_ survey: SurveyListResponse.Survey) {
+    private func startSurvey(_ survey: SurveyListResponse.Survey) {
         if ProjectDetailsController.shared.analytic_user_id == nil {
             return
         }
@@ -203,7 +220,7 @@ class SurveyManager: NSObject {
 //            return
 //        }
         
-        let surveyResponse = SurveySubmitRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyAnswers)
+        let surveyResponse = SurveySubmitRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyAnswers, session_id: ProjectDetailsController.shared.analytics_session_id)
         if self.isNetworkReachable == false {
             if self.pendingSurveySubmission == nil {
                 self.pendingSurveySubmission = [survey._id : surveyResponse]
@@ -216,8 +233,7 @@ class SurveyManager: NSObject {
         }
     }
     
-    func submitTheSurveyToServer(_ surveyID: String, surveyResponse:SurveySubmitRequest) {
-        
+    private func submitTheSurveyToServer(_ surveyID: String, surveyResponse:SurveySubmitRequest) {
         apiController.submitSurveyResponse(surveyResponse) { [weak self] isSuccess, error, data in
             
             guard let self = self else {

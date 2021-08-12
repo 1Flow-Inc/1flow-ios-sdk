@@ -40,6 +40,7 @@ class ProjectDetailsController: NSObject {
     }
     var analytic_user_id: String?
     var analytics_session_id: String?
+    var locationDetails: [String: Any]?
     
     private func resetUserData() {
         UserDefaults.standard.removeObject(forKey: "analytic_user_id")

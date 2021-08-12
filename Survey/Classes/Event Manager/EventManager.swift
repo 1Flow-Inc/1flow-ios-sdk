@@ -28,18 +28,15 @@ class EventManager: NSObject {
     }
     
     @objc func applicationBecomeActive() {
-        FBLogs("applicationBecomeActive")
         if ProjectDetailsController.shared.analytics_session_id != nil && self.isNetworkReachable == true {
             self.startUploadTimer()
         }
     }
     
     @objc func applicationMovedToBackground() {
-        FBLogs("Application moved to background")
         if ProjectDetailsController.shared.analytics_session_id != nil, self.isNetworkReachable == true {
             FBAPIController().uploadAllPendingEvents()
         }
-        FBLogs("Timer invalidate")
         self.uploadTimer?.invalidate()
         self.uploadTimer = nil
     }
@@ -59,9 +56,15 @@ class EventManager: NSObject {
     
     private func createAnalyticsSession() {
         if ProjectDetailsController.shared.analytics_session_id == nil {
-            let sessionRequest = CreateSessionRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id ?? "", system_id: ProjectDetailsController.shared.uniqID)
+            var sessionRequest: CreateSessionRequest?
             
-            FBAPIController().createSession(sessionRequest) { [weak self] isSuccess, error, data in
+            if let json = ProjectDetailsController.shared.locationDetails {
+                sessionRequest = CreateSessionRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id ?? "", system_id: ProjectDetailsController.shared.uniqID, device: CreateSessionRequest.DeviceDetails(os: "iOS", unique_id: ProjectDetailsController.shared.uniqID, device_id: ProjectDetailsController.shared.deviceID), location: CreateSessionRequest.LocationDetails(city: json["city"] as? String ?? "", region: json["regionName"] as? String ?? "", country: json["country"] as? String ?? "", latitude: json["lat"] as? Double ?? 0.0, longitude: json["lon"] as? Double ?? 0.0))
+            } else {
+                sessionRequest = CreateSessionRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id ?? "", system_id: ProjectDetailsController.shared.uniqID, device: CreateSessionRequest.DeviceDetails(os: "iOS", unique_id: ProjectDetailsController.shared.uniqID, device_id: ProjectDetailsController.shared.deviceID), location: nil)
+            }
+            
+            FBAPIController().createSession(sessionRequest!) { [weak self] isSuccess, error, data in
                 if isSuccess == true, let data = data {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
