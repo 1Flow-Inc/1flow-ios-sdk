@@ -11,7 +11,9 @@ class RoundedConrnerView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        roundCorners(corners: [.topLeft, .topRight], radius: 20.0)
+        let cornerRadiudRatio: CGFloat = 0.0813
+        let radius = self.bounds.width * cornerRadiudRatio
+        roundCorners(corners: [.topLeft, .topRight], radius: radius)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         self.addGestureRecognizer(tap)

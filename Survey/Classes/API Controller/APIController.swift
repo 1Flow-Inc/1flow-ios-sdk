@@ -23,6 +23,12 @@ class FBAPIController: NSObject {
     
     //MARK: - Surveys
     func getAllSurveys(_ completion: @escaping APICompletionBlock) {
+        
+//        let bundle = Bundle(for: self.classForCoder)
+//        let filePath = bundle.path(forResource: "surveyResponse", ofType: "json")!
+//        let data = try? Data(contentsOf: URL(fileURLWithPath: filePath))
+//        completion(true, nil, data)
+        
         self.getAPIWith(kURLGetSurvey, completion: completion)
     }
     

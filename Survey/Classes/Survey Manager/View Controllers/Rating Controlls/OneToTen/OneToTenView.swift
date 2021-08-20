@@ -10,40 +10,76 @@ import UIKit
 class OneToTenView: UIView {
 
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionViewWidth: NSLayoutConstraint!
     var minValue = 1
     var maxValue = 5 {
         didSet {
-            let numberOfItems: CGFloat = CGFloat(maxValue - minValue) + 1
-            let numberOfRow = ceil(Double(numberOfItems / 6.0))
-            collectionViewHeightConstraint.constant = CGFloat((numberOfRow > 3 ? 3 : numberOfRow) * 60)
+            let numberOfItems = CGFloat(maxValue - minValue + 1)
+//            if (numberOfItems * 65) < self.bounds.width {
+                collectionViewWidth.constant = (numberOfItems * 65)
+//            } else {
+//                collectionViewWidth.isActive = false
+//                collectionView.widthAnchor.constraint(equalTo: collectionView.superview!.widthAnchor, multiplier: 1.0).isActive = true
+//            }
+            
             collectionView.reloadData()
         }
     }
-    
+    var emojiArray: [String]? {
+        didSet {
+            let numberOfItems = CGFloat(emojiArray!.count)
+//            if (numberOfItems * 65) < self.bounds.width {
+                collectionViewWidth.constant = (numberOfItems * 65)
+//            } else {
+//                collectionViewWidth.isActive = false
+//                collectionView.widthAnchor.constraint(equalTo: collectionView.superview!.widthAnchor, multiplier: 1.0).isActive = true
+//            }
+            collectionView.reloadData()
+        }
+    }
+    var isForEmoji = false {
+        didSet {
+            if isForEmoji == true {
+                self.lblMinValue.isHidden = true
+                self.lblMaxValue.isHidden = true
+            }
+        }
+    }
     weak var delegate: RatingViewProtocol?
-    @IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
-    
-    let columnLayout = FlowLayout(
-            itemSize: CGSize(width: 40, height: 40),
-            minimumInteritemSpacing: 10,
-            minimumLineSpacing: 10,
-            sectionInset: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        )
+    @IBOutlet weak var lblMinValue: UILabel!
+    @IBOutlet weak var lblMaxValue: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        collectionView?.collectionViewLayout = columnLayout
-        collectionView?.contentInsetAdjustmentBehavior = .always
-        
+        collectionView.layer.borderWidth = 0.5
+        collectionView.layer.borderColor = kBorderColor.cgColor
+        collectionView.layer.cornerRadius = 10.0
         let frameworkBundle = Bundle(for: self.classForCoder)
-//        let frameworkBundle = Bundle(identifier: "Rohan-Moradiya.Feedback")
         let nib = UINib(nibName: "NumberCollectionViewCell", bundle: frameworkBundle)
         collectionView.register(nib, forCellWithReuseIdentifier: "NumberCollectionViewCell")
         collectionView.delegate = self
         collectionView.dataSource = self
         
     }
+    
+//    override func layoutIfNeeded() {
+//        super.layoutIfNeeded()
+//        FBLogs("layoutIfNeeded")
+//    }
+//    override func layoutSubviews() {
+//        super.layoutSubviews()
+//        FBLogs("layoutSubviews in NPS")
+////        if self.isForEmoji == false {
+////            let numberOfItems = CGFloat(maxValue - minValue + 1)
+////            if (numberOfItems * 65) < self.bounds.width {
+////                collectionViewWidth.constant = (numberOfItems * 65)
+////            } else {
+////                collectionViewWidth.isActive = false
+////                collectionView.widthAnchor.constraint(equalTo: collectionView.superview!.widthAnchor, multiplier: 1.0).isActive = true
+////            }
+////            collectionView.reloadData()
+////        }
+//    }
     var selectedButton: UIButton? {
         didSet {
             self.delegate?.oneToTenViewChangeSelection(selectedButton?.tag ?? nil)
@@ -61,10 +97,13 @@ class OneToTenView: UIView {
     }
 }
 
-extension OneToTenView: UICollectionViewDelegate, UICollectionViewDataSource {
+extension OneToTenView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return maxValue - minValue + 1
-//        return maxValue - minValue
+        if self.isForEmoji == true {
+            return self.emojiArray?.count ?? 0
+        } else {
+            return maxValue - minValue + 1
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -72,55 +111,38 @@ extension OneToTenView: UICollectionViewDelegate, UICollectionViewDataSource {
         cell.btnNumber.addTarget(self, action: #selector(onSelectButton(_:)), for: .touchUpInside)
         let titleNumber = self.minValue + indexPath.item
         cell.btnNumber.tag = titleNumber
-        cell.btnNumber.setTitle("\(titleNumber)", for: .normal)
+        if self.isForEmoji == true {
+            if let emojies = self.emojiArray {
+                cell.btnNumber.titleLabel?.font = UIFont.systemFont(ofSize: 30)
+                cell.btnNumber.setTitle(emojies[indexPath.item], for: .normal)
+            }
+        } else {
+            cell.btnNumber.setTitle("\(titleNumber)", for: .normal)
+        }
+        
+        if indexPath.item == 0 {
+            cell.leftBorder.isHidden = true
+        } else {
+            cell.leftBorder.isHidden = false
+        }
         return cell
     }
     
-}
-
-
-class FlowLayout: UICollectionViewFlowLayout {
-
-    required init(itemSize: CGSize, minimumInteritemSpacing: CGFloat = 0, minimumLineSpacing: CGFloat = 0, sectionInset: UIEdgeInsets = .zero) {
-        super.init()
-
-        self.itemSize = itemSize
-        self.minimumInteritemSpacing = minimumInteritemSpacing
-        self.minimumLineSpacing = minimumLineSpacing
-        self.sectionInset = sectionInset
-        sectionInsetReference = .fromSafeArea
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        let layoutAttributes = super.layoutAttributesForElements(in: rect)!.map { $0.copy() as! UICollectionViewLayoutAttributes }
-        guard scrollDirection == .vertical else { return layoutAttributes }
-
-        // Filter attributes to compute only cell attributes
-        let cellAttributes = layoutAttributes.filter({ $0.representedElementCategory == .cell })
-
-        // Group cell attributes by row (cells with same vertical center) and loop on those groups
-        for (_, attributes) in Dictionary(grouping: cellAttributes, by: { ($0.center.y / 10).rounded(.up) * 10 }) {
-            // Get the total width of the cells on the same row
-            let cellsTotalWidth = attributes.reduce(CGFloat(0)) { (partialWidth, attribute) -> CGFloat in
-                partialWidth + attribute.size.width
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if self.isForEmoji {
+            var itemWidth = collectionView.bounds.width / CGFloat(emojiArray?.count ?? 1)
+            if itemWidth > 65 {
+                itemWidth = 65
             }
-
-            // Calculate the initial left inset
-            let totalInset = collectionView!.safeAreaLayoutGuide.layoutFrame.width - cellsTotalWidth - sectionInset.left - sectionInset.right - minimumInteritemSpacing * CGFloat(attributes.count - 1)
-            var leftInset = (totalInset / 2 * 10).rounded(.down) / 10 + sectionInset.left
-
-            // Loop on cells to adjust each cell's origin and prepare leftInset for the next cell
-            for attribute in attributes {
-                attribute.frame.origin.x = leftInset
-                leftInset = attribute.frame.maxX + minimumInteritemSpacing
+            return CGSize(width: itemWidth, height: 65)
+        } else {
+            let numberOfItems: CGFloat = CGFloat(maxValue - minValue) + 1
+            var itemWidth = collectionView.bounds.width / numberOfItems
+            if itemWidth > 65 {
+                itemWidth = 65
             }
+            return CGSize(width: itemWidth, height: 65)
         }
-
-        return layoutAttributes
+        
     }
-
 }

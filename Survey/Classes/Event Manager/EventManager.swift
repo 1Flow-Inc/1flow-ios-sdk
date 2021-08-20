@@ -59,9 +59,9 @@ class EventManager: NSObject {
             var sessionRequest: CreateSessionRequest?
             
             if let json = ProjectDetailsController.shared.locationDetails {
-                sessionRequest = CreateSessionRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id ?? "", system_id: ProjectDetailsController.shared.uniqID, device: CreateSessionRequest.DeviceDetails(os: "iOS", unique_id: ProjectDetailsController.shared.uniqID, device_id: ProjectDetailsController.shared.deviceID), location: CreateSessionRequest.LocationDetails(city: json["city"] as? String ?? "", region: json["regionName"] as? String ?? "", country: json["country"] as? String ?? "", latitude: json["lat"] as? Double ?? 0.0, longitude: json["lon"] as? Double ?? 0.0))
+                sessionRequest = CreateSessionRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id ?? "", system_id: ProjectDetailsController.shared.uniqID, device: CreateSessionRequest.DeviceDetails(os: "iOS", unique_id: ProjectDetailsController.shared.uniqID, device_id: ProjectDetailsController.shared.deviceID), location: CreateSessionRequest.LocationDetails(city: json["city"] as? String ?? "", region: json["regionName"] as? String ?? "", country: json["country"] as? String ?? "", latitude: json["lat"] as? Double ?? 0.0, longitude: json["lon"] as? Double ?? 0.0), location_check: false)
             } else {
-                sessionRequest = CreateSessionRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id ?? "", system_id: ProjectDetailsController.shared.uniqID, device: CreateSessionRequest.DeviceDetails(os: "iOS", unique_id: ProjectDetailsController.shared.uniqID, device_id: ProjectDetailsController.shared.deviceID), location: nil)
+                sessionRequest = CreateSessionRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id ?? "", system_id: ProjectDetailsController.shared.uniqID, device: CreateSessionRequest.DeviceDetails(os: "iOS", unique_id: ProjectDetailsController.shared.uniqID, device_id: ProjectDetailsController.shared.deviceID), location: nil, location_check: true)
             }
             
             FBAPIController().createSession(sessionRequest!) { [weak self] isSuccess, error, data in
@@ -182,6 +182,7 @@ class EventManager: NSObject {
                             }
                         }
                     } catch {
+                        FBLogs("sendEventsToServer")
                         FBLogs(error)
                     }
                 }

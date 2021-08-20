@@ -17,69 +17,65 @@ enum RatingStyle {
     case ThankYou
 }
 
-typealias RatingViewCompletion = ((_ answerValue:String?, _ answerIndex: Int?, _ isSubmitted: Bool) -> Void)
+typealias RatingViewCompletion = ((_ surveyResult: [SurveySubmitRequest.Answer]) -> Void)
 
 class RatingViewController: UIViewController {
     
-    @IBOutlet weak var ratingView: RoundedConrnerView!
+    @IBOutlet weak var ratingView: DraggableView!
+    @IBOutlet weak var containerView: RoundedConrnerView!
     @IBOutlet weak var stackView: UIStackView!
-    
+    @IBOutlet weak var imgDraggView: UIImageView!
+    @IBOutlet weak var dragViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var viewPrimaryTitle1: UIView!
-    @IBOutlet weak var viewPrimaryTitle2: UIView!
     @IBOutlet weak var viewSecondaryTitle: UIView!
-    @IBOutlet weak var viewPrimaryButton: UIView!
-    @IBOutlet weak var viewSecondaryButton: UIView!
-    @IBOutlet weak var viewDoneButton: UIView!
-    
     @IBOutlet weak var lblPrimaryTitle1: UILabel!
-    @IBOutlet weak var lblPrimaryTitle2: UILabel!
     @IBOutlet weak var lblSecondaryTitle: UILabel!
-    @IBOutlet weak var btnPrimary: ActionButton!
-    @IBOutlet weak var btnSecondary: ActionButton!
-    @IBOutlet weak var btnDone: ActionButton!
-    
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var progressBar: UIProgressView!
     private var isKeyboardVisible = false
     var panGestureRecognizer: UIPanGestureRecognizer?
     var originalPosition: CGPoint?
     var currentPositionTouched: CGPoint?
-    
-    var screen: SurveyListResponse.Survey.Screen?
-    
-    var selectedValue: String?
-    
-    var selectedIndex: Int? {
-        didSet {
-            if selectedIndex != nil {
-                self.btnPrimary.isActive = true
-            } else {
-                self.btnPrimary.isActive = false
-            }
-        }
-    }
-    
-    var enteredText: String? {
-        didSet {
-            if enteredText?.count ?? 0 > screen?.input.min_chars ?? 0 {
-                self.btnPrimary.isActive = true
-            } else {
-                self.btnPrimary.isActive = false
-            }
-        }
-    }
+
+    var allScreens: [SurveyListResponse.Survey.Screen]?
+    var surveyResult = [SurveySubmitRequest.Answer]()
     
     var completionBlock: RatingViewCompletion?
+    var currentScreenIndex = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.setupUIAccordingToConfiguration()
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = .light
+        } else {
+            // Fallback on earlier versions
+        }
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureAction(_:)))
         ratingView.addGestureRecognizer(panGestureRecognizer!)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        let width = self.view.bounds.width * 0.119
+        self.dragViewWidthConstraint.constant = width
+        self.imgDraggView.layer.cornerRadius = 2.5
+        
+        self.containerView.alpha = 0.0
+        self.ratingView.alpha = 0.0
+    }
+    
+    
+    override var shouldAutorotate: Bool {
+        return false
+    }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.portrait
+    }
+
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        return UIInterfaceOrientation.portrait
     }
     
     @objc func keyboardWasShown(notification: NSNotification) {
@@ -102,53 +98,56 @@ class RatingViewController: UIViewController {
             self.view.layoutIfNeeded()
         })
     }
-    
-    func setupUIAccordingToConfiguration() {
-        
-        guard let currentScreen = screen else {
-            return
+    //MARK: -
+    func startSurveysWithScreens(_ screens: [SurveyListResponse.Survey.Screen]) {
+        self.currentScreenIndex = -1
+        self.allScreens = screens
+        UIView.animate(withDuration: 0.2) {
+            self.view.backgroundColor = UIColor.black.withAlphaComponent(0.25)
+        } completion: { _ in
+            
         }
+        self.presentNextScreen()
+    }
+    
+    fileprivate func presentNextScreen() {
+        self.currentScreenIndex = self.currentScreenIndex + 1
+        
+        if self.allScreens!.count > self.currentScreenIndex, let screen = self.allScreens?[self.currentScreenIndex] {
+            self.setupUIAccordingToConfiguration(screen)
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+                self.progressBar.setProgress(Float(CGFloat(self.currentScreenIndex + 1 )/CGFloat(self.allScreens!.count)), animated: true)
+            }
+        } else {
+            //finish the survey
+            guard let completion = self.completionBlock else { return }
+            self.runCloseAnimation {
+                completion(self.surveyResult)
+            }
+        }
+    }
+    
+    private func setupUIAccordingToConfiguration(_ currentScreen: SurveyListResponse.Survey.Screen) {
 
-        if let value = screen?.title {
+        self.stackView.alpha = 0.0
+        if let value = currentScreen.title {
             self.viewPrimaryTitle1.isHidden = false
             self.lblPrimaryTitle1.text = value
         } else {
             self.viewPrimaryTitle1.isHidden = true
         }
-        self.viewPrimaryTitle2.isHidden = true
 
-        if let value = screen?.message {
+        if let value = currentScreen.message {
             self.viewSecondaryTitle.isHidden = false
             self.lblSecondaryTitle.text = value
         } else {
             self.viewSecondaryTitle.isHidden = true
         }
 
-        if let primaryButton = screen?.buttons.first(where: { $0.button_type == "primary" }) {
-            self.viewPrimaryButton.isHidden = false
-            self.btnPrimary.setTitle(primaryButton.title, for: .normal)
-            self.btnPrimary.style = .primary
-            self.btnPrimary.isActive = false
-        } else {
-            self.viewPrimaryButton.isHidden = true
-        }
-
-        if let secondaryButton = screen?.buttons.first(where: { $0.button_type == "secondary" }) {
-            self.viewSecondaryButton.isHidden = false
-            self.btnSecondary.setTitle(secondaryButton.title, for: .normal)
-            self.btnSecondary.style = .secondary
-            self.btnSecondary.isActive = true
-        } else {
-            self.viewSecondaryButton.isHidden = true
-        }
-
-        if let doneButton = screen?.buttons.first(where: { $0.button_type == "done" }) {
-            self.viewDoneButton.isHidden = false
-            self.btnDone.setTitle(doneButton.title, for: .normal)
-            self.btnDone.style = .done
-            self.btnDone.isActive = true
-        } else {
-            self.viewDoneButton.isHidden = true
+        let indexToAddOn = 2
+        if self.stackView.arrangedSubviews.count > indexToAddOn {
+            let subView = self.stackView.arrangedSubviews[indexToAddOn]
+            subView.removeFromSuperview()
         }
         
         if currentScreen.input.input_type == "text" {
@@ -156,46 +155,131 @@ class RatingViewController: UIViewController {
             view.delegate = self
             view.placeHolderText = currentScreen.input.placeholder_text ?? "Write here..."
             view.maxCharsAllowed = currentScreen.input.max_chars ?? 1000
-            self.stackView.insertArrangedSubview(view, at: 3)
-        } else if currentScreen.input.input_type == "rating" {
+            view.minCharsAllowed = currentScreen.input.min_chars ?? 5
+            view.isHidden = true
+            self.stackView.insertArrangedSubview(view, at: indexToAddOn)
             
+        } else if currentScreen.input.input_type == "rating" {
+
             if currentScreen.input.stars == true {
                 let view = StarsView.loadFromNib()
                 view.delegate = self
-                self.stackView.insertArrangedSubview(view, at: 3)
+                view.isHidden = true
+                self.stackView.insertArrangedSubview(view, at: indexToAddOn)
             } else if currentScreen.input.emoji == true {
-                let view = EmojiView.loadFromNib()
+                let view = OneToTenView.loadFromNib()
+                view.isForEmoji = true
+                view.emojiArray = ["☹️", "🙁", "😐", "🙂", "😊"]
                 view.delegate = self
-                self.stackView.insertArrangedSubview(view, at: 3)
+                view.isHidden = true
+                self.stackView.insertArrangedSubview(view, at: indexToAddOn)
             } else {
                 let view = OneToTenView.loadFromNib()
+                view.delegate = self
                 view.minValue = currentScreen.input.min_val ?? 1
                 view.maxValue = currentScreen.input.max_val ?? 5
-                view.delegate = self
-                self.stackView.insertArrangedSubview(view, at: 3)
+                view.isHidden = true
+                self.stackView.insertArrangedSubview(view, at: indexToAddOn)
             }
         } else if currentScreen.input.input_type == "mcq" {
             let view = MCQView.loadFromNib()
             view.delegate = self
             if let titleArray = currentScreen.input.choices?.map({ return $0.title }) {
-                view.setupViewWithOptions(titleArray)
+                view.setupViewWithOptions(titleArray, type: .radioButton)
             }
-            self.stackView.insertArrangedSubview(view, at: 3)
-        } else if currentScreen.input.input_type == "reviewPrompt" {
-            self.btnPrimary.isActive = true
-        } else {
-            //ThankYou
+            view.isHidden = true
+            self.stackView.insertArrangedSubview(view, at: indexToAddOn)
+        } else if currentScreen.input.input_type == "checkbox" {
+            let view = MCQView.loadFromNib()
+            view.delegate = self
+            if let titleArray = currentScreen.input.choices?.map({ return $0.title }) {
+                view.setupViewWithOptions(titleArray, type: .checkBox)
+            }
+            view.isHidden = true
+            self.stackView.insertArrangedSubview(view, at: indexToAddOn)
+        } else if currentScreen.input.input_type == "thank_you" {
+            self.viewPrimaryTitle1.isHidden = true
+            self.viewSecondaryTitle.isHidden = true
+            let view = ThankYouView.loadFromNib()
+            view.isHidden = true
+            self.stackView.insertArrangedSubview(view, at: indexToAddOn)
+            
         }
+
+        for subview in self.stackView.arrangedSubviews {
+            subview.alpha = 0.0
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.stackView.arrangedSubviews[2].isHidden = false
+        } completion: { _ in
+            self.stackView.alpha = 1.0
+            
+            if self.currentScreenIndex == 0 {
+                let originalPosition = self.ratingView.frame.origin.y
+                self.ratingView.frame.origin.y = self.view.frame.size.height
+                self.ratingView.alpha = 1.0
+                self.containerView.alpha = 1.0
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: UIView.AnimationOptions.curveEaseInOut) {
+                    self.ratingView.frame.origin.y = originalPosition
+                } completion: { _ in
+                    var totalDelay = 0.0
+                    for subView in self.stackView.arrangedSubviews {
+                        UIView.animate(withDuration: 0.5, delay: totalDelay, options: UIView.AnimationOptions.allowUserInteraction) {
+                            subView.alpha = 1.0
+                        } completion: { _ in
+
+                        }
+                        totalDelay += 0.2
+                    }
+                    
+                }
+
+            } else {
+                var totalDelay = 0.0
+                for subView in self.stackView.arrangedSubviews {
+                    UIView.animate(withDuration: 0.5, delay: totalDelay, options: UIView.AnimationOptions.allowUserInteraction) {
+                        subView.alpha = 1.0
+                    } completion: { _ in
+
+                    }
+                    totalDelay += 0.2
+                }
+            }
+        }
+        
         
     }
     
-    func animateRatingView() {
-        let originalPosition = self.ratingView.frame.origin.y
-        ratingView.frame.origin.y = self.view.frame.size.height
-        ratingView.isHidden = false
-        UIView.animate(withDuration: 0.2) {
-            self.ratingView.frame.origin.y = originalPosition
+    
+    func runCloseAnimation(_ completion: @escaping ()-> Void) {
+ 
+//        self.ratingView.frame.origin.y = self.view.frame.size.height
+        
+        UIView.animate(withDuration: 0.5) {
+            self.ratingView.frame.origin.y = self.view.frame.size.height
         }
+        
+        UIView.animate(withDuration: 0.3, delay: 0.5, options: UIView.AnimationOptions.curveEaseIn) {
+            self.view.backgroundColor = UIColor.clear
+        } completion: { _ in
+            completion()
+        }
+
+        
+        
+        //All One after another
+//        var totalDelay: Double = 0.0
+//        for subView in self.stackView.arrangedSubviews {
+//            UIView.animate(withDuration: 0.5, delay: totalDelay, options: UIView.AnimationOptions.allowUserInteraction) {
+//                subView.alpha = 0.0
+//            } completion: { _ in
+//            }
+//            totalDelay += 0.2
+//        }
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+//            completion()
+//        }
     }
     
     @objc func panGestureAction(_ panGesture: UIPanGestureRecognizer) {
@@ -224,14 +308,8 @@ class RatingViewController: UIViewController {
                                 )
                                }, completion: { (isCompleted) in
                                 if isCompleted {
-                                    self.closeFeedbackView()
                                     guard let completion = self.completionBlock else { return }
-                                    if self.screen?.input.input_type == "thank_you" {
-                                        completion(nil, nil, true)
-                                    } else {
-                                        completion(nil, nil, false)
-                                    }
-                                    
+                                    completion(self.surveyResult)
                                 }
                                })
             } else {
@@ -248,68 +326,68 @@ class RatingViewController: UIViewController {
             return
         }
         guard let completion = self.completionBlock else { return }
-        self.view.backgroundColor = UIColor.clear
-        self.closeFeedbackView()
-        if self.screen?.input.input_type == "thank_you" {
-            completion(nil, nil, true)
-        } else {
-            completion(nil, nil, false)
+        self.runCloseAnimation {
+            completion(self.surveyResult)
         }
     }
     
-    @IBAction func onPrimaryButton(_ sender: UIButton) {
+
+    @IBAction func onCloseTapped(_ sender: UIButton) {
+
+        if self.isKeyboardVisible == true {
+            self.view.endEditing(true)
+        }
         guard let completion = self.completionBlock else { return }
-        self.closeFeedbackView()
-        if self.selectedValue != nil {
-            //For MCQ it will required multiple type
-            completion(self.selectedValue, self.selectedIndex, true)
-        } else {
-            completion(self.enteredText, self.selectedIndex, true)
+        self.runCloseAnimation {
+            completion(self.surveyResult)
         }
         
     }
     
-    @IBAction func onSecondaryButton(_ sender: UIButton) {
-        guard let completion = self.completionBlock else { return }
-        self.closeFeedbackView()
-        completion(nil, nil, true)
-    }
     
-    @IBAction func onDoneButton(_ sender: UIButton) {
-        guard let completion = self.completionBlock else { return }
-        self.closeFeedbackView()
-        completion(nil, nil, true)
-    }
-    
-    func closeFeedbackView() {
-        self.dismiss(animated: false, completion: nil)
-    }
 }
 
 extension RatingViewController: RatingViewProtocol {
     
     func oneToTenViewChangeSelection(_ selectedIndex: Int?) {
-        self.selectedIndex = selectedIndex
-    }
-    
-    func oneToFiveViewChangeSelection(_ selectedIndex: Int?) {
-        self.selectedIndex = selectedIndex
-    }
-    
-    func starsViewChangeSelection(_ selectedIndex: Int?) {
-        self.selectedIndex = selectedIndex
-    }
-    
-    func emojiViewChangeSelection(_ selectedIndex: Int?) {
-        self.selectedIndex = selectedIndex
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+            if let index = selectedIndex, let screen = self.allScreens?[self.currentScreenIndex] {
+                let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: nil, answer_index: "\(index)")
+                self.surveyResult.append(answer)
+                self.presentNextScreen()
+            }
+        }
     }
     
     func mcqViewChangeSelection(_ selectedIndex: Int?, selectedValue: String?) {
-        self.selectedIndex = selectedIndex
-        self.selectedValue = selectedValue
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+            if let value = selectedValue, let screen = self.allScreens?[self.currentScreenIndex] {
+                if let selectedChoice = screen.input.choices?.first(where: { $0.title == value }) {
+                    let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: value, answer_index: selectedChoice._id)
+                    self.surveyResult.append(answer)
+                    self.presentNextScreen()
+                }
+            }
+        }
     }
     
     func followupViewEnterTextWith(_ text: String?) {
-        self.enteredText = text
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+            if let inputString = text, let screen = self.allScreens?[self.currentScreenIndex] {
+                let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: inputString, answer_index: nil)
+                self.surveyResult.append(answer)
+                self.presentNextScreen()
+            }
+        }
+    }
+    
+    func starsViewChangeSelection(_ selectedIndex: Int?) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+            if let index = selectedIndex, let screen = self.allScreens?[self.currentScreenIndex] {
+                let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: nil, answer_index: "\(index)")
+                self.surveyResult.append(answer)
+                self.presentNextScreen()
+            }
+        }
     }
 }

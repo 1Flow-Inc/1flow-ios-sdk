@@ -11,6 +11,7 @@ struct AddUserRequest: Codable {
     var system_id: String
     var device: DeviceDetails
     var location: LocationDetails?
+    var location_check: Bool = true
     
     struct DeviceDetails:Codable {
         var os: String

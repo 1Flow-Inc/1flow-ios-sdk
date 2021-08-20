@@ -10,9 +10,12 @@ import UIKit
 class FollowupView: UIView {
 
     @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var lblNumbers: UILabel!
+    @IBOutlet weak var btnFinish: UIButton!
     weak var delegate: RatingViewProtocol?
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
     var maxCharsAllowed = 1000
+    var minCharsAllowed = 5
     var placeHolderText = "Write here..." {
         didSet {
             self.placeholderLabel.text = placeHolderText
@@ -22,12 +25,32 @@ class FollowupView: UIView {
     var placeholderLabel : UILabel!
     var enteredText: String? {
         didSet {
-            self.delegate?.followupViewEnterTextWith(enteredText)
+            self.lblNumbers.text = "\(self.enteredText?.count ?? 0)/\(self.maxCharsAllowed)"
+            if enteredText?.count ?? 0 > minCharsAllowed {
+                if self.btnFinish.isHidden == true {
+                    self.btnFinish.alpha = 0.0
+                    self.btnFinish.isHidden = false
+                    UIView.animate(withDuration: 0.5) {
+                        self.btnFinish.alpha = 1.0
+                    }
+                }
+            } else {
+                if self.btnFinish.isHidden == false {
+                    UIView.animate(withDuration: 0.5) {
+                        self.btnFinish.alpha = 0.0
+                    } completion: { _ in
+                        self.btnFinish.isHidden = true
+                    }
+                }
+            }
         }
     }
     override func awakeFromNib() {
         super.awakeFromNib()
         textView.delegate = self
+        textView.layer.borderColor = kBorderColor.cgColor
+        textView.layer.borderWidth = 0.5
+        textView.layer.cornerRadius = 2.0
         placeholderLabel = UILabel()
         placeholderLabel.text = placeHolderText
         placeholderLabel.font = UIFont.systemFont(ofSize: (textView.font?.pointSize)!)
@@ -36,6 +59,14 @@ class FollowupView: UIView {
         placeholderLabel.frame.origin = CGPoint(x: 5, y: (textView.font?.pointSize)! / 2)
         placeholderLabel.textColor = UIColor.lightGray
         placeholderLabel.isHidden = !textView.text.isEmpty
+        btnFinish.backgroundColor = kPrimaryButtonEnableColor
+        btnFinish.layer.cornerRadius = 2.0
+    }
+    
+    @IBAction func onFinished(_ sender: UIButton) {
+        if let text = self.enteredText, text.count > minCharsAllowed {
+            self.delegate?.followupViewEnterTextWith(text)
+        }
     }
 }
 
@@ -52,13 +83,12 @@ extension FollowupView: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
         self.enteredText = textView.text
-        
         let fixedWidth = textView.frame.size.width
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
-        let newHeight = newSize.height > 65 ? newSize.height : 65
+        let newHeight = newSize.height > 90 ? newSize.height : 90
         
-        if let frame = textView.superview?.superview?.superview?.frame {
-            if frame.origin.y > 80 {
+        if let frame = textView.superview?.superview?.superview?.superview?.frame {
+            if (frame.origin.y > 80) || (newHeight < textView.bounds.height) {
                 self.textViewHeightConstraint.constant = newHeight
             }
         }

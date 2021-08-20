@@ -10,7 +10,6 @@ import Foundation
 protocol RatingViewProtocol: AnyObject {
     func oneToTenViewChangeSelection(_ selectedIndex: Int?)
     func starsViewChangeSelection(_ selectedIndex: Int?)
-    func emojiViewChangeSelection(_ selectedIndex: Int?)
     func mcqViewChangeSelection(_ selectedIndex: Int?, selectedValue: String?)
     func followupViewEnterTextWith(_ text: String?)
 }
