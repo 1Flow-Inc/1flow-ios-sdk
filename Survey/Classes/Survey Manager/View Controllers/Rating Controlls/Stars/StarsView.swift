@@ -31,6 +31,18 @@ class StarsView: UIView {
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(checkGestureAction(_:)))
 //        let gesture = UITapGestureRecognizer(target: self, action:  #selector(checkGestureAction(_:)))
         self.stackView1.addGestureRecognizer(gesture)
+        self.setupImages()
+    }
+    
+    func setupImages() {
+        let starImage = UIImage.getStartImage()
+        let filledStarImage = UIImage.getStartImageSelected()
+        for view in self.stackView1.arrangedSubviews {
+            if let btn = view as? UIButton {
+                btn.setImage(starImage, for: .normal)
+                btn.setImage(filledStarImage, for: .selected)
+            }
+        }
     }
     
     @IBAction func onSelectButton(_ sender: UIButton) {

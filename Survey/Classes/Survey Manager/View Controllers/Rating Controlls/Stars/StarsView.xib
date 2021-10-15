@@ -25,8 +25,6 @@
                                 <constraint firstAttribute="width" constant="40" id="x9e-w3-Ls3"/>
                             </constraints>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <state key="normal" image="StarBlank"/>
-                            <state key="selected" image="StarFilled"/>
                             <connections>
                                 <action selector="onSelectButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="DBQ-kR-mUN"/>
                             </connections>
@@ -39,8 +37,6 @@
                                 <constraint firstAttribute="height" constant="40" id="Dt1-U0-m0k"/>
                             </constraints>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <state key="normal" image="StarBlank"/>
-                            <state key="selected" image="StarFilled"/>
                             <connections>
                                 <action selector="onSelectButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="wc4-iC-W11"/>
                             </connections>
@@ -53,8 +49,6 @@
                                 <constraint firstAttribute="height" constant="40" id="lgh-eo-ai9"/>
                             </constraints>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <state key="normal" image="StarBlank"/>
-                            <state key="selected" image="StarFilled"/>
                             <connections>
                                 <action selector="onSelectButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="F32-GT-mAd"/>
                             </connections>
@@ -67,8 +61,6 @@
                                 <constraint firstAttribute="width" constant="40" id="EEQ-0U-j01"/>
                             </constraints>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <state key="normal" image="StarBlank"/>
-                            <state key="selected" image="StarFilled"/>
                             <connections>
                                 <action selector="onSelectButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="jZr-1a-tb7"/>
                             </connections>
@@ -81,8 +73,6 @@
                                 <constraint firstAttribute="width" constant="40" id="KbY-Q4-2rW"/>
                             </constraints>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <state key="normal" image="StarBlank"/>
-                            <state key="selected" image="StarFilled"/>
                             <connections>
                                 <action selector="onSelectButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="A1v-HP-NAP"/>
                             </connections>
@@ -107,8 +97,6 @@
         </view>
     </objects>
     <resources>
-        <image name="StarBlank" width="31.666666030883789" height="30.333333969116211"/>
-        <image name="StarFilled" width="31.666666030883789" height="30.333333969116211"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

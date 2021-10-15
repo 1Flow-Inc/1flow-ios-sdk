@@ -81,27 +81,36 @@ public class FeedbackController: NSObject {
     }
     
     @objc func reachabilityChanged(note: Notification) {
-
-      let reachability = note.object as! Reachability
-      switch reachability.connection {
-      case .unavailable:
-        FBLogs("Network: Unreachable")
-        if networkTimer != nil, networkTimer?.isValid == true {
-            networkTimer?.invalidate()
-            networkTimer = nil
-        }
-        networkTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(networkNotAvailable), userInfo: nil, repeats: false)
-        break
-      default:
-        FBLogs("Reachable")
-        if networkTimer != nil, networkTimer?.isValid == true {
-            networkTimer?.invalidate()
-            networkTimer = nil
-        }
-        networkTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(networkAvailable), userInfo: nil, repeats: false)
         
-        break
-      }
+        let reachability = note.object as! Reachability
+        switch reachability.connection {
+        case .unavailable:
+            FBLogs("Network: Unreachable")
+            ProjectDetailsController.shared.radioConnectivity = nil
+            ProjectDetailsController.shared.isCarrierConnectivity = false
+            
+            if networkTimer != nil, networkTimer?.isValid == true {
+                networkTimer?.invalidate()
+                networkTimer = nil
+            }
+            networkTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(networkNotAvailable), userInfo: nil, repeats: false)
+            break
+        default:
+            FBLogs("Reachable")
+            if reachability.connection.description.lowercased() == "wifi" {
+                ProjectDetailsController.shared.radioConnectivity = "wireless"
+            } else {
+                ProjectDetailsController.shared.isCarrierConnectivity = true
+            }
+            
+            if networkTimer != nil, networkTimer?.isValid == true {
+                networkTimer?.invalidate()
+                networkTimer = nil
+            }
+            networkTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(networkAvailable), userInfo: nil, repeats: false)
+            
+            break
+        }
     }
     
     @objc private func networkNotAvailable() {

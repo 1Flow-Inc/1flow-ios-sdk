@@ -19,22 +19,24 @@ struct SurveyListResponse: Codable {
         var end_date: String?
         var live: Bool?
         var platforms: [String]?
-        var screens: [Screen]
+        var screens: [Screen]?
         var deleted: Bool?
         var deleted_on: String?
         var schema_version: Int?
         var _id: String
         var project_id: String?
         var style: Style?
-        var trigger_event_name: String
+        var trigger_event_name: String?
         var start_date: Int?
         var created_on: Int?
         var updated_on: Int?
         var __v: Int?
+        var color: String?
+        var survey_settings: SurveySettings?
         
         struct Screen: Codable {
             var title: String?
-            var input: Input
+            var input: Input?
             var message: String?
             var _id: String
             var buttons: [FBButton]
@@ -53,7 +55,7 @@ struct SurveyListResponse: Codable {
                 var placeholder_text: String?
                 
                 struct Choice: Codable {
-                    var _id: String
+                    var _id: String?
                     var title: String
                 }
             }
@@ -71,6 +73,22 @@ struct SurveyListResponse: Codable {
             var _id: String?
             var primary_color: String?
             var corner_radius: Int?
+            var change_trigger: Bool?
+            var color_opacity: Int?
+            var previous_change_color: Bool?
+        }
+        
+        struct SurveySettings: Codable {
+            var _id: String?
+            var resurvey_option: Bool?
+            var retake_survey: RetakeSurvey?
+            var show_watermark: Bool?
+            
+            struct RetakeSurvey: Codable {
+                var _id: String?
+                var retake_input_value: Int?
+                var retake_select_value: String?
+            }
         }
         
     }

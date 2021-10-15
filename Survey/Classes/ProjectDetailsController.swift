@@ -50,4 +50,7 @@ class ProjectDetailsController: NSObject {
     private override init() {
         super.init()
     }
+    var radioConnectivity: String?
+    var isCarrierConnectivity: Bool = false
+    
 }

@@ -59,7 +59,7 @@ class FollowupView: UIView {
         placeholderLabel.frame.origin = CGPoint(x: 5, y: (textView.font?.pointSize)! / 2)
         placeholderLabel.textColor = UIColor.lightGray
         placeholderLabel.isHidden = !textView.text.isEmpty
-        btnFinish.backgroundColor = kPrimaryButtonEnableColor
+        btnFinish.backgroundColor = kPrimaryColor
         btnFinish.layer.cornerRadius = 2.0
     }
     

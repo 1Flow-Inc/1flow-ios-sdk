@@ -12,4 +12,5 @@ protocol RatingViewProtocol: AnyObject {
     func starsViewChangeSelection(_ selectedIndex: Int?)
     func mcqViewChangeSelection(_ selectedIndex: Int?, selectedValue: String?)
     func followupViewEnterTextWith(_ text: String?)
+    func checkBoxViewDidFinishPicking(_ selectedIndexes: [Int])
 }

@@ -102,6 +102,7 @@ class RatingViewController: UIViewController {
     func startSurveysWithScreens(_ screens: [SurveyListResponse.Survey.Screen]) {
         self.currentScreenIndex = -1
         self.allScreens = screens
+        self.progressBar.tintColor = kPrimaryColor
         UIView.animate(withDuration: 0.2) {
             self.view.backgroundColor = UIColor.black.withAlphaComponent(0.25)
         } completion: { _ in
@@ -150,60 +151,65 @@ class RatingViewController: UIViewController {
             subView.removeFromSuperview()
         }
         
-        if currentScreen.input.input_type == "text" {
+        if currentScreen.input?.input_type == "text" {
             let view = FollowupView.loadFromNib()
             view.delegate = self
-            view.placeHolderText = currentScreen.input.placeholder_text ?? "Write here..."
-            view.maxCharsAllowed = currentScreen.input.max_chars ?? 1000
-            view.minCharsAllowed = currentScreen.input.min_chars ?? 5
+            view.placeHolderText = currentScreen.input!.placeholder_text ?? "Write here..."
+            view.maxCharsAllowed = currentScreen.input!.max_chars ?? 1000
+            view.minCharsAllowed = currentScreen.input!.min_chars ?? 5
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
             
-        } else if currentScreen.input.input_type == "rating" {
-
-            if currentScreen.input.stars == true {
-                let view = StarsView.loadFromNib()
-                view.delegate = self
-                view.isHidden = true
-                self.stackView.insertArrangedSubview(view, at: indexToAddOn)
-            } else if currentScreen.input.emoji == true {
-                let view = OneToTenView.loadFromNib()
-                view.isForEmoji = true
-                view.emojiArray = ["☹️", "🙁", "😐", "🙂", "😊"]
-                view.delegate = self
-                view.isHidden = true
-                self.stackView.insertArrangedSubview(view, at: indexToAddOn)
-            } else {
-                let view = OneToTenView.loadFromNib()
-                view.delegate = self
-                view.minValue = currentScreen.input.min_val ?? 1
-                view.maxValue = currentScreen.input.max_val ?? 5
-                view.isHidden = true
-                self.stackView.insertArrangedSubview(view, at: indexToAddOn)
-            }
-        } else if currentScreen.input.input_type == "mcq" {
+        } else if currentScreen.input?.input_type == "rating" ||  currentScreen.input?.input_type == "rating-5-star" {
+            let view = StarsView.loadFromNib()
+            view.delegate = self
+            view.isHidden = true
+            self.stackView.insertArrangedSubview(view, at: indexToAddOn)
+        } else if currentScreen.input?.input_type == "rating-emojis" {
+            let view = OneToTenView.loadFromNib()
+            view.isForEmoji = true
+            view.emojiArray = ["☹️", "🙁", "😐", "🙂", "😊"]
+            view.delegate = self
+            view.isHidden = true
+            self.stackView.insertArrangedSubview(view, at: indexToAddOn)
+        } else if currentScreen.input?.input_type == "rating-numerical" {
+            let view = OneToTenView.loadFromNib()
+            view.delegate = self
+            view.minValue = 1
+            view.maxValue = 5
+            view.isHidden = true
+            self.stackView.insertArrangedSubview(view, at: indexToAddOn)
+        } else if currentScreen.input?.input_type == "nps" {
+            let view = OneToTenView.loadFromNib()
+            view.delegate = self
+            view.minValue = currentScreen.input!.min_val ?? 1
+            view.maxValue = currentScreen.input!.max_val ?? 5
+            view.isHidden = true
+            self.stackView.insertArrangedSubview(view, at: indexToAddOn)
+        } else if currentScreen.input?.input_type == "mcq" {
             let view = MCQView.loadFromNib()
             view.delegate = self
-            if let titleArray = currentScreen.input.choices?.map({ return $0.title }) {
+            view.currentType = .radioButton
+            if let titleArray = currentScreen.input!.choices?.map({ return $0.title }) {
                 view.setupViewWithOptions(titleArray, type: .radioButton)
             }
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
-        } else if currentScreen.input.input_type == "checkbox" {
+        } else if currentScreen.input?.input_type == "checkbox" {
             let view = MCQView.loadFromNib()
             view.delegate = self
-            if let titleArray = currentScreen.input.choices?.map({ return $0.title }) {
+            view.currentType = .checkBox
+            if let titleArray = currentScreen.input!.choices?.map({ return $0.title }) {
                 view.setupViewWithOptions(titleArray, type: .checkBox)
             }
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
-        } else if currentScreen.input.input_type == "thank_you" {
+        } else if currentScreen.input?.input_type == "thank_you" {
             self.viewPrimaryTitle1.isHidden = true
             self.viewSecondaryTitle.isHidden = true
             let view = ThankYouView.loadFromNib()
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
-            
         }
 
         for subview in self.stackView.arrangedSubviews {
@@ -211,7 +217,10 @@ class RatingViewController: UIViewController {
         }
         
         UIView.animate(withDuration: 0.3) {
-            self.stackView.arrangedSubviews[2].isHidden = false
+            if self.stackView.arrangedSubviews.count > 2 {
+                self.stackView.arrangedSubviews[2].isHidden = false
+            }
+            
         } completion: { _ in
             self.stackView.alpha = 1.0
             
@@ -352,7 +361,7 @@ extension RatingViewController: RatingViewProtocol {
     func oneToTenViewChangeSelection(_ selectedIndex: Int?) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
             if let index = selectedIndex, let screen = self.allScreens?[self.currentScreenIndex] {
-                let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: nil, answer_index: "\(index)")
+                let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: "\(index)", answer_index: nil)
                 self.surveyResult.append(answer)
                 self.presentNextScreen()
             }
@@ -362,11 +371,28 @@ extension RatingViewController: RatingViewProtocol {
     func mcqViewChangeSelection(_ selectedIndex: Int?, selectedValue: String?) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
             if let value = selectedValue, let screen = self.allScreens?[self.currentScreenIndex] {
-                if let selectedChoice = screen.input.choices?.first(where: { $0.title == value }) {
-                    let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: value, answer_index: selectedChoice._id)
+                if let selectedChoice = screen.input!.choices?.first(where: { $0.title == value }) {
+                    let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: nil, answer_index: selectedChoice._id ?? String(describing: selectedIndex))
                     self.surveyResult.append(answer)
                     self.presentNextScreen()
                 }
+            }
+        }
+    }
+    
+    func checkBoxViewDidFinishPicking(_ selectedIndexes: [Int]) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+            if let screen = self.allScreens?[self.currentScreenIndex] {
+                var ids = [String]()
+                for index in selectedIndexes {
+                    if let selectedChoice = screen.input!.choices?[index] {
+                        ids.append(selectedChoice._id ?? "\(index)")
+                    }
+                }
+                let finalString = ids.joined(separator: ",")
+                let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: nil, answer_index: finalString)
+                self.surveyResult.append(answer)
+                self.presentNextScreen()
             }
         }
     }
@@ -384,7 +410,7 @@ extension RatingViewController: RatingViewProtocol {
     func starsViewChangeSelection(_ selectedIndex: Int?) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
             if let index = selectedIndex, let screen = self.allScreens?[self.currentScreenIndex] {
-                let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: nil, answer_index: "\(index)")
+                let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: "\(index)", answer_index: nil)
                 self.surveyResult.append(answer)
                 self.presentNextScreen()
             }

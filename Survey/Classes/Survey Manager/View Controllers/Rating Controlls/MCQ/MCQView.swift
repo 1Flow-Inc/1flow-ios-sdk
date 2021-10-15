@@ -16,7 +16,7 @@ class MCQView: UIView {
     var allOptions: [String]?
     var selectedButton: UIButton? {
         didSet {
-            if self.currentType == .radioButton {
+            if self.currentType == .radioButton, self.selectedButton != nil {
                 self.delegate?.mcqViewChangeSelection(selectedButton?.tag ?? nil, selectedValue: selectedButton?.title(for: .normal))
             }
         }
@@ -52,7 +52,7 @@ class MCQView: UIView {
         self.currentType = type
         self.allOptions = options
         if type == .checkBox {
-            btnFinish.backgroundColor = kPrimaryButtonEnableColor
+            btnFinish.backgroundColor = kPrimaryColor
             btnFinish.layer.cornerRadius = 2.0
         }
         while let first = stackView1.arrangedSubviews.first {
@@ -117,8 +117,15 @@ class MCQView: UIView {
     }
     
     @IBAction func onFinishTaped(_ sender: UIButton) {
-        
-        self.delegate?.mcqViewChangeSelection(1, selectedValue: "1")
+        var selectedIndexes = [Int]()
+        for view in self.stackView1.arrangedSubviews {
+            if let btn = view as? UIButton? {
+                if btn?.isSelected == true {
+                    selectedIndexes.append(btn!.tag)
+                }
+            }
+        }
+        self.delegate?.checkBoxViewDidFinishPicking(selectedIndexes)
     }
 
     @IBAction func onSelectButton(_ sender: UIButton) {

@@ -26,17 +26,27 @@ class OFRadioButton: UIButton {
         self.radioButtonType = type
         self.contentHorizontalAlignment = .left
         self.contentVerticalAlignment = .top
-        let frameworkBundle = Bundle(for: self.classForCoder)
+//        let frameworkBundle = Bundle(for: self.classForCoder)
         if type == .radioButton {
-            self.setImage(UIImage(named: "RadioButton", in: frameworkBundle, compatibleWith: nil), for: .normal)
-            self.setImage(UIImage(named: "RadioButton_Highlighted", in: frameworkBundle, compatibleWith: nil), for: .highlighted)
-            self.setImage(UIImage(named: "RadioButton_Selected", in: frameworkBundle, compatibleWith: nil), for: .selected)
+            
+            let image = UIImage.getRadioButtonImage()
+            self.setImage(image, for: .normal)
+            let hightlighted = UIImage.getRadioButtonImageHighlighted()
+            self.setImage(hightlighted, for: .highlighted)
+            let selected = UIImage.getRadioButtonImageSelected()
+            self.setImage(selected, for: .selected)
+            
+//            self.setImage(UIImage(named: "RadioButton", in: frameworkBundle, compatibleWith: nil), for: .normal)
+//            self.setImage(UIImage(named: "RadioButton_Highlighted", in: frameworkBundle, compatibleWith: nil), for: .highlighted)
+//            self.setImage(UIImage(named: "RadioButton_Selected", in: frameworkBundle, compatibleWith: nil), for: .selected)
         } else {
-            self.setImage(UIImage(named: "Checkbox", in: frameworkBundle, compatibleWith: nil), for: .normal)
-            self.setImage(UIImage(named: "Checkbox_Highlighted", in: frameworkBundle, compatibleWith: nil), for: .highlighted)
-            self.setImage(UIImage(named: "Checkbox_Selected", in: frameworkBundle, compatibleWith: nil), for: .selected)
+            let image = UIImage.getCheckboxImage()
+            self.setImage(image, for: .normal)
+            let hightlighted = UIImage.getCheckboxImageHighlighted()
+            self.setImage(hightlighted, for: .highlighted)
+            let selected = UIImage.getCheckboxImageSelected()
+            self.setImage(selected, for: .selected)
         }
-//        self.contentMode = .left
         self.setTitleColor(UIColor.black, for: .normal)
         self.layer.borderWidth = 0.5
         self.layer.borderColor = kBorderColor.cgColor
@@ -63,9 +73,9 @@ class OFRadioButton: UIButton {
     
     func setupButtonStyle() {
         if self.isHighlighted == true {
-            self.layer.borderColor = kPrimaryButtonEnableColor.cgColor
+            self.layer.borderColor = kPrimaryColor.cgColor
         } else if self.isSelected == true {
-            self.layer.borderColor = kPrimaryButtonEnableColor.cgColor
+            self.layer.borderColor = kPrimaryColor.cgColor
 
         } else {
             self.layer.borderColor = kBorderColor.cgColor

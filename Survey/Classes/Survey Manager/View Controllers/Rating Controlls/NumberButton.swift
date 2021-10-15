@@ -14,18 +14,12 @@ class NumberButton: UIButton {
     // An empty implementation adversely affects performance during animation.
     override func awakeFromNib() {
         super.awakeFromNib()
-//        self.layer.cornerRadius = 10.0
-//        self.layer.borderWidth = 1.0
-//        self.layer.borderColor = UIColor.lightGray.cgColor
         self.setTitleColor(UIColor.white, for: .selected)
         self.setTitleColor(UIColor.black, for: .normal)
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        self.layer.cornerRadius = 10.0
-//        self.layer.borderWidth = 1.0
-//        self.layer.borderColor = UIColor.lightGray.cgColor
         self.setTitleColor(UIColor.white, for: .selected)
         self.setTitleColor(UIColor.black, for: .normal)
     }
@@ -37,20 +31,17 @@ class NumberButton: UIButton {
     override var isHighlighted: Bool {
         didSet {
             if self.isSelected == false {
-                self.layer.backgroundColor = isHighlighted ? kNumberButtonHightlightColor.cgColor : UIColor.white.cgColor
+                self.layer.backgroundColor = isHighlighted ? kPrimaryHightlightColor.cgColor : UIColor.white.cgColor
             }
         }
     }
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        
         if isSelected == true {
-            self.layer.backgroundColor = kPrimaryButtonEnableColor.cgColor
+            self.layer.backgroundColor = kPrimaryColor.cgColor
             
         } else {
             self.layer.backgroundColor = UIColor.clear.cgColor
-            
-            
         }
         
     }

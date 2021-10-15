@@ -32,18 +32,27 @@ class SurveyManager: NSObject {
         }
         
     }
-    var submittedSurveyIDs: [String]? {
-        didSet {
-            FBLogs("submittedSurveyIDs saved")
-            UserDefaults.standard.setValue(submittedSurveyIDs, forKey: "FBSubmittedSurveyIDs")
+    var submittedSurveyDetails: [SubmittedSurvey]?
+    
+    func saveSubmittedSurvey() {
+        do {
+            let data = try JSONEncoder().encode(submittedSurveyDetails)
+            UserDefaults.standard.setValue(data, forKey: "FBSubmittedSurveys")
+        } catch {
+            FBLogs("Unable to save submitted survey: \(error.localizedDescription)")
         }
     }
     
     override init() {
         super.init()
         FBLogs("SurveyManager initialized")
-        if let submittedSurvey = UserDefaults.standard.value(forKey: "FBSubmittedSurveyIDs") as? [String] {
-            self.submittedSurveyIDs = submittedSurvey
+        if let data = UserDefaults.standard.value(forKey: "FBSubmittedSurveys") as? Data {
+            do {
+                submittedSurveyDetails = try JSONDecoder().decode([SubmittedSurvey].self, from: data)
+            } catch {
+                FBLogs("Error while decoding Submitted Survey details: \(error.localizedDescription)")
+            }
+            
         }
     }
     
@@ -72,12 +81,16 @@ class SurveyManager: NSObject {
     private func fetchAllSurvey() {
         FBLogs("Fetch Survey called")
         
-        struct Holder { static var called = false }
-            if Holder.called {
-                return
-            } else {
-                Holder.called = true
-            }
+//        struct Holder { static var called = false }
+//            if Holder.called {
+//                return
+//            } else {
+//                Holder.called = true
+//            }
+        if self.surveyList != nil || self.isSurveyFetching == true {
+            return
+        }
+        self.isSurveyFetching = true
         FBLogs("Fetch Survey calling API")
         apiController.getAllSurveys { [weak self] isSuccess, error, data in
             guard let self = self else {
@@ -106,30 +119,78 @@ class SurveyManager: NSObject {
     private func checkAfterSurveyLoadForExistingEvents() {
         if let eventsArray = self.temporaryEventArray {
             for eventName in eventsArray {
-                if let triggeredSurvey = surveyList?.result.first(where:  {$0.trigger_event_name == eventName }) {
-                    self.temporaryEventArray = nil
-                    if let submittedIDs = self.submittedSurveyIDs, submittedIDs.contains(triggeredSurvey._id) {
-                        FBLogs("Survey already submitted. Do nothing.")
-                    } else {
-                        self.startSurvey(triggeredSurvey)
+                if let triggeredSurvey = surveyList?.result.first(where: { survey in
+                    let eventNames = survey.trigger_event_name!.components(separatedBy: ",")
+                    if eventNames.contains(eventName) {
+                        return true
                     }
-                    break
+                    return false
+                }){
+                    if self.validateTheSurvey(triggeredSurvey) == true {
+                        self.startSurvey(triggeredSurvey)
+                        break
+                    } else {
+                        FBLogs("Survey already submitted. Do nothing.")
+                    }
                 }
             }
+            self.temporaryEventArray = nil
         }
     }
     
-    func newEventRecorded(_ eventName: String) {
-        if let surveyList = self.surveyList {
-            if let triggeredSurvey = surveyList.result.first(where: { $0.trigger_event_name == eventName }) {
+    func validateTheSurvey(_ survey: SurveyListResponse.Survey) -> Bool {
+        
+        if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id }) {
+            
+            if survey.survey_settings?.resurvey_option == false {
+                FBLogs("Resurvey option is false")
+                return false
+            }
+            
+            if let settings = survey.survey_settings?.retake_survey, let value = settings.retake_input_value, let unit = settings.retake_select_value {
                 
-                if let submittedIDs = self.submittedSurveyIDs, submittedIDs.contains(triggeredSurvey._id) {
-                    FBLogs("Survey already submitted. Do nothing.")
-                } else if let pendingSurvey = self.pendingSurveySubmission?[triggeredSurvey._id] {
-                    FBLogs("Survey response alrady captured. But not submitted. Resubmit the response")
-                    self.submitTheSurveyToServer(triggeredSurvey._id, surveyResponse: pendingSurvey)
+                var totalInterval = 0
+                switch unit {
+                case "minutes":
+                    totalInterval = value * 60
+                    break
+                case "hours":
+                    totalInterval = value * 60 * 60
+                    break
+                case "days":
+                    totalInterval = value * 60 * 60 * 24
+                default:
+                    FBLogs("retake_select_value is neither of minutes, hours or days")
+                    return false
+                }
+                let currentInterval = Int(Date().timeIntervalSince1970)
+                if (currentInterval - lastSubmission.submissionTime) < totalInterval {
+                    return false
+                }
+            } else {
+                FBLogs("retake_survey, retake_input_value or retake_select_value not specified")
+                return false
+            }
+        }
+        return true
+    }
+    
+    func newEventRecorded(_ eventName: String) {
+        if self.surveyWindow != nil {
+            return
+        }
+        if let surveyList = self.surveyList {
+            if let triggerredSurvey = surveyList.result.first(where: { survey in
+                let eventNames = survey.trigger_event_name!.components(separatedBy: ",")
+                if eventNames.contains(eventName) {
+                    return true
+                }
+                return false
+            }) {
+                if self.validateTheSurvey(triggerredSurvey) == true {
+                    self.startSurvey(triggerredSurvey)
                 } else {
-                    self.startSurvey(triggeredSurvey)
+                    FBLogs("Survey validation not passed")
                 }
             }
         } else {
@@ -142,20 +203,23 @@ class SurveyManager: NSObject {
     
     private func startSurvey(_ survey: SurveyListResponse.Survey) {
         
-        FeedbackController.recordEventName(kEventNameSurveyImpression, parameters: ["survey_id": survey._id])
+        if let colorHex = survey.style?.primary_color {
+            let themeColor = UIColor.colorFromHex(colorHex)
+            kPrimaryColor = themeColor
+        }
         
+        FeedbackController.recordEventName(kEventNameSurveyImpression, parameters: ["survey_id": survey._id])
+        guard let screens = survey.screens else { return }
         DispatchQueue.main.async {
-            if self.surveyWindow == nil {
-                if #available(iOS 13.0, *) {
-                    if let currentWindowScene = UIApplication.shared.connectedScenes.first as?  UIWindowScene {
-                        self.surveyWindow = UIWindow(windowScene: currentWindowScene)
-                    }
-                } else {
-                    // Fallback on earlier versions
-                    self.surveyWindow = UIWindow(frame: UIScreen.main.bounds)
-                }
-            }
             
+            if #available(iOS 13.0, *) {
+                if let currentWindowScene = UIApplication.shared.connectedScenes.first as?  UIWindowScene {
+                    self.surveyWindow = UIWindow(windowScene: currentWindowScene)
+                }
+            } else {
+                // Fallback on earlier versions
+                self.surveyWindow = UIWindow(frame: UIScreen.main.bounds)
+            }
             self.surveyWindow!.isHidden = false
             self.surveyWindow!.windowLevel = .alert
             
@@ -186,7 +250,8 @@ class SurveyManager: NSObject {
                     self.uploadPendingSurveyIfAvailable()
                 }
             }
-            controller.startSurveysWithScreens(survey.screens)
+            controller.startSurveysWithScreens(screens)
+            
         }
     }
     
@@ -225,24 +290,29 @@ class SurveyManager: NSObject {
                 return
             }
             if isSuccess == true, let data = data {
-                if self.submittedSurveyIDs == nil {
-                    self.submittedSurveyIDs = [surveyID]
-                } else {
-                    self.submittedSurveyIDs?.append(surveyID)
+                if self.submittedSurveyDetails == nil {
+                    self.submittedSurveyDetails = [SubmittedSurvey]()
                 }
+                let submittedSurvey = SubmittedSurvey(surveyID: surveyID, submissionTime: Int(Date().timeIntervalSince1970))
+                self.submittedSurveyDetails?.append(submittedSurvey)
+                self.saveSubmittedSurvey()
+                
+//                if self.submittedSurveyIDs == nil {
+//                    self.submittedSurveyIDs = [surveyID]
+//                } else {
+//                    self.submittedSurveyIDs?.append(surveyID)
+//                }
                 self.pendingSurveySubmission?.removeValue(forKey: surveyID)
                 do {
                     if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
                         FBLogs(json)
                     }
                 } catch {
-                    FBLogs("Submit Survey json")
-                    FBLogs(error)
+                    FBLogs("Error in response - Submit survey: \(error.localizedDescription)")
                 }
                 
             } else {
-                FBLogs("Submit Survey")
-                FBLogs(error?.localizedDescription ?? "NA")
+                FBLogs("Error - Submit survey: \(error?.localizedDescription ?? "NA")")
             }
         }
     }
