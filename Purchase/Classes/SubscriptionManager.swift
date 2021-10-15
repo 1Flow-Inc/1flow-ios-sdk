@@ -52,6 +52,9 @@ public class SubscriptionManager: NSObject {
     var isForBuying = false
     private var isToFindProductsOnly = false
     private var productFetchCompletion: ((Bool, [String: Any]?, String?) -> Void)?
+    public var priceLocale: Locale?
+    public var purchasedTransaction: SKPaymentTransaction?
+    
     
     private override init() {
         super.init()
@@ -208,6 +211,7 @@ public class SubscriptionManager: NSObject {
         } else {
             let numberFormatter = NumberFormatter()
             let locale = item.priceLocale
+            self.priceLocale = locale
             numberFormatter.numberStyle = .currency
             numberFormatter.locale = locale
             return numberFormatter.string(from: price)
@@ -331,6 +335,7 @@ extension SubscriptionManager: SKPaymentTransactionObserver {
             switch transaction.transactionState {
             case .purchased:
 //                print("payment queue: purchased")
+                self.purchasedTransaction = transaction
                 SKPaymentQueue.default().finishTransaction(transaction)
                 if self.purchaseType == .consumable {
                     //If product is consumable, then don't check receipt. Call completion block with success.
