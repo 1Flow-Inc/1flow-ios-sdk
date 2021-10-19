@@ -15,7 +15,7 @@ func FBLogs(_ string: Any) {
 }
 
 var kPrimaryColor = UIColor(red: 0.36, green: 0.37, blue: 0.93, alpha: 1.0)
-let kPrimaryHightlightColor = kPrimaryColor.withAlphaComponent(0.21)
+var kPrimaryHightlightColor = kPrimaryColor.withAlphaComponent(0.21)
 let kBorderColor = UIColor(red: 0.76, green: 0.76, blue: 0.76, alpha: 1.0)
 
 let kEventNameFirstAppOpen = "first_open"

@@ -1,0 +1,882 @@
+{
+  "success": 200,
+  "message": "Project surveys",
+  "result": [
+    {
+      "name": "Testing Survey",
+      "description": "Creating Testing Survey",
+      "num_responses": null,
+      "end_date": null,
+      "live": false,
+      "platforms": [
+        "60e89931a25aeb001b14de43"
+      ],
+      "status": "active",
+      "deleted": false,
+      "deleted_on": null,
+      "schema_version": 1,
+      "_id": "60f7b86c1e74352b54e503eb",
+      "project_id": "60e89149a25aeb001b14de40",
+      "style": {
+        "display_mode": "dark",
+        "font": "arial",
+        "_id": "60f7b86c1e74352b54e503ec",
+        "primary_color": "primary",
+        "corner_radius": 100
+      },
+      "screens": [
+        {
+          "title": "How likely are you to recommend SkyBox Scanner to a friend or colleague?",
+          "message": null,
+          "_id": "60f7b86c1e74352b54e503ed",
+          "input": {
+            "placeholder_text": null,
+            "min_val": 1,
+            "max_val": 10,
+            "emoji": null,
+            "stars": null,
+            "emojis": [
+              
+            ],
+            "star_fill_color": null,
+            "min_chars": null,
+            "max_chars": null,
+            "number_of_choices": null,
+            "_id": "60f7b86c1e74352b54e503ee",
+            "choices": [
+              
+            ],
+            "input_type": "rating"
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "60f7b86c1e74352b54e503ef",
+              "action": "button_action_submit",
+              "title": "Submit"
+            }
+          ]
+        },
+        {
+          "title": "How can we make it easier to get started with SkyBox Scanner?",
+          "message": null,
+          "_id": "60f7b86c1e74352b54e503f0",
+          "input": {
+            "placeholder_text": null,
+            "min_val": null,
+            "max_val": null,
+            "emoji": null,
+            "stars": null,
+            "emojis": [
+              
+            ],
+            "star_fill_color": null,
+            "min_chars": 10,
+            "max_chars": 1000,
+            "number_of_choices": null,
+            "_id": "60f7b86c1e74352b54e503f1",
+            "choices": [
+              
+            ],
+            "input_type": "text"
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "60f7b86c1e74352b54e503f2",
+              "action": "button_action_submit",
+              "title": "Submit"
+            }
+          ]
+        }
+      ],
+      "trigger_event_name": "testing_event",
+      "start_date": 1626847340669,
+      "created_on": 1626847340671,
+      "updated_on": 1626847340676,
+      "__v": 0
+    },
+    {
+      "name": "Scanner Survey",
+      "description": "Get feedback from users for Image Editing",
+      "num_responses": null,
+      "end_date": null,
+      "live": false,
+      "platforms": [
+        "60dc7e1003c39e852866c865"
+      ],
+      "status": "active",
+      "deleted": false,
+      "deleted_on": null,
+      "schema_version": 1,
+      "_id": "60f7bd9e1e74352b54e503fa",
+      "project_id": "60e89149a25aeb001b14de40",
+      "style": {
+        "display_mode": "auto",
+        "font": "arial",
+        "_id": "60f7bd9e1e74352b54e503fb",
+        "primary_color": "primary",
+        "corner_radius": 100
+      },
+      "screens": [
+        {
+          "title": "What more feature you are expecting in image Editing",
+          "message": "Please enter your thoughts",
+          "_id": "60f7bd9e1e74352b54e503fc",
+          "input": {
+            "placeholder_text": null,
+            "min_val": null,
+            "max_val": null,
+            "emoji": null,
+            "stars": null,
+            "emojis": [
+              
+            ],
+            "star_fill_color": null,
+            "min_chars": 10,
+            "max_chars": 100,
+            "number_of_choices": null,
+            "_id": "60f7bd9e1e74352b54e503fd",
+            "choices": [
+              
+            ],
+            "input_type": "text"
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "60f7bd9e1e74352b54e503fe",
+              "action": "button_action_submit",
+              "title": "Submit"
+            }
+          ]
+        }
+      ],
+      "trigger_event_name": "save_image_editing",
+      "start_date": 1626848670939,
+      "created_on": 1626848670940,
+      "updated_on": 1626848670943,
+      "__v": 0
+    },
+    {
+      "name": "Scanner Survey",
+      "description": "Get feedback from users for File Structure",
+      "num_responses": null,
+      "end_date": null,
+      "live": false,
+      "platforms": [
+        "60dc7e1003c39e852866c865"
+      ],
+      "status": "active",
+      "deleted": false,
+      "deleted_on": null,
+      "schema_version": 1,
+      "_id": "60f7be171e74352b54e50400",
+      "project_id": "60e89149a25aeb001b14de40",
+      "style": {
+        "display_mode": "auto",
+        "font": "arial",
+        "_id": "60f7be171e74352b54e50401",
+        "primary_color": "primary",
+        "corner_radius": 100
+      },
+      "screens": [
+        {
+          "title": "How easy you find managing your scanned documents",
+          "message": "Please check one ",
+          "_id": "60f7be171e74352b54e50402",
+          "input": {
+            "placeholder_text": null,
+            "min_val": 1,
+            "max_val": 5,
+            "emoji": false,
+            "stars": true,
+            "emojis": [
+              
+            ],
+            "star_fill_color": "#fff",
+            "min_chars": null,
+            "max_chars": null,
+            "number_of_choices": null,
+            "_id": "60f7be171e74352b54e50403",
+            "choices": [
+              
+            ],
+            "input_type": "rating"
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "60f7be171e74352b54e50404",
+              "action": "button_action_submit",
+              "title": "Submit"
+            }
+          ]
+        },
+        {
+          "title": "How easy you find managing your scanned documents",
+          "message": "Please check one ",
+          "_id": "60f7be171e74352b54e50402",
+          "input": {
+            "placeholder_text": null,
+            "min_val": 1,
+            "max_val": 5,
+            "emoji": true,
+            "stars": false,
+            "emojis": [
+              
+            ],
+            "star_fill_color": "#fff",
+            "min_chars": null,
+            "max_chars": null,
+            "number_of_choices": null,
+            "_id": "60f7be171e74352b54e50403",
+            "choices": [
+              
+            ],
+            "input_type": "rating"
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "60f7be171e74352b54e50404",
+              "action": "button_action_submit",
+              "title": "Submit"
+            }
+          ]
+        }
+      ],
+      "trigger_event_name": "move_file_in_folder",
+      "start_date": 1626848791417,
+      "created_on": 1626848791418,
+      "updated_on": 1626848791422,
+      "__v": 0
+    },
+    {
+      "name": "Scanner Survey",
+      "description": "Get feedback from users for Cancel Subscription",
+      "num_responses": null,
+      "end_date": null,
+      "live": false,
+      "platforms": [
+        "60dc7e1003c39e852866c865"
+      ],
+      "status": "active",
+      "deleted": false,
+      "deleted_on": null,
+      "schema_version": 1,
+      "_id": "60f7c0e81e74352b54e50419",
+      "project_id": "60e89149a25aeb001b14de40",
+      "style": {
+        "display_mode": "auto",
+        "font": "arial",
+        "_id": "60f7c0e81e74352b54e5041a",
+        "primary_color": "primary",
+        "corner_radius": 100
+      },
+      "screens": [
+        {
+          "title": "We have found you have not subscribed to premium features",
+          "message": "Please select the reason why",
+          "_id": "60f7c0e81e74352b54e5041b",
+          "input": {
+            "placeholder_text": null,
+            "min_val": null,
+            "max_val": null,
+            "emoji": null,
+            "stars": null,
+            "emojis": [
+              
+            ],
+            "star_fill_color": null,
+            "min_chars": null,
+            "max_chars": null,
+            "number_of_choices": null,
+            "_id": "60f7c0e81e74352b54e5041c",
+            "choices": [
+              {
+                "_id": "60f7c0e81e74352b54e5041d",
+                "title": "Price is too high"
+              },
+              {
+                "_id": "60f7c0e81e74352b54e5041e",
+                "title": "Premium features are not that worth thisis test for new line"
+              },
+              {
+                "_id": "60f7c0e81e74352b54e5041f",
+                "title": "Free version fulfil your requirements"
+              },
+              {
+                "_id": "60f7c0e81e74352b54e50420",
+                "title": "Not interested Not interested Not interested Not interested Not interestedNot interested Not interested Not interested Not interested Not interested Not interested Not interested Not interested Not interested Not interested"
+              }
+            ],
+            "input_type": "mcq"
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "60f7c0e81e74352b54e50421",
+              "action": "button_action_submit",
+              "title": "Submit"
+            },
+            {
+              "button_type": "secondary",
+              "_id": "60f7c0e81e74352b54e50422",
+              "action": "button_action_dismiss",
+              "title": "Cancel"
+            }
+          ]
+        },
+        {
+          "title": "We have found you have not subscribed to premium features",
+          "message": "Please select the reason why",
+          "_id": "60f7c0e81e74352b54e5041b",
+          "input": {
+            "placeholder_text": null,
+            "min_val": null,
+            "max_val": null,
+            "emoji": null,
+            "stars": null,
+            "emojis": [
+              
+            ],
+            "star_fill_color": null,
+            "min_chars": null,
+            "max_chars": null,
+            "number_of_choices": null,
+            "_id": "60f7c0e81e74352b54e5041c",
+            "choices": [
+              {
+                "_id": "60f7c0e81e74352b54e5041d",
+                "title": "Price is too high"
+              },
+              {
+                "_id": "60f7c0e81e74352b54e5041e",
+                "title": "Premium features are not that worth thisis test for new line"
+              },
+              {
+                "_id": "60f7c0e81e74352b54e5041f",
+                "title": "Free version fulfil your requirements"
+              },
+              {
+                "_id": "60f7c0e81e74352b54e50420",
+                "title": "Not interested Not interested Not interested Not interested Not interestedNot interested Not interested Not interested Not interested Not interested Not interested Not interested Not interested Not interested Not interested"
+              }
+            ],
+            "input_type": "checkbox"
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "60f7c0e81e74352b54e50421",
+              "action": "button_action_submit",
+              "title": "Submit"
+            },
+            {
+              "button_type": "secondary",
+              "_id": "60f7c0e81e74352b54e50422",
+              "action": "button_action_dismiss",
+              "title": "Cancel"
+            }
+          ]
+        }
+      ],
+      "trigger_event_name": "cancel_premium_screen",
+      "start_date": 1626849512440,
+      "created_on": 1626849512441,
+      "updated_on": 1626849512446,
+      "__v": 0
+    },
+    {
+      "name": "Net Promoter Score",
+      "description": "Net Promoter Score",
+      "num_responses": null,
+      "end_date": null,
+      "live": false,
+      "platforms": [
+        "60dc7e1003c39e852866c865"
+      ],
+      "status": "active",
+      "deleted": false,
+      "deleted_on": null,
+      "schema_version": 1,
+      "_id": "61037f75ab522292dce54862",
+      "project_id": "60e89149a25aeb001b14de40",
+      "style": {
+        "display_mode": "dark",
+        "font": "arial",
+        "_id": "61037f75ab522292dce54863",
+        "primary_color": "primary",
+        "corner_radius": 100
+      },
+      "screens": [
+        {
+          "title": "How likely are you to recommend SkyBox Scanner to a friend or colleague?",
+          "message": null,
+          "_id": "61037f75ab522292dce54864",
+          "input": {
+            "placeholder_text": null,
+            "min_val": 0,
+            "max_val": 10,
+            "emoji": false,
+            "stars": false,
+            "emojis": [
+              
+            ],
+            "star_fill_color": "#fff",
+            "min_chars": null,
+            "max_chars": null,
+            "number_of_choices": null,
+            "_id": "61037f75ab522292dce54865",
+            "choices": [
+              
+            ],
+            "input_type": "rating"
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "61037f75ab522292dce54866",
+              "action": "button_action_submit",
+              "title": "Submit"
+            }
+          ]
+        },
+        {
+          "title": "We have found you have not subscribed to premium features",
+          "message": "Please select the reason why",
+          "_id": "60f7c0e81e74352b54e5041b",
+          "input": {
+            "placeholder_text": null,
+            "min_val": null,
+            "max_val": null,
+            "emoji": null,
+            "stars": null,
+            "emojis": [
+              
+            ],
+            "star_fill_color": null,
+            "min_chars": null,
+            "max_chars": null,
+            "number_of_choices": null,
+            "_id": "60f7c0e81e74352b54e5041c",
+            "choices": [
+              {
+                "_id": "60f7c0e81e74352b54e5041d",
+                "title": "Price is too high"
+              },
+              {
+                "_id": "60f7c0e81e74352b54e5041e",
+                "title": "Premium features are not that worth thisis test for new line"
+              },
+              {
+                "_id": "60f7c0e81e74352b54e5041f",
+                "title": "Free version fulfil your requirements"
+              },
+              {
+                "_id": "60f7c0e81e74352b54e50420",
+                "title": "Not interested Not interested Not interested Not interested Not interestedNot interested Not interested Not interested Not interested Not interested Not interested Not interested Not interested Not interested Not interested"
+              }
+            ],
+            "input_type": "checkbox"
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "60f7c0e81e74352b54e50421",
+              "action": "button_action_submit",
+              "title": "Submit"
+            },
+            {
+              "button_type": "secondary",
+              "_id": "60f7c0e81e74352b54e50422",
+              "action": "button_action_dismiss",
+              "title": "Cancel"
+            }
+          ]
+        },
+        {
+          "title": "Please tell us how we can improve",
+          "message": null,
+          "_id": "61037f75ab522292dce54867",
+          "input": {
+            "placeholder_text": "I think that...",
+            "min_val": null,
+            "max_val": null,
+            "emoji": null,
+            "stars": null,
+            "emojis": [
+              
+            ],
+            "star_fill_color": null,
+            "min_chars": 10,
+            "max_chars": 1000,
+            "number_of_choices": null,
+            "_id": "61037f75ab522292dce54868",
+            "choices": [
+              
+            ],
+            "input_type": "text"
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "61037f75ab522292dce54869",
+              "action": "button_action_submit",
+              "title": "Submit"
+            }
+          ]
+        },
+        {
+          "title": "We have found you have not subscribed to premium features",
+          "message": "Please select the reason why",
+          "_id": "60f7c0e81e74352b54e5041b",
+          "input": {
+            "placeholder_text": null,
+            "min_val": null,
+            "max_val": null,
+            "emoji": null,
+            "stars": null,
+            "emojis": [
+              
+            ],
+            "star_fill_color": null,
+            "min_chars": null,
+            "max_chars": null,
+            "number_of_choices": null,
+            "_id": "60f7c0e81e74352b54e5041c",
+            "choices": [
+              {
+                "_id": "60f7c0e81e74352b54e5041d",
+                "title": "Price is too high"
+              },
+              {
+                "_id": "60f7c0e81e74352b54e5041e",
+                "title": "Premium features are not that worth thisis test for new line"
+              },
+              {
+                "_id": "60f7c0e81e74352b54e5041f",
+                "title": "Free version fulfil your requirements"
+              },
+              {
+                "_id": "60f7c0e81e74352b54e50420",
+                "title": "Not interested Not interested Not interested Not interested Not interestedNot interested Not interested Not interested Not interested Not interested Not interested Not interested Not interested Not interested Not interested"
+              }
+            ],
+            "input_type": "mcq"
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "60f7c0e81e74352b54e50421",
+              "action": "button_action_submit",
+              "title": "Submit"
+            },
+            {
+              "button_type": "secondary",
+              "_id": "60f7c0e81e74352b54e50422",
+              "action": "button_action_dismiss",
+              "title": "Cancel"
+            }
+          ]
+        },
+        {
+          "title": "Thank you!",
+          "message": "Our team will review your feedback and improve the app for you.",
+          "_id": "61037f75ab522292dce5486a",
+          "input": {
+            "placeholder_text": null,
+            "min_val": null,
+            "max_val": null,
+            "emoji": null,
+            "stars": null,
+            "emojis": [
+              
+            ],
+            "star_fill_color": null,
+            "min_chars": null,
+            "max_chars": null,
+            "number_of_choices": null,
+            "_id": "61037f75ab522292dce5486b",
+            "choices": [
+              
+            ],
+            "input_type": "thank_you"
+          },
+          "buttons": [
+            {
+              "button_type": "done",
+              "_id": "61037f75ab522292dce5486c",
+              "action": "button_action_submit",
+              "title": "Done"
+            }
+          ]
+        }
+      ],
+      "trigger_event_name": "show_nps_prompt",
+      "start_date": 1627619189908,
+      "created_on": 1627619189929,
+      "updated_on": 1627619189960,
+      "__v": 0
+    },
+    {
+      "name": "Non-converters",
+      "description": "Get feedback from user when user close the subscription screen without purchase",
+      "num_responses": null,
+      "end_date": null,
+      "live": false,
+      "platforms": [
+        "60dc7e1003c39e852866c865"
+      ],
+      "status": "active",
+      "deleted": false,
+      "deleted_on": null,
+      "schema_version": 1,
+      "_id": "61037fbdab522292dce5486e",
+      "project_id": "60e89149a25aeb001b14de40",
+      "style": {
+        "display_mode": "dark",
+        "font": "arial",
+        "_id": "61037fbdab522292dce5486f",
+        "primary_color": "primary",
+        "corner_radius": 100
+      },
+      "screens": [
+        {
+          "title": "Please tell us why you haven't subscribed to Premium version",
+          "message": null,
+          "_id": "61037fbdab522292dce54870",
+          "input": {
+            "placeholder_text": null,
+            "min_val": null,
+            "max_val": null,
+            "emoji": null,
+            "stars": null,
+            "emojis": [
+              
+            ],
+            "star_fill_color": null,
+            "min_chars": null,
+            "max_chars": null,
+            "number_of_choices": null,
+            "_id": "61037fbdab522292dce54871",
+            "choices": [
+              {
+                "_id": "61037fbdab522292dce54872",
+                "title": "The prices are too high"
+              },
+              {
+                "_id": "61037fbdab522292dce54873",
+                "title": "Free version is enough for me"
+              },
+              {
+                "_id": "61037fbdab522292dce54874",
+                "title": "Not ready to commit yet"
+              },
+              {
+                "_id": "61037fbdab522292dce54875",
+                "title": "Something else"
+              }
+            ],
+            "input_type": "mcq"
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "61037fbdab522292dce54876",
+              "action": "button_action_submit",
+              "title": "Submit"
+            }
+          ]
+        },
+        {
+          "title": "What, if anything, would make you want to subscribe to the Premium version?",
+          "message": null,
+          "_id": "61037fbdab522292dce54877",
+          "input": {
+            "placeholder_text": "I think that...",
+            "min_val": null,
+            "max_val": null,
+            "emoji": null,
+            "stars": null,
+            "emojis": [
+              
+            ],
+            "star_fill_color": null,
+            "min_chars": 10,
+            "max_chars": 1000,
+            "number_of_choices": null,
+            "_id": "61037fbdab522292dce54878",
+            "choices": [
+              
+            ],
+            "input_type": "text"
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "61037fbdab522292dce54879",
+              "action": "button_action_submit",
+              "title": "Submit"
+            }
+          ]
+        },
+        {
+          "title": "Thank you!",
+          "message": "Our team will review your feedback and improve the app for you.",
+          "_id": "61037fbdab522292dce5487a",
+          "input": {
+            "placeholder_text": null,
+            "min_val": null,
+            "max_val": null,
+            "emoji": null,
+            "stars": null,
+            "emojis": [
+              
+            ],
+            "star_fill_color": null,
+            "min_chars": null,
+            "max_chars": null,
+            "number_of_choices": null,
+            "_id": "61037fbdab522292dce5487b",
+            "choices": [
+              
+            ],
+            "input_type": "thank_you"
+          },
+          "buttons": [
+            {
+              "button_type": "done",
+              "_id": "61037fbdab522292dce5487c",
+              "action": "button_action_submit",
+              "title": "Done"
+            }
+          ]
+        }
+      ],
+      "trigger_event_name": "tap_skip_subs",
+      "start_date": 1627619261753,
+      "created_on": 1627619261759,
+      "updated_on": 1627619261784,
+      "__v": 0
+    },
+    {
+      "name": "Taking Photos",
+      "description": "Get users feedback for capture photo",
+      "num_responses": null,
+      "end_date": null,
+      "live": false,
+      "platforms": [
+        "60dc7e1003c39e852866c865"
+      ],
+      "status": "active",
+      "deleted": false,
+      "deleted_on": null,
+      "schema_version": 1,
+      "_id": "61037fdcab522292dce5487e",
+      "project_id": "60e89149a25aeb001b14de40",
+      "style": {
+        "display_mode": "dark",
+        "font": "arial",
+        "_id": "61037fdcab522292dce5487f",
+        "primary_color": "primary",
+        "corner_radius": 100
+      },
+      "screens": [
+        {
+          "title": "Taking photos",
+          "message": "Pictures/files taken/scanned are clear and oriented correctly",
+          "_id": "61037fdcab522292dce54880",
+          "input": {
+            "placeholder_text": null,
+            "min_val": 1,
+            "max_val": 5,
+            "emoji": false,
+            "stars": false,
+            "emojis": [
+              
+            ],
+            "star_fill_color": "#fff",
+            "min_chars": null,
+            "max_chars": null,
+            "number_of_choices": null,
+            "_id": "61037fdcab522292dce54881",
+            "choices": [
+              
+            ],
+            "input_type": "rating"
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "61037fdcab522292dce54882",
+              "action": "button_action_submit",
+              "title": "Submit"
+            }
+          ]
+        }
+      ],
+      "trigger_event_name": "save_new_scan",
+      "start_date": 1627619292919,
+      "created_on": 1627619292921,
+      "updated_on": 1627619292924,
+      "__v": 0
+    },
+    {
+      "name": "Taking Photos",
+      "description": "Get users feedback for capture photo",
+      "num_responses": null,
+      "end_date": null,
+      "live": false,
+      "platforms": [
+        "iOS"
+      ],
+      "status": "active",
+      "deleted": false,
+      "deleted_on": null,
+      "schema_version": 1,
+      "_id": "6108d12513eebb05ec9afb40",
+      "project_id": "60e89149a25aeb001b14de40",
+      "screens": [
+        {
+          "title": "Taking photos",
+          "message": "Pictures/files taken/scanned are clear and oriented correctly",
+          "_id": "6108d12513eebb05ec9afb41",
+          "input": {
+            "placeholder_text": null,
+            "min_val": 1,
+            "max_val": 5,
+            "emoji": false,
+            "stars": false,
+            "emojis": [
+              
+            ],
+            "star_fill_color": "#fff",
+            "min_chars": null,
+            "max_chars": null,
+            "number_of_choices": null,
+            "_id": "6108d12513eebb05ec9afb42",
+            "choices": [
+              
+            ],
+            "input_type": "rating"
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "6108d12513eebb05ec9afb43",
+              "action": "button_action_submit",
+              "title": "Submit"
+            }
+          ]
+        }
+      ],
+      "trigger_event_name": "save_new_scan",
+      "start_date": 1627967781880,
+      "created_on": 1627967781887,
+      "updated_on": 1627967781896,
+      "__v": 0
+    }
+  ]
+}

@@ -11,7 +11,8 @@ typealias APICompletionBlock = ((Bool, Error?, Data?) -> Void)
 class FBAPIController: NSObject {
     
 //    private let kBaseURL = "https://dev.1flow.app/api/"
-    private let kBaseURL = "https://1flow.app/api/"
+//    private let kBaseURL = "https://1flow.app/api/"
+    private let kBaseURL = "https://api.1flow.app/"
     private let v1 = "v1/"
     
     private lazy var kURLGetLocation = kBaseURL + v1 + "2021-06-15/location"

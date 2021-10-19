@@ -120,14 +120,17 @@ class SurveyManager: NSObject {
         if let eventsArray = self.temporaryEventArray {
             for eventName in eventsArray {
                 if let triggeredSurvey = surveyList?.result.first(where: { survey in
-                    let eventNames = survey.trigger_event_name!.components(separatedBy: ",")
-                    if eventNames.contains(eventName) {
-                        return true
+                    if let surveyEventName = survey.trigger_event_name {
+                        let eventNames = surveyEventName.components(separatedBy: ",")
+                        if eventNames.contains(eventName) {
+                            return true
+                        }
                     }
+                    
                     return false
                 }){
                     if self.validateTheSurvey(triggeredSurvey) == true {
-                        self.startSurvey(triggeredSurvey)
+                        self.startSurvey(triggeredSurvey, eventName: eventName)
                         break
                     } else {
                         FBLogs("Survey already submitted. Do nothing.")
@@ -181,14 +184,17 @@ class SurveyManager: NSObject {
         }
         if let surveyList = self.surveyList {
             if let triggerredSurvey = surveyList.result.first(where: { survey in
-                let eventNames = survey.trigger_event_name!.components(separatedBy: ",")
-                if eventNames.contains(eventName) {
-                    return true
+                if let surveyEventName = survey.trigger_event_name {
+                    let eventNames = surveyEventName.components(separatedBy: ",")
+                    if eventNames.contains(eventName) {
+                        return true
+                    }
                 }
+                
                 return false
             }) {
                 if self.validateTheSurvey(triggerredSurvey) == true {
-                    self.startSurvey(triggerredSurvey)
+                    self.startSurvey(triggerredSurvey, eventName: eventName)
                 } else {
                     FBLogs("Survey validation not passed")
                 }
@@ -201,7 +207,7 @@ class SurveyManager: NSObject {
         }
     }
     
-    private func startSurvey(_ survey: SurveyListResponse.Survey) {
+    private func startSurvey(_ survey: SurveyListResponse.Survey, eventName: String) {
         
         if let colorHex = survey.style?.primary_color {
             let themeColor = UIColor.colorFromHex(colorHex)
@@ -240,7 +246,7 @@ class SurveyManager: NSObject {
                 
                 if surveyResponse.count > 0 {
                     
-                    let surveyResponse = SurveySubmitRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, session_id: ProjectDetailsController.shared.analytics_session_id)
+                    let surveyResponse = SurveySubmitRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, session_id: ProjectDetailsController.shared.analytics_session_id, trigger_event: eventName)
                     
                     if self.pendingSurveySubmission == nil {
                         self.pendingSurveySubmission = [survey._id : surveyResponse]
