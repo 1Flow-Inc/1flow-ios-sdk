@@ -14,7 +14,11 @@ class FollowupView: UIView {
     @IBOutlet weak var btnFinish: UIButton!
     weak var delegate: RatingViewProtocol?
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
-    var maxCharsAllowed = 1000
+    var maxCharsAllowed = 1000 {
+        didSet {
+            self.lblNumbers.text = "\(self.enteredText?.count ?? 0)/\(self.maxCharsAllowed)"
+        }
+    }
     var minCharsAllowed = 5
     var placeHolderText = "Write here..." {
         didSet {

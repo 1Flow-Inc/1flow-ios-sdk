@@ -177,13 +177,17 @@ class RatingViewController: UIViewController {
             view.delegate = self
             view.minValue = 1
             view.maxValue = 5
+            view.ratingMinText = currentScreen.input?.rating_min_text
+            view.ratingMaxText = currentScreen.input?.rating_max_text
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
         } else if currentScreen.input?.input_type == "nps" {
             let view = OneToTenView.loadFromNib()
             view.delegate = self
-            view.minValue = currentScreen.input!.min_val ?? 1
-            view.maxValue = currentScreen.input!.max_val ?? 5
+            view.minValue = currentScreen.input?.min_val ?? 1
+            view.maxValue = currentScreen.input?.max_val ?? 5
+            view.ratingMinText = currentScreen.input?.rating_min_text
+            view.ratingMaxText = currentScreen.input?.rating_max_text
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
         } else if currentScreen.input?.input_type == "mcq" {

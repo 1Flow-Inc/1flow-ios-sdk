@@ -53,6 +53,8 @@ struct SurveyListResponse: Codable {
                 var star_fill_color: String?
                 var stars: Bool?
                 var placeholder_text: String?
+                var rating_max_text: String?
+                var rating_min_text: String?
                 
                 struct Choice: Codable {
                     var _id: String?

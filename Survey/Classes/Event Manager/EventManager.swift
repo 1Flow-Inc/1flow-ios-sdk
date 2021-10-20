@@ -15,6 +15,8 @@ class EventManager: NSObject {
     private var eventsArray = [[String: Any]]()
     var uploadTimer: Timer?
 //    let screenTrackingController = ScreenTrackingController()
+    var eventSaveTimer: Timer?
+    
     var isNetworkReachable = false
     override init() {
         super.init()
@@ -167,10 +169,23 @@ class EventManager: NSObject {
             self.eventsArray.append(newEventDic)
         }
         
-        UserDefaults.standard.setValue(self.eventsArray, forKey: "FBPendingEventsList")
+        DispatchQueue.main.async { [self] in
+            if let timer = eventSaveTimer, timer.isValid {
+                timer.invalidate()
+            }
+            self.eventSaveTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(saveEventArray), userInfo: nil, repeats: false)
+        }
+        
+        
+//        eventSaveTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(saveEventArray), userInfo: nil, repeats: false)
+//        self.saveEventArray()
         self.surveyManager.newEventRecorded(name)
     }
     
+    @objc func saveEventArray() {
+//        FBLogs("Save event called")
+        UserDefaults.standard.setValue(self.eventsArray, forKey: "FBPendingEventsList")
+    }
     
     @objc func sendEventsToServer() {
         FBLogs("sendEventsToServer called")

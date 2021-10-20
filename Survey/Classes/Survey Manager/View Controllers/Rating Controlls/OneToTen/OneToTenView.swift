@@ -15,25 +15,14 @@ class OneToTenView: UIView {
     var maxValue = 5 {
         didSet {
             let numberOfItems = CGFloat(maxValue - minValue + 1)
-//            if (numberOfItems * 65) < self.bounds.width {
-                collectionViewWidth.constant = (numberOfItems * 65)
-//            } else {
-//                collectionViewWidth.isActive = false
-//                collectionView.widthAnchor.constraint(equalTo: collectionView.superview!.widthAnchor, multiplier: 1.0).isActive = true
-//            }
-            
+            collectionViewWidth.constant = (numberOfItems * 65)
             collectionView.reloadData()
         }
     }
     var emojiArray: [String]? {
         didSet {
             let numberOfItems = CGFloat(emojiArray!.count)
-//            if (numberOfItems * 65) < self.bounds.width {
-                collectionViewWidth.constant = (numberOfItems * 65)
-//            } else {
-//                collectionViewWidth.isActive = false
-//                collectionView.widthAnchor.constraint(equalTo: collectionView.superview!.widthAnchor, multiplier: 1.0).isActive = true
-//            }
+            collectionViewWidth.constant = (numberOfItems * 65)
             collectionView.reloadData()
         }
     }
@@ -48,6 +37,21 @@ class OneToTenView: UIView {
     weak var delegate: RatingViewProtocol?
     @IBOutlet weak var lblMinValue: UILabel!
     @IBOutlet weak var lblMaxValue: UILabel!
+    var ratingMaxText: String? {
+        didSet {
+            if ratingMaxText != nil {
+                self.lblMaxValue.text = ratingMaxText
+            }
+        }
+    }
+    
+    var ratingMinText: String? {
+        didSet {
+            if ratingMinText != nil {
+                self.lblMinValue.text = ratingMinText
+            }
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -62,24 +66,6 @@ class OneToTenView: UIView {
         
     }
     
-//    override func layoutIfNeeded() {
-//        super.layoutIfNeeded()
-//        FBLogs("layoutIfNeeded")
-//    }
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//        FBLogs("layoutSubviews in NPS")
-////        if self.isForEmoji == false {
-////            let numberOfItems = CGFloat(maxValue - minValue + 1)
-////            if (numberOfItems * 65) < self.bounds.width {
-////                collectionViewWidth.constant = (numberOfItems * 65)
-////            } else {
-////                collectionViewWidth.isActive = false
-////                collectionView.widthAnchor.constraint(equalTo: collectionView.superview!.widthAnchor, multiplier: 1.0).isActive = true
-////            }
-////            collectionView.reloadData()
-////        }
-//    }
     var selectedButton: UIButton? {
         didSet {
             self.delegate?.oneToTenViewChangeSelection(selectedButton?.tag ?? nil)
