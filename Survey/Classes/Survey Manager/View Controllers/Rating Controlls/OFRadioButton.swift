@@ -14,31 +14,19 @@ class OFRadioButton: UIButton {
         case radioButton
         case checkBox
     }
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
+    
     init(frame: CGRect, type: OFRadioButtonType) {
         super.init(frame: frame)
         self.radioButtonType = type
         self.contentHorizontalAlignment = .left
         self.contentVerticalAlignment = .top
-//        let frameworkBundle = Bundle(for: self.classForCoder)
         if type == .radioButton {
-            
             let image = UIImage.getRadioButtonImage()
             self.setImage(image, for: .normal)
             let hightlighted = UIImage.getRadioButtonImageHighlighted()
             self.setImage(hightlighted, for: .highlighted)
             let selected = UIImage.getRadioButtonImageSelected()
             self.setImage(selected, for: .selected)
-            
-//            self.setImage(UIImage(named: "RadioButton", in: frameworkBundle, compatibleWith: nil), for: .normal)
-//            self.setImage(UIImage(named: "RadioButton_Highlighted", in: frameworkBundle, compatibleWith: nil), for: .highlighted)
-//            self.setImage(UIImage(named: "RadioButton_Selected", in: frameworkBundle, compatibleWith: nil), for: .selected)
         } else {
             let image = UIImage.getCheckboxImage()
             self.setImage(image, for: .normal)

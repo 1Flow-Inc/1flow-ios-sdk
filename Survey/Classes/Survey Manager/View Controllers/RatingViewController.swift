@@ -63,8 +63,21 @@ class RatingViewController: UIViewController {
         
         self.containerView.alpha = 0.0
         self.ratingView.alpha = 0.0
+        
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.progressBar.tintColor = kPrimaryColor
+        UIView.animate(withDuration: 0.2) {
+            self.view.backgroundColor = UIColor.black.withAlphaComponent(0.25)
+        } completion: { _ in
+            
+        }
+        if self.currentScreenIndex == -1 {
+            self.presentNextScreen()
+        }
+    }
     
     override var shouldAutorotate: Bool {
         return false
@@ -99,17 +112,6 @@ class RatingViewController: UIViewController {
         })
     }
     //MARK: -
-    func startSurveysWithScreens(_ screens: [SurveyListResponse.Survey.Screen]) {
-        self.currentScreenIndex = -1
-        self.allScreens = screens
-        self.progressBar.tintColor = kPrimaryColor
-        UIView.animate(withDuration: 0.2) {
-            self.view.backgroundColor = UIColor.black.withAlphaComponent(0.25)
-        } completion: { _ in
-            
-        }
-        self.presentNextScreen()
-    }
     
     fileprivate func presentNextScreen() {
         self.currentScreenIndex = self.currentScreenIndex + 1
@@ -195,7 +197,7 @@ class RatingViewController: UIViewController {
             view.delegate = self
             view.currentType = .radioButton
             if let titleArray = currentScreen.input!.choices?.map({ return $0.title }) {
-                view.setupViewWithOptions(titleArray, type: .radioButton)
+                view.setupViewWithOptions(titleArray, type: .radioButton, parentViewWidth: self.stackView.bounds.width)
             }
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
@@ -204,7 +206,7 @@ class RatingViewController: UIViewController {
             view.delegate = self
             view.currentType = .checkBox
             if let titleArray = currentScreen.input!.choices?.map({ return $0.title }) {
-                view.setupViewWithOptions(titleArray, type: .checkBox)
+                view.setupViewWithOptions(titleArray, type: .checkBox, parentViewWidth: self.stackView.bounds.width)
             }
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
@@ -270,7 +272,7 @@ class RatingViewController: UIViewController {
 //        self.ratingView.frame.origin.y = self.view.frame.size.height
         
         UIView.animate(withDuration: 0.5) {
-            self.ratingView.frame.origin.y = self.view.frame.size.height
+            self.ratingView.frame.origin.y = self.ratingView.frame.origin.y + self.ratingView.frame.size.height //self.view.frame.size.height
         }
         
         UIView.animate(withDuration: 0.3, delay: 0.5, options: UIView.AnimationOptions.curveEaseIn) {

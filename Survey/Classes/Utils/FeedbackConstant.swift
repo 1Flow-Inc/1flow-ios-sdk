@@ -10,7 +10,7 @@ import UIKit
 
 func FBLogs(_ string: Any) {
     #if DEBUG
-        print(string)
+        print("[1Flow] " + "\(string)")
     #endif
 }
 

@@ -20,11 +20,11 @@ class EventManager: NSObject {
     var isNetworkReachable = false
     override init() {
         super.init()
-        FBLogs("Event manager initialized")
+        FBLogs("Event manager init")
     }
     
     func configure() {
-        FBLogs("Event Manager configure called")
+        FBLogs("Event Manager configure")
         self.createAnalyticsSession()
         self.surveyManager.isNetworkReachable = true
         self.surveyManager.configureSurveys()
@@ -81,19 +81,22 @@ class EventManager: NSObject {
             } else {
                 sessionRequest = CreateSessionRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id ?? "", system_id: ProjectDetailsController.shared.uniqID, device: deviceDetails, location: nil, connectivity: connectivity, location_check: true, app_version: self.getAppVersion(), app_build_number: self.getAppBuildNumber(), library_version: libraryVersion)
             }
-            
+            FBLogs("EventManager - Create Session")
             FBAPIController().createSession(sessionRequest!) { [weak self] isSuccess, error, data in
                 if isSuccess == true, let data = data {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                            FBLogs(json)
+                            FBLogs("EventManager - Create Session - Success")
                             if let result = json["result"] as? [String: Any], let _id = result["_id"] as? String {
                                 ProjectDetailsController.shared.analytics_session_id = _id
                                 guard let self = self else { return }
                                 self.startEventManager()
+                            } else {
+                                FBLogs("EventManager - Create Session - Failed")
                             }
                         }
                     } catch {
+                        FBLogs("EventManager - Create Session - Failed")
                         FBLogs(error)
                     }
                 }
@@ -149,7 +152,7 @@ class EventManager: NSObject {
     }
     
     private func startUploadTimer() {
-        FBLogs("Timer start")
+        FBLogs("EventManager: Timer start")
         DispatchQueue.main.async { [self] in
             if self.uploadTimer != nil, self.uploadTimer?.isValid == true {
                 self.uploadTimer?.invalidate()
@@ -160,7 +163,7 @@ class EventManager: NSObject {
     }
     
     func recordEvent(_ name: String, parameters: [String: Any]?) {
-        FBLogs("Record Event- name:\(name), parameters: \(parameters as Any)")
+        FBLogs("EventManager: Record Event- name:\(name), parameters: \(parameters as Any)")
         if let parameters = parameters {
             let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "parameters": parameters as Any] as [String : Any]
             self.eventsArray.append(newEventDic)
@@ -176,21 +179,18 @@ class EventManager: NSObject {
             self.eventSaveTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(saveEventArray), userInfo: nil, repeats: false)
         }
         
-        
-//        eventSaveTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(saveEventArray), userInfo: nil, repeats: false)
-//        self.saveEventArray()
         self.surveyManager.newEventRecorded(name)
     }
     
     @objc func saveEventArray() {
-//        FBLogs("Save event called")
+        FBLogs("EventManager: Save Events")
         UserDefaults.standard.setValue(self.eventsArray, forKey: "FBPendingEventsList")
     }
     
     @objc func sendEventsToServer() {
-        FBLogs("sendEventsToServer called")
+        FBLogs("EventManager: sendEventsToServer")
         if self.eventsArray.count > 0 {
-            FBLogs("Sending events to server: \(self.eventsArray)")
+            FBLogs("EventManager: Sending events to server: \(self.eventsArray.count)")
             let uploadedEvents = self.eventsArray.count
             let finalParameters = ["events": self.eventsArray, "session_id": ProjectDetailsController.shared.analytic_user_id as Any] as [String : Any]
             
@@ -198,8 +198,7 @@ class EventManager: NSObject {
                 if isSuccess == true, let data = data {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                            FBLogs("Event send API done")
-                            FBLogs(json)
+                            FBLogs("EventManager: sendEventsToServer - Success")
                             if let status = json["success"] as? Int, status == 200 {
                                 guard let self = self else { return }
                                 let totalCount = self.eventsArray.count
@@ -211,14 +210,17 @@ class EventManager: NSObject {
                                 
                                 UserDefaults.standard.setValue(self.eventsArray, forKey: "FBPendingEventsList")
                             }
+                        } else {
+                            FBLogs("EventManager: sendEventsToServer - Failed")
                         }
                     } catch {
-                        FBLogs("sendEventsToServer")
+                        FBLogs("EventManager: sendEventsToServer - Failed")
                         FBLogs(error)
                     }
                 }
             }
-            
+        } else {
+            FBLogs("EventManger: No Events to send")
         }
     }
     

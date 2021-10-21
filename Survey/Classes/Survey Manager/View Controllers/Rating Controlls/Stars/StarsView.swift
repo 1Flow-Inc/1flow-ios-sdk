@@ -17,19 +17,10 @@ class StarsView: UIView {
             self.delegate?.starsViewChangeSelection(selectedButton?.tag ?? nil)
         }
     }
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
     
-
     override func awakeFromNib() {
         super.awakeFromNib()
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(checkGestureAction(_:)))
-//        let gesture = UITapGestureRecognizer(target: self, action:  #selector(checkGestureAction(_:)))
         self.stackView1.addGestureRecognizer(gesture)
         self.setupImages()
     }

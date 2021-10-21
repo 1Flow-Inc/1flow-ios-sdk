@@ -39,25 +39,24 @@ class SurveyManager: NSObject {
             let data = try JSONEncoder().encode(submittedSurveyDetails)
             UserDefaults.standard.setValue(data, forKey: "FBSubmittedSurveys")
         } catch {
-            FBLogs("Unable to save submitted survey: \(error.localizedDescription)")
+            FBLogs("[Error]: Unable to save submitted survey: \(error.localizedDescription)")
         }
     }
     
     override init() {
         super.init()
-        FBLogs("SurveyManager initialized")
+        FBLogs("SurveyManager: Started")
         if let data = UserDefaults.standard.value(forKey: "FBSubmittedSurveys") as? Data {
             do {
                 submittedSurveyDetails = try JSONDecoder().decode([SubmittedSurvey].self, from: data)
             } catch {
-                FBLogs("Error while decoding Submitted Survey details: \(error.localizedDescription)")
+                FBLogs("[Error]: Decoding Submitted Survey details: \(error.localizedDescription)")
             }
             
         }
     }
     
     func configureSurveys() {
-        FBLogs("configureSurveys")
         if self.surveyList == nil && self.isNetworkReachable == true {
             self.fetchAllSurvey()
         }
@@ -88,10 +87,11 @@ class SurveyManager: NSObject {
 //                Holder.called = true
 //            }
         if self.surveyList != nil || self.isSurveyFetching == true {
+            FBLogs("Survey already Fetched")
             return
         }
         self.isSurveyFetching = true
-        FBLogs("Fetch Survey calling API")
+        FBLogs("Fetch Survey - Started")
         apiController.getAllSurveys { [weak self] isSuccess, error, data in
             guard let self = self else {
                 return
@@ -142,7 +142,6 @@ class SurveyManager: NSObject {
     }
     
     func validateTheSurvey(_ survey: SurveyListResponse.Survey) -> Bool {
-        
         if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id }) {
             
             if survey.survey_settings?.resurvey_option == false {
@@ -233,9 +232,9 @@ class SurveyManager: NSObject {
             let controller = RatingViewController(nibName: "RatingViewController", bundle: frameworkBundle)
             controller.modalPresentationStyle = .overFullScreen
             controller.view.backgroundColor = UIColor.clear
-            
+            controller.allScreens = screens
             self.surveyWindow!.rootViewController = controller
-            self.surveyWindow!.makeKeyAndVisible()
+            
             controller.completionBlock = { [weak self] surveyResponse in
                 guard let self = self else { return }
                 
@@ -256,7 +255,8 @@ class SurveyManager: NSObject {
                     self.uploadPendingSurveyIfAvailable()
                 }
             }
-            controller.startSurveysWithScreens(screens)
+            self.surveyWindow!.makeKeyAndVisible()
+//            controller.startSurveysWithScreens(screens)
             
         }
     }

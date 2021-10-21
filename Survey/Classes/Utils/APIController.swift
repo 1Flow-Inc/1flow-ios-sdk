@@ -25,12 +25,6 @@ class FBAPIController: NSObject {
     
     //MARK: - Surveys
     func getAllSurveys(_ completion: @escaping APICompletionBlock) {
-        
-//        let bundle = Bundle(for: self.classForCoder)
-//        let filePath = bundle.path(forResource: "surveyResponse", ofType: "json")!
-//        let data = try? Data(contentsOf: URL(fileURLWithPath: filePath))
-//        completion(true, nil, data)
-        
         self.getAPIWith(kURLGetSurvey, completion: completion)
     }
     
@@ -79,9 +73,7 @@ class FBAPIController: NSObject {
     //MARK: - While application inactivates upload all events
     
     func uploadAllPendingEvents() {
-        FBLogs("uploadAllPendingEvents called")
         if let eventsArray = UserDefaults.standard.value(forKey: "FBPendingEventsList") as? [[String: Any]], eventsArray.count > 0 {
-            FBLogs("Calling upload api")
             do {
                 let finalDic = ["events": eventsArray, "session_id": ProjectDetailsController.shared.analytics_session_id as Any]
                 let jsonData = try JSONSerialization.data(withJSONObject: finalDic, options: .prettyPrinted)
@@ -95,8 +87,6 @@ class FBAPIController: NSObject {
     }
     
     func uploadFile(_ data: Data) {
-        
-        FBLogs("Upload file called")
         let uuid = NSUUID().uuidString
         let boundary = String(repeating: "-", count: 24) + uuid
         let directoryURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
@@ -127,8 +117,6 @@ class FBAPIController: NSObject {
         let footerData = footer.data(using: String.Encoding.utf8, allowLossyConversion: false)
         file.write(footerData!)
         file.closeFile()
-        
-        FBLogs("file written on url: \(fileURL)")
         var outputRequest = URLRequest(url: URL(string: kURLUploadFile)!)
         outputRequest.httpMethod = "POST"
         let contentType = "multipart/form-data; boundary=\(boundary)"
@@ -139,7 +127,6 @@ class FBAPIController: NSObject {
     
     
     func upload(request: URLRequest, fileURL: URL) {
-        FBLogs("Upload request called")
         // Create a unique identifier for the session.
         let sessionIdentifier = NSUUID().uuidString
         UserDefaults.standard.setValue(sessionIdentifier, forKey: "BackgroundSessionId")
@@ -162,12 +149,14 @@ class FBAPIController: NSObject {
         if let appKey = ProjectDetailsController.shared.appKey {
             request.addValue(appKey, forHTTPHeaderField: "one_flow_key")
         }
-        
+        FBLogs("API Call: \(urlString)")
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
+                FBLogs("API Call: \(urlString) - Failed")
                 completion(false, error, nil)
                 return
             }
+            FBLogs("API Call: \(urlString) - Success")
             completion(true, nil, data)
             
         }.resume()
@@ -182,18 +171,15 @@ class FBAPIController: NSObject {
         }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        FBLogs("Calling URL: \(urlString)")
-        
-        let sendingJson = try? JSONSerialization.jsonObject(with: parameters, options: [])
-            if let sendingJson = sendingJson as? [String: Any] {
-                FBLogs("Sending parameters: \(sendingJson)")
-            }
+        FBLogs("API Call: \(urlString)")
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
+                FBLogs("API Call: \(urlString) - Failed")
                 completion(false, error, nil)
                 return
             }
+            FBLogs("API Call: \(urlString) - Success")
             completion(true, nil, data)
             
         }.resume()
@@ -202,7 +188,7 @@ class FBAPIController: NSObject {
 
 extension FBAPIController: URLSessionTaskDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        FBLogs("Task finish with error: \(error as Any)")
+//        FBLogs("Task finish with error: \(error as Any)")
         if error == nil {
             if let backgroundID = UserDefaults.standard.value(forKey: "BackgroundSessionId") as? String, session.configuration.identifier == backgroundID {
             //If there is no errors then uploading is successfull. Remove all pending events.

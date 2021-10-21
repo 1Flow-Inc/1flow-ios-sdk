@@ -35,9 +35,9 @@ class InAppPurchaseEventsController: NSObject {
     let observer = PaymentQueueObserver()
     
     func startObserver() {
-        FBLogs("In app purchase observer started")
+        FBLogs("IAPObserver: Start")
         observer.onPurchaseCompletion = {[weak self] eventArray in
-            FBLogs("inapp completion block called")
+            FBLogs("IAPObserver: Called")
             guard let self = self else { return }
             var identifires = [String]()
             for event in eventArray {
@@ -54,13 +54,12 @@ class InAppPurchaseEventsController: NSObject {
     }
     
     func recordInApppurchaseEvent(event: IAPEvent) {
-        FBLogs("New In app purchase event recorded:")
+        FBLogs("IAPObserver: Record New event")
         self.delegate?.newIAPEventRecorded(event)
         self.eventArray.removeAll(where: { $0.productID == event.productID })
     }
     
     func foundPriceFor(_ productID: String, price: Double, numberOfUnit: Int?, unit: Int?, localCurrencyPrice: String?) {
-        FBLogs("found price for called")
         if var first = self.eventArray.first(where: { $0.productID == productID }) {
             first.price = price
             first.localCurrencyPrice = localCurrencyPrice
@@ -83,7 +82,6 @@ class InAppPurchaseEventsController: NSObject {
                     break
                 default:
                     break
-//                    first.subscriptionUnit = "\(subscription.unit)"
                 }
             }
             self.recordInApppurchaseEvent(event: first)
@@ -109,7 +107,6 @@ class InAppPurchaseEventsController: NSObject {
 }
 extension InAppPurchaseEventsController: SKProductsRequestDelegate {
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        FBLogs("product request response received")
         response.products.forEach { (product) in
             
             let localPrice = self.priceStringForProduct(item: product)
@@ -124,12 +121,6 @@ extension InAppPurchaseEventsController: SKProductsRequestDelegate {
                 // Fallback on earlier versions
                 self.foundPriceFor(product.productIdentifier, price: Double(truncating: product.price), numberOfUnit: nil, unit: nil, localCurrencyPrice: localPrice)
             }
-            
-            
-            
-//            self.foundPriceFor(product.productIdentifier, price: Double(truncating: product.price), numberOfUnit: product.subscriptionPeriod?.numberOfUnits, unit: product.subscriptionPeriod?.unit, localCurrencyPrice: localPrice)
-//
-//            self.foundPriceFor(product.productIdentifier, price: Double(truncating: product.price), subscriptionPeriod: product.subscriptionPeriod, localCurrencyPrice: localPrice)
         }
     }
 }
@@ -139,22 +130,22 @@ class PaymentQueueObserver: NSObject, SKPaymentTransactionObserver {
     var onPurchaseCompletion: PaymentObserverComletion?
     
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        FBLogs("payment queue update transactions")
+        FBLogs("IAPObserver: updatedTransactions")
         
         var eventArray = [IAPEvent]()
         for transaction in transactions {
             
             switch transaction.transactionState {
             case .purchased:
-                FBLogs("payment queue: purchased")
+                FBLogs("IAPObserver: purchased")
                 let event = IAPEvent(productID: transaction.payment.productIdentifier, quantity: transaction.payment.quantity, price: nil)
                 eventArray.append(event)
                 break
             case .failed:
-                FBLogs("payment queue: Failed")
+                FBLogs("IAPObserver: Failed")
                 break
             case .restored:
-                FBLogs("payment queue: restored")
+                FBLogs("IAPObserver: restored")
             default:
                 break;
             }
@@ -164,6 +155,4 @@ class PaymentQueueObserver: NSObject, SKPaymentTransactionObserver {
             onPurchaseCompletion!(eventArray)
         }
     }
-    
-    
 }

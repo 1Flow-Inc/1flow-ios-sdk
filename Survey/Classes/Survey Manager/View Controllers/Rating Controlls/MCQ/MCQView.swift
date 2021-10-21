@@ -22,33 +22,8 @@ class MCQView: UIView {
         }
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        FBLogs("MCQ: Layout subview")
-        if let options = self.allOptions {
-            
-            while let first = stackView1.arrangedSubviews.first {
-                stackView1.removeArrangedSubview(first)
-                first.removeFromSuperview()
-            }
-            
-            for i in 0..<options.count {
-                let option = options[i]
-                let button = OFRadioButton(frame: CGRect(x: 0, y: 0, width: self.stackView1.frame.size.width, height: 42), type: self.currentType)
-                button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-                button.titleLabel?.lineBreakMode = .byWordWrapping
-                button.setTitle(option, for: .normal)
-                button.tag = i
-                button.addTarget(self, action: #selector(onSelectButton(_:)), for: .touchUpInside)
-                self.stackView1.addArrangedSubview(button)
-                let height = self.labelSize(for: option, maxWidth: (self.stackView1.frame.size.width - 42))
-                button.translatesAutoresizingMaskIntoConstraints = false
-                button.heightAnchor.constraint(equalToConstant: height + 24).isActive = true
-            }
-        }
-    }
-    
-    func setupViewWithOptions(_ options: [String], type: OFRadioButton.OFRadioButtonType) {
+    func setupViewWithOptions(_ options: [String], type: OFRadioButton.OFRadioButtonType, parentViewWidth: CGFloat) {
+        FBLogs("Setup view with option: \(parentViewWidth)")
         self.currentType = type
         self.allOptions = options
         if type == .checkBox {
@@ -62,14 +37,14 @@ class MCQView: UIView {
         
         for i in 0..<options.count {
             let option = options[i]
-            let button = OFRadioButton(frame: CGRect(x: 0, y: 0, width: self.stackView1.frame.size.width, height: 42), type: type)
+            let button = OFRadioButton(frame: CGRect(x: 0, y: 0, width: parentViewWidth, height: 42), type: type)
             button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
             button.titleLabel?.lineBreakMode = .byWordWrapping
             button.setTitle(option, for: .normal)
             button.tag = i
             button.addTarget(self, action: #selector(onSelectButton(_:)), for: .touchUpInside)
             self.stackView1.addArrangedSubview(button)
-            let height = self.labelSize(for: option, maxWidth: (self.stackView1.frame.size.width - 42))
+            let height = self.labelSize(for: option, maxWidth: (parentViewWidth - 42))
             button.translatesAutoresizingMaskIntoConstraints = false
             button.heightAnchor.constraint(equalToConstant: height + 24).isActive = true
         }

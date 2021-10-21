@@ -62,8 +62,7 @@ class OneToTenView: UIView {
         let nib = UINib(nibName: "NumberCollectionViewCell", bundle: frameworkBundle)
         collectionView.register(nib, forCellWithReuseIdentifier: "NumberCollectionViewCell")
         collectionView.delegate = self
-        collectionView.dataSource = self
-        
+        collectionView.dataSource = self   
     }
     
     var selectedButton: UIButton? {
