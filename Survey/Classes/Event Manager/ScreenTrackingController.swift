@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class ScreenTrackingController: NSObject {
+final class ScreenTrackingController: NSObject {
     
     var currentNavigationController: UINavigationController?
     var currentViewController: UIViewController?
@@ -17,7 +17,7 @@ class ScreenTrackingController: NSObject {
     func startTacking() {
 //        let navigationController: UINavigationController
 
-        FBLogs("startTacking")
+        OneFlowLog("startTacking")
         DispatchQueue.main.async {
             self.getCurrentViewController()
         }
@@ -26,7 +26,7 @@ class ScreenTrackingController: NSObject {
     }
     
     func getCurrentViewController() {
-        FBLogs("getCurrentViewController")
+        OneFlowLog("getCurrentViewController")
         guard let keyWindow = UIApplication.shared.windows.first(where: { $0.isKeyWindow == true }) else {
             return
         }
@@ -65,19 +65,19 @@ class ScreenTrackingController: NSObject {
         }
         
         self.currentNavigationController = navigationController
-        FBLogs("navifation bar observer started")
+        OneFlowLog("navifation bar observer started")
         
         NotificationCenter.default.addObserver(self, selector: #selector(navigationViewControllerChange(_:)), name: NSNotification.Name(rawValue: "UINavigationControllerWillShowViewControllerNotification"), object: self.currentNavigationController)
     }
     
     @objc func navigationViewControllerChange(_ notification: Notification) {
-        FBLogs("viewControllerChange")
+        OneFlowLog("viewControllerChange")
         if let userInfo = notification.userInfo as? [String: Any] {
             let previous = userInfo["UINavigationControllerLastVisibleViewController"]
             let new = userInfo["UINavigationControllerNextVisibleViewController"]
             
-            FBLogs("Previous: \(previous as Any)")
-            FBLogs("current: \(new as Any)")
+            OneFlowLog("Previous: \(previous as Any)")
+            OneFlowLog("current: \(new as Any)")
         }
     }
 }

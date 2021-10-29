@@ -1,5 +1,5 @@
 //
-//  FeedbackController.swift
+//  OneFlow.swift
 //  Feedback
 //
 //  Created by Rohan Moradiya on 16/06/21.
@@ -9,9 +9,9 @@ import Foundation
 import UIKit
 
 
-public class FeedbackController: NSObject {
+public final class OneFlow: NSObject {
     
-    private static let shared = FeedbackController()
+    private static let shared = OneFlow()
     private var networkTimer: Timer?
     let eventManager = EventManager()
     private var isSetupRunning: Bool = false
@@ -20,62 +20,63 @@ public class FeedbackController: NSObject {
     let reachability = try! Reachability(hostname: "www.apple.com")
     
     @objc public class func configure(_ appKey: String) {
-        FBLogs("1Flow configuration started")
-        ProjectDetailsController.shared.appKey = appKey
-        shared.setupOnce()
-        shared.setupReachability()
+        OneFlowLog("1Flow configuration started")
+        if ProjectDetailsController.shared.appKey == nil {
+            ProjectDetailsController.shared.appKey = appKey
+            shared.setupOnce()
+            shared.setupReachability()
+        } else {
+            OneFlowLog("1Flow already setup.")
+        }
+        
     }
     
     private func setupOnce() {
+        let addUserRequest = AddUserRequest(system_id: ProjectDetailsController.shared.systemID, device: AddUserRequest.DeviceDetails(os: "iOS", unique_id: ProjectDetailsController.shared.uniqID, device_id: ProjectDetailsController.shared.deviceID), location: nil)
+        OneFlowLog("Adding user")
         self.isSetupRunning = true
-        
-        let addUserRequest = AddUserRequest(system_id: ProjectDetailsController.shared.uniqID, device: AddUserRequest.DeviceDetails(os: "iOS", unique_id: ProjectDetailsController.shared.uniqID, device_id: ProjectDetailsController.shared.deviceID), location: nil)
-        
-        FBLogs("Adding user")
         FBAPIController().addUser(addUserRequest) { isSuccess, error, data in
             if isSuccess == true, let data = data {
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any], let result = json["result"] as? [String: Any], let userID = result["analytic_user_id"] as? String {
-                        FBLogs("Add user - Success")
+                    
+                    let surveyListResponse = try JSONDecoder().decode(AddUserResponse.self, from: data)
+                    
+                    if surveyListResponse.success == 200, let userID = surveyListResponse.result?.analytic_user_id {
+                        
+                        OneFlowLog("Add user - Success")
                         ProjectDetailsController.shared.analytic_user_id = userID
-//                        if FeedbackController.shared.eventManager == nil {
-//                            FeedbackController.shared.eventManager = EventManager()
-//                        }
-                        FeedbackController.shared.eventManager.isNetworkReachable = true
-                        FeedbackController.shared.eventManager.configure()
-                        self.isSetupRunning = false
+                        OneFlow.shared.eventManager.isNetworkReachable = true
+                        OneFlow.shared.eventManager.configure()
+                        
                     } else {
-                        FBLogs("Add user - Failed")
-                        self.isSetupRunning = false
+                        OneFlowLog("Add user - Failed")
                     }
                 } catch {
-                    FBLogs("Add user - Failed")
-                    FBLogs(error)
-                    self.isSetupRunning = false
+                    OneFlowLog("Add user - Failed")
+                    OneFlowLog(error)
                 }
             } else {
-                FBLogs("Add user - Failed")
-                self.isSetupRunning = false
+                OneFlowLog("Add user - Failed")
             }
+            self.isSetupRunning = false
         }
-        
         self.fetchLocationDetails()
     }
     
     private func fetchLocationDetails() {
-        FBLogs("Fetching geo location")
+        OneFlowLog("Fetching geo location")
         FBAPIController().getLocationDetailsUsingIP { isSuccess, error, data in
             if isSuccess == true, let data = data {
                 do {
                     if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                        FBLogs("Geo Location - Success")
+                        OneFlowLog("Geo Location - Success")
                         ProjectDetailsController.shared.locationDetails = json
                     } else {
-                        FBLogs("Geo Location - Failed")
+                        OneFlowLog("Geo Location - Failed")
                     }
                 } catch {
-                    FBLogs("Geo Location - Failed")
-                    FBLogs(error)
+                    OneFlowLog("Geo Location - Failed")
+                    OneFlowLog(error)
                 }
             }
         }
@@ -86,7 +87,7 @@ public class FeedbackController: NSObject {
         let reachability = note.object as! Reachability
         switch reachability.connection {
         case .unavailable:
-            FBLogs("Network: Unreachable")
+            OneFlowLog("Network: Unreachable")
             ProjectDetailsController.shared.radioConnectivity = nil
             ProjectDetailsController.shared.isCarrierConnectivity = false
             
@@ -97,7 +98,7 @@ public class FeedbackController: NSObject {
             networkTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(networkNotAvailable), userInfo: nil, repeats: false)
             break
         default:
-            FBLogs("Network: Reachable")
+            OneFlowLog("Network: Reachable")
             if reachability.connection.description.lowercased() == "wifi" {
                 ProjectDetailsController.shared.radioConnectivity = "wireless"
             } else {
@@ -127,14 +128,14 @@ public class FeedbackController: NSObject {
         self.eventManager.networkStatusChanged(true)
     }
     
-    func setupReachability() {
-        FBLogs("Network Objerver - Starting")
+    private func setupReachability() {
+        OneFlowLog("Network Objerver - Starting")
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(note:)), name: .reachabilityChanged, object: reachability)
         do{
             try reachability.startNotifier()
-            FBLogs("Network Objerver - Success")
+            OneFlowLog("Network Objerver - Success")
         }catch{
-            FBLogs("Network Objerver - Failed")
+            OneFlowLog("Network Objerver - Failed")
         }
     }
     
@@ -143,6 +144,16 @@ public class FeedbackController: NSObject {
         DispatchQueue.global().async {
             shared.eventManager.recordEvent(eventName, parameters: parameters)
         }        
+    }
+    
+    @objc class public func logUser(_ userID: String, userDetails: [String: Any]?) {
+        OneFlowLog("Log new user")
+        shared.eventManager.finishPendingEvents()
+        ProjectDetailsController.shared.newUserID = userID
+        ProjectDetailsController.shared.newUserData = userDetails
+//        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 1) {
+            ProjectDetailsController.shared.logNewUserDetails()
+//        }
     }
     
 }

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-func FBLogs(_ string: Any) {
+func OneFlowLog(_ string: Any) {
     #if DEBUG
         print("[1Flow] " + "\(string)")
     #endif

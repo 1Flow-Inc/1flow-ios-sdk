@@ -17,6 +17,8 @@ class ThankYouView: UIView {
     deinit {
         imageView?.animationImages = nil
     }
+    lazy var waterMarkURL = "https://1flow.app/?utm_source=1flow-ios-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow"
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -31,5 +33,14 @@ class ThankYouView: UIView {
                 imageView.image = imageView.animationImages?.last
                 imageView.startAnimating()
             }
+    }
+    
+    @IBAction func onClickWatermark(_ sender: Any) {
+        guard let url = URL(string: waterMarkURL) else {
+            return
+        }
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [ : ], completionHandler: nil)
+        }
     }
 }

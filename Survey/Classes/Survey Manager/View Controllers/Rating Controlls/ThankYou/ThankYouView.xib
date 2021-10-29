@@ -27,29 +27,22 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="w4d-So-r0h">
+                <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UaF-tW-ue5">
                     <rect key="frame" x="139.5" y="130.5" width="237" height="16.5"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Real-time feedback powered by " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D3M-V3-yK3">
-                            <rect key="frame" x="0.0" y="1" width="187" height="14.5"/>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WaterMark" translatesAutoresizingMaskIntoConstraints="NO" id="Hpi-sJ-OeY">
-                            <rect key="frame" x="187" y="0.5" width="50" height="16"/>
-                        </imageView>
-                    </subviews>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="16.5" id="jRF-7Y-6xQ"/>
-                    </constraints>
-                </stackView>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                    <state key="normal" title="Real-time feedback powered by " image="WaterMark">
+                        <color key="titleColor" systemColor="labelColor"/>
+                    </state>
+                    <connections>
+                        <action selector="onClickWatermark:" destination="iN0-l3-epB" eventType="touchUpInside" id="s5B-Yw-RDD"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="w4d-So-r0h" secondAttribute="bottom" constant="60" id="E2r-Nl-ANe"/>
-                <constraint firstItem="w4d-So-r0h" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="PZp-ac-pKJ"/>
-                <constraint firstItem="w4d-So-r0h" firstAttribute="top" secondItem="yid-07-iTx" secondAttribute="bottom" constant="18" id="WoV-5D-wyq"/>
+                <constraint firstItem="UaF-tW-ue5" firstAttribute="top" secondItem="yid-07-iTx" secondAttribute="bottom" constant="18" id="8g1-Dn-gqp"/>
+                <constraint firstAttribute="bottom" secondItem="UaF-tW-ue5" secondAttribute="bottom" constant="60" id="PcK-Tc-c36"/>
+                <constraint firstItem="UaF-tW-ue5" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="TM9-aB-243"/>
                 <constraint firstItem="3b4-cJ-ae8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="ZXB-6n-sol"/>
                 <constraint firstItem="3b4-cJ-ae8" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="igi-Bl-hGx"/>
                 <constraint firstItem="yid-07-iTx" firstAttribute="top" secondItem="3b4-cJ-ae8" secondAttribute="bottom" constant="18" id="kNj-Oh-dQU"/>
@@ -65,6 +58,9 @@
     </objects>
     <resources>
         <image name="WaterMark" width="50" height="16"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

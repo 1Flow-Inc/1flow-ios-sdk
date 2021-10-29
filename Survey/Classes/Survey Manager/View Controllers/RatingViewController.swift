@@ -43,6 +43,8 @@ class RatingViewController: UIViewController {
     var completionBlock: RatingViewCompletion?
     var currentScreenIndex = -1
     
+    private var isClosingAnimationRunning: Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 13.0, *) {
@@ -186,8 +188,8 @@ class RatingViewController: UIViewController {
         } else if currentScreen.input?.input_type == "nps" {
             let view = OneToTenView.loadFromNib()
             view.delegate = self
-            view.minValue = currentScreen.input?.min_val ?? 1
-            view.maxValue = currentScreen.input?.max_val ?? 5
+            view.minValue = currentScreen.input?.min_val ?? 0
+            view.maxValue = currentScreen.input?.max_val ?? 10
             view.ratingMinText = currentScreen.input?.rating_min_text
             view.ratingMaxText = currentScreen.input?.rating_max_text
             view.isHidden = true
@@ -216,6 +218,21 @@ class RatingViewController: UIViewController {
             let view = ThankYouView.loadFromNib()
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                //check if user have already closed the screen and animation still running to prevent from crash
+                if self.isClosingAnimationRunning == true {
+                    return
+                }
+                guard let completion = self.completionBlock else { return }
+                self.runCloseAnimation {
+                    completion(self.surveyResult)
+                }
+                
+            }
         }
 
         for subview in self.stackView.arrangedSubviews {
@@ -268,11 +285,9 @@ class RatingViewController: UIViewController {
     
     
     func runCloseAnimation(_ completion: @escaping ()-> Void) {
- 
-//        self.ratingView.frame.origin.y = self.view.frame.size.height
-        
+        self.isClosingAnimationRunning = true
         UIView.animate(withDuration: 0.5) {
-            self.ratingView.frame.origin.y = self.ratingView.frame.origin.y + self.ratingView.frame.size.height //self.view.frame.size.height
+            self.ratingView.frame.origin.y = self.ratingView.frame.origin.y + self.ratingView.frame.size.height
         }
         
         UIView.animate(withDuration: 0.3, delay: 0.5, options: UIView.AnimationOptions.curveEaseIn) {
@@ -280,21 +295,6 @@ class RatingViewController: UIViewController {
         } completion: { _ in
             completion()
         }
-
-        
-        
-        //All One after another
-//        var totalDelay: Double = 0.0
-//        for subView in self.stackView.arrangedSubviews {
-//            UIView.animate(withDuration: 0.5, delay: totalDelay, options: UIView.AnimationOptions.allowUserInteraction) {
-//                subView.alpha = 0.0
-//            } completion: { _ in
-//            }
-//            totalDelay += 0.2
-//        }
-//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-//            completion()
-//        }
     }
     
     @objc func panGestureAction(_ panGesture: UIPanGestureRecognizer) {
@@ -356,7 +356,6 @@ class RatingViewController: UIViewController {
         self.runCloseAnimation {
             completion(self.surveyResult)
         }
-        
     }
     
     

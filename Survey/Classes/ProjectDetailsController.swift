@@ -8,8 +8,26 @@
 import Foundation
 import UIKit
 
-class ProjectDetailsController: NSObject {
+enum OneFlowEnvironment: String {
+    case dev
+    case prod
+    
+    var rawValue: String {
+        get {
+            switch self {
+            case .dev:
+                return "dev"
+            case .prod:
+                return "prod"
+            }
+        }
+    }
+}
+
+final class ProjectDetailsController: NSObject {
     static let shared = ProjectDetailsController()
+    
+    var currentEnviromment: OneFlowEnvironment = .prod
     
     var appKey: String! {
         didSet {
@@ -38,6 +56,19 @@ class ProjectDetailsController: NSObject {
             }
         }
     }
+    
+    var systemID: String! {
+        get {
+            if let str = UserDefaults.standard.value(forKey: "systemID") as? String {
+                return str
+            } else {
+                let str = UUID().uuidString
+                UserDefaults.standard.set(str, forKey: "systemID")
+                return str
+            }
+        }
+    }
+    
     var analytic_user_id: String?
     var analytics_session_id: String?
     var locationDetails: [String: Any]?
@@ -52,5 +83,41 @@ class ProjectDetailsController: NSObject {
     }
     var radioConnectivity: String?
     var isCarrierConnectivity: Bool = false
+    
+    var newUserID: String?
+    var newUserData: [String: Any]?
+    
+    func logNewUserDetails() {
+        
+        guard let analyticsID = self.analytic_user_id, let sessionID = self.analytics_session_id, let newUserID = self.newUserID else { return }
+        
+        var finalParameter = [String: Any]()
+        finalParameter["anonymous_user_id"] = analyticsID
+        finalParameter["session_id"] = sessionID
+        finalParameter["system_id"] = newUserID
+        if let details = self.newUserData {
+            finalParameter["parameters"] =  details
+        }
+        
+        self.newUserID = nil
+        self.newUserData = nil
+        OneFlowLog("Calling log user")
+        FBAPIController().logUser(finalParameter) { isSuccess, error, data in
+            if isSuccess == true, let data = data {
+                do {
+                    let loggedUser = try JSONDecoder().decode(LogUserResponse.self, from: data)
+                    if let user_id = loggedUser.result?.analytic_user_id, let session_id = loggedUser.result?.session?._id {
+                        self.analytic_user_id = user_id
+                        self.analytics_session_id = session_id
+                    }
+                } catch {
+                    OneFlowLog("LogUser error: \(error)")
+                }
+                
+            } else {
+                OneFlowLog("LogUser Failed: Error: \(error as Any)")
+            }
+        }
+    }
     
 }

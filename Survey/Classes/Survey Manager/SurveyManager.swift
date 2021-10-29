@@ -6,7 +6,7 @@
 //
 import UIKit
 
-class SurveyManager: NSObject {
+final class SurveyManager: NSObject {
 
     let apiController = FBAPIController()
     var surveyList: SurveyListResponse?
@@ -39,18 +39,18 @@ class SurveyManager: NSObject {
             let data = try JSONEncoder().encode(submittedSurveyDetails)
             UserDefaults.standard.setValue(data, forKey: "FBSubmittedSurveys")
         } catch {
-            FBLogs("[Error]: Unable to save submitted survey: \(error.localizedDescription)")
+            OneFlowLog("[Error]: Unable to save submitted survey: \(error.localizedDescription)")
         }
     }
     
     override init() {
         super.init()
-        FBLogs("SurveyManager: Started")
+        OneFlowLog("SurveyManager: Started")
         if let data = UserDefaults.standard.value(forKey: "FBSubmittedSurveys") as? Data {
             do {
                 submittedSurveyDetails = try JSONDecoder().decode([SubmittedSurvey].self, from: data)
             } catch {
-                FBLogs("[Error]: Decoding Submitted Survey details: \(error.localizedDescription)")
+                OneFlowLog("[Error]: Decoding Submitted Survey details: \(error.localizedDescription)")
             }
             
         }
@@ -70,7 +70,7 @@ class SurveyManager: NSObject {
         self.configureSurveys()
     }
     
-    private func uploadPendingSurveyIfAvailable() {
+    func uploadPendingSurveyIfAvailable() {
         if let pendigSurveys = self.pendingSurveySubmission, pendigSurveys.count > 0 {
             pendigSurveys.forEach { (key: String, value: SurveySubmitRequest) in
                 self.submitTheSurveyToServer(key, surveyResponse: value)
@@ -78,7 +78,7 @@ class SurveyManager: NSObject {
         }
     }
     private func fetchAllSurvey() {
-        FBLogs("Fetch Survey called")
+        OneFlowLog("Fetch Survey called")
         
 //        struct Holder { static var called = false }
 //            if Holder.called {
@@ -87,11 +87,11 @@ class SurveyManager: NSObject {
 //                Holder.called = true
 //            }
         if self.surveyList != nil || self.isSurveyFetching == true {
-            FBLogs("Survey already Fetched")
+            OneFlowLog("Survey already Fetched")
             return
         }
         self.isSurveyFetching = true
-        FBLogs("Fetch Survey - Started")
+        OneFlowLog("Fetch Survey - Started")
         apiController.getAllSurveys { [weak self] isSuccess, error, data in
             guard let self = self else {
                 return
@@ -99,19 +99,19 @@ class SurveyManager: NSObject {
             self.isSurveyFetching = false
             if isSuccess == true, let data = data {
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                        FBLogs(json)
-                    }
+//                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
+//                        FBLogs(json)
+//                    }
                     
                     let surveyListResponse = try JSONDecoder().decode(SurveyListResponse.self, from: data)
                     self.surveyList = surveyListResponse
                     self.checkAfterSurveyLoadForExistingEvents()
                 } catch {
-                    FBLogs(error)
+                    OneFlowLog(error)
                 }
                 
             } else {
-                FBLogs(error?.localizedDescription ?? "NA")
+                OneFlowLog(error?.localizedDescription ?? "NA")
             }
         }
     }
@@ -133,7 +133,7 @@ class SurveyManager: NSObject {
                         self.startSurvey(triggeredSurvey, eventName: eventName)
                         break
                     } else {
-                        FBLogs("Survey already submitted. Do nothing.")
+                        OneFlowLog("Survey already submitted. Do nothing.")
                     }
                 }
             }
@@ -145,7 +145,7 @@ class SurveyManager: NSObject {
         if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id }) {
             
             if survey.survey_settings?.resurvey_option == false {
-                FBLogs("Resurvey option is false")
+                OneFlowLog("Resurvey option is false")
                 return false
             }
             
@@ -162,7 +162,7 @@ class SurveyManager: NSObject {
                 case "days":
                     totalInterval = value * 60 * 60 * 24
                 default:
-                    FBLogs("retake_select_value is neither of minutes, hours or days")
+                    OneFlowLog("retake_select_value is neither of minutes, hours or days")
                     return false
                 }
                 let currentInterval = Int(Date().timeIntervalSince1970)
@@ -170,7 +170,7 @@ class SurveyManager: NSObject {
                     return false
                 }
             } else {
-                FBLogs("retake_survey, retake_input_value or retake_select_value not specified")
+                OneFlowLog("retake_survey, retake_input_value or retake_select_value not specified")
                 return false
             }
         }
@@ -195,7 +195,7 @@ class SurveyManager: NSObject {
                 if self.validateTheSurvey(triggerredSurvey) == true {
                     self.startSurvey(triggerredSurvey, eventName: eventName)
                 } else {
-                    FBLogs("Survey validation not passed")
+                    OneFlowLog("Survey validation not passed")
                 }
             }
         } else {
@@ -213,7 +213,7 @@ class SurveyManager: NSObject {
             kPrimaryColor = themeColor
         }
         
-        FeedbackController.recordEventName(kEventNameSurveyImpression, parameters: ["survey_id": survey._id])
+        OneFlow.recordEventName(kEventNameSurveyImpression, parameters: ["survey_id": survey._id])
         guard let screens = survey.screens else { return }
         DispatchQueue.main.async {
             
@@ -263,33 +263,33 @@ class SurveyManager: NSObject {
     
     private func submitTheSurveyToServer(_ surveyID: String, surveyResponse:SurveySubmitRequest) {
         
-        FBLogs("submitTheSurveyToServer called")
+        OneFlowLog("submitTheSurveyToServer called")
         
         if self.isNetworkReachable == false {
-            FBLogs("Network not reachable. Returned")
+            OneFlowLog("Network not reachable. Returned")
             return
         }
         
         var surveyResponseTemp = surveyResponse
         
         if surveyResponseTemp.analytic_user_id == nil {
-            FBLogs("Survey did not have user")
+            OneFlowLog("Survey did not have user")
             guard let userID = ProjectDetailsController.shared.analytic_user_id else {
-                FBLogs("user yet not initialised")
+                OneFlowLog("user yet not initialised")
                 return
             }
             surveyResponseTemp.analytic_user_id = userID
         }
         
         if surveyResponseTemp.session_id == nil {
-            FBLogs("Survey did not have session id")
+            OneFlowLog("Survey did not have session id")
             guard let sessionID = ProjectDetailsController.shared.analytics_session_id else {
-                FBLogs("Session yet not created")
+                OneFlowLog("Session yet not created")
                 return
             }
             surveyResponseTemp.session_id = sessionID
         }
-        FBLogs("Calling API to submit survey")
+        OneFlowLog("Calling API to submit survey")
         apiController.submitSurveyResponse(surveyResponseTemp) { [weak self] isSuccess, error, data in
             
             guard let self = self else {
@@ -311,14 +311,14 @@ class SurveyManager: NSObject {
                 self.pendingSurveySubmission?.removeValue(forKey: surveyID)
                 do {
                     if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                        FBLogs(json)
+                        OneFlowLog(json)
                     }
                 } catch {
-                    FBLogs("Error in response - Submit survey: \(error.localizedDescription)")
+                    OneFlowLog("Error in response - Submit survey: \(error.localizedDescription)")
                 }
                 
             } else {
-                FBLogs("Error - Submit survey: \(error?.localizedDescription ?? "NA")")
+                OneFlowLog("Error - Submit survey: \(error?.localizedDescription ?? "NA")")
             }
         }
     }

@@ -23,7 +23,7 @@ class MCQView: UIView {
     }
     
     func setupViewWithOptions(_ options: [String], type: OFRadioButton.OFRadioButtonType, parentViewWidth: CGFloat) {
-        FBLogs("Setup view with option: \(parentViewWidth)")
+        OneFlowLog("Setup view with option: \(parentViewWidth)")
         self.currentType = type
         self.allOptions = options
         if type == .checkBox {

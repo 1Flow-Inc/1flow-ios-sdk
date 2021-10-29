@@ -8,7 +8,7 @@
 import UIKit
 import CoreTelephony
 
-class EventManager: NSObject {
+final class EventManager: NSObject {
 
     let surveyManager = SurveyManager()
     private let inAppController = InAppPurchaseEventsController()
@@ -16,18 +16,25 @@ class EventManager: NSObject {
     var uploadTimer: Timer?
 //    let screenTrackingController = ScreenTrackingController()
     var eventSaveTimer: Timer?
-    
+    let eventModificationQueue = DispatchQueue(label: "1flow-thread-safe-queue", attributes: .concurrent)
     var isNetworkReachable = false
     override init() {
         super.init()
-        FBLogs("Event manager init")
+        OneFlowLog("Event manager init")
     }
     
     func configure() {
-        FBLogs("Event Manager configure")
+        OneFlowLog("Event Manager configure")
         self.createAnalyticsSession()
         self.surveyManager.isNetworkReachable = true
         self.surveyManager.configureSurveys()
+    }
+    
+    func finishPendingEvents() {
+        if ProjectDetailsController.shared.analytic_user_id != nil, ProjectDetailsController.shared.analytics_session_id != nil {
+            sendEventsToServer()
+            surveyManager.uploadPendingSurveyIfAvailable()
+        }
     }
     
     @objc func applicationBecomeActive() {
@@ -81,23 +88,24 @@ class EventManager: NSObject {
             } else {
                 sessionRequest = CreateSessionRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id ?? "", system_id: ProjectDetailsController.shared.uniqID, device: deviceDetails, location: nil, connectivity: connectivity, location_check: true, app_version: self.getAppVersion(), app_build_number: self.getAppBuildNumber(), library_version: libraryVersion)
             }
-            FBLogs("EventManager - Create Session")
+            OneFlowLog("EventManager - Create Session")
             FBAPIController().createSession(sessionRequest!) { [weak self] isSuccess, error, data in
                 if isSuccess == true, let data = data {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                            FBLogs("EventManager - Create Session - Success")
+                            OneFlowLog("EventManager - Create Session - Success")
                             if let result = json["result"] as? [String: Any], let _id = result["_id"] as? String {
                                 ProjectDetailsController.shared.analytics_session_id = _id
+                                ProjectDetailsController.shared.logNewUserDetails()
                                 guard let self = self else { return }
                                 self.startEventManager()
                             } else {
-                                FBLogs("EventManager - Create Session - Failed")
+                                OneFlowLog("EventManager - Create Session - Failed")
                             }
                         }
                     } catch {
-                        FBLogs("EventManager - Create Session - Failed")
-                        FBLogs(error)
+                        OneFlowLog("EventManager - Create Session - Failed")
+                        OneFlowLog(error)
                     }
                 }
             }
@@ -108,7 +116,10 @@ class EventManager: NSObject {
     
     private func startEventManager() {
         if let eventsArray = UserDefaults.standard.value(forKey: "FBPendingEventsList") as? [[String: Any]] {
-            self.eventsArray = eventsArray
+            eventModificationQueue.sync {
+                self.eventsArray = eventsArray
+            }
+            
             UserDefaults.standard.removeObject(forKey: "FBPendingEventsList")
             self.sendEventsToServer()
         }
@@ -152,7 +163,7 @@ class EventManager: NSObject {
     }
     
     private func startUploadTimer() {
-        FBLogs("EventManager: Timer start")
+        OneFlowLog("EventManager: Timer start")
         DispatchQueue.main.async { [self] in
             if self.uploadTimer != nil, self.uploadTimer?.isValid == true {
                 self.uploadTimer?.invalidate()
@@ -163,64 +174,75 @@ class EventManager: NSObject {
     }
     
     func recordEvent(_ name: String, parameters: [String: Any]?) {
-        FBLogs("EventManager: Record Event- name:\(name), parameters: \(parameters as Any)")
-        if let parameters = parameters {
-            let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "parameters": parameters as Any] as [String : Any]
-            self.eventsArray.append(newEventDic)
-        } else {
-            let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970)] as [String : Any]
-            self.eventsArray.append(newEventDic)
-        }
+        OneFlowLog("EventManager: Record Event- name:\(name), parameters: \(parameters as Any)")
         
-        DispatchQueue.main.async { [self] in
-            if let timer = eventSaveTimer, timer.isValid {
-                timer.invalidate()
+        eventModificationQueue.async(flags: .barrier) {
+            if let parameters = parameters {
+                let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "parameters": parameters as Any] as [String : Any]
+                self.eventsArray.append(newEventDic)
+            } else {
+                let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970)] as [String : Any]
+                self.eventsArray.append(newEventDic)
             }
-            self.eventSaveTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(saveEventArray), userInfo: nil, repeats: false)
+            
+            DispatchQueue.main.async { [self] in
+                if let timer = eventSaveTimer, timer.isValid {
+                    timer.invalidate()
+                }
+                self.eventSaveTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(saveEventArray), userInfo: nil, repeats: false)
+            }
+            
+            self.surveyManager.newEventRecorded(name)
         }
-        
-        self.surveyManager.newEventRecorded(name)
     }
     
     @objc func saveEventArray() {
-        FBLogs("EventManager: Save Events")
+        OneFlowLog("EventManager: Save Events")
         UserDefaults.standard.setValue(self.eventsArray, forKey: "FBPendingEventsList")
     }
     
     @objc func sendEventsToServer() {
-        FBLogs("EventManager: sendEventsToServer")
-        if self.eventsArray.count > 0 {
-            FBLogs("EventManager: Sending events to server: \(self.eventsArray.count)")
-            let uploadedEvents = self.eventsArray.count
-            let finalParameters = ["events": self.eventsArray, "session_id": ProjectDetailsController.shared.analytic_user_id as Any] as [String : Any]
+        OneFlowLog("EventManager: sendEventsToServer")
+        var eventsCount = 0
+        eventModificationQueue.sync {
+            eventsCount = self.eventsArray.count
+        }
+        if eventsCount > 0 {
+            OneFlowLog("EventManager: Sending events to server: \(self.eventsArray.count)")
+            let uploadedEvents = eventsCount
+            let finalParameters = ["events": self.eventsArray, "session_id": ProjectDetailsController.shared.analytics_session_id as Any, "mode": ProjectDetailsController.shared.currentEnviromment.rawValue] as [String : Any]
             
             FBAPIController().addEvents(finalParameters) { [weak self] isSuccess, error, data in
                 if isSuccess == true, let data = data {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                            FBLogs("EventManager: sendEventsToServer - Success")
+                            OneFlowLog("EventManager: sendEventsToServer - Success")
+                            #if DEBUG
+                            OneFlowLog("EventManager: Response: \(json)")
+                            #endif
                             if let status = json["success"] as? Int, status == 200 {
                                 guard let self = self else { return }
-                                let totalCount = self.eventsArray.count
-                                if (totalCount - uploadedEvents) > 0 {
-                                    self.eventsArray = self.eventsArray.suffix(totalCount - uploadedEvents)
-                                } else { //if (totalCount - uploadedEvents) == 0 {
-                                    self.eventsArray.removeAll()
+                                self.eventModificationQueue.sync {
+                                    let totalCount = self.eventsArray.count
+                                    if (totalCount - uploadedEvents) > 0 {
+                                        self.eventsArray = self.eventsArray.suffix(totalCount - uploadedEvents)
+                                    } else { //if (totalCount - uploadedEvents) == 0 {
+                                        self.eventsArray.removeAll()
+                                    }
+                                    self.saveEventArray()
                                 }
-                                
-                                UserDefaults.standard.setValue(self.eventsArray, forKey: "FBPendingEventsList")
                             }
                         } else {
-                            FBLogs("EventManager: sendEventsToServer - Failed")
+                            OneFlowLog("EventManager: sendEventsToServer - Failed")
                         }
                     } catch {
-                        FBLogs("EventManager: sendEventsToServer - Failed")
-                        FBLogs(error)
+                        OneFlowLog("EventManager: sendEventsToServer - Failed")
+                        OneFlowLog(error)
                     }
                 }
             }
         } else {
-            FBLogs("EventManger: No Events to send")
+            OneFlowLog("EventManger: No Events to send")
         }
     }
     
@@ -252,7 +274,7 @@ extension EventManager: InAppPurchaseEventsDelegate {
             let temp = try JSONSerialization.jsonObject(with: JSONEncoder().encode(event)) as? [String: Any]
             self.recordEvent(kEventNameInAppPurchase, parameters: temp)
         } catch {
-            FBLogs(error)
+            OneFlowLog(error)
         }
         
     }

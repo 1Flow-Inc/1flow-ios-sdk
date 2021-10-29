@@ -17,13 +17,15 @@ struct IAPEvent: Codable {
     var subscriptionPeriod: Int?
     var subscriptionUnit: String?
     var localCurrencyPrice: String?
+    var transactionIdentifier: String?
+    var transactionDate: Date?
 }
 
 protocol InAppPurchaseEventsDelegate: AnyObject {
     func newIAPEventRecorded(_ event: IAPEvent)
 }
 
-class InAppPurchaseEventsController: NSObject {
+final class InAppPurchaseEventsController: NSObject {
     
     var eventArray = [IAPEvent]()
     weak var delegate: InAppPurchaseEventsDelegate?
@@ -35,9 +37,9 @@ class InAppPurchaseEventsController: NSObject {
     let observer = PaymentQueueObserver()
     
     func startObserver() {
-        FBLogs("IAPObserver: Start")
+        OneFlowLog("IAPObserver: Start")
         observer.onPurchaseCompletion = {[weak self] eventArray in
-            FBLogs("IAPObserver: Called")
+            OneFlowLog("IAPObserver: Called")
             guard let self = self else { return }
             var identifires = [String]()
             for event in eventArray {
@@ -54,7 +56,7 @@ class InAppPurchaseEventsController: NSObject {
     }
     
     func recordInApppurchaseEvent(event: IAPEvent) {
-        FBLogs("IAPObserver: Record New event")
+        OneFlowLog("IAPObserver: Record New event")
         self.delegate?.newIAPEventRecorded(event)
         self.eventArray.removeAll(where: { $0.productID == event.productID })
     }
@@ -130,22 +132,22 @@ class PaymentQueueObserver: NSObject, SKPaymentTransactionObserver {
     var onPurchaseCompletion: PaymentObserverComletion?
     
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        FBLogs("IAPObserver: updatedTransactions")
+        OneFlowLog("IAPObserver: updatedTransactions")
         
         var eventArray = [IAPEvent]()
         for transaction in transactions {
             
             switch transaction.transactionState {
             case .purchased:
-                FBLogs("IAPObserver: purchased")
-                let event = IAPEvent(productID: transaction.payment.productIdentifier, quantity: transaction.payment.quantity, price: nil)
+                OneFlowLog("IAPObserver: purchased")
+                let event = IAPEvent(productID: transaction.payment.productIdentifier, quantity: transaction.payment.quantity, price: nil, transactionIdentifier: transaction.transactionIdentifier, transactionDate: transaction.transactionDate)
                 eventArray.append(event)
                 break
             case .failed:
-                FBLogs("IAPObserver: Failed")
+                OneFlowLog("IAPObserver: Failed")
                 break
             case .restored:
-                FBLogs("IAPObserver: restored")
+                OneFlowLog("IAPObserver: restored")
             default:
                 break;
             }
