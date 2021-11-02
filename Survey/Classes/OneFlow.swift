@@ -21,6 +21,10 @@ public final class OneFlow: NSObject {
     
     @objc public class func configure(_ appKey: String) {
         OneFlowLog("1Flow configuration started")
+        // TODO: - Change the environment before release
+        #if DEBUG
+        ProjectDetailsController.shared.currentEnviromment = .prod
+        #endif
         if ProjectDetailsController.shared.appKey == nil {
             ProjectDetailsController.shared.appKey = appKey
             shared.setupOnce()
@@ -151,9 +155,9 @@ public final class OneFlow: NSObject {
         shared.eventManager.finishPendingEvents()
         ProjectDetailsController.shared.newUserID = userID
         ProjectDetailsController.shared.newUserData = userDetails
-//        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 1) {
+        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 1) {
             ProjectDetailsController.shared.logNewUserDetails()
-//        }
+        }
     }
     
 }

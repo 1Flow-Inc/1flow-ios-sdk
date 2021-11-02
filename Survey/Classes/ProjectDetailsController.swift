@@ -106,7 +106,7 @@ final class ProjectDetailsController: NSObject {
             if isSuccess == true, let data = data {
                 do {
                     let loggedUser = try JSONDecoder().decode(LogUserResponse.self, from: data)
-                    if let user_id = loggedUser.result?.analytic_user_id, let session_id = loggedUser.result?.session?._id {
+                    if loggedUser.success == 200, let user_id = loggedUser.result?.analytic_user_id, let session_id = loggedUser.result?.session_id {
                         self.analytic_user_id = user_id
                         self.analytics_session_id = session_id
                     }

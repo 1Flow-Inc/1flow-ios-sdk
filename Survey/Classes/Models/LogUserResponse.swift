@@ -13,11 +13,6 @@ struct LogUserResponse: Codable {
     
     struct LogResult: Codable {
         let analytic_user_id: String?
-        let system_id: String?
-        let session: Session?
-        
-        struct Session: Codable {
-            let _id: String?
-        }
+        let session_id: String?
     }
 }
