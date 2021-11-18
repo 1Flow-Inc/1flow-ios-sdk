@@ -171,17 +171,6 @@ final class FBAPIController: NSObject {
                 return
             }
             
-
-//            do {
-//                if let data = data {
-//                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-//                        OneFlowLog(json)
-//                    }
-//                }
-//            } catch {
-//                OneFlowLog("API Call: \(urlString) - JSONParser Failed: \(error.localizedDescription)")
-//            }
-            
             OneFlowLog("API Call: \(urlString) - Success")
             completion(true, nil, data)
             
@@ -198,13 +187,6 @@ final class FBAPIController: NSObject {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         OneFlowLog("API Call: \(urlString)")
-//        do {
-//            if let json = try JSONSerialization.jsonObject(with: parameters, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-//                OneFlowLog("Request: \(json)")
-//            }
-//        } catch {
-//
-//        }
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -213,16 +195,6 @@ final class FBAPIController: NSObject {
                 return
             }
             OneFlowLog("API Call: \(urlString) - Success")
-//            do {
-//                if let data = data {
-//                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-//                        OneFlowLog(json)
-//                    }
-//                }
-//            } catch {
-//                OneFlowLog("API Call: \(urlString) - JSONParser Failed: \(error.localizedDescription)")
-//            }
-            
             completion(true, nil, data)
             
         }.resume()
@@ -231,7 +203,6 @@ final class FBAPIController: NSObject {
 
 extension FBAPIController: URLSessionTaskDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-//        FBLogs("Task finish with error: \(error as Any)")
         if error == nil {
             if let backgroundID = UserDefaults.standard.value(forKey: "BackgroundSessionId") as? String, session.configuration.identifier == backgroundID {
             //If there is no errors then uploading is successfull. Remove all pending events.

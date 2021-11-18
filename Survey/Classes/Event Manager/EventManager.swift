@@ -176,6 +176,7 @@ final class EventManager: NSObject {
     func recordEvent(_ name: String, parameters: [String: Any]?) {
         OneFlowLog("EventManager: Record Event- name:\(name), parameters: \(parameters as Any)")
         
+        /// barrier is used to handle bulk events e.g. log events with loops
         eventModificationQueue.async(flags: .barrier) {
             if let parameters = parameters {
                 let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "parameters": parameters as Any] as [String : Any]
@@ -185,6 +186,7 @@ final class EventManager: NSObject {
                 self.eventsArray.append(newEventDic)
             }
             
+            /// eventSaveTimer is used to handle multiple simulteneuos calls of this methods
             DispatchQueue.main.async { [self] in
                 if let timer = eventSaveTimer, timer.isValid {
                     timer.invalidate()
@@ -192,7 +194,10 @@ final class EventManager: NSObject {
                 self.eventSaveTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(saveEventArray), userInfo: nil, repeats: false)
             }
             
-            self.surveyManager.newEventRecorded(name)
+            /// if Survey is enabled, then pass this event to survey manager to check if survey available or not
+            if ProjectDetailsController.shared.isSuveryEnabled == true {
+                self.surveyManager.newEventRecorded(name)
+            }
         }
     }
     

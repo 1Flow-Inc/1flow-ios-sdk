@@ -29,6 +29,8 @@ final class ProjectDetailsController: NSObject {
     
     var currentEnviromment: OneFlowEnvironment = .prod
     
+    var isSuveryEnabled: Bool = true
+    
     var appKey: String! {
         didSet {
             if let oldAppKey = UserDefaults.standard.value(forKey: "OldAppKey") as? String {

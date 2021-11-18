@@ -19,12 +19,15 @@ public final class OneFlow: NSObject {
     }
     let reachability = try! Reachability(hostname: "www.apple.com")
     
+    @objc public static var enableSurveys: Bool = true {
+        didSet {
+            ProjectDetailsController.shared.isSuveryEnabled = enableSurveys
+        }
+    }
+    
     @objc public class func configure(_ appKey: String) {
         OneFlowLog("1Flow configuration started")
-        // TODO: - Change the environment before release
-        #if DEBUG
         ProjectDetailsController.shared.currentEnviromment = .prod
-        #endif
         if ProjectDetailsController.shared.appKey == nil {
             ProjectDetailsController.shared.appKey = appKey
             shared.setupOnce()
