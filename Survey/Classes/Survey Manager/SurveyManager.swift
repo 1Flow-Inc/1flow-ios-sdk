@@ -143,14 +143,14 @@ final class SurveyManager: NSObject {
     
     func validateTheSurvey(_ survey: SurveyListResponse.Survey) -> Bool {
         if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id }) {
-            
+
             if survey.survey_settings?.resurvey_option == false {
                 OneFlowLog("Resurvey option is false")
                 return false
             }
-            
+
             if let settings = survey.survey_settings?.retake_survey, let value = settings.retake_input_value, let unit = settings.retake_select_value {
-                
+
                 var totalInterval = 0
                 switch unit {
                 case "minutes":
@@ -219,21 +219,33 @@ final class SurveyManager: NSObject {
             
             if #available(iOS 13.0, *) {
                 if let currentWindowScene = UIApplication.shared.connectedScenes.first as?  UIWindowScene {
-                    self.surveyWindow = UIWindow(windowScene: currentWindowScene)
+                   self.surveyWindow = UIWindow(windowScene: currentWindowScene)
+                }
+                if self.surveyWindow == nil {
+                    if let currentWindowScene = UIApplication.shared.connectedScenes
+                        .filter({$0.activationState == .foregroundActive})
+                        .compactMap({$0 as? UIWindowScene})
+                        .first {
+                       self.surveyWindow = UIWindow(windowScene: currentWindowScene)
+                    }
                 }
             } else {
                 // Fallback on earlier versions
                 self.surveyWindow = UIWindow(frame: UIScreen.main.bounds)
             }
-            self.surveyWindow!.isHidden = false
-            self.surveyWindow!.windowLevel = .alert
+           
+            if self.surveyWindow == nil {
+                return
+            }
+            self.surveyWindow?.isHidden = false
+            self.surveyWindow?.windowLevel = .alert
             
             let frameworkBundle = Bundle(for: self.classForCoder)
             let controller = RatingViewController(nibName: "RatingViewController", bundle: frameworkBundle)
             controller.modalPresentationStyle = .overFullScreen
             controller.view.backgroundColor = UIColor.clear
             controller.allScreens = screens
-            self.surveyWindow!.rootViewController = controller
+            self.surveyWindow?.rootViewController = controller
             
             controller.completionBlock = { [weak self] surveyResponse in
                 guard let self = self else { return }
@@ -255,9 +267,7 @@ final class SurveyManager: NSObject {
                     self.uploadPendingSurveyIfAvailable()
                 }
             }
-            self.surveyWindow!.makeKeyAndVisible()
-//            controller.startSurveysWithScreens(screens)
-            
+            self.surveyWindow?.makeKeyAndVisible()            
         }
     }
     
