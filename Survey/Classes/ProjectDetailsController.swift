@@ -28,9 +28,6 @@ final class ProjectDetailsController: NSObject {
     static let shared = ProjectDetailsController()
     
     var currentEnviromment: OneFlowEnvironment = .prod
-    
-    var isSuveryEnabled: Bool = true
-    
     var appKey: String! {
         didSet {
             if let oldAppKey = UserDefaults.standard.value(forKey: "OldAppKey") as? String {
@@ -40,6 +37,8 @@ final class ProjectDetailsController: NSObject {
             }
         }
     }
+    
+    var isSuveryEnabled: Bool = true
     
     var deviceID: String! {
         get {
@@ -73,7 +72,6 @@ final class ProjectDetailsController: NSObject {
     
     var analytic_user_id: String?
     var analytics_session_id: String?
-    var locationDetails: [String: Any]?
     
     private func resetUserData() {
         UserDefaults.standard.removeObject(forKey: "analytic_user_id")
@@ -97,6 +95,7 @@ final class ProjectDetailsController: NSObject {
         finalParameter["anonymous_user_id"] = analyticsID
         finalParameter["session_id"] = sessionID
         finalParameter["system_id"] = newUserID
+        finalParameter["mode"] = currentEnviromment.rawValue
         if let details = self.newUserData {
             finalParameter["parameters"] =  details
         }

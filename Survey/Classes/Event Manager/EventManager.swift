@@ -45,7 +45,8 @@ final class EventManager: NSObject {
     
     @objc func applicationMovedToBackground() {
         if ProjectDetailsController.shared.analytics_session_id != nil, self.isNetworkReachable == true {
-            FBAPIController().uploadAllPendingEvents()
+//            FBAPIController().uploadAllPendingEvents()
+            self.sendEventsToServer()
         }
         self.uploadTimer?.invalidate()
         self.uploadTimer = nil
@@ -66,8 +67,6 @@ final class EventManager: NSObject {
     
     private func createAnalyticsSession() {
         if ProjectDetailsController.shared.analytics_session_id == nil {
-            var sessionRequest: CreateSessionRequest?
-            
             let networkInfo = CTTelephonyNetworkInfo()
             let carrier = networkInfo.subscriberCellularProvider
             let carrierName = carrier?.carrierName
@@ -83,13 +82,9 @@ final class EventManager: NSObject {
             let deviceDetails = CreateSessionRequest.DeviceDetails(os: "iOS", unique_id: ProjectDetailsController.shared.uniqID, device_id: ProjectDetailsController.shared.deviceID, carrier: carrierName, manufacturer: "apple", model: self.machineName(), os_ver: osVersion, screen_width: width, screen_height: height)
             let connectivity = CreateSessionRequest.Connectivity(carrier: (ProjectDetailsController.shared.isCarrierConnectivity == true) ? carrierName : nil, radio: ProjectDetailsController.shared.radioConnectivity)
             
-            if let json = ProjectDetailsController.shared.locationDetails {
-                sessionRequest = CreateSessionRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id ?? "", system_id: ProjectDetailsController.shared.systemID, device: deviceDetails, location: CreateSessionRequest.LocationDetails(city: json["city"] as? String ?? "", region: json["regionName"] as? String ?? "", country: json["country"] as? String ?? "", latitude: json["lat"] as? Double ?? 0.0, longitude: json["lon"] as? Double ?? 0.0), connectivity: connectivity, location_check: false, app_version: self.getAppVersion(), app_build_number: self.getAppBuildNumber(), library_version: libraryVersion)
-            } else {
-                sessionRequest = CreateSessionRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id ?? "", system_id: ProjectDetailsController.shared.systemID, device: deviceDetails, location: nil, connectivity: connectivity, location_check: true, app_version: self.getAppVersion(), app_build_number: self.getAppBuildNumber(), library_version: libraryVersion)
-            }
+            let sessionRequest: CreateSessionRequest = CreateSessionRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id ?? "", system_id: ProjectDetailsController.shared.systemID, device: deviceDetails, location: nil, connectivity: connectivity, location_check: true, app_version: self.getAppVersion(), app_build_number: self.getAppBuildNumber(), library_version: libraryVersion)
             OneFlowLog("EventManager - Create Session")
-            FBAPIController().createSession(sessionRequest!) { [weak self] isSuccess, error, data in
+            FBAPIController().createSession(sessionRequest) { [weak self] isSuccess, error, data in
                 if isSuccess == true, let data = data {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
@@ -186,7 +181,7 @@ final class EventManager: NSObject {
                 self.eventsArray.append(newEventDic)
             }
             
-            /// eventSaveTimer is used to handle multiple simulteneuos calls of this methods
+            /// event SaveTimer is used to handle multiple simulteneuos calls of this methods
             DispatchQueue.main.async { [self] in
                 if let timer = eventSaveTimer, timer.isValid {
                     timer.invalidate()

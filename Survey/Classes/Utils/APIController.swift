@@ -9,22 +9,18 @@ import Foundation
 
 typealias APICompletionBlock = ((Bool, Error?, Data?) -> Void)
 final class FBAPIController: NSObject {
-    
-    private var kBaseURL: String {
-        get {
-           return "https://api.1flow.app/"
-        }
-    }
-    
-    private let v1 = "v1/"
-    private lazy var kURLGetLocation = kBaseURL + v1 + "2021-06-15/location"
-    private lazy var kURLGetSurvey = kBaseURL + v1 + "2021-06-15/survey?platform=iOS"
-    private lazy var kURLSubmitSurvey = kBaseURL + v1 + "2021-06-15/survey-response"
-    private lazy var kURLAddUser = kBaseURL + v1 + "2021-06-15/project_users"
-    private lazy var kURLCreateSession = kBaseURL + v1 + "2021-06-15/sessions"
-    private lazy var kURLUploadFile = kBaseURL + v1 + "2021-06-15/json"
-    private lazy var kURLAddEvents = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/events-bulk/incoming_webhook/insert-events"
-    private lazy var kURLLogUser = kBaseURL + v1 + "2021-06-15/project_users/log_user"
+
+    let kURLGetSurvey = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys?mode=\(ProjectDetailsController.shared.currentEnviromment.rawValue)&platform=iOS"
+
+    let kURLSubmitSurvey = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/add_survey_response"
+
+    let kURLAddUser = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/project-analytics-user/incoming_webhook/add-user"
+
+    let kURLCreateSession = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/sessions/incoming_webhook/add_sessions"
+
+    let kURLAddEvents = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/events-bulk/incoming_webhook/insert-events"
+
+    let kURLLogUser = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/Log-user/incoming_webhook/anonymous-user-api"
     
     
     //MARK: - Surveys
@@ -50,11 +46,7 @@ final class FBAPIController: NSObject {
             fatalError(error.localizedDescription)
         }
     }
-    
-    func getLocationDetailsUsingIP(_ completion: @escaping APICompletionBlock) {
-        self.getAPIWith(kURLGetLocation, shouldAddHeader: false, completion: completion)
-    }
-    
+
     func logUser(_ parameter: [String: Any], completion: @escaping APICompletionBlock) {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: parameter, options: .prettyPrinted)
@@ -82,77 +74,6 @@ final class FBAPIController: NSObject {
         } catch {
             fatalError(error.localizedDescription)
         }
-    }
-    
-    //MARK: - While application inactivates upload all events
-    
-    func uploadAllPendingEvents() {
-        if let eventsArray = UserDefaults.standard.value(forKey: "FBPendingEventsList") as? [[String: Any]], eventsArray.count > 0 {
-            do {
-                let finalDic = ["events": eventsArray, "session_id": ProjectDetailsController.shared.analytics_session_id as Any]
-                let jsonData = try JSONSerialization.data(withJSONObject: finalDic, options: .prettyPrinted)
-                self.uploadFile(jsonData)
-                
-            } catch {
-                fatalError(error.localizedDescription)
-            }
-            
-        }
-    }
-    
-    func uploadFile(_ data: Data) {
-        let uuid = NSUUID().uuidString
-        let boundary = String(repeating: "-", count: 24) + uuid
-        let directoryURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-        let partFilename = "events_" + ProjectDetailsController.shared.analytic_user_id! + ".json"
-        let fileURL = directoryURL.appendingPathComponent(uuid)
-        let filePath = fileURL.path
-        FileManager.default.createFile(atPath: filePath, contents: nil, attributes: nil)
-        let file = FileHandle(forWritingAtPath: filePath)!
-        
-        let newline = "\r\n"
-        let partName = "file"
-        let partMimeType = "application/json"
-        var header = ""
-        header += "--\(boundary)" + newline
-        header += "Content-Disposition: form-data; name=\"\(partName)\"; filename=\"\(partFilename)\"" + newline
-        header += "Content-Type: \(partMimeType)" + newline
-        header += newline
-        let headerData = header.data(using: String.Encoding.utf8, allowLossyConversion: false)
-        // Write data
-        file.write(headerData!)
-        file.write(data)
-        
-        var footer = ""
-        footer += newline
-        footer += "--\(boundary)--" + newline
-        footer += newline
-        
-        let footerData = footer.data(using: String.Encoding.utf8, allowLossyConversion: false)
-        file.write(footerData!)
-        file.closeFile()
-        var outputRequest = URLRequest(url: URL(string: kURLUploadFile)!)
-        outputRequest.httpMethod = "POST"
-        let contentType = "multipart/form-data; boundary=\(boundary)"
-        outputRequest.setValue(contentType, forHTTPHeaderField: "Content-Type")
-        upload(request: outputRequest, fileURL: fileURL)
-    }
-    
-    
-    
-    func upload(request: URLRequest, fileURL: URL) {
-        // Create a unique identifier for the session.
-        let sessionIdentifier = NSUUID().uuidString
-        UserDefaults.standard.setValue(sessionIdentifier, forKey: "BackgroundSessionId")
-        let configuration = URLSessionConfiguration.background(withIdentifier: sessionIdentifier)
-        configuration.sessionSendsLaunchEvents = false
-        let session: URLSession = URLSession(
-            configuration:configuration,
-            delegate: self,
-            delegateQueue: OperationQueue.main
-        )
-        let task = session.uploadTask(with: request, fromFile: fileURL)
-        task.resume()
     }
     
     //MARK: - Get and Post
@@ -195,6 +116,16 @@ final class FBAPIController: NSObject {
                 return
             }
             OneFlowLog("API Call: \(urlString) - Success")
+            do {
+                if let data = data {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
+                        OneFlowLog(json)
+                    }
+                }
+            } catch {
+                OneFlowLog("API Call: \(urlString) - JSONParser Failed: \(error.localizedDescription)")
+            }
+            
             completion(true, nil, data)
             
         }.resume()
@@ -203,6 +134,7 @@ final class FBAPIController: NSObject {
 
 extension FBAPIController: URLSessionTaskDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+//        FBLogs("Task finish with error: \(error as Any)")
         if error == nil {
             if let backgroundID = UserDefaults.standard.value(forKey: "BackgroundSessionId") as? String, session.configuration.identifier == backgroundID {
             //If there is no errors then uploading is successfull. Remove all pending events.

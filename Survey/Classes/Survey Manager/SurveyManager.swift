@@ -99,9 +99,9 @@ final class SurveyManager: NSObject {
             self.isSurveyFetching = false
             if isSuccess == true, let data = data {
                 do {
-//                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-//                        FBLogs(json)
-//                    }
+                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
+                        OneFlowLog(json)
+                    }
                     
                     let surveyListResponse = try JSONDecoder().decode(SurveyListResponse.self, from: data)
                     self.surveyList = surveyListResponse
@@ -267,7 +267,7 @@ final class SurveyManager: NSObject {
                     self.uploadPendingSurveyIfAvailable()
                 }
             }
-            self.surveyWindow?.makeKeyAndVisible()            
+            self.surveyWindow?.makeKeyAndVisible()
         }
     }
     

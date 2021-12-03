@@ -9,7 +9,7 @@ import Foundation
 
 struct SurveyListResponse: Codable {
     var success: Int
-    var message: String
+    var message: String?
     var result: [Survey]
     
     struct Survey: Codable {

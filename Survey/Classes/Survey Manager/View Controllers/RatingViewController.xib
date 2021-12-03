@@ -130,6 +130,7 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstAttribute="width" constant="450" id="6Ie-9I-FcN"/>
                         <constraint firstItem="7m0-NO-0B7" firstAttribute="top" secondItem="UYP-CV-rgb" secondAttribute="bottom" id="72r-H6-gI1"/>
                         <constraint firstItem="aR0-p5-Dfi" firstAttribute="centerX" secondItem="axG-11-bjr" secondAttribute="centerX" id="8nq-iQ-df9"/>
                         <constraint firstItem="dcZ-XD-uRM" firstAttribute="top" secondItem="aR0-p5-Dfi" secondAttribute="bottom" constant="12" id="DOe-LS-oRC"/>
@@ -144,6 +145,17 @@
                         <constraint firstItem="UYP-CV-rgb" firstAttribute="leading" secondItem="axG-11-bjr" secondAttribute="leading" id="qcy-Uh-eiW"/>
                         <constraint firstItem="7m0-NO-0B7" firstAttribute="top" secondItem="dcZ-XD-uRM" secondAttribute="bottom" id="wQW-HS-NoL"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="6Ie-9I-FcN"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="6Ie-9I-FcN"/>
+                            <include reference="8nq-iQ-df9"/>
+                        </mask>
+                    </variation>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="luR-eH-Dfn">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="783"/>
@@ -158,10 +170,23 @@
                 <constraint firstAttribute="trailing" secondItem="luR-eH-Dfn" secondAttribute="trailing" id="CjU-27-Jx8"/>
                 <constraint firstItem="axG-11-bjr" firstAttribute="top" secondItem="luR-eH-Dfn" secondAttribute="bottom" id="IOv-nc-nrj"/>
                 <constraint firstItem="luR-eH-Dfn" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="K7O-HW-bU2"/>
+                <constraint firstItem="axG-11-bjr" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="WKf-wY-hFg"/>
                 <constraint firstItem="axG-11-bjr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="YE0-qj-NoX"/>
                 <constraint firstAttribute="bottom" secondItem="axG-11-bjr" secondAttribute="bottom" id="axD-5H-hmG"/>
                 <constraint firstAttribute="trailing" secondItem="axG-11-bjr" secondAttribute="trailing" id="eVz-HV-NZ0"/>
             </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="WKf-wY-hFg"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <include reference="WKf-wY-hFg"/>
+                    <exclude reference="YE0-qj-NoX"/>
+                    <exclude reference="eVz-HV-NZ0"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="28.985507246376812" y="91.741071428571431"/>
         </view>
     </objects>

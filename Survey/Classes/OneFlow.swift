@@ -27,7 +27,6 @@ public final class OneFlow: NSObject {
     
     @objc public class func configure(_ appKey: String) {
         OneFlowLog("1Flow configuration started")
-        ProjectDetailsController.shared.currentEnviromment = .prod
         if ProjectDetailsController.shared.appKey == nil {
             ProjectDetailsController.shared.appKey = appKey
             shared.setupOnce()
@@ -67,28 +66,8 @@ public final class OneFlow: NSObject {
             }
             self.isSetupRunning = false
         }
-        self.fetchLocationDetails()
     }
-    
-    private func fetchLocationDetails() {
-        OneFlowLog("Fetching geo location")
-        FBAPIController().getLocationDetailsUsingIP { isSuccess, error, data in
-            if isSuccess == true, let data = data {
-                do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                        OneFlowLog("Geo Location - Success")
-                        ProjectDetailsController.shared.locationDetails = json
-                    } else {
-                        OneFlowLog("Geo Location - Failed")
-                    }
-                } catch {
-                    OneFlowLog("Geo Location - Failed")
-                    OneFlowLog(error)
-                }
-            }
-        }
-    }
-    
+
     @objc func reachabilityChanged(note: Notification) {
         
         let reachability = note.object as! Reachability

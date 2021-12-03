@@ -34,6 +34,8 @@ class RatingViewController: UIViewController {
     @IBOutlet weak var progressBar: UIProgressView!
     private var isKeyboardVisible = false
     var panGestureRecognizer: UIPanGestureRecognizer?
+    var tapGestureRecognizer: UITapGestureRecognizer?
+
     var originalPosition: CGPoint?
     var currentPositionTouched: CGPoint?
 
@@ -54,6 +56,10 @@ class RatingViewController: UIViewController {
         }
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureAction(_:)))
         ratingView.addGestureRecognizer(panGestureRecognizer!)
+
+        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureAction(_:)))
+        tapGestureRecognizer?.delegate = self
+        self.view.addGestureRecognizer(tapGestureRecognizer!)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 
@@ -297,6 +303,11 @@ class RatingViewController: UIViewController {
         }
     }
     
+    @objc func tapGestureAction(_ panGesture: UITapGestureRecognizer) {
+        print("tapGestureAction called")
+        onBlankSpaceTapped(panGesture)
+    }
+    
     @objc func panGestureAction(_ panGesture: UIPanGestureRecognizer) {
         let translation = panGesture.translation(in: ratingView)
         if panGesture.state == .began {
@@ -358,6 +369,10 @@ class RatingViewController: UIViewController {
         }
     }
     
+    
+}
+
+extension RatingViewController : UIGestureRecognizerDelegate {
     
 }
 
