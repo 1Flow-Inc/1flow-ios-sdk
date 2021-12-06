@@ -56,6 +56,15 @@ final class SurveyManager: NSObject {
         }
     }
     
+    func setUserToSubmittedSurveyAsAnnonyous(newUserID: String) {
+        if self.submittedSurveyDetails != nil {
+            for index in 0..<self.submittedSurveyDetails!.count {
+                self.submittedSurveyDetails![index].setNewUser(newUserID)
+            }
+            self.saveSubmittedSurvey()
+        }
+    }
+    
     func configureSurveys() {
         if self.surveyList == nil && self.isNetworkReachable == true {
             self.fetchAllSurvey()
@@ -79,13 +88,6 @@ final class SurveyManager: NSObject {
     }
     private func fetchAllSurvey() {
         OneFlowLog("Fetch Survey called")
-        
-//        struct Holder { static var called = false }
-//            if Holder.called {
-//                return
-//            } else {
-//                Holder.called = true
-//            }
         if self.surveyList != nil || self.isSurveyFetching == true {
             OneFlowLog("Survey already Fetched")
             return
@@ -99,10 +101,6 @@ final class SurveyManager: NSObject {
             self.isSurveyFetching = false
             if isSuccess == true, let data = data {
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                        OneFlowLog(json)
-                    }
-                    
                     let surveyListResponse = try JSONDecoder().decode(SurveyListResponse.self, from: data)
                     self.surveyList = surveyListResponse
                     self.checkAfterSurveyLoadForExistingEvents()
@@ -142,7 +140,7 @@ final class SurveyManager: NSObject {
     }
     
     func validateTheSurvey(_ survey: SurveyListResponse.Survey) -> Bool {
-        if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id }) {
+        if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id && $0.submittedByUserID == ProjectDetailsController.shared.currentLoggedUserID }) {
 
             if survey.survey_settings?.resurvey_option == false {
                 OneFlowLog("Resurvey option is false")
@@ -309,15 +307,9 @@ final class SurveyManager: NSObject {
                 if self.submittedSurveyDetails == nil {
                     self.submittedSurveyDetails = [SubmittedSurvey]()
                 }
-                let submittedSurvey = SubmittedSurvey(surveyID: surveyID, submissionTime: Int(Date().timeIntervalSince1970))
+                let submittedSurvey = SubmittedSurvey(surveyID: surveyID, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: ProjectDetailsController.shared.currentLoggedUserID)
                 self.submittedSurveyDetails?.append(submittedSurvey)
                 self.saveSubmittedSurvey()
-                
-//                if self.submittedSurveyIDs == nil {
-//                    self.submittedSurveyIDs = [surveyID]
-//                } else {
-//                    self.submittedSurveyIDs?.append(surveyID)
-//                }
                 self.pendingSurveySubmission?.removeValue(forKey: surveyID)
                 do {
                     if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {

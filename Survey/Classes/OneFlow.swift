@@ -13,7 +13,7 @@ public final class OneFlow: NSObject {
     
     private static let shared = OneFlow()
     private var networkTimer: Timer?
-    let eventManager = EventManager()
+    private let eventManager = EventManager()
     private var isSetupRunning: Bool = false
     private override init() {
     }
@@ -34,7 +34,6 @@ public final class OneFlow: NSObject {
         } else {
             OneFlowLog("1Flow already setup.")
         }
-        
     }
     
     private func setupOnce() {
@@ -138,7 +137,11 @@ public final class OneFlow: NSObject {
         ProjectDetailsController.shared.newUserID = userID
         ProjectDetailsController.shared.newUserData = userDetails
         DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 1) {
-            ProjectDetailsController.shared.logNewUserDetails()
+            ProjectDetailsController.shared.logNewUserDetails { isSuccess in
+                if isSuccess == true {
+                    shared.eventManager.surveyManager.setUserToSubmittedSurveyAsAnnonyous(newUserID: userID)
+                }
+            }
         }
     }
     

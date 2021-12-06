@@ -14,7 +14,6 @@ final class EventManager: NSObject {
     private let inAppController = InAppPurchaseEventsController()
     private var eventsArray = [[String: Any]]()
     var uploadTimer: Timer?
-//    let screenTrackingController = ScreenTrackingController()
     var eventSaveTimer: Timer?
     let eventModificationQueue = DispatchQueue(label: "1flow-thread-safe-queue", attributes: .concurrent)
     var isNetworkReachable = false
@@ -45,7 +44,6 @@ final class EventManager: NSObject {
     
     @objc func applicationMovedToBackground() {
         if ProjectDetailsController.shared.analytics_session_id != nil, self.isNetworkReachable == true {
-//            FBAPIController().uploadAllPendingEvents()
             self.sendEventsToServer()
         }
         self.uploadTimer?.invalidate()
@@ -91,7 +89,9 @@ final class EventManager: NSObject {
                             OneFlowLog("EventManager - Create Session - Success")
                             if let result = json["result"] as? [String: Any], let _id = result["_id"] as? String {
                                 ProjectDetailsController.shared.analytics_session_id = _id
-                                ProjectDetailsController.shared.logNewUserDetails()
+                                ProjectDetailsController.shared.logNewUserDetails { _ in
+                                    
+                                }
                                 guard let self = self else { return }
                                 self.startEventManager()
                             } else {
@@ -151,10 +151,6 @@ final class EventManager: NSObject {
         //In App Purchase
         self.inAppController.delegate = self
         self.inAppController.startObserver()
-        
-        //Screen Tracking
-//        self.screenTrackingController.startTacking()
-        
     }
     
     private func startUploadTimer() {
@@ -217,9 +213,6 @@ final class EventManager: NSObject {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
                             OneFlowLog("EventManager: sendEventsToServer - Success")
-                            #if DEBUG
-                            OneFlowLog("EventManager: Response: \(json)")
-                            #endif
                             if let status = json["success"] as? Int, status == 200 {
                                 guard let self = self else { return }
                                 self.eventModificationQueue.sync {

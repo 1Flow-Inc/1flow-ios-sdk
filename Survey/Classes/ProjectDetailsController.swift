@@ -73,6 +73,26 @@ final class ProjectDetailsController: NSObject {
     var analytic_user_id: String?
     var analytics_session_id: String?
     
+    var currentLoggedUserID: String? {
+        get {
+            return UserDefaults.standard.value(forKey: "FBCurrentLoggedUser") as? String
+        }
+
+        set {
+            if let value = newValue {
+                UserDefaults.standard.setValue(value, forKey: "FBCurrentLoggedUser")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "FBCurrentLoggedUser")
+            }
+        }
+    }
+    
+    var radioConnectivity: String?
+    var isCarrierConnectivity: Bool = false
+    
+    var newUserID: String?
+    var newUserData: [String: Any]?
+    
     private func resetUserData() {
         UserDefaults.standard.removeObject(forKey: "analytic_user_id")
         UserDefaults.standard.removeObject(forKey: "uniqIDString")
@@ -81,16 +101,12 @@ final class ProjectDetailsController: NSObject {
     private override init() {
         super.init()
     }
-    var radioConnectivity: String?
-    var isCarrierConnectivity: Bool = false
     
-    var newUserID: String?
-    var newUserData: [String: Any]?
-    
-    func logNewUserDetails() {
-        
-        guard let analyticsID = self.analytic_user_id, let sessionID = self.analytics_session_id, let newUserID = self.newUserID else { return }
-        
+    func logNewUserDetails(_ completion: @escaping (Bool) -> Void) {
+        guard let analyticsID = self.analytic_user_id, let sessionID = self.analytics_session_id, let newUserID = self.newUserID else {
+            completion(false)
+            return
+        }
         var finalParameter = [String: Any]()
         finalParameter["anonymous_user_id"] = analyticsID
         finalParameter["session_id"] = sessionID
@@ -99,26 +115,31 @@ final class ProjectDetailsController: NSObject {
         if let details = self.newUserData {
             finalParameter["parameters"] =  details
         }
-        
-        self.newUserID = nil
-        self.newUserData = nil
         OneFlowLog("Calling log user")
         FBAPIController().logUser(finalParameter) { isSuccess, error, data in
             if isSuccess == true, let data = data {
                 do {
                     let loggedUser = try JSONDecoder().decode(LogUserResponse.self, from: data)
                     if loggedUser.success == 200, let user_id = loggedUser.result?.analytic_user_id, let session_id = loggedUser.result?.session_id {
+                        self.currentLoggedUserID = newUserID
                         self.analytic_user_id = user_id
                         self.analytics_session_id = session_id
+                        self.newUserID = nil
+                        self.newUserData = nil
+                        completion(true)
+                    } else {
+                        completion(false)
                     }
                 } catch {
                     OneFlowLog("LogUser error: \(error)")
+                    completion(false)
                 }
-                
             } else {
                 OneFlowLog("LogUser Failed: Error: \(error as Any)")
+                completion(false)
             }
         }
     }
+    
     
 }
