@@ -7,15 +7,18 @@
 //
 
 import UIKit
+import _1Flow
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    let kOneProjectKey = "YOUR_1FLOW_PROJECT_KEY"
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        OneFlow.configure(kOneProjectKey)
         return true
     }
 

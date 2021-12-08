@@ -1,14 +1,14 @@
 //
-//  SurveyManager.swift
+//  OFSurveyManager.swift
 //  Feedback
 //
 //  Created by Rohan Moradiya on 12/07/21.
 //
 import UIKit
 
-final class SurveyManager: NSObject {
+final class OFSurveyManager: NSObject {
 
-    let apiController = FBAPIController()
+    let apiController = OFAPIController()
     var surveyList: SurveyListResponse?
     var surveyWindow: UIWindow?
     private var temporaryEventArray: [String]?
@@ -45,7 +45,7 @@ final class SurveyManager: NSObject {
     
     override init() {
         super.init()
-        OneFlowLog("SurveyManager: Started")
+        OneFlowLog("OFSurveyManager: Started")
         if let data = UserDefaults.standard.value(forKey: "FBSubmittedSurveys") as? Data {
             do {
                 submittedSurveyDetails = try JSONDecoder().decode([SubmittedSurvey].self, from: data)
@@ -140,7 +140,7 @@ final class SurveyManager: NSObject {
     }
     
     func validateTheSurvey(_ survey: SurveyListResponse.Survey) -> Bool {
-        if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id && $0.submittedByUserID == ProjectDetailsController.shared.currentLoggedUserID }) {
+        if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id && $0.submittedByUserID == OFProjectDetailsController.shared.currentLoggedUserID }) {
 
             if survey.survey_settings?.resurvey_option == false {
                 OneFlowLog("Resurvey option is false")
@@ -239,7 +239,7 @@ final class SurveyManager: NSObject {
             self.surveyWindow?.windowLevel = .alert
             
             let frameworkBundle = Bundle(for: self.classForCoder)
-            let controller = RatingViewController(nibName: "RatingViewController", bundle: frameworkBundle)
+            let controller = OFRatingViewController(nibName: "OFRatingViewController", bundle: frameworkBundle)
             controller.modalPresentationStyle = .overFullScreen
             controller.view.backgroundColor = UIColor.clear
             controller.allScreens = screens
@@ -255,7 +255,7 @@ final class SurveyManager: NSObject {
                 
                 if surveyResponse.count > 0 {
                     
-                    let surveyResponse = SurveySubmitRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, session_id: ProjectDetailsController.shared.analytics_session_id, trigger_event: eventName)
+                    let surveyResponse = SurveySubmitRequest(analytic_user_id: OFProjectDetailsController.shared.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, session_id: OFProjectDetailsController.shared.analytics_session_id, trigger_event: eventName)
                     
                     if self.pendingSurveySubmission == nil {
                         self.pendingSurveySubmission = [survey._id : surveyResponse]
@@ -282,7 +282,7 @@ final class SurveyManager: NSObject {
         
         if surveyResponseTemp.analytic_user_id == nil {
             OneFlowLog("Survey did not have user")
-            guard let userID = ProjectDetailsController.shared.analytic_user_id else {
+            guard let userID = OFProjectDetailsController.shared.analytic_user_id else {
                 OneFlowLog("user yet not initialised")
                 return
             }
@@ -291,7 +291,7 @@ final class SurveyManager: NSObject {
         
         if surveyResponseTemp.session_id == nil {
             OneFlowLog("Survey did not have session id")
-            guard let sessionID = ProjectDetailsController.shared.analytics_session_id else {
+            guard let sessionID = OFProjectDetailsController.shared.analytics_session_id else {
                 OneFlowLog("Session yet not created")
                 return
             }
@@ -307,7 +307,7 @@ final class SurveyManager: NSObject {
                 if self.submittedSurveyDetails == nil {
                     self.submittedSurveyDetails = [SubmittedSurvey]()
                 }
-                let submittedSurvey = SubmittedSurvey(surveyID: surveyID, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: ProjectDetailsController.shared.currentLoggedUserID)
+                let submittedSurvey = SubmittedSurvey(surveyID: surveyID, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: OFProjectDetailsController.shared.currentLoggedUserID)
                 self.submittedSurveyDetails?.append(submittedSurvey)
                 self.saveSubmittedSurvey()
                 self.pendingSurveySubmission?.removeValue(forKey: surveyID)

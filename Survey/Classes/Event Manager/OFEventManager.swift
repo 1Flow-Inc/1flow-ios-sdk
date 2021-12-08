@@ -1,5 +1,5 @@
 //
-//  EventManager.swift
+//  OFEventManager.swift
 //  Feedback
 //
 //  Created by Rohan Moradiya on 12/07/21.
@@ -8,12 +8,13 @@
 import UIKit
 import CoreTelephony
 
-final class EventManager: NSObject {
+final class OFEventManager: NSObject {
 
-    let surveyManager = SurveyManager()
-    private let inAppController = InAppPurchaseEventsController()
+    let surveyManager = OFSurveyManager()
+    private let inAppController = OFInAppPurchaseEventsController()
     private var eventsArray = [[String: Any]]()
     var uploadTimer: Timer?
+//    let screenTrackingController = OFScreenTrackingController()
     var eventSaveTimer: Timer?
     let eventModificationQueue = DispatchQueue(label: "1flow-thread-safe-queue", attributes: .concurrent)
     var isNetworkReachable = false
@@ -30,20 +31,21 @@ final class EventManager: NSObject {
     }
     
     func finishPendingEvents() {
-        if ProjectDetailsController.shared.analytic_user_id != nil, ProjectDetailsController.shared.analytics_session_id != nil {
+        if OFProjectDetailsController.shared.analytic_user_id != nil, OFProjectDetailsController.shared.analytics_session_id != nil {
             sendEventsToServer()
             surveyManager.uploadPendingSurveyIfAvailable()
         }
     }
     
     @objc func applicationBecomeActive() {
-        if ProjectDetailsController.shared.analytics_session_id != nil && self.isNetworkReachable == true {
+        if OFProjectDetailsController.shared.analytics_session_id != nil && self.isNetworkReachable == true {
             self.startUploadTimer()
         }
     }
     
     @objc func applicationMovedToBackground() {
-        if ProjectDetailsController.shared.analytics_session_id != nil, self.isNetworkReachable == true {
+        if OFProjectDetailsController.shared.analytics_session_id != nil, self.isNetworkReachable == true {
+//            FBAPIController().uploadAllPendingEvents()
             self.sendEventsToServer()
         }
         self.uploadTimer?.invalidate()
@@ -54,7 +56,7 @@ final class EventManager: NSObject {
         self.isNetworkReachable = isReachable
         self.surveyManager.networkStatusChanged(isReachable)
         if isReachable == true {
-            if ProjectDetailsController.shared.analytics_session_id != nil {
+            if OFProjectDetailsController.shared.analytics_session_id != nil {
                 self.startUploadTimer()
             }
         } else {
@@ -64,7 +66,7 @@ final class EventManager: NSObject {
     }
     
     private func createAnalyticsSession() {
-        if ProjectDetailsController.shared.analytics_session_id == nil {
+        if OFProjectDetailsController.shared.analytics_session_id == nil {
             let networkInfo = CTTelephonyNetworkInfo()
             let carrier = networkInfo.subscriberCellularProvider
             let carrierName = carrier?.carrierName
@@ -77,29 +79,29 @@ final class EventManager: NSObject {
                 libraryVersion = bundle.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String
             }
             
-            let deviceDetails = CreateSessionRequest.DeviceDetails(os: "iOS", unique_id: ProjectDetailsController.shared.uniqID, device_id: ProjectDetailsController.shared.deviceID, carrier: carrierName, manufacturer: "apple", model: self.machineName(), os_ver: osVersion, screen_width: width, screen_height: height)
-            let connectivity = CreateSessionRequest.Connectivity(carrier: (ProjectDetailsController.shared.isCarrierConnectivity == true) ? carrierName : nil, radio: ProjectDetailsController.shared.radioConnectivity)
+            let deviceDetails = CreateSessionRequest.DeviceDetails(os: "iOS", unique_id: OFProjectDetailsController.shared.uniqID, device_id: OFProjectDetailsController.shared.deviceID, carrier: carrierName, manufacturer: "apple", model: self.machineName(), os_ver: osVersion, screen_width: width, screen_height: height)
+            let connectivity = CreateSessionRequest.Connectivity(carrier: (OFProjectDetailsController.shared.isCarrierConnectivity == true) ? carrierName : nil, radio: OFProjectDetailsController.shared.radioConnectivity)
             
-            let sessionRequest: CreateSessionRequest = CreateSessionRequest(analytic_user_id: ProjectDetailsController.shared.analytic_user_id ?? "", system_id: ProjectDetailsController.shared.systemID, device: deviceDetails, location: nil, connectivity: connectivity, location_check: true, app_version: self.getAppVersion(), app_build_number: self.getAppBuildNumber(), library_version: libraryVersion)
-            OneFlowLog("EventManager - Create Session")
-            FBAPIController().createSession(sessionRequest) { [weak self] isSuccess, error, data in
+            let sessionRequest: CreateSessionRequest = CreateSessionRequest(analytic_user_id: OFProjectDetailsController.shared.analytic_user_id ?? "", system_id: OFProjectDetailsController.shared.systemID, device: deviceDetails, location: nil, connectivity: connectivity, location_check: true, app_version: self.getAppVersion(), app_build_number: self.getAppBuildNumber(), library_version: libraryVersion)
+            OneFlowLog("OFEventManager - Create Session")
+            OFAPIController().createSession(sessionRequest) { [weak self] isSuccess, error, data in
                 if isSuccess == true, let data = data {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                            OneFlowLog("EventManager - Create Session - Success")
+                            OneFlowLog("OFEventManager - Create Session - Success")
                             if let result = json["result"] as? [String: Any], let _id = result["_id"] as? String {
-                                ProjectDetailsController.shared.analytics_session_id = _id
-                                ProjectDetailsController.shared.logNewUserDetails { _ in
+                                OFProjectDetailsController.shared.analytics_session_id = _id
+                                OFProjectDetailsController.shared.logNewUserDetails { _ in
                                     
                                 }
                                 guard let self = self else { return }
                                 self.startEventManager()
                             } else {
-                                OneFlowLog("EventManager - Create Session - Failed")
+                                OneFlowLog("OFEventManager - Create Session - Failed")
                             }
                         }
                     } catch {
-                        OneFlowLog("EventManager - Create Session - Failed")
+                        OneFlowLog("OFEventManager - Create Session - Failed")
                         OneFlowLog(error)
                     }
                 }
@@ -151,10 +153,14 @@ final class EventManager: NSObject {
         //In App Purchase
         self.inAppController.delegate = self
         self.inAppController.startObserver()
+        
+        //Screen Tracking
+//        self.screenTrackingController.startTacking()
+        
     }
     
     private func startUploadTimer() {
-        OneFlowLog("EventManager: Timer start")
+        OneFlowLog("OFEventManager: Timer start")
         DispatchQueue.main.async { [self] in
             if self.uploadTimer != nil, self.uploadTimer?.isValid == true {
                 self.uploadTimer?.invalidate()
@@ -165,7 +171,7 @@ final class EventManager: NSObject {
     }
     
     func recordEvent(_ name: String, parameters: [String: Any]?) {
-        OneFlowLog("EventManager: Record Event- name:\(name), parameters: \(parameters as Any)")
+        OneFlowLog("OFEventManager: Record Event- name:\(name), parameters: \(parameters as Any)")
         
         /// barrier is used to handle bulk events e.g. log events with loops
         eventModificationQueue.async(flags: .barrier) {
@@ -186,33 +192,36 @@ final class EventManager: NSObject {
             }
             
             /// if Survey is enabled, then pass this event to survey manager to check if survey available or not
-            if ProjectDetailsController.shared.isSuveryEnabled == true {
+            if OFProjectDetailsController.shared.isSuveryEnabled == true {
                 self.surveyManager.newEventRecorded(name)
             }
         }
     }
     
     @objc func saveEventArray() {
-        OneFlowLog("EventManager: Save Events")
+        OneFlowLog("OFEventManager: Save Events")
         UserDefaults.standard.setValue(self.eventsArray, forKey: "FBPendingEventsList")
     }
     
     @objc func sendEventsToServer() {
-        OneFlowLog("EventManager: sendEventsToServer")
+        OneFlowLog("OFEventManager: sendEventsToServer")
         var eventsCount = 0
         eventModificationQueue.sync {
             eventsCount = self.eventsArray.count
         }
         if eventsCount > 0 {
-            OneFlowLog("EventManager: Sending events to server: \(self.eventsArray.count)")
+            OneFlowLog("OFEventManager: Sending events to server: \(self.eventsArray.count)")
             let uploadedEvents = eventsCount
-            let finalParameters = ["events": self.eventsArray, "session_id": ProjectDetailsController.shared.analytics_session_id as Any, "mode": ProjectDetailsController.shared.currentEnviromment.rawValue] as [String : Any]
+            let finalParameters = ["events": self.eventsArray, "session_id": OFProjectDetailsController.shared.analytics_session_id as Any, "mode": OFProjectDetailsController.shared.currentEnviromment.rawValue] as [String : Any]
             
-            FBAPIController().addEvents(finalParameters) { [weak self] isSuccess, error, data in
+            OFAPIController().addEvents(finalParameters) { [weak self] isSuccess, error, data in
                 if isSuccess == true, let data = data {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                            OneFlowLog("EventManager: sendEventsToServer - Success")
+                            OneFlowLog("OFEventManager: sendEventsToServer - Success")
+                            #if DEBUG
+                            OneFlowLog("OFEventManager: Response: \(json)")
+                            #endif
                             if let status = json["success"] as? Int, status == 200 {
                                 guard let self = self else { return }
                                 self.eventModificationQueue.sync {
@@ -226,10 +235,10 @@ final class EventManager: NSObject {
                                 }
                             }
                         } else {
-                            OneFlowLog("EventManager: sendEventsToServer - Failed")
+                            OneFlowLog("OFEventManager: sendEventsToServer - Failed")
                         }
                     } catch {
-                        OneFlowLog("EventManager: sendEventsToServer - Failed")
+                        OneFlowLog("OFEventManager: sendEventsToServer - Failed")
                         OneFlowLog(error)
                     }
                 }
@@ -261,8 +270,8 @@ final class EventManager: NSObject {
     }
 }
 
-extension EventManager: InAppPurchaseEventsDelegate {
-    func newIAPEventRecorded(_ event: IAPEvent) {
+extension OFEventManager: OFInAppPurchaseEventsDelegate {
+    func newIAPEventRecorded(_ event: OFIAPEvent) {
         do {
             let temp = try JSONSerialization.jsonObject(with: JSONEncoder().encode(event)) as? [String: Any]
             self.recordEvent(kEventNameInAppPurchase, parameters: temp)

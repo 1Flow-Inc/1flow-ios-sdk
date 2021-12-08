@@ -1,5 +1,5 @@
 //
-//  InAppPurchaseEventsController.swift
+//  OFInAppPurchaseEventsController.swift
 //  Feedback
 //
 //  Created by Rohan Moradiya on 17/07/21.
@@ -8,9 +8,9 @@
 import Foundation
 import StoreKit
 
-typealias PaymentObserverComletion = ([IAPEvent]) -> Void
+typealias PaymentObserverComletion = ([OFIAPEvent]) -> Void
 
-struct IAPEvent: Codable {
+struct OFIAPEvent: Codable {
     var productID: String
     var quantity: Int?
     var price: Double?
@@ -21,14 +21,14 @@ struct IAPEvent: Codable {
     var transactionDate: Date?
 }
 
-protocol InAppPurchaseEventsDelegate: AnyObject {
-    func newIAPEventRecorded(_ event: IAPEvent)
+protocol OFInAppPurchaseEventsDelegate: AnyObject {
+    func newIAPEventRecorded(_ event: OFIAPEvent)
 }
 
-final class InAppPurchaseEventsController: NSObject {
+final class OFInAppPurchaseEventsController: NSObject {
     
-    var eventArray = [IAPEvent]()
-    weak var delegate: InAppPurchaseEventsDelegate?
+    var eventArray = [OFIAPEvent]()
+    weak var delegate: OFInAppPurchaseEventsDelegate?
     
     override init() {
         super.init()
@@ -55,7 +55,7 @@ final class InAppPurchaseEventsController: NSObject {
         SKPaymentQueue.default().add(observer)
     }
     
-    func recordInApppurchaseEvent(event: IAPEvent) {
+    func recordInApppurchaseEvent(event: OFIAPEvent) {
         OneFlowLog("IAPObserver: Record New event")
         self.delegate?.newIAPEventRecorded(event)
         self.eventArray.removeAll(where: { $0.productID == event.productID })
@@ -107,7 +107,7 @@ final class InAppPurchaseEventsController: NSObject {
         }
     }
 }
-extension InAppPurchaseEventsController: SKProductsRequestDelegate {
+extension OFInAppPurchaseEventsController: SKProductsRequestDelegate {
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         response.products.forEach { (product) in
             
@@ -134,13 +134,13 @@ class PaymentQueueObserver: NSObject, SKPaymentTransactionObserver {
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         OneFlowLog("IAPObserver: updatedTransactions")
         
-        var eventArray = [IAPEvent]()
+        var eventArray = [OFIAPEvent]()
         for transaction in transactions {
             
             switch transaction.transactionState {
             case .purchased:
                 OneFlowLog("IAPObserver: purchased")
-                let event = IAPEvent(productID: transaction.payment.productIdentifier, quantity: transaction.payment.quantity, price: nil, transactionIdentifier: transaction.transactionIdentifier, transactionDate: transaction.transactionDate)
+                let event = OFIAPEvent(productID: transaction.payment.productIdentifier, quantity: transaction.payment.quantity, price: nil, transactionIdentifier: transaction.transactionIdentifier, transactionDate: transaction.transactionDate)
                 eventArray.append(event)
                 break
             case .failed:

@@ -24,8 +24,8 @@ enum OneFlowEnvironment: String {
     }
 }
 
-final class ProjectDetailsController: NSObject {
-    static let shared = ProjectDetailsController()
+final class OFProjectDetailsController: NSObject {
+    static let shared = OFProjectDetailsController()
     
     var currentEnviromment: OneFlowEnvironment = .prod
     var appKey: String! {
@@ -37,15 +37,15 @@ final class ProjectDetailsController: NSObject {
             }
         }
     }
-    
+
     var isSuveryEnabled: Bool = true
-    
+
     var deviceID: String! {
         get {
             return UIDevice.current.identifierForVendor?.uuidString
         }
     }
-    
+
     var uniqID: String! {
         get {
             if let str = UserDefaults.standard.value(forKey: "uniqIDString") as? String {
@@ -57,7 +57,7 @@ final class ProjectDetailsController: NSObject {
             }
         }
     }
-    
+
     var systemID: String! {
         get {
             if let str = UserDefaults.standard.value(forKey: "systemID") as? String {
@@ -69,7 +69,7 @@ final class ProjectDetailsController: NSObject {
             }
         }
     }
-    
+
     var analytic_user_id: String?
     var analytics_session_id: String?
     
@@ -115,8 +115,8 @@ final class ProjectDetailsController: NSObject {
         if let details = self.newUserData {
             finalParameter["parameters"] =  details
         }
-        OneFlowLog("Calling log user")
-        FBAPIController().logUser(finalParameter) { isSuccess, error, data in
+        OneFlowLog("Calling loguser")
+        OFAPIController().logUser(finalParameter) { isSuccess, error, data in
             if isSuccess == true, let data = data {
                 do {
                     let loggedUser = try JSONDecoder().decode(LogUserResponse.self, from: data)
@@ -140,6 +140,4 @@ final class ProjectDetailsController: NSObject {
             }
         }
     }
-    
-    
 }

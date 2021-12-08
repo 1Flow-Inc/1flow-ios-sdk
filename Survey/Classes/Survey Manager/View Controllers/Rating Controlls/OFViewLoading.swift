@@ -8,10 +8,10 @@
 import Foundation
 import UIKit
 
-protocol UIViewLoading {}
-extension UIView : UIViewLoading {}
+protocol OFUIViewLoading {}
+extension UIView : OFUIViewLoading {}
 
-extension UIViewLoading where Self : UIView {
+extension OFUIViewLoading where Self : UIView {
 
   static func loadFromNib() -> Self {
     let nibName = "\(self)".split{$0 == "."}.map(String.init).last!

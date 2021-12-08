@@ -12,7 +12,7 @@ struct AddUserRequest: Codable {
     var device: DeviceDetails
     var location: LocationDetails?
     var location_check: Bool = true
-    var mode = ProjectDetailsController.shared.currentEnviromment.rawValue
+    var mode = OFProjectDetailsController.shared.currentEnviromment.rawValue
     
     struct DeviceDetails:Codable {
         var os: String

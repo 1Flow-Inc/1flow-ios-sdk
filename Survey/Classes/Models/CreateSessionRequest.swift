@@ -17,7 +17,7 @@ struct CreateSessionRequest: Codable {
     var app_version: String?
     var app_build_number: String?
     var library_version: String?
-    var mode = ProjectDetailsController.shared.currentEnviromment.rawValue
+    var mode = OFProjectDetailsController.shared.currentEnviromment.rawValue
     
     struct DeviceDetails:Codable {
         var os: String

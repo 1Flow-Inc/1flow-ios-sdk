@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OneToTenView: UIView {
+class OFOneToTenView: UIView {
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewWidth: NSLayoutConstraint!
@@ -34,7 +34,7 @@ class OneToTenView: UIView {
             }
         }
     }
-    weak var delegate: RatingViewProtocol?
+    weak var delegate: OFRatingViewProtocol?
     @IBOutlet weak var lblMinValue: UILabel!
     @IBOutlet weak var lblMaxValue: UILabel!
     var ratingMaxText: String? {
@@ -59,8 +59,8 @@ class OneToTenView: UIView {
         collectionView.layer.borderColor = kBorderColor.cgColor
         collectionView.layer.cornerRadius = 10.0
         let frameworkBundle = Bundle(for: self.classForCoder)
-        let nib = UINib(nibName: "NumberCollectionViewCell", bundle: frameworkBundle)
-        collectionView.register(nib, forCellWithReuseIdentifier: "NumberCollectionViewCell")
+        let nib = UINib(nibName: "OFNumberCollectionViewCell", bundle: frameworkBundle)
+        collectionView.register(nib, forCellWithReuseIdentifier: "OFNumberCollectionViewCell")
         collectionView.delegate = self
         collectionView.dataSource = self   
     }
@@ -82,7 +82,7 @@ class OneToTenView: UIView {
     }
 }
 
-extension OneToTenView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension OFOneToTenView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if self.isForEmoji == true {
             return self.emojiArray?.count ?? 0
@@ -92,7 +92,7 @@ extension OneToTenView: UICollectionViewDelegate, UICollectionViewDataSource, UI
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NumberCollectionViewCell", for: indexPath) as! NumberCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "OFNumberCollectionViewCell", for: indexPath) as! OFNumberCollectionViewCell
         cell.btnNumber.addTarget(self, action: #selector(onSelectButton(_:)), for: .touchUpInside)
         let titleNumber = self.minValue + indexPath.item
         cell.btnNumber.tag = titleNumber

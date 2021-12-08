@@ -1,5 +1,5 @@
 //
-//  RatingViewController.swift
+//  OFRatingViewController.swift
 //  Feedback
 //
 //  Created by Rohan Moradiya on 16/06/21.
@@ -19,10 +19,10 @@ enum RatingStyle {
 
 typealias RatingViewCompletion = ((_ surveyResult: [SurveySubmitRequest.Answer]) -> Void)
 
-class RatingViewController: UIViewController {
+class OFRatingViewController: UIViewController {
     
-    @IBOutlet weak var ratingView: DraggableView!
-    @IBOutlet weak var containerView: RoundedConrnerView!
+    @IBOutlet weak var ratingView: OFDraggableView!
+    @IBOutlet weak var containerView: OFRoundedConrnerView!
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var imgDraggView: UIImageView!
     @IBOutlet weak var dragViewWidthConstraint: NSLayoutConstraint!
@@ -162,7 +162,7 @@ class RatingViewController: UIViewController {
         }
         
         if currentScreen.input?.input_type == "text" {
-            let view = FollowupView.loadFromNib()
+            let view = OFFollowupView.loadFromNib()
             view.delegate = self
             view.placeHolderText = currentScreen.input!.placeholder_text ?? "Write here..."
             view.maxCharsAllowed = currentScreen.input!.max_chars ?? 1000
@@ -171,19 +171,19 @@ class RatingViewController: UIViewController {
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
             
         } else if currentScreen.input?.input_type == "rating" ||  currentScreen.input?.input_type == "rating-5-star" {
-            let view = StarsView.loadFromNib()
+            let view = OFStarsView.loadFromNib()
             view.delegate = self
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
         } else if currentScreen.input?.input_type == "rating-emojis" {
-            let view = OneToTenView.loadFromNib()
+            let view = OFOneToTenView.loadFromNib()
             view.isForEmoji = true
             view.emojiArray = ["☹️", "🙁", "😐", "🙂", "😊"]
             view.delegate = self
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
         } else if currentScreen.input?.input_type == "rating-numerical" {
-            let view = OneToTenView.loadFromNib()
+            let view = OFOneToTenView.loadFromNib()
             view.delegate = self
             view.minValue = 1
             view.maxValue = 5
@@ -192,7 +192,7 @@ class RatingViewController: UIViewController {
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
         } else if currentScreen.input?.input_type == "nps" {
-            let view = OneToTenView.loadFromNib()
+            let view = OFOneToTenView.loadFromNib()
             view.delegate = self
             view.minValue = currentScreen.input?.min_val ?? 0
             view.maxValue = currentScreen.input?.max_val ?? 10
@@ -201,7 +201,7 @@ class RatingViewController: UIViewController {
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
         } else if currentScreen.input?.input_type == "mcq" {
-            let view = MCQView.loadFromNib()
+            let view = OFMCQView.loadFromNib()
             view.delegate = self
             view.currentType = .radioButton
             if let titleArray = currentScreen.input!.choices?.map({ return $0.title }) {
@@ -210,7 +210,7 @@ class RatingViewController: UIViewController {
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
         } else if currentScreen.input?.input_type == "checkbox" {
-            let view = MCQView.loadFromNib()
+            let view = OFMCQView.loadFromNib()
             view.delegate = self
             view.currentType = .checkBox
             if let titleArray = currentScreen.input!.choices?.map({ return $0.title }) {
@@ -221,7 +221,7 @@ class RatingViewController: UIViewController {
         } else if currentScreen.input?.input_type == "thank_you" {
             self.viewPrimaryTitle1.isHidden = true
             self.viewSecondaryTitle.isHidden = true
-            let view = ThankYouView.loadFromNib()
+            let view = OFThankYouView.loadFromNib()
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
             
@@ -372,11 +372,11 @@ class RatingViewController: UIViewController {
     
 }
 
-extension RatingViewController : UIGestureRecognizerDelegate {
+extension OFRatingViewController : UIGestureRecognizerDelegate {
     
 }
 
-extension RatingViewController: RatingViewProtocol {
+extension OFRatingViewController: OFRatingViewProtocol {
     
     func oneToTenViewChangeSelection(_ selectedIndex: Int?) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {

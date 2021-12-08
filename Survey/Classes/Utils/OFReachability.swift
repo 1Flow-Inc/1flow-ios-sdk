@@ -29,7 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
 import SystemConfiguration
 import Foundation
 
-public enum ReachabilityError: Error {
+enum OFReachabilityError: Error {
     case failedToCreateWithAddress(sockaddr, Int32)
     case failedToCreateWithHostname(String, Int32)
     case unableToSetCallback(Int32)
@@ -38,16 +38,16 @@ public enum ReachabilityError: Error {
 }
 
 @available(*, unavailable, renamed: "Notification.Name.reachabilityChanged")
-public let ReachabilityChangedNotification = NSNotification.Name("ReachabilityChangedNotification")
+let OFReachabilityChangedNotification = NSNotification.Name("OFReachabilityChangedNotification")
 
-public extension Notification.Name {
-    static let reachabilityChanged = Notification.Name("reachabilityChanged")
+extension Notification.Name {
+    static let OFreachabilityChanged = Notification.Name("OFreachabilityChanged")
 }
 
-public class Reachability {
+class OFReachability {
 
-    public typealias NetworkReachable = (Reachability) -> ()
-    public typealias NetworkUnreachable = (Reachability) -> ()
+    public typealias NetworkReachable = (OFReachability) -> ()
+    public typealias NetworkUnreachable = (OFReachability) -> ()
 
     @available(*, unavailable, renamed: "Connection")
     public enum NetworkStatus: CustomStringConvertible {
@@ -143,7 +143,7 @@ public class Reachability {
                             targetQueue: DispatchQueue? = nil,
                             notificationQueue: DispatchQueue? = .main) throws {
         guard let ref = SCNetworkReachabilityCreateWithName(nil, hostname) else {
-            throw ReachabilityError.failedToCreateWithHostname(hostname, SCError())
+            throw OFReachabilityError.failedToCreateWithHostname(hostname, SCError())
         }
         self.init(reachabilityRef: ref, queueQoS: queueQoS, targetQueue: targetQueue, notificationQueue: notificationQueue)
     }
@@ -156,7 +156,7 @@ public class Reachability {
         zeroAddress.sa_family = sa_family_t(AF_INET)
 
         guard let ref = SCNetworkReachabilityCreateWithAddress(nil, &zeroAddress) else {
-            throw ReachabilityError.failedToCreateWithAddress(zeroAddress, SCError())
+            throw OFReachabilityError.failedToCreateWithAddress(zeroAddress, SCError())
         }
 
         self.init(reachabilityRef: ref, queueQoS: queueQoS, targetQueue: targetQueue, notificationQueue: notificationQueue)
@@ -167,7 +167,7 @@ public class Reachability {
     }
 }
 
-public extension Reachability {
+extension OFReachability {
 
     // MARK: - *** Notifier methods ***
     func startNotifier() throws {
@@ -210,12 +210,12 @@ public extension Reachability {
 
         if !SCNetworkReachabilitySetCallback(reachabilityRef, callback, &context) {
             stopNotifier()
-            throw ReachabilityError.unableToSetCallback(SCError())
+            throw OFReachabilityError.unableToSetCallback(SCError())
         }
 
         if !SCNetworkReachabilitySetDispatchQueue(reachabilityRef, reachabilitySerialQueue) {
             stopNotifier()
-            throw ReachabilityError.unableToSetDispatchQueue(SCError())
+            throw OFReachabilityError.unableToSetDispatchQueue(SCError())
         }
 
         // Perform an initial check
@@ -253,14 +253,14 @@ public extension Reachability {
     }
 }
 
-fileprivate extension Reachability {
+fileprivate extension OFReachability {
 
     func setReachabilityFlags() throws {
         try reachabilitySerialQueue.sync { [unowned self] in
             var flags = SCNetworkReachabilityFlags()
             if !SCNetworkReachabilityGetFlags(self.reachabilityRef, &flags) {
                 self.stopNotifier()
-                throw ReachabilityError.unableToGetFlags(SCError())
+                throw OFReachabilityError.unableToGetFlags(SCError())
             }
             
             self.flags = flags
@@ -272,7 +272,7 @@ fileprivate extension Reachability {
         let notify = { [weak self] in
             guard let self = self else { return }
             self.connection != .unavailable ? self.whenReachable?(self) : self.whenUnreachable?(self)
-            self.notificationCenter.post(name: .reachabilityChanged, object: self)
+            self.notificationCenter.post(name: .OFreachabilityChanged, object: self)
         }
 
         // notify on the configured `notificationQueue`, or the caller's (i.e. `reachabilitySerialQueue`)
@@ -280,9 +280,9 @@ fileprivate extension Reachability {
     }
 }
 
-extension SCNetworkReachabilityFlags {
+fileprivate extension SCNetworkReachabilityFlags {
 
-    typealias Connection = Reachability.Connection
+    typealias Connection = OFReachability.Connection
 
     var connection: Connection {
         guard isReachableFlagSet else { return .unavailable }
@@ -399,8 +399,8 @@ extension SCNetworkReachabilityFlags {
  - still allow for automatic stopping of the notifier on `deinit`.
  */
 private class ReachabilityWeakifier {
-    weak var reachability: Reachability?
-    init(reachability: Reachability) {
+    weak var reachability: OFReachability?
+    init(reachability: OFReachability) {
         self.reachability = reachability
     }
 }

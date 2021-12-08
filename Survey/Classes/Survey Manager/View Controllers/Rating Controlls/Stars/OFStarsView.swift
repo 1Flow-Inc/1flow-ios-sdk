@@ -7,10 +7,10 @@
 
 import UIKit
 
-class StarsView: UIView {
+class OFStarsView: UIView {
 
     @IBOutlet weak var stackView1: UIStackView!
-    weak var delegate: RatingViewProtocol?
+    weak var delegate: OFRatingViewProtocol?
     
     var selectedButton: UIButton? {
         didSet {

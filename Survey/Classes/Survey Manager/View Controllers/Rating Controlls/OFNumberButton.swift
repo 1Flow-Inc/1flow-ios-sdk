@@ -1,5 +1,5 @@
 //
-//  NumberButton.swift
+//  OFNumberButton.swift
 //  Feedback
 //
 //  Created by Rohan Moradiya on 19/06/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NumberButton: UIButton {
+class OFNumberButton: UIButton {
 
     
     // Only override draw() if you perform custom drawing.

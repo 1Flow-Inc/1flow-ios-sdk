@@ -1,5 +1,5 @@
 //
-//  ScreenTrackingController.swift
+//  OFScreenTrackingController.swift
 //  Feedback
 //
 //  Created by Rohan Moradiya on 26/07/21.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class ScreenTrackingController: NSObject {
+final class OFScreenTrackingController: NSObject {
     
     var currentNavigationController: UINavigationController?
     var currentViewController: UIViewController?

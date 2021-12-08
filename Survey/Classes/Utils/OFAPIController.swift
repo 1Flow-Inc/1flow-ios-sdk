@@ -8,9 +8,9 @@
 import Foundation
 
 typealias APICompletionBlock = ((Bool, Error?, Data?) -> Void)
-final class FBAPIController: NSObject {
+final class OFAPIController: NSObject {
 
-    let kURLGetSurvey = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys?mode=\(ProjectDetailsController.shared.currentEnviromment.rawValue)&platform=iOS"
+    let kURLGetSurvey = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys?mode=\(OFProjectDetailsController.shared.currentEnviromment.rawValue)&platform=iOS"
 
     let kURLSubmitSurvey = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/add_survey_response"
 
@@ -81,7 +81,7 @@ final class FBAPIController: NSObject {
     private func getAPIWith(_ urlString: String, shouldAddHeader: Bool = true, completion: @escaping APICompletionBlock) {
         var request = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "GET"
-        if let appKey = ProjectDetailsController.shared.appKey {
+        if let appKey = OFProjectDetailsController.shared.appKey {
             request.addValue(appKey, forHTTPHeaderField: "one_flow_key")
         }
         OneFlowLog("API Call: \(urlString)")
@@ -102,7 +102,7 @@ final class FBAPIController: NSObject {
         var request = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "POST"
         request.httpBody = parameters
-        if let appKey = ProjectDetailsController.shared.appKey {
+        if let appKey = OFProjectDetailsController.shared.appKey {
             request.addValue(appKey, forHTTPHeaderField: "one_flow_key")
         }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -132,7 +132,7 @@ final class FBAPIController: NSObject {
     }
 }
 
-extension FBAPIController: URLSessionTaskDelegate {
+extension OFAPIController: URLSessionTaskDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
 //        FBLogs("Task finish with error: \(error as Any)")
         if error == nil {

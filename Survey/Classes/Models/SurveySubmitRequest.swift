@@ -14,7 +14,7 @@ struct SurveySubmitRequest: Codable {
     var answers: [Answer]?
     var session_id: String?
     var trigger_event: String?
-    var mode = ProjectDetailsController.shared.currentEnviromment.rawValue
+    var mode = OFProjectDetailsController.shared.currentEnviromment.rawValue
     
     struct Answer: Codable {
         var screen_id: String

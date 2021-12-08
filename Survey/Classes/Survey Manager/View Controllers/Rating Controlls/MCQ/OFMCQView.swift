@@ -7,10 +7,10 @@
 
 import UIKit
 
-class MCQView: UIView {
+class OFMCQView: UIView {
 
     @IBOutlet weak var stackView1: UIStackView!
-    weak var delegate: RatingViewProtocol?
+    weak var delegate: OFRatingViewProtocol?
     @IBOutlet weak var btnFinish: UIButton!
     var currentType:  OFRadioButton.OFRadioButtonType = OFRadioButton.OFRadioButtonType.radioButton
     var allOptions: [String]?
@@ -23,7 +23,6 @@ class MCQView: UIView {
     }
     
     func setupViewWithOptions(_ options: [String], type: OFRadioButton.OFRadioButtonType, parentViewWidth: CGFloat) {
-        OneFlowLog("Setup view with option: \(parentViewWidth)")
         self.currentType = type
         self.allOptions = options
         if type == .checkBox {

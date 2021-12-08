@@ -7,12 +7,12 @@
 
 import UIKit
 
-class FollowupView: UIView {
+class OFFollowupView: UIView {
 
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var lblNumbers: UILabel!
     @IBOutlet weak var btnFinish: UIButton!
-    weak var delegate: RatingViewProtocol?
+    weak var delegate: OFRatingViewProtocol?
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
     var maxCharsAllowed = 1000 {
         didSet {
@@ -74,7 +74,7 @@ class FollowupView: UIView {
     }
 }
 
-extension FollowupView: UITextViewDelegate {
+extension OFFollowupView: UITextViewDelegate {
 
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let finalText = textView.text + text

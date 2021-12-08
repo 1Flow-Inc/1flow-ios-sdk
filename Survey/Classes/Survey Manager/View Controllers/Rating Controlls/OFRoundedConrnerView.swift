@@ -1,5 +1,5 @@
 //
-//  RoundedConrnerView.swift
+//  OFRoundedConrnerView.swift
 //  Feedback
 //
 //  Created by Rohan Moradiya on 16/06/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RoundedConrnerView: UIView {
+class OFRoundedConrnerView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()

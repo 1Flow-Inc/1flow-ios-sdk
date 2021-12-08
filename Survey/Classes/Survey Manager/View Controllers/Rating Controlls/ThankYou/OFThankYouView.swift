@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ThankYouView: UIView {
+class OFThankYouView: UIView {
 
     @IBOutlet weak var animationView: UIView!
     @IBOutlet weak var lblTitle: UILabel!
@@ -24,7 +24,7 @@ class ThankYouView: UIView {
         
         let frameworkBundle = Bundle(for: self.classForCoder)
         
-        guard let imageView = UIImageView.fromGif(frame: animationView.bounds, resourceName: "done", bundle: frameworkBundle) else { return }
+        guard let imageView = UIImageView.fromGif(frame: animationView.bounds, resourceName: "OFdone", bundle: frameworkBundle) else { return }
         animationView.addSubview(imageView)
         imageView.animationDuration = 1.0
         imageView.animationRepeatCount = 1

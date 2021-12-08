@@ -1,5 +1,5 @@
 import XCTest
-import 1Flow
+import _1Flow
 
 class Tests: XCTestCase {
     

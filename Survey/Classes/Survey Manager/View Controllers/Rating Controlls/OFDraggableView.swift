@@ -1,5 +1,5 @@
 //
-//  DraggableView.swift
+//  OFDraggableView.swift
 //  Feedback
 //
 //  Created by Rohan Moradiya on 14/08/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DraggableView: UIView {
+class OFDraggableView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()        

@@ -21,8 +21,6 @@ extension UIImage {
         }
         context.clear(newRect)
         context.saveGState()
-//        let radius: CGFloat = 6.0
-//        let shapePath = UIBezierPath(roundedRect: newRect, cornerRadius: radius)
         let shapePath = UIBezierPath(ovalIn: newRect.insetBy(dx: borderWidth/2, dy: borderWidth/2))
         
         shapePath.lineWidth = borderWidth
@@ -49,7 +47,6 @@ extension UIImage {
         }
         context.clear(newRect)
         context.saveGState()
-//        let radius: CGFloat = 6.0
         let shapePath = UIBezierPath(ovalIn: newRect.insetBy(dx: borderWidth/2, dy: borderWidth/2))
         shapePath.lineWidth = borderWidth
         UIColor.white.setFill()
@@ -77,7 +74,6 @@ extension UIImage {
         
         context.setFillColor(UIColor.clear.cgColor)
         context.saveGState()
-//        let radius: CGFloat = 6.0
         let shapePath = UIBezierPath(ovalIn: newRect.insetBy(dx: borderWidth/2, dy: borderWidth/2))
         shapePath.lineWidth = borderWidth
         UIColor.white.setFill()
