@@ -4,15 +4,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "1Flow",
+    name: "OneFlow",
     platforms: [
-           .iOS(.v12),
+           .iOS(.v13)
        ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
-            name: "1Flow",
-            targets: ["1Flow"]),
+            name: "OneFlow",
+            targets: ["OneFlow"]),
     ],
    
     dependencies: [
@@ -22,8 +22,8 @@ let package = Package(
     
     targets: [
         .target(
-            name: "1Flow",
-            path: "Survey/Classes")
+            name: "OneFlow",
+            path: "Classes")
     ]
     
 )
