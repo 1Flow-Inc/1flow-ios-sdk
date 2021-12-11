@@ -24,9 +24,19 @@ let package = Package(
         .target(
             name: "OneFlow",
             path: "Survey",
+            exclude: [
+                "1Flow",
+                "1Flow.podspec",
+                "Example",
+                "LICENSE",
+                "Purchase",
+                "Purchase.podspec",
+                "Survey.podspec"
+            ],
             resources: [
                 .process("Assets/OFdone.gif")
-            ])
+            ]),
+        
         
     ]
 )
