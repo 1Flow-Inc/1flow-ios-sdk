@@ -44,7 +44,7 @@
                             <rect key="frame" x="0.0" y="79" width="414" height="29"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dcZ-XD-uRM" customClass="OFRoundedConrnerView" customModule="Feedback" customModuleProvider="target">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dcZ-XD-uRM" customClass="OBJCOFRoundedConrnerView">
                             <rect key="frame" x="0.0" y="29" width="414" height="79"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uze-xR-ioR">

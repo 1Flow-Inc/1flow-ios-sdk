@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+@objc(OBJCOFNumberButton)
 class OFNumberButton: UIButton {
 
     
