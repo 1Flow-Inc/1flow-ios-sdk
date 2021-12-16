@@ -7,6 +7,7 @@
 
 import UIKit
 
+@objc(OBJCOFRoundedConrnerView)
 class OFRoundedConrnerView: UIView {
 
     override func layoutSubviews() {
