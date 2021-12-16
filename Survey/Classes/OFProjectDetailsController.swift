@@ -27,7 +27,7 @@ enum OneFlowEnvironment: String {
 final class OFProjectDetailsController: NSObject {
     static let shared = OFProjectDetailsController()
     
-    var currentEnviromment: OneFlowEnvironment = .dev
+    var currentEnviromment: OneFlowEnvironment = .prod
     var appKey: String! {
         didSet {
             if let oldAppKey = UserDefaults.standard.value(forKey: "OldAppKey") as? String {

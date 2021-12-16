@@ -92,15 +92,15 @@ final class OFAPIController: NSObject {
                 return
             }
             
-            do {
-                if let data = data {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                        OneFlowLog(json)
-                    }
-                }
-            } catch {
-                OneFlowLog("API Call: \(urlString) - JSONParser Failed: \(error.localizedDescription)")
-            }
+//            do {
+//                if let data = data {
+//                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
+//                        OneFlowLog(json)
+//                    }
+//                }
+//            } catch {
+//                OneFlowLog("API Call: \(urlString) - JSONParser Failed: \(error.localizedDescription)")
+//            }
             
             OneFlowLog("API Call: \(urlString) - Success")
             completion(true, nil, data)
@@ -126,15 +126,15 @@ final class OFAPIController: NSObject {
                 return
             }
             OneFlowLog("API Call: \(urlString) - Success")
-            do {
-                if let data = data {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                        OneFlowLog(json)
-                    }
-                }
-            } catch {
-                OneFlowLog("API Call: \(urlString) - JSONParser Failed: \(error.localizedDescription)")
-            }
+//            do {
+//                if let data = data {
+//                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
+//                        OneFlowLog(json)
+//                    }
+//                }
+//            } catch {
+//                OneFlowLog("API Call: \(urlString) - JSONParser Failed: \(error.localizedDescription)")
+//            }
             
             completion(true, nil, data)
             
