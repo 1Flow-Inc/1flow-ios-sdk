@@ -31,11 +31,11 @@
 
 ## About The 1Flow
 
-1Flow is iOS Library for Analytics and Getting Feedback from your users. 1Flow is very easy to integrate and use in your project. Read More from [1Flow Dashboard](https://google.com)
+1Flow is iOS Library for Analytics and Getting Feedback from your users. 1Flow is very easy to integrate and use in your project. Read More from [1Flow Dashboard](https://1flow.app)
 
 <!-- GETTING STARTED -->
 ## Getting Started
-You can install 1Flow Library by using CocoaPods. To use the 1Flow, first you need to register your application on  [1Flow Dashboard](https://google.com). Once you register your application, you will get your ```1flow_app_key```. Using this key, you can configure 1Flow SDK.
+You can install 1Flow Library by using CocoaPods. To use the 1Flow, first you need to register your application on  [1Flow Dashboard](https://1flow.app). Once you register your application, you will get your ```1flow_app_key```. Using this key, you can configure 1Flow SDK.
 
 
 <!-- REQUIREMENTS -->
@@ -46,6 +46,7 @@ iOS 11.0 and Above
 <!-- INSTALLATION -->
 ### Installation
 
+### 1.Installation using CocoaPods
 1Flow is available through [CocoaPods](https://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
@@ -54,9 +55,14 @@ pod '1Flow'
 ```
 Run ```pod install```. Open your *.xcworkspace project file.
 
+### 2. Installation using Swift Package Manager
+1Flow is also available through [Swift Package Manager](https://developer.apple.com/documentation/swift_packages/adding_package_dependencies_to_your_app)
+In Xcode, select File > Swift Packages > Add Package Dependency.
+Follow the prompt and add https://github.com/1Flow-Inc/1flow-ios-sdk github url.
+
 <!-- HOW TO USE -->
 ## How to use
-- Get ```1flow_app_key``` from  [1Flow Dashboard](https://google.com) 
+- Get ```1flow_app_key``` from  [1Flow Dashboard](https://1flow.app) 
 - You can configure 1Flow SDK on Application launch and track the events like below. Check Swift or Objective C respective code. 
 
 <!-- SWIFT -->
@@ -71,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        FeedbackController.configure("1flow_app_key")
+        OneFlow.configure("1flow_app_key")
         .
         .
         .
@@ -79,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 **Tracking Events**
 ```swift
 let parameters = ["param1": "value1", "param2": "value2"]
-FeedbackController.recordEventName("event_name", parameters: parameters)
+OneFlow.recordEventName("event_name", parameters: parameters)
 ```
 here, parameters is optional. pass ```nil``` if you dont want any parameters to send with event. 
 
@@ -94,7 +100,7 @@ here, parameters is optional. pass ```nil``` if you dont want any parameters to 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application
-    [FeedbackController configure:@"1flow_app_key"];
+    [OneFlow configure:@"1flow_app_key"];
     .
     .
     .
@@ -102,17 +108,17 @@ here, parameters is optional. pass ```nil``` if you dont want any parameters to 
 **Tracking Events**
 ```objc
 NSDictionary *parameters = @{@"param1": @"value1", @"param2": @"value2"};
-[FeedbackController recordEventName:@"event_name" parameters:parameters];
+[OneFlow recordEventName:@"event_name" parameters:parameters];
 ```
 here, parameters is optional. pass ```nil``` if you dont want any parameters to send with event. 
 
 
-**Visit  [1Flow Dashboard](https://google.com) to check for incoming events. It might takes upto 2 minutes to processed and to get visible on Dashboard.**
+**Visit  [1Flow Dashboard](https://1flow.app) to check for incoming events. It might takes upto 2 minutes to processed and to get visible on Dashboard.**
 
 <!-- HOW TO GET FEEDBACK FROM USER -->
 ## How to get feedback from user
 
-- To get the user's feedback, first you need to create Surveys on [1Flow Dashboard](https://google.com). Survey will have one or more screens. Each Survey is mapped with ``trigger_event``. When you Recrod any event, SDK will check for the survey which is mapped with recorded event. If any Survey found for recorded event, then SDK will prompt that survey to user. Your Application will continue running in background until user finish or close the survey. When Survey screen is opened, Your application's UI will be blocked by Survey Screen. Hence It will be Developer's responsibility to do not Record such events when Your application is in such crytical state where it immediately require user's input. 
+- To get the user's feedback, first you need to create Surveys on [1Flow Dashboard](https://1flow.app). Survey will have one or more screens. Each Survey is mapped with ``trigger_event``. When you Recrod any event, SDK will check for the survey which is mapped with recorded event. If any Survey found for recorded event, then SDK will prompt that survey to user. Your Application will continue running in background until user finish or close the survey. When Survey screen is opened, Your application's UI will be blocked by Survey Screen. Hence It will be Developer's responsibility to do not Record such events when Your application is in such crytical state where it immediately require user's input. 
 
 - Each Survey will be triggered only once until user finish it by giving feedback. If user close survey without giving Feedback, then on next triggered event, it will re-prompt.
 
