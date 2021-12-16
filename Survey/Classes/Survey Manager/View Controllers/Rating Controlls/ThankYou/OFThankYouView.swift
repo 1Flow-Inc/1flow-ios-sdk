@@ -7,6 +7,7 @@
 
 import UIKit
 
+@objc(OBJCOFThankYouView)
 class OFThankYouView: UIView {
 
     @IBOutlet weak var animationView: UIView!
@@ -22,9 +23,9 @@ class OFThankYouView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        let frameworkBundle = Bundle(for: self.classForCoder)
+//        let frameworkBundle = Bundle(for: self.classForCoder)
         
-        guard let imageView = UIImageView.fromGif(frame: animationView.bounds, resourceName: "OFdone", bundle: frameworkBundle) else { return }
+        guard let imageView = UIImageView.fromGif(frame: animationView.bounds, resourceName: "OFdone", bundle: OneFlowBundle.bundleForObject(self)) else { return }
         animationView.addSubview(imageView)
         imageView.animationDuration = 1.0
         imageView.animationRepeatCount = 1

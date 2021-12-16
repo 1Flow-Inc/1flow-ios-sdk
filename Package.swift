@@ -4,15 +4,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "OneFlow",
+    name: "_1Flow",
     platforms: [
         .iOS(.v13)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
-            name: "OneFlow",
-            targets: ["OneFlow"]),
+            name: "_1Flow",
+            targets: ["_1Flow"]),
     ],
     
     dependencies: [
@@ -22,7 +22,7 @@ let package = Package(
     
     targets: [
         .target(
-            name: "OneFlow",
+            name: "_1Flow",
             path: "Survey",
             exclude: [
                 "1Flow",
@@ -34,7 +34,7 @@ let package = Package(
                 "Survey.podspec"
             ],
             resources: [
-                .process("Assets/OFdone.gif")
+                .process("Resources/OFdone.gif")
             ]),
         
         

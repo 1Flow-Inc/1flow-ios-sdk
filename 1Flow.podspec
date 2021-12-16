@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = '1Flow'
-  s.version          = '0.1.18'
+  s.version          = '0.1.23'
   s.summary          = '1Flow Framework'
 
 # This description is used to generate tags and improve search results.
@@ -40,7 +40,7 @@ Pod::Spec.new do |s|
   # s.dependency 'AFNetworking', '~> 2.3'
   s.subspec 'Survey' do |survey|
       survey.source_files = 'Survey/Classes/**/*'
-      survey.resources = 'Survey/Assets/**/*'
+      survey.resources = 'Survey/Resources/**/*'
     end
   s.subspec 'Purchase' do |purchase|
       purchase.source_files = 'Purchase/Classes/**/*'

@@ -92,6 +92,16 @@ final class OFAPIController: NSObject {
                 return
             }
             
+            do {
+                if let data = data {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
+                        OneFlowLog(json)
+                    }
+                }
+            } catch {
+                OneFlowLog("API Call: \(urlString) - JSONParser Failed: \(error.localizedDescription)")
+            }
+            
             OneFlowLog("API Call: \(urlString) - Success")
             completion(true, nil, data)
             

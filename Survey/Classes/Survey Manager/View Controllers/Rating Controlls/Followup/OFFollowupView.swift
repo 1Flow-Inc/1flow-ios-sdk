@@ -7,6 +7,7 @@
 
 import UIKit
 
+@objc(OBJCOFFollowupView)
 class OFFollowupView: UIView {
 
     @IBOutlet weak var textView: UITextView!

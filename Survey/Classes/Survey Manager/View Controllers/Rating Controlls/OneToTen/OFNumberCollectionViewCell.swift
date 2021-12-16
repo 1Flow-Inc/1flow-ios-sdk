@@ -7,6 +7,7 @@
 
 import UIKit
 
+@objc(OBJCOFNumberCollectionViewCell)
 class OFNumberCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var btnNumber: OFNumberButton!

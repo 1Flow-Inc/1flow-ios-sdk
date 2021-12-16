@@ -7,6 +7,7 @@
 
 import UIKit
 
+@objc(OBJCOFStarsView)
 class OFStarsView: UIView {
 
     @IBOutlet weak var stackView1: UIStackView!

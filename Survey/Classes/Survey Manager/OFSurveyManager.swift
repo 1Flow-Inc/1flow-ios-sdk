@@ -238,8 +238,7 @@ final class OFSurveyManager: NSObject {
             self.surveyWindow?.isHidden = false
             self.surveyWindow?.windowLevel = .alert
             
-            let frameworkBundle = Bundle(for: self.classForCoder)
-            let controller = OFRatingViewController(nibName: "OFRatingViewController", bundle: frameworkBundle)
+            let controller = OFRatingViewController(nibName: "OFRatingViewController", bundle: OneFlowBundle.bundleForObject(self))
             controller.modalPresentationStyle = .overFullScreen
             controller.view.backgroundColor = UIColor.clear
             controller.allScreens = screens

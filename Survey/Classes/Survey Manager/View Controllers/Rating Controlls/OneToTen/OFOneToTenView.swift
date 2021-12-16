@@ -7,6 +7,7 @@
 
 import UIKit
 
+@objc(OBJCOFOneToTenView)
 class OFOneToTenView: UIView {
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -58,8 +59,8 @@ class OFOneToTenView: UIView {
         collectionView.layer.borderWidth = 0.5
         collectionView.layer.borderColor = kBorderColor.cgColor
         collectionView.layer.cornerRadius = 10.0
-        let frameworkBundle = Bundle(for: self.classForCoder)
-        let nib = UINib(nibName: "OFNumberCollectionViewCell", bundle: frameworkBundle)
+//        let frameworkBundle = Bundle(for: self.classForCoder)
+        let nib = UINib(nibName: "OFNumberCollectionViewCell", bundle: OneFlowBundle.bundleForObject(self))
         collectionView.register(nib, forCellWithReuseIdentifier: "OFNumberCollectionViewCell")
         collectionView.delegate = self
         collectionView.dataSource = self   

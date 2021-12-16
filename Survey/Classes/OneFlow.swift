@@ -29,6 +29,7 @@ public final class OneFlow: NSObject {
         OneFlowLog("1Flow configuration started")
         if OFProjectDetailsController.shared.appKey == nil {
             OFProjectDetailsController.shared.appKey = appKey
+            OFProjectDetailsController.shared.currentEnviromment = .dev
             shared.setupOnce()
             shared.setupReachability()
         } else {

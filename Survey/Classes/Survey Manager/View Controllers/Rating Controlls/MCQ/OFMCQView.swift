@@ -7,6 +7,7 @@
 
 import UIKit
 
+@objc(OBJCOFMCQView)
 class OFMCQView: UIView {
 
     @IBOutlet weak var stackView1: UIStackView!

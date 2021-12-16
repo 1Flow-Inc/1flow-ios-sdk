@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Survey'
-  s.version          = '0.1.18'
+  s.version          = '0.1.23'
   s.summary          = 'Survey for the app'
 
 # This description is used to generate tags and improve search results.
@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '11.0'
   s.swift_version = '5'
   s.source_files = 'Survey/Classes/**/*'
-  s.resources = 'Survey/Assets/**/*'
+  s.resources = 'Survey/Resources/**/*'
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
