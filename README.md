@@ -123,9 +123,3 @@ here, parameters is optional. pass ```nil``` if you dont want any parameters to 
 - Each Survey will be triggered only once until user finish it by giving feedback. If user close survey without giving Feedback, then on next triggered event, it will re-prompt.
 
 - If user Uninstall and Re-Install the application, then It will be considered as new user. Here it will open the survey on next triggered event.
-
-
-<!-- LICENSE -->
-## License
-
-1Flow is available under the MIT license. See the LICENSE file for more info.

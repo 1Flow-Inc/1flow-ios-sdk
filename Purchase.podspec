@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Purchase'
-  s.version          = '0.1.25'
+  s.version          = '0.1.26'
   s.summary          = 'InApp purchase with local receipt verification.'
 
 # This description is used to generate tags and improve search results.

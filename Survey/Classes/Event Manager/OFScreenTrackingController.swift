@@ -1,9 +1,16 @@
+// Copyright 2021 1Flow, Inc.
 //
-//  OFScreenTrackingController.swift
-//  Feedback
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//  Created by Rohan Moradiya on 26/07/21.
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 import Foundation
 import UIKit
@@ -15,14 +22,10 @@ final class OFScreenTrackingController: NSObject {
     var currentTabbarController: UITabBarController?
     
     func startTacking() {
-//        let navigationController: UINavigationController
-
         OneFlowLog("startTacking")
         DispatchQueue.main.async {
             self.getCurrentViewController()
         }
-        
-        
     }
     
     func getCurrentViewController() {
@@ -35,13 +38,11 @@ final class OFScreenTrackingController: NSObject {
             while let presentedViewController = topController.presentedViewController {
                 topController = presentedViewController
             }
-            
             self.setupObserversFromViewCotnroller(topController)
         }
     }
     
     func setupObserversFromViewCotnroller(_ viewController: UIViewController) {
-        
         if viewController.isKind(of: UINavigationController.self) {
             let navigationController = viewController as! UINavigationController
             self.startObserverForNavigationController(navigationController)
@@ -53,15 +54,12 @@ final class OFScreenTrackingController: NSObject {
             if let navigationController = viewController.navigationController {
                 self.startObserverForNavigationController(navigationController)
             }
-            
         }
     }
     
     func startObserverForNavigationController(_ navigationController: UINavigationController) {
-        
         if self.currentNavigationController != nil {
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "UINavigationControllerWillShowViewControllerNotification"), object: self.currentNavigationController)
-//            self.currentNavigationController?.removeObserver(self, forKeyPath: "UINavigationControllerWillShowViewControllerNotification")
         }
         
         self.currentNavigationController = navigationController

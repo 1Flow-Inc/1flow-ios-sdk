@@ -1,16 +1,21 @@
+// Copyright 2021 1Flow, Inc.
 //
-//  OneFlow.swift
-//  Feedback
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//  Created by Rohan Moradiya on 16/06/21.
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 import Foundation
 import UIKit
 
-
 public final class OneFlow: NSObject {
-    
     private static let shared = OneFlow()
     private var networkTimer: Timer?
     private let eventManager = OFEventManager()
@@ -43,9 +48,7 @@ public final class OneFlow: NSObject {
         OFAPIController().addUser(addUserRequest) { isSuccess, error, data in
             if isSuccess == true, let data = data {
                 do {
-                    
                     let surveyListResponse = try JSONDecoder().decode(AddUserResponse.self, from: data)
-                    
                     if surveyListResponse.success == 200, let userID = surveyListResponse.result?.analytic_user_id {
                         
                         OneFlowLog("Add user - Success")
@@ -116,14 +119,13 @@ public final class OneFlow: NSObject {
     private func setupReachability() {
         OneFlowLog("Network Objerver - Starting")
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(note:)), name: .OFreachabilityChanged, object: reachability)
-        do{
+        do {
             try reachability.startNotifier()
             OneFlowLog("Network Objerver - Success")
-        }catch{
+        } catch {
             OneFlowLog("Network Objerver - Failed")
         }
     }
-    
     
     @objc class public func recordEventName(_ eventName: String, parameters: [String: Any]?) {
         DispatchQueue.global().async {

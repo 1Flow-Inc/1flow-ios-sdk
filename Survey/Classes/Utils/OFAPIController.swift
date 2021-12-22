@@ -1,9 +1,16 @@
+// Copyright 2021 1Flow, Inc.
 //
-//  APIController.swift
-//  Feedback
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//  Created by Rohan Moradiya on 12/07/21.
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 import Foundation
 
@@ -91,17 +98,6 @@ final class OFAPIController: NSObject {
                 completion(false, error, nil)
                 return
             }
-            
-//            do {
-//                if let data = data {
-//                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-//                        OneFlowLog(json)
-//                    }
-//                }
-//            } catch {
-//                OneFlowLog("API Call: \(urlString) - JSONParser Failed: \(error.localizedDescription)")
-//            }
-            
             OneFlowLog("API Call: \(urlString) - Success")
             completion(true, nil, data)
             
@@ -126,16 +122,6 @@ final class OFAPIController: NSObject {
                 return
             }
             OneFlowLog("API Call: \(urlString) - Success")
-//            do {
-//                if let data = data {
-//                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-//                        OneFlowLog(json)
-//                    }
-//                }
-//            } catch {
-//                OneFlowLog("API Call: \(urlString) - JSONParser Failed: \(error.localizedDescription)")
-//            }
-            
             completion(true, nil, data)
             
         }.resume()
