@@ -29,8 +29,6 @@ let package = Package(
                 "1Flow.podspec",
                 "Example",
                 "LICENSE",
-                "Purchase",
-                "Purchase.podspec",
                 "Survey.podspec"
             ],
             resources: [

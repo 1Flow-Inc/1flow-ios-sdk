@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Survey'
-  s.version          = '0.1.26'
+  s.version          = '0.1.27'
   s.summary          = 'Survey for the app'
 
 # This description is used to generate tags and improve search results.
@@ -20,12 +20,9 @@ Pod::Spec.new do |s|
   s.description      = 'Survey for app with different types of UI elements.'
 
   s.homepage         = 'https://github.com/1Flow-Inc/1Flow'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
-  s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'rohantryskybox' => 'rohan@tryskybox.com' }
+  s.license          = { :type => 'Apache', :file => 'LICENSE' }
+  s.author           = '1Flow Inc.'
   s.source           = { :git => 'https://github.com/1Flow-Inc/1Flow.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
-
   s.ios.deployment_target = '11.0'
   s.swift_version = '5'
   s.source_files = 'Survey/Classes/**/*'

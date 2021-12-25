@@ -30,7 +30,6 @@
 /* Begin PBXFileReference section */
 		0892DBABDE71D5D7BF1F3F7E /* Pods-1Flow_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1Flow_Tests.debug.xcconfig"; path = "Target Support Files/Pods-1Flow_Tests/Pods-1Flow_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		4385C2A926BB994A008619AC /* Survey.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = Survey.podspec; path = ../Survey.podspec; sourceTree = "<group>"; };
-		4385C2AA26BB994A008619AC /* Purchase.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = Purchase.podspec; path = ../Purchase.podspec; sourceTree = "<group>"; };
 		4F23405AE36D6647A29A8B9F /* Pods-1Flow_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1Flow_Tests.release.xcconfig"; path = "Target Support Files/Pods-1Flow_Tests/Pods-1Flow_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		5D90DEBFAC69FB42E4D2BFA1 /* Pods_1Flow_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_1Flow_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD01AFB9204008FA782 /* 1Flow_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 1Flow_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -144,7 +143,6 @@
 			isa = PBXGroup;
 			children = (
 				C6F53CCB08F67F9DDF265694 /* 1Flow.podspec */,
-				4385C2AA26BB994A008619AC /* Purchase.podspec */,
 				4385C2A926BB994A008619AC /* Survey.podspec */,
 				EB8DCF240D85B640A67F1FE1 /* README.md */,
 				732D123B7093B43BCB54EB11 /* LICENSE */,
