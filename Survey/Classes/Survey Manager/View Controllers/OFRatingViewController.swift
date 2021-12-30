@@ -426,9 +426,13 @@ extension OFRatingViewController: OFRatingViewProtocol {
     
     func followupViewEnterTextWith(_ text: String?) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+            
             if let inputString = text, let screen = self.allScreens?[self.currentScreenIndex] {
-                let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: inputString, answer_index: nil)
-                self.surveyResult.append(answer)
+                let finalString = inputString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                if finalString.count > 0 {
+                    let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: inputString, answer_index: nil)
+                    self.surveyResult.append(answer)
+                }
                 self.presentNextScreen()
             }
         }

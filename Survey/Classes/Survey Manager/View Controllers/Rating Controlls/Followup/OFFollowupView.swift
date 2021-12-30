@@ -27,7 +27,14 @@ class OFFollowupView: UIView {
             self.lblNumbers.text = "\(self.enteredText?.count ?? 0)/\(self.maxCharsAllowed)"
         }
     }
-    var minCharsAllowed = 5
+    var minCharsAllowed = 5 {
+        didSet {
+            if minCharsAllowed == 0 {
+                self.btnFinish.alpha = 1.0
+                self.btnFinish.isHidden = false
+            }
+        }
+    }
     var placeHolderText = "Write here..." {
         didSet {
             self.placeholderLabel.text = placeHolderText
@@ -38,7 +45,7 @@ class OFFollowupView: UIView {
     var enteredText: String? {
         didSet {
             self.lblNumbers.text = "\(self.enteredText?.count ?? 0)/\(self.maxCharsAllowed)"
-            if enteredText?.count ?? 0 > minCharsAllowed {
+            if enteredText?.count ?? 0 >= minCharsAllowed {
                 if self.btnFinish.isHidden == true {
                     self.btnFinish.alpha = 0.0
                     self.btnFinish.isHidden = false
@@ -105,5 +112,4 @@ extension OFFollowupView: UITextViewDelegate {
             }
         }
     }
-    
 }
