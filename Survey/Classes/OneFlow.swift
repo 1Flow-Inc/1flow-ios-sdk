@@ -24,6 +24,8 @@ public final class OneFlow: NSObject {
     }
     let reachability = try! OFReachability(hostname: "www.apple.com")
     
+    var apiController : APIProtocol = OFAPIController()
+    
     @objc public static var enableSurveys: Bool = true {
         didSet {
             OFProjectDetailsController.shared.isSuveryEnabled = enableSurveys
@@ -31,43 +33,45 @@ public final class OneFlow: NSObject {
     }
     
     @objc public class func configure(_ appKey: String) {
-        OneFlowLog("1Flow configuration started")
+        OneFlowLog.writeLog("1Flow configuration started")
         if OFProjectDetailsController.shared.appKey == nil {
             OFProjectDetailsController.shared.appKey = appKey
+            OFProjectDetailsController.shared.setLoglevel(.none)
             shared.setupOnce()
             shared.setupReachability()
         } else {
-            OneFlowLog("1Flow already setup.")
+            OneFlowLog.writeLog("1Flow already setup.")
         }
     }
     
     private func setupOnce() {
         let addUserRequest = AddUserRequest(system_id: OFProjectDetailsController.shared.systemID, device: AddUserRequest.DeviceDetails(os: "iOS", unique_id: OFProjectDetailsController.shared.uniqID, device_id: OFProjectDetailsController.shared.deviceID), location: nil)
-        OneFlowLog("Adding user")
+        OneFlowLog.writeLog("Adding user")
         self.isSetupRunning = true
-        OFAPIController().addUser(addUserRequest) { isSuccess, error, data in
+        self.apiController.addUser(addUserRequest, completion: { isSuccess, error, data in
             if isSuccess == true, let data = data {
                 do {
                     let surveyListResponse = try JSONDecoder().decode(AddUserResponse.self, from: data)
                     if surveyListResponse.success == 200, let userID = surveyListResponse.result?.analytic_user_id {
                         
-                        OneFlowLog("Add user - Success")
+                        OneFlowLog.writeLog("Add user - Success")
                         OFProjectDetailsController.shared.analytic_user_id = userID
                         OneFlow.shared.eventManager.isNetworkReachable = true
                         OneFlow.shared.eventManager.configure()
                         
                     } else {
-                        OneFlowLog("Add user - Failed")
+                        OneFlowLog.writeLog("Add user - Failed")
                     }
                 } catch {
-                    OneFlowLog("Add user - Failed")
-                    OneFlowLog(error)
+                    OneFlowLog.writeLog("Add user - Failed")
+                    OneFlowLog.writeLog(error.localizedDescription)
                 }
             } else {
-                OneFlowLog("Add user - Failed")
+                OneFlowLog.writeLog("Add user - Failed")
             }
             self.isSetupRunning = false
-        }
+        })
+        
     }
 
     @objc func reachabilityChanged(note: Notification) {
@@ -75,7 +79,7 @@ public final class OneFlow: NSObject {
         let reachability = note.object as! OFReachability
         switch reachability.connection {
         case .unavailable:
-            OneFlowLog("Network: Unreachable")
+            OneFlowLog.writeLog("Network: Unreachable")
             OFProjectDetailsController.shared.radioConnectivity = nil
             OFProjectDetailsController.shared.isCarrierConnectivity = false
             
@@ -86,7 +90,7 @@ public final class OneFlow: NSObject {
             networkTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(networkNotAvailable), userInfo: nil, repeats: false)
             break
         default:
-            OneFlowLog("Network: Reachable")
+            OneFlowLog.writeLog("Network: Reachable")
             if reachability.connection.description.lowercased() == "wifi" {
                 OFProjectDetailsController.shared.radioConnectivity = "wireless"
             } else {
@@ -117,13 +121,13 @@ public final class OneFlow: NSObject {
     }
     
     private func setupReachability() {
-        OneFlowLog("Network Objerver - Starting")
+        OneFlowLog.writeLog("Network Objerver - Starting")
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(note:)), name: .OFreachabilityChanged, object: reachability)
         do {
             try reachability.startNotifier()
-            OneFlowLog("Network Objerver - Success")
+            OneFlowLog.writeLog("Network Objerver - Success")
         } catch {
-            OneFlowLog("Network Objerver - Failed")
+            OneFlowLog.writeLog("Network Objerver - Failed")
         }
     }
     
@@ -134,7 +138,7 @@ public final class OneFlow: NSObject {
     }
     
     @objc class public func logUser(_ userID: String, userDetails: [String: Any]?) {
-        OneFlowLog("Log new user")
+        OneFlowLog.writeLog("Log new user")
         shared.eventManager.finishPendingEvents()
         OFProjectDetailsController.shared.newUserID = userID
         OFProjectDetailsController.shared.newUserData = userDetails

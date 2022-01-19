@@ -13,15 +13,22 @@
 // limitations under the License.
 
 import Foundation
-import UIKit
 
+enum OneFlowLogLevel: String {
+    case none
+    case error
+    case warnings
+    case info
+    case verbose
+    
+}
 
-var kPrimaryColor = UIColor(red: 0.36, green: 0.37, blue: 0.93, alpha: 1.0)
-var kPrimaryHightlightColor = kPrimaryColor.withAlphaComponent(0.21)
-let kBorderColor = UIColor(red: 0.76, green: 0.76, blue: 0.76, alpha: 1.0)
-
-let kEventNameFirstAppOpen = "first_open"
-let kEventNameAppUpdate = "app_updated"
-let kEventNameSessionStart = "session_start"
-let kEventNameInAppPurchase = "in_app_purchase"
-let kEventNameSurveyImpression = "survey_impression"
+class OneFlowLog {  
+    
+    class func writeLog(_ logString: Any,_ logLevel: OneFlowLogLevel = .verbose ) {
+        if OFProjectDetailsController.shared.currentLogLevel != .none {
+            print(logString)
+        }
+        
+    }
+}

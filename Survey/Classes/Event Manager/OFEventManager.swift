@@ -27,11 +27,11 @@ final class OFEventManager: NSObject {
     var isNetworkReachable = false
     override init() {
         super.init()
-        OneFlowLog("Event manager init")
+        OneFlowLog.writeLog("Event manager init")
     }
     
     func configure() {
-        OneFlowLog("Event Manager configure")
+        OneFlowLog.writeLog("Event Manager configure")
         self.createAnalyticsSession()
         self.surveyManager.isNetworkReachable = true
         self.surveyManager.configureSurveys()
@@ -90,12 +90,12 @@ final class OFEventManager: NSObject {
             let connectivity = CreateSessionRequest.Connectivity(carrier: (OFProjectDetailsController.shared.isCarrierConnectivity == true) ? carrierName : nil, radio: OFProjectDetailsController.shared.radioConnectivity)
             
             let sessionRequest: CreateSessionRequest = CreateSessionRequest(analytic_user_id: OFProjectDetailsController.shared.analytic_user_id ?? "", system_id: OFProjectDetailsController.shared.systemID, device: deviceDetails, location: nil, connectivity: connectivity, location_check: true, app_version: self.getAppVersion(), app_build_number: self.getAppBuildNumber(), library_version: libraryVersion)
-            OneFlowLog("OFEventManager - Create Session")
+            OneFlowLog.writeLog("OFEventManager - Create Session")
             OFAPIController().createSession(sessionRequest) { [weak self] isSuccess, error, data in
                 if isSuccess == true, let data = data {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                            OneFlowLog("OFEventManager - Create Session - Success")
+                            OneFlowLog.writeLog("OFEventManager - Create Session - Success")
                             if let result = json["result"] as? [String: Any], let _id = result["_id"] as? String {
                                 OFProjectDetailsController.shared.analytics_session_id = _id
                                 OFProjectDetailsController.shared.logNewUserDetails { _ in
@@ -104,12 +104,12 @@ final class OFEventManager: NSObject {
                                 guard let self = self else { return }
                                 self.startEventManager()
                             } else {
-                                OneFlowLog("OFEventManager - Create Session - Failed")
+                                OneFlowLog.writeLog("OFEventManager - Create Session - Failed")
                             }
                         }
                     } catch {
-                        OneFlowLog("OFEventManager - Create Session - Failed")
-                        OneFlowLog(error)
+                        OneFlowLog.writeLog("OFEventManager - Create Session - Failed")
+                        OneFlowLog.writeLog(error)
                     }
                 }
             }
@@ -167,7 +167,7 @@ final class OFEventManager: NSObject {
     }
     
     private func startUploadTimer() {
-        OneFlowLog("OFEventManager: Timer start")
+        OneFlowLog.writeLog("OFEventManager: Timer start")
         DispatchQueue.main.async { [self] in
             if self.uploadTimer != nil, self.uploadTimer?.isValid == true {
                 self.uploadTimer?.invalidate()
@@ -178,7 +178,7 @@ final class OFEventManager: NSObject {
     }
     
     func recordEvent(_ name: String, parameters: [String: Any]?) {
-        OneFlowLog("OFEventManager: Record Event- name:\(name), parameters: \(parameters as Any)")
+        OneFlowLog.writeLog("OFEventManager: Record Event- name:\(name), parameters: \(parameters as Any)")
         
         /// barrier is used to handle bulk events e.g. log events with loops
         eventModificationQueue.async(flags: .barrier) {
@@ -206,18 +206,18 @@ final class OFEventManager: NSObject {
     }
     
     @objc func saveEventArray() {
-        OneFlowLog("OFEventManager: Save Events")
+        OneFlowLog.writeLog("OFEventManager: Save Events")
         UserDefaults.standard.setValue(self.eventsArray, forKey: "FBPendingEventsList")
     }
     
     @objc func sendEventsToServer() {
-        OneFlowLog("OFEventManager: sendEventsToServer")
+        OneFlowLog.writeLog("OFEventManager: sendEventsToServer")
         var eventsCount = 0
         eventModificationQueue.sync {
             eventsCount = self.eventsArray.count
         }
         if eventsCount > 0 {
-            OneFlowLog("OFEventManager: Sending events to server: \(self.eventsArray.count)")
+            OneFlowLog.writeLog("OFEventManager: Sending events to server: \(self.eventsArray.count)")
             let uploadedEvents = eventsCount
             let finalParameters = ["events": self.eventsArray, "session_id": OFProjectDetailsController.shared.analytics_session_id as Any, "mode": OFProjectDetailsController.shared.currentEnviromment.rawValue] as [String : Any]
             
@@ -225,9 +225,9 @@ final class OFEventManager: NSObject {
                 if isSuccess == true, let data = data {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                            OneFlowLog("OFEventManager: sendEventsToServer - Success")
+                            OneFlowLog.writeLog("OFEventManager: sendEventsToServer - Success")
                             #if DEBUG
-                            OneFlowLog("OFEventManager: Response: \(json)")
+                            OneFlowLog.writeLog("OFEventManager: Response: \(json)")
                             #endif
                             if let status = json["success"] as? Int, status == 200 {
                                 guard let self = self else { return }
@@ -242,16 +242,16 @@ final class OFEventManager: NSObject {
                                 }
                             }
                         } else {
-                            OneFlowLog("OFEventManager: sendEventsToServer - Failed")
+                            OneFlowLog.writeLog("OFEventManager: sendEventsToServer - Failed")
                         }
                     } catch {
-                        OneFlowLog("OFEventManager: sendEventsToServer - Failed")
-                        OneFlowLog(error)
+                        OneFlowLog.writeLog("OFEventManager: sendEventsToServer - Failed")
+                        OneFlowLog.writeLog(error)
                     }
                 }
             }
         } else {
-            OneFlowLog("EventManger: No Events to send")
+            OneFlowLog.writeLog("EventManger: No Events to send")
         }
     }
     
@@ -283,7 +283,7 @@ extension OFEventManager: OFInAppPurchaseEventsDelegate {
             let temp = try JSONSerialization.jsonObject(with: JSONEncoder().encode(event)) as? [String: Any]
             self.recordEvent(kEventNameInAppPurchase, parameters: temp)
         } catch {
-            OneFlowLog(error)
+            OneFlowLog.writeLog(error)
         }
         
     }

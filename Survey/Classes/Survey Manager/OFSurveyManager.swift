@@ -45,18 +45,18 @@ final class OFSurveyManager: NSObject {
             let data = try JSONEncoder().encode(submittedSurveyDetails)
             UserDefaults.standard.setValue(data, forKey: "FBSubmittedSurveys")
         } catch {
-            OneFlowLog("[Error]: Unable to save submitted survey: \(error.localizedDescription)")
+            OneFlowLog.writeLog("[Error]: Unable to save submitted survey: \(error.localizedDescription)")
         }
     }
     
     override init() {
         super.init()
-        OneFlowLog("OFSurveyManager: Started")
+        OneFlowLog.writeLog("OFSurveyManager: Started")
         if let data = UserDefaults.standard.value(forKey: "FBSubmittedSurveys") as? Data {
             do {
                 submittedSurveyDetails = try JSONDecoder().decode([SubmittedSurvey].self, from: data)
             } catch {
-                OneFlowLog("[Error]: Decoding Submitted Survey details: \(error.localizedDescription)")
+                OneFlowLog.writeLog("[Error]: Decoding Submitted Survey details: \(error.localizedDescription)")
             }
             
         }
@@ -93,13 +93,13 @@ final class OFSurveyManager: NSObject {
         }
     }
     private func fetchAllSurvey() {
-        OneFlowLog("Fetch Survey called")
+        OneFlowLog.writeLog("Fetch Survey called")
         if self.surveyList != nil || self.isSurveyFetching == true {
-            OneFlowLog("Survey already Fetched")
+            OneFlowLog.writeLog("Survey already Fetched")
             return
         }
         self.isSurveyFetching = true
-        OneFlowLog("Fetch Survey - Started")
+        OneFlowLog.writeLog("Fetch Survey - Started")
         apiController.getAllSurveys { [weak self] isSuccess, error, data in
             guard let self = self else {
                 return
@@ -111,11 +111,11 @@ final class OFSurveyManager: NSObject {
                     self.surveyList = surveyListResponse
                     self.checkAfterSurveyLoadForExistingEvents()
                 } catch {
-                    OneFlowLog(error)
+                    OneFlowLog.writeLog(error)
                 }
                 
             } else {
-                OneFlowLog(error?.localizedDescription ?? "NA")
+                OneFlowLog.writeLog(error?.localizedDescription ?? "NA")
             }
         }
     }
@@ -137,7 +137,7 @@ final class OFSurveyManager: NSObject {
                         self.startSurvey(triggeredSurvey, eventName: eventName)
                         break
                     } else {
-                        OneFlowLog("Survey already submitted. Do nothing.")
+                        OneFlowLog.writeLog("Survey already submitted. Do nothing.")
                     }
                 }
             }
@@ -149,7 +149,7 @@ final class OFSurveyManager: NSObject {
         if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id && $0.submittedByUserID == OFProjectDetailsController.shared.currentLoggedUserID }) {
 
             if survey.survey_settings?.resurvey_option == false {
-                OneFlowLog("Resurvey option is false")
+                OneFlowLog.writeLog("Resurvey option is false")
                 return false
             }
 
@@ -166,7 +166,7 @@ final class OFSurveyManager: NSObject {
                 case "days":
                     totalInterval = value * 60 * 60 * 24
                 default:
-                    OneFlowLog("retake_select_value is neither of minutes, hours or days")
+                    OneFlowLog.writeLog("retake_select_value is neither of minutes, hours or days")
                     return false
                 }
                 let currentInterval = Int(Date().timeIntervalSince1970)
@@ -174,7 +174,7 @@ final class OFSurveyManager: NSObject {
                     return false
                 }
             } else {
-                OneFlowLog("retake_survey, retake_input_value or retake_select_value not specified")
+                OneFlowLog.writeLog("retake_survey, retake_input_value or retake_select_value not specified")
                 return false
             }
         }
@@ -199,7 +199,7 @@ final class OFSurveyManager: NSObject {
                 if self.validateTheSurvey(triggerredSurvey) == true {
                     self.startSurvey(triggerredSurvey, eventName: eventName)
                 } else {
-                    OneFlowLog("Survey validation not passed")
+                    OneFlowLog.writeLog("Survey validation not passed")
                 }
             }
         } else {
@@ -276,32 +276,32 @@ final class OFSurveyManager: NSObject {
     
     private func submitTheSurveyToServer(_ surveyID: String, surveyResponse:SurveySubmitRequest) {
         
-        OneFlowLog("submitTheSurveyToServer called")
+        OneFlowLog.writeLog("submitTheSurveyToServer called")
         
         if self.isNetworkReachable == false {
-            OneFlowLog("Network not reachable. Returned")
+            OneFlowLog.writeLog("Network not reachable. Returned")
             return
         }
         
         var surveyResponseTemp = surveyResponse
         if surveyResponseTemp.analytic_user_id == nil {
-            OneFlowLog("Survey did not have user")
+            OneFlowLog.writeLog("Survey did not have user")
             guard let userID = OFProjectDetailsController.shared.analytic_user_id else {
-                OneFlowLog("user yet not initialised")
+                OneFlowLog.writeLog("user yet not initialised")
                 return
             }
             surveyResponseTemp.analytic_user_id = userID
         }
         
         if surveyResponseTemp.session_id == nil {
-            OneFlowLog("Survey did not have session id")
+            OneFlowLog.writeLog("Survey did not have session id")
             guard let sessionID = OFProjectDetailsController.shared.analytics_session_id else {
-                OneFlowLog("Session yet not created")
+                OneFlowLog.writeLog("Session yet not created")
                 return
             }
             surveyResponseTemp.session_id = sessionID
         }
-        OneFlowLog("Calling API to submit survey")
+        OneFlowLog.writeLog("Calling API to submit survey")
         apiController.submitSurveyResponse(surveyResponseTemp) { [weak self] isSuccess, error, data in
             
             guard let self = self else {
@@ -317,13 +317,13 @@ final class OFSurveyManager: NSObject {
                 self.pendingSurveySubmission?.removeValue(forKey: surveyID)
                 do {
                     if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                        OneFlowLog(json)
+                        OneFlowLog.writeLog(json)
                     }
                 } catch {
-                    OneFlowLog("Error in response - Submit survey: \(error.localizedDescription)")
+                    OneFlowLog.writeLog("Error in response - Submit survey: \(error.localizedDescription)")
                 }
             } else {
-                OneFlowLog("Error - Submit survey: \(error?.localizedDescription ?? "NA")")
+                OneFlowLog.writeLog("Error - Submit survey: \(error?.localizedDescription ?? "NA")")
             }
         }
     }

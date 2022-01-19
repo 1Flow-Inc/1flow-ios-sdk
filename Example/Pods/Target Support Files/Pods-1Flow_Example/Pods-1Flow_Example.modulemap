@@ -1,0 +1,6 @@
+framework module Pods_1Flow_Example {
+  umbrella header "Pods-1Flow_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

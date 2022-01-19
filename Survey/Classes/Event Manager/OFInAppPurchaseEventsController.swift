@@ -44,9 +44,9 @@ final class OFInAppPurchaseEventsController: NSObject {
     let observer = PaymentQueueObserver()
     
     func startObserver() {
-        OneFlowLog("IAPObserver: Start")
+        OneFlowLog.writeLog("IAPObserver: Start")
         observer.onPurchaseCompletion = {[weak self] eventArray in
-            OneFlowLog("IAPObserver: Called")
+            OneFlowLog.writeLog("IAPObserver: Called")
             guard let self = self else { return }
             var identifires = [String]()
             for event in eventArray {
@@ -63,7 +63,7 @@ final class OFInAppPurchaseEventsController: NSObject {
     }
     
     func recordInApppurchaseEvent(event: OFIAPEvent) {
-        OneFlowLog("IAPObserver: Record New event")
+        OneFlowLog.writeLog("IAPObserver: Record New event")
         self.delegate?.newIAPEventRecorded(event)
         self.eventArray.removeAll(where: { $0.productID == event.productID })
     }
@@ -139,22 +139,22 @@ class PaymentQueueObserver: NSObject, SKPaymentTransactionObserver {
     var onPurchaseCompletion: PaymentObserverComletion?
     
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        OneFlowLog("IAPObserver: updatedTransactions")
+        OneFlowLog.writeLog("IAPObserver: updatedTransactions")
         
         var eventArray = [OFIAPEvent]()
         for transaction in transactions {
             
             switch transaction.transactionState {
             case .purchased:
-                OneFlowLog("IAPObserver: purchased")
+                OneFlowLog.writeLog("IAPObserver: purchased")
                 let event = OFIAPEvent(productID: transaction.payment.productIdentifier, quantity: transaction.payment.quantity, price: nil, transactionIdentifier: transaction.transactionIdentifier, transactionDate: transaction.transactionDate)
                 eventArray.append(event)
                 break
             case .failed:
-                OneFlowLog("IAPObserver: Failed")
+                OneFlowLog.writeLog("IAPObserver: Failed")
                 break
             case .restored:
-                OneFlowLog("IAPObserver: restored")
+                OneFlowLog.writeLog("IAPObserver: restored")
             default:
                 break;
             }

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import UIKit
+import StoreKit
 
 enum RatingStyle {
     case OneToTen
@@ -53,7 +54,9 @@ class OFRatingViewController: UIViewController {
     var currentScreenIndex = -1
     
     private var isClosingAnimationRunning: Bool = false
-    
+    private var shouldShowRating: Bool = false
+    private var shouldOpenUrl: Bool = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 13.0, *) {
@@ -90,7 +93,7 @@ class OFRatingViewController: UIViewController {
             
         }
         if self.currentScreenIndex == -1 {
-            self.presentNextScreen()
+            self.presentNextScreen(nil)
         }
     }
     
@@ -128,20 +131,133 @@ class OFRatingViewController: UIViewController {
     }
     //MARK: -
     
-    fileprivate func presentNextScreen() {
-        self.currentScreenIndex = self.currentScreenIndex + 1
+    fileprivate func presentNextScreen(_ previousAnswer : String?) {
+        if let newIndex = self.getNextQuestionIndex(previousAnswer) {
+            currentScreenIndex = newIndex
+            if self.allScreens!.count > self.currentScreenIndex, let screen = self.allScreens?[self.currentScreenIndex] {
+                self.setupUIAccordingToConfiguration(screen)
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+                    self.progressBar.setProgress(Float(CGFloat(self.currentScreenIndex + 1 )/CGFloat(self.allScreens!.count)), animated: true)
+                }
+            } else {
+                //finish the survey
+                guard let completion = self.completionBlock else { return }
+                self.runCloseAnimation {
+                    completion(self.surveyResult)
+                }
+            }
+        }
+        else {
+            OneFlowLog.writeLog("Data Logic : No need to show next question as rating or open url action is performed")
+        }
+    }
+
+    fileprivate func getNextQuestionIndex(_ previousAnswer : String?) -> Int? {
+        var nextSurveyIndex : Int!
+        if currentScreenIndex == -1 {
+            nextSurveyIndex = currentScreenIndex + 1
+            return nextSurveyIndex
+        }
+        OneFlowDataLogic().getNextAction(currentIndex: currentScreenIndex, allSurveys: self.allScreens!, previousAnswer : previousAnswer,  completion: { (action, nextIndex, urlToOpen) -> Void in
+            if let actionToPerform : String  = action {
+                if actionToPerform == "open-url" {
+                    if let actionUrl : String = urlToOpen {
+                        self.performOpenUrlAction(actionUrl)
+                        return
+                    }
+                }
+                else if actionToPerform == "rating" {
+                    self.performRatingAction()
+                    return
+                }
+                else if actionToPerform == "skipTo" {
+                    if let nextQuestionIndex : Int = nextIndex {
+                        nextSurveyIndex = nextQuestionIndex
+                    }
+                }
+            }
+            else {
+                OneFlowLog.writeLog("Data Logic : No Action detected for this question")
+                nextSurveyIndex = currentScreenIndex + 1
+
+            }
+        })
+        return nextSurveyIndex
+    }
+
+    private func performRatingAction() {
+        currentScreenIndex = -2
+        guard let completion = self.completionBlock else { return }
+        self.runCloseAnimation {
+            self.openRatemePopup()
+            completion(self.surveyResult)
+        }
+    }
+
+    private func openRatemePopup() {
+        SKStoreReviewController.requestReview()
+//        openAppStoreRateMeUrl()
+    }
+
+    private func openAppStoreRateMeUrl(){
         
-        if self.allScreens!.count > self.currentScreenIndex, let screen = self.allScreens?[self.currentScreenIndex] {
-            self.setupUIAccordingToConfiguration(screen)
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-                self.progressBar.setProgress(Float(CGFloat(self.currentScreenIndex + 1 )/CGFloat(self.allScreens!.count)), animated: true)
+        OFAPIController().getAppStoreDetails { [weak self] isSuccess, error, data in
+            guard self != nil else {
+                return
             }
-        } else {
-            //finish the survey
-            guard let completion = self.completionBlock else { return }
-            self.runCloseAnimation {
+            if isSuccess == true, let data = data {
+                do{
+                    let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String : Any]
+                    if let results : NSArray =  json!["results"] as? NSArray {
+                        if results.count > 0 {
+                            let result : NSDictionary = results.firstObject as! NSDictionary
+                            if let trackId = result["trackId"]{
+                                let ratingUrl = "https://itunes.apple.com/app/id\(trackId)?action=write-review" // (Option 2) Open App Review Page
+                                OneFlowLog.writeLog("Data Logic : App store rating Url : \(ratingUrl)")
+
+                                guard let url = URL(string: ratingUrl) else {
+                                    return
+                                }
+                                DispatchQueue.main.async {
+                                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                                }
+                            }
+                        }
+                        else {
+                            OneFlowLog.writeLog("Data Logic : App Store track ID not found")
+                        }
+                    }
+                }catch{
+                    OneFlowLog.writeLog("Data Logic : App Store Url not found")
+                }
+                 
+                
+            } else {
+                OneFlowLog.writeLog(error?.localizedDescription ?? "NA")
+            }
+        }
+    }
+    
+    private func performOpenUrlAction(_ urlString : String) {
+        currentScreenIndex = -2
+        guard let completion = self.completionBlock else { return }
+        self.runCloseAnimation {
+            guard let url = URL(string: urlString) else {
+                OneFlowLog.writeLog("Data Logic : Invalid Url received from server")
                 completion(self.surveyResult)
+                return
             }
+            DispatchQueue.main.async {
+                if UIApplication.shared.canOpenURL(url) {
+                    OneFlowLog.writeLog("Data Logic : Opening Url  : \(url.absoluteURL)")
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }
+                else {
+                    OneFlowLog.writeLog("Data Logic : Can not open url : \(url.absoluteURL)")
+                }
+                
+            }
+            completion(self.surveyResult)
         }
     }
     
@@ -311,7 +427,7 @@ class OFRatingViewController: UIViewController {
     }
     
     @objc func tapGestureAction(_ panGesture: UITapGestureRecognizer) {
-        print("tapGestureAction called")
+        OneFlowLog.writeLog("tapGestureAction called")
         onBlankSpaceTapped(panGesture)
     }
     
@@ -390,7 +506,7 @@ extension OFRatingViewController: OFRatingViewProtocol {
             if let index = selectedIndex, let screen = self.allScreens?[self.currentScreenIndex] {
                 let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: "\(index)", answer_index: nil)
                 self.surveyResult.append(answer)
-                self.presentNextScreen()
+                self.presentNextScreen(answer.answer_value)
             }
         }
     }
@@ -401,7 +517,7 @@ extension OFRatingViewController: OFRatingViewProtocol {
                 if let selectedChoice = screen.input!.choices?.first(where: { $0.title == value }) {
                     let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: nil, answer_index: selectedChoice._id ?? String(describing: selectedIndex))
                     self.surveyResult.append(answer)
-                    self.presentNextScreen()
+                    self.presentNextScreen(answer.answer_index)
                 }
             }
         }
@@ -419,7 +535,7 @@ extension OFRatingViewController: OFRatingViewProtocol {
                 let finalString = ids.joined(separator: ",")
                 let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: nil, answer_index: finalString)
                 self.surveyResult.append(answer)
-                self.presentNextScreen()
+                self.presentNextScreen(answer.answer_index)
             }
         }
     }
@@ -433,7 +549,8 @@ extension OFRatingViewController: OFRatingViewProtocol {
                     let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: inputString, answer_index: nil)
                     self.surveyResult.append(answer)
                 }
-                self.presentNextScreen()
+                self.view.endEditing(true)
+                self.presentNextScreen(inputString)
             }
         }
     }
@@ -443,7 +560,7 @@ extension OFRatingViewController: OFRatingViewProtocol {
             if let index = selectedIndex, let screen = self.allScreens?[self.currentScreenIndex] {
                 let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: "\(index)", answer_index: nil)
                 self.surveyResult.append(answer)
-                self.presentNextScreen()
+                self.presentNextScreen(answer.answer_value)
             }
         }
     }

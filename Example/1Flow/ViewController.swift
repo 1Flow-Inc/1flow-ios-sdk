@@ -28,7 +28,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func onRecordEvent_startSurvey(_ sender: Any) {
-        OneFlow.recordEventName("start_all_survey_types", parameters: nil)
+        OneFlow.recordEventName("start_all_survey_data_logic", parameters: nil)
     }
     
     @IBAction func onRecordEvent_withParams(_ sender: Any) {

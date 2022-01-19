@@ -22,14 +22,14 @@ final class OFScreenTrackingController: NSObject {
     var currentTabbarController: UITabBarController?
     
     func startTacking() {
-        OneFlowLog("startTacking")
+        OneFlowLog.writeLog("startTacking")
         DispatchQueue.main.async {
             self.getCurrentViewController()
         }
     }
     
     func getCurrentViewController() {
-        OneFlowLog("getCurrentViewController")
+        OneFlowLog.writeLog("getCurrentViewController")
         guard let keyWindow = UIApplication.shared.windows.first(where: { $0.isKeyWindow == true }) else {
             return
         }
@@ -63,19 +63,19 @@ final class OFScreenTrackingController: NSObject {
         }
         
         self.currentNavigationController = navigationController
-        OneFlowLog("navifation bar observer started")
+        OneFlowLog.writeLog("navifation bar observer started")
         
         NotificationCenter.default.addObserver(self, selector: #selector(navigationViewControllerChange(_:)), name: NSNotification.Name(rawValue: "UINavigationControllerWillShowViewControllerNotification"), object: self.currentNavigationController)
     }
     
     @objc func navigationViewControllerChange(_ notification: Notification) {
-        OneFlowLog("viewControllerChange")
+        OneFlowLog.writeLog("viewControllerChange")
         if let userInfo = notification.userInfo as? [String: Any] {
             let previous = userInfo["UINavigationControllerLastVisibleViewController"]
             let new = userInfo["UINavigationControllerNextVisibleViewController"]
             
-            OneFlowLog("Previous: \(previous as Any)")
-            OneFlowLog("current: \(new as Any)")
+            OneFlowLog.writeLog("Previous: \(previous as Any)")
+            OneFlowLog.writeLog("current: \(new as Any)")
         }
     }
 }

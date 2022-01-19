@@ -47,6 +47,7 @@ struct SurveyListResponse: Codable {
             var message: String?
             var _id: String
             var buttons: [FBButton]
+            var rules : Rule?
             
             struct Input: Codable {
                 var _id: String
@@ -68,6 +69,17 @@ struct SurveyListResponse: Codable {
                     var title: String
                 }
             }
+            struct Rule : Codable {
+                var userProperty : String
+                var dataLogic : [DataLogic]?
+                struct DataLogic : Codable {
+                    var condition : String?
+                    var values : String?
+                    var type : String?
+                    var action : String?
+                }
+            }
+           
             struct FBButton: Codable {
                 var _id: String
                 var button_type: String

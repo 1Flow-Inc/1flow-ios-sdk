@@ -35,6 +35,8 @@ final class OFProjectDetailsController: NSObject {
     static let shared = OFProjectDetailsController()
     
     var currentEnviromment: OneFlowEnvironment = .prod
+    var currentLogLevel: OneFlowLogLevel = .none
+
     var appKey: String! {
         didSet {
             if let oldAppKey = UserDefaults.standard.value(forKey: "OldAppKey") as? String {
@@ -100,6 +102,10 @@ final class OFProjectDetailsController: NSObject {
     var newUserID: String?
     var newUserData: [String: Any]?
     
+    func setLoglevel(_ newLogLevel : OneFlowLogLevel) {
+        currentLogLevel = newLogLevel
+    }
+    
     private func resetUserData() {
         UserDefaults.standard.removeObject(forKey: "analytic_user_id")
         UserDefaults.standard.removeObject(forKey: "uniqIDString")
@@ -122,7 +128,7 @@ final class OFProjectDetailsController: NSObject {
         if let details = self.newUserData {
             finalParameter["parameters"] =  details
         }
-        OneFlowLog("Calling loguser")
+        OneFlowLog.writeLog("Calling loguser")
         OFAPIController().logUser(finalParameter) { isSuccess, error, data in
             if isSuccess == true, let data = data {
                 do {
@@ -138,11 +144,11 @@ final class OFProjectDetailsController: NSObject {
                         completion(false)
                     }
                 } catch {
-                    OneFlowLog("LogUser error: \(error)")
+                    OneFlowLog.writeLog("LogUser error: \(error)")
                     completion(false)
                 }
             } else {
-                OneFlowLog("LogUser Failed: Error: \(error as Any)")
+                OneFlowLog.writeLog("LogUser Failed: Error: \(error as Any)")
                 completion(false)
             }
         }

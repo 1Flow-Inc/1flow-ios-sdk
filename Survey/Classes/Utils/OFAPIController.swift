@@ -15,9 +15,17 @@
 import Foundation
 
 typealias APICompletionBlock = ((Bool, Error?, Data?) -> Void)
-final class OFAPIController: NSObject {
+
+protocol APIProtocol {
+    func addUser(_ parameter: AddUserRequest, completion: @escaping APICompletionBlock)
+}
+
+final class OFAPIController: NSObject, APIProtocol {
 
     let kURLGetSurvey = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys?mode=\(OFProjectDetailsController.shared.currentEnviromment.rawValue)&platform=iOS"
+    
+    let kURLAppStoreDetails = "http://itunes.apple.com/lookup?bundleId="
+
 
     let kURLSubmitSurvey = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/add_survey_response"
 
@@ -33,6 +41,14 @@ final class OFAPIController: NSObject {
     //MARK: - Surveys
     func getAllSurveys(_ completion: @escaping APICompletionBlock) {
         self.getAPIWith(kURLGetSurvey, completion: completion)
+    }
+    
+    func getAppStoreDetails(_ completion: @escaping APICompletionBlock) {
+        if let bundleID : String = Bundle.main.bundleIdentifier {
+            let appStoreDetailsUrl = kURLAppStoreDetails + bundleID
+            self.getAPIWith(appStoreDetailsUrl, completion: completion)
+
+        }
     }
     
     func submitSurveyResponse(_ response: SurveySubmitRequest, completion: @escaping APICompletionBlock) {
@@ -91,14 +107,22 @@ final class OFAPIController: NSObject {
         if let appKey = OFProjectDetailsController.shared.appKey {
             request.addValue(appKey, forHTTPHeaderField: "one_flow_key")
         }
-        OneFlowLog("API Call: \(urlString)")
+        OneFlowLog.writeLog("API Call: \(urlString)")
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                OneFlowLog("API Call: \(urlString) - Failed")
+                OneFlowLog.writeLog("API Call: \(urlString) - Failed")
                 completion(false, error, nil)
                 return
             }
-            OneFlowLog("API Call: \(urlString) - Success")
+            do {
+                if let data = data {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
+                        OneFlowLog.writeLog(json, .verbose)
+                    }
+                }
+            } catch {
+            }
+            OneFlowLog.writeLog("API Call: \(urlString) - Success")
             completion(true, nil, data)
             
         }.resume()
@@ -113,15 +137,23 @@ final class OFAPIController: NSObject {
         }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        OneFlowLog("API Call: \(urlString)")
+        OneFlowLog.writeLog("API Call: \(urlString)")
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                OneFlowLog("API Call: \(urlString) - Failed")
+                OneFlowLog.writeLog("API Call: \(urlString) - Failed")
                 completion(false, error, nil)
                 return
             }
-            OneFlowLog("API Call: \(urlString) - Success")
+            do {
+                if let data = data {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
+                        OneFlowLog.writeLog(json, .verbose)
+                    }
+                }
+            } catch {
+            }
+            OneFlowLog.writeLog("API Call: \(urlString) - Success")
             completion(true, nil, data)
             
         }.resume()
@@ -135,7 +167,7 @@ extension OFAPIController: URLSessionTaskDelegate {
             if let backgroundID = UserDefaults.standard.value(forKey: "BackgroundSessionId") as? String, session.configuration.identifier == backgroundID {
             //If there is no errors then uploading is successfull. Remove all pending events.
             UserDefaults.standard.removeObject(forKey: "FBPendingEventsList")
-                OneFlowLog("File uploaded. Removed pending events")
+                OneFlowLog.writeLog("File uploaded. Removed pending events")
             }
         }
     }
