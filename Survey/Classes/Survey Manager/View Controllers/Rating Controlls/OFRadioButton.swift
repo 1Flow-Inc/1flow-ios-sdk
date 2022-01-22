@@ -49,7 +49,7 @@ class OFRadioButton: UIButton {
     override func layoutSubviews() {
         super.layoutSubviews()
         self.imageEdgeInsets = UIEdgeInsets(top: 15, left: 14, bottom: 0, right: 0)
-        self.titleEdgeInsets = UIEdgeInsets(top: 12, left: 28, bottom: 12, right: 0)
+        self.titleEdgeInsets = UIEdgeInsets(top: 12, left: 28, bottom: 12, right: 12)
     }
     
     required init?(coder: NSCoder) {

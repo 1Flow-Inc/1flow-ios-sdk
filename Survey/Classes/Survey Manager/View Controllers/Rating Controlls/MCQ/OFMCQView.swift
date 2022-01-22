@@ -51,7 +51,7 @@ class OFMCQView: UIView {
             button.tag = i
             button.addTarget(self, action: #selector(onSelectButton(_:)), for: .touchUpInside)
             self.stackView1.addArrangedSubview(button)
-            let height = self.labelSize(for: option, maxWidth: (parentViewWidth - 42))
+            let height = self.labelSize(for: option, maxWidth: (parentViewWidth - 54))
             button.translatesAutoresizingMaskIntoConstraints = false
             button.heightAnchor.constraint(equalToConstant: height + 24).isActive = true
         }
