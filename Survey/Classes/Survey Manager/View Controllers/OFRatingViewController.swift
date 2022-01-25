@@ -195,8 +195,19 @@ class OFRatingViewController: UIViewController {
     }
 
     private func openRatemePopup() {
-        SKStoreReviewController.requestReview()
-//        openAppStoreRateMeUrl()
+        if #available(iOS 14.0, *) {
+            if let currentWindowScene = UIApplication.shared.connectedScenes
+                .filter({$0.activationState == .foregroundActive})
+                .compactMap({$0 as? UIWindowScene})
+                .first {
+                SKStoreReviewController.requestReview(in: currentWindowScene)
+            }
+            else {
+                OneFlowLog.writeLog("Could not fetch currentWindowScene while showing rating")
+            }
+        } else {
+            SKStoreReviewController.requestReview()
+        }
     }
 
     private func openAppStoreRateMeUrl(){
