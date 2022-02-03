@@ -71,8 +71,8 @@ class OFMCQView: UIView {
         if self.currentType == .checkBox {
             var isAnySelected = false
             for view in self.stackView1.arrangedSubviews {
-                if let btn = view as? UIButton? {
-                    if btn?.isSelected == true {
+                if let btn = view as? UIButton {
+                    if btn.isSelected == true {
                         isAnySelected = true
                         break
                     }
@@ -101,9 +101,9 @@ class OFMCQView: UIView {
     @IBAction func onFinishTaped(_ sender: UIButton) {
         var selectedIndexes = [Int]()
         for view in self.stackView1.arrangedSubviews {
-            if let btn = view as? UIButton? {
-                if btn?.isSelected == true {
-                    selectedIndexes.append(btn!.tag)
+            if let btn = view as? UIButton {
+                if btn.isSelected == true {
+                    selectedIndexes.append(btn.tag)
                 }
             }
         }

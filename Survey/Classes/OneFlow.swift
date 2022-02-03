@@ -45,7 +45,7 @@ public final class OneFlow: NSObject {
     }
     
     private func setupOnce() {
-        let addUserRequest = AddUserRequest(system_id: OFProjectDetailsController.shared.systemID, device: AddUserRequest.DeviceDetails(os: "iOS", unique_id: OFProjectDetailsController.shared.uniqID, device_id: OFProjectDetailsController.shared.deviceID), location: nil)
+        let addUserRequest = AddUserRequest(system_id: OFProjectDetailsController.shared.systemID, device: AddUserRequest.DeviceDetails(os: "iOS", unique_id: OFProjectDetailsController.shared.uniqID, device_id: OFProjectDetailsController.shared.deviceID), location: nil, language: OFProjectDetailsController.shared.getLocalisedLanguageName())
         OneFlowLog.writeLog("Adding user")
         self.isSetupRunning = true
         self.apiController.addUser(addUserRequest, completion: { isSuccess, error, data in

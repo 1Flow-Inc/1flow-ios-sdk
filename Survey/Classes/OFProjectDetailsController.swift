@@ -153,4 +153,16 @@ final class OFProjectDetailsController: NSObject {
             }
         }
     }
+    
+    func getLocalisedLanguageName() -> String {
+        if let preferredLanguage = Locale.preferredLanguages.first {
+            let usLocale = Locale(identifier: "en-US")
+            if let languageString = usLocale.localizedString(forLanguageCode: preferredLanguage) {
+                print("preferredLanguage English Text = \(languageString)")
+                return languageString
+            }
+        }
+        print("Default Language returned")
+        return "English"
+    }
 }
