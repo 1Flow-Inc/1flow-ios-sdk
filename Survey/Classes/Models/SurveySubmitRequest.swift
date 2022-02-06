@@ -22,6 +22,7 @@ struct SurveySubmitRequest: Codable {
     var session_id: String?
     var trigger_event: String?
     var mode = OFProjectDetailsController.shared.currentEnviromment.rawValue
+    var tot_duration: Int
     
     struct Answer: Codable {
         var screen_id: String

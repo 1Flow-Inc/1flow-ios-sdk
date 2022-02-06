@@ -249,7 +249,7 @@ final class OFSurveyManager: NSObject {
             controller.view.backgroundColor = UIColor.clear
             controller.allScreens = screens
             self.surveyWindow?.rootViewController = controller
-            
+            let startDate = Date()
             controller.completionBlock = { [weak self] surveyResponse in
                 guard let self = self else { return }
                 
@@ -259,8 +259,8 @@ final class OFSurveyManager: NSObject {
                 }
                 
                 if surveyResponse.count > 0 {
-                    
-                    let surveyResponse = SurveySubmitRequest(analytic_user_id: OFProjectDetailsController.shared.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, session_id: OFProjectDetailsController.shared.analytics_session_id, trigger_event: eventName)
+                    let interval = Int(Date().timeIntervalSince(startDate))
+                    let surveyResponse = SurveySubmitRequest(analytic_user_id: OFProjectDetailsController.shared.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, session_id: OFProjectDetailsController.shared.analytics_session_id, trigger_event: eventName, tot_duration: interval)
                     
                     if self.pendingSurveySubmission == nil {
                         self.pendingSurveySubmission = [survey._id : surveyResponse]
