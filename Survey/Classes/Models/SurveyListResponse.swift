@@ -63,10 +63,11 @@ struct SurveyListResponse: Codable {
                 var placeholder_text: String?
                 var rating_max_text: String?
                 var rating_min_text: String?
+                var other_option_id: String?
                 
                 struct Choice: Codable {
                     var _id: String?
-                    var title: String
+                    var title: String?
                 }
             }
             struct Rule : Codable {

@@ -158,11 +158,11 @@ final class OFProjectDetailsController: NSObject {
         if let preferredLanguage = Locale.preferredLanguages.first {
             let usLocale = Locale(identifier: "en-US")
             if let languageString = usLocale.localizedString(forLanguageCode: preferredLanguage) {
-                print("preferredLanguage English Text = \(languageString)")
+                OneFlowLog.writeLog("preferredLanguage English Text = \(languageString)")
                 return languageString
             }
         }
-        print("Default Language returned")
+        OneFlowLog.writeLog("Default Language returned")
         return "English"
     }
 }

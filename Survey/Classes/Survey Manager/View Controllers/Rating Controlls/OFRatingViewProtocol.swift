@@ -17,7 +17,7 @@ import Foundation
 protocol OFRatingViewProtocol: AnyObject {
     func oneToTenViewChangeSelection(_ selectedIndex: Int?)
     func starsViewChangeSelection(_ selectedIndex: Int?)
-    func mcqViewChangeSelection(_ selectedIndex: Int?, selectedValue: String?)
+    func mcqViewChangeSelection(_ selectedOptionID: String,_ otherTextAnswer : String?)
     func followupViewEnterTextWith(_ text: String?)
-    func checkBoxViewDidFinishPicking(_ selectedIndexes: [Int])
+    func checkBoxViewDidFinishPicking(_ selectedOptions: [String],_ otherTextAnswer: String?)
 }

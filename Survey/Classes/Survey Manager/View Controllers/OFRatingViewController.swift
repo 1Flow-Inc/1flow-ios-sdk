@@ -26,6 +26,7 @@ enum RatingStyle {
 }
 
 typealias RatingViewCompletion = ((_ surveyResult: [SurveySubmitRequest.Answer]) -> Void)
+typealias RecordOnlyEmptyTextCompletion = (() -> Void)
 
 class OFRatingViewController: UIViewController {
     
@@ -40,6 +41,8 @@ class OFRatingViewController: UIViewController {
     @IBOutlet weak var lblSecondaryTitle: UILabel!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var progressBar: UIProgressView!
+    @IBOutlet weak var scrollView: UIScrollView!
+
     private var isKeyboardVisible = false
     var panGestureRecognizer: UIPanGestureRecognizer?
     var tapGestureRecognizer: UITapGestureRecognizer?
@@ -52,6 +55,7 @@ class OFRatingViewController: UIViewController {
     
     var completionBlock: RatingViewCompletion?
     var currentScreenIndex = -1
+    var recordEmptyTextCompletionBlock: RecordOnlyEmptyTextCompletion?
     
     private var isClosingAnimationRunning: Bool = false
     private var shouldShowRating: Bool = false
@@ -338,8 +342,8 @@ class OFRatingViewController: UIViewController {
             let view = OFMCQView.loadFromNib()
             view.delegate = self
             view.currentType = .radioButton
-            if let titleArray = currentScreen.input!.choices?.map({ return $0.title }) {
-                view.setupViewWithOptions(titleArray, type: .radioButton, parentViewWidth: self.stackView.bounds.width)
+            if let titleArray = currentScreen.input!.choices?.map({ return $0 }) {
+                view.setupViewWithOptions(titleArray, type: .radioButton, parentViewWidth: self.stackView.bounds.width, currentScreen.input?.other_option_id)
             }
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
@@ -347,8 +351,8 @@ class OFRatingViewController: UIViewController {
             let view = OFMCQView.loadFromNib()
             view.delegate = self
             view.currentType = .checkBox
-            if let titleArray = currentScreen.input!.choices?.map({ return $0.title }) {
-                view.setupViewWithOptions(titleArray, type: .checkBox, parentViewWidth: self.stackView.bounds.width)
+            if let titleArray = currentScreen.input!.choices?.map({ return $0 }) {
+                view.setupViewWithOptions(titleArray, type: .checkBox, parentViewWidth: self.stackView.bounds.width, currentScreen.input?.other_option_id)
             }
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
@@ -522,29 +526,21 @@ extension OFRatingViewController: OFRatingViewProtocol {
         }
     }
     
-    func mcqViewChangeSelection(_ selectedIndex: Int?, selectedValue: String?) {
+    func mcqViewChangeSelection(_ selectedOptionID: String,_ otherTextAnswer : String?) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-            if let value = selectedValue, let screen = self.allScreens?[self.currentScreenIndex] {
-                if let selectedChoice = screen.input!.choices?.first(where: { $0.title == value }) {
-                    let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: nil, answer_index: selectedChoice._id ?? String(describing: selectedIndex))
-                    self.surveyResult.append(answer)
-                    self.presentNextScreen(answer.answer_index)
-                }
+            if  let screen = self.allScreens?[self.currentScreenIndex] {
+                let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: otherTextAnswer, answer_index: selectedOptionID)
+                self.surveyResult.append(answer)
+                self.presentNextScreen(answer.answer_index)
             }
         }
     }
     
-    func checkBoxViewDidFinishPicking(_ selectedIndexes: [Int]) {
+    func checkBoxViewDidFinishPicking(_ selectedOptions: [String], _ otherTextAnswer: String?) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-            if let screen = self.allScreens?[self.currentScreenIndex] {
-                var ids = [String]()
-                for index in selectedIndexes {
-                    if let selectedChoice = screen.input!.choices?[index] {
-                        ids.append(selectedChoice._id ?? "\(index)")
-                    }
-                }
-                let finalString = ids.joined(separator: ",")
-                let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: nil, answer_index: finalString)
+            if let screen = self.allScreens?[self.currentScreenIndex] {       
+                let finalString = selectedOptions.joined(separator: ",")
+                let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: otherTextAnswer, answer_index: finalString)
                 self.surveyResult.append(answer)
                 self.presentNextScreen(answer.answer_index)
             }
@@ -559,6 +555,16 @@ extension OFRatingViewController: OFRatingViewProtocol {
                 if finalString.count > 0 {
                     let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: inputString, answer_index: nil)
                     self.surveyResult.append(answer)
+                } else {
+                    if let screens = self.allScreens, screens.count == 1 {
+                        if let completionEmptyText = self.recordEmptyTextCompletionBlock {
+                            completionEmptyText()
+                        }
+                    } else if let screens = self.allScreens, screens.count <= 2, let lastScreen = screens.last, lastScreen.input?.input_type == "thank_you" {
+                        if let completionEmptyText = self.recordEmptyTextCompletionBlock {
+                            completionEmptyText()
+                        }
+                    }
                 }
                 self.view.endEditing(true)
                 self.presentNextScreen(inputString)

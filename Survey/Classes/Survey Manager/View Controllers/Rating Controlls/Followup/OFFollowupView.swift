@@ -83,7 +83,7 @@ class OFFollowupView: UIView {
     }
     
     @IBAction func onFinished(_ sender: UIButton) {
-        if let text = self.enteredText, text.count > minCharsAllowed {
+        if let text = textView.text, text.count >= minCharsAllowed {
             self.delegate?.followupViewEnterTextWith(text)
         }
     }
@@ -106,7 +106,7 @@ extension OFFollowupView: UITextViewDelegate {
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         let newHeight = newSize.height > 90 ? newSize.height : 90
         
-        if let frame = textView.superview?.superview?.superview?.superview?.frame {
+        if let frame = textView.superview?.superview?.superview?.superview?.superview?.frame {
             if (frame.origin.y > 80) || (newHeight < textView.bounds.height) {
                 self.textViewHeightConstraint.constant = newHeight
             }

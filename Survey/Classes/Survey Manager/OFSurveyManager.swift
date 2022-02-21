@@ -18,7 +18,6 @@ final class OFSurveyManager: NSObject {
     let apiController = OFAPIController()
     var surveyList: SurveyListResponse?
     var surveyWindow: UIWindow?
-    private var temporaryEventArray: [String]?
     var isNetworkReachable = false
     private var isSurveyFetching = false
     var pendingSurveySubmission: [String: SurveySubmitRequest]? {
@@ -109,7 +108,6 @@ final class OFSurveyManager: NSObject {
                 do {
                     let surveyListResponse = try JSONDecoder().decode(SurveyListResponse.self, from: data)
                     self.surveyList = surveyListResponse
-                    self.checkAfterSurveyLoadForExistingEvents()
                 } catch {
                     OneFlowLog.writeLog(error)
                 }
@@ -119,32 +117,7 @@ final class OFSurveyManager: NSObject {
             }
         }
     }
-    
-    private func checkAfterSurveyLoadForExistingEvents() {
-        if let eventsArray = self.temporaryEventArray {
-            for eventName in eventsArray {
-                if let triggeredSurvey = surveyList?.result.first(where: { survey in
-                    if let surveyEventName = survey.trigger_event_name {
-                        let eventNames = surveyEventName.components(separatedBy: ",")
-                        if eventNames.contains(eventName) {
-                            return true
-                        }
-                    }
-                    
-                    return false
-                }){
-                    if self.validateTheSurvey(triggeredSurvey) == true {
-                        self.startSurvey(triggeredSurvey, eventName: eventName)
-                        break
-                    } else {
-                        OneFlowLog.writeLog("Survey already submitted. Do nothing.")
-                    }
-                }
-            }
-            self.temporaryEventArray = nil
-        }
-    }
-    
+
     func validateTheSurvey(_ survey: SurveyListResponse.Survey) -> Bool {
         if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id && $0.submittedByUserID == OFProjectDetailsController.shared.currentLoggedUserID }) {
 
@@ -193,7 +166,6 @@ final class OFSurveyManager: NSObject {
                         return true
                     }
                 }
-                
                 return false
             }) {
                 if self.validateTheSurvey(triggerredSurvey) == true {
@@ -203,10 +175,7 @@ final class OFSurveyManager: NSObject {
                 }
             }
         } else {
-            if temporaryEventArray == nil {
-                self.temporaryEventArray = [String]()
-            }
-            self.temporaryEventArray?.append(eventName)
+            OneFlowLog.writeLog("Survey not loaded yet")
         }
     }
     
@@ -257,11 +226,17 @@ final class OFSurveyManager: NSObject {
                     self.surveyWindow?.isHidden = true
                     self.surveyWindow = nil
                 }
-                
+
                 if surveyResponse.count > 0 {
+                    if self.submittedSurveyDetails == nil {
+                        self.submittedSurveyDetails = [SubmittedSurvey]()
+                    }
+                    let submittedSurvey = SubmittedSurvey(surveyID: survey._id, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: OFProjectDetailsController.shared.currentLoggedUserID)
+                    self.submittedSurveyDetails?.append(submittedSurvey)
+                    self.saveSubmittedSurvey()
                     let interval = Int(Date().timeIntervalSince(startDate))
                     let surveyResponse = SurveySubmitRequest(analytic_user_id: OFProjectDetailsController.shared.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, session_id: OFProjectDetailsController.shared.analytics_session_id, trigger_event: eventName, tot_duration: interval)
-                    
+
                     if self.pendingSurveySubmission == nil {
                         self.pendingSurveySubmission = [survey._id : surveyResponse]
                     } else {
@@ -269,6 +244,16 @@ final class OFSurveyManager: NSObject {
                     }
                     self.uploadPendingSurveyIfAvailable()
                 }
+            }
+            
+            controller.recordEmptyTextCompletionBlock = { [weak self] in
+                guard let self = self else { return }
+                if self.submittedSurveyDetails == nil {
+                    self.submittedSurveyDetails = [SubmittedSurvey]()
+                }
+                let submittedSurvey = SubmittedSurvey(surveyID: survey._id, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: OFProjectDetailsController.shared.currentLoggedUserID)
+                self.submittedSurveyDetails?.append(submittedSurvey)
+                self.saveSubmittedSurvey()
             }
             self.surveyWindow?.makeKeyAndVisible()
         }
@@ -308,12 +293,6 @@ final class OFSurveyManager: NSObject {
                 return
             }
             if isSuccess == true, let data = data {
-                if self.submittedSurveyDetails == nil {
-                    self.submittedSurveyDetails = [SubmittedSurvey]()
-                }
-                let submittedSurvey = SubmittedSurvey(surveyID: surveyID, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: OFProjectDetailsController.shared.currentLoggedUserID)
-                self.submittedSurveyDetails?.append(submittedSurvey)
-                self.saveSubmittedSurvey()
                 self.pendingSurveySubmission?.removeValue(forKey: surveyID)
                 do {
                     if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
