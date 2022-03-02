@@ -30,7 +30,7 @@ class OFMCQView: UIView {
 
     var otherOptionTF: UITextField!
     var otherOptionAnswer = ""
-    var parentWidth = 0.0
+    var parentWidth: CGFloat = 0.0
 
     var selectedButton: UIButton? {
         didSet {

@@ -183,10 +183,10 @@ final class OFEventManager: NSObject {
         /// barrier is used to handle bulk events e.g. log events with loops
         eventModificationQueue.async(flags: .barrier) {
             if let parameters = parameters {
-                let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "parameters": parameters as Any] as [String : Any]
+                let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "parameters": parameters as Any, "plt": "i"] as [String : Any]
                 self.eventsArray.append(newEventDic)
             } else {
-                let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970)] as [String : Any]
+                let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "plt": "i"] as [String : Any]
                 self.eventsArray.append(newEventDic)
             }
             
@@ -197,7 +197,11 @@ final class OFEventManager: NSObject {
                 }
                 self.eventSaveTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(saveEventArray), userInfo: nil, repeats: false)
             }
-            
+        }
+        
+        if name == kEventNameSurveyImpression {
+            self.sendEventsToServer()
+        } else {
             /// if Survey is enabled, then pass this event to survey manager to check if survey available or not
             if OFProjectDetailsController.shared.isSuveryEnabled == true {
                 self.surveyManager.newEventRecorded(name)

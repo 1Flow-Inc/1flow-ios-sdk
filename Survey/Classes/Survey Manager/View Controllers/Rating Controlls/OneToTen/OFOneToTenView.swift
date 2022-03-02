@@ -49,6 +49,8 @@ class OFOneToTenView: UIView {
         didSet {
             if ratingMaxText != nil {
                 self.lblMaxValue.text = ratingMaxText
+            } else {
+                self.lblMaxValue.text = ""
             }
         }
     }
@@ -57,6 +59,8 @@ class OFOneToTenView: UIView {
         didSet {
             if ratingMinText != nil {
                 self.lblMinValue.text = ratingMinText
+            } else {
+                self.lblMinValue.text = ""
             }
         }
     }
