@@ -17,14 +17,13 @@
                 <stackView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="vIe-j1-MFe">
                     <rect key="frame" x="0.0" y="15" width="390" height="40"/>
                 </stackView>
-                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vte-Vm-TCB">
-                    <rect key="frame" x="235" y="70" width="155" height="42"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vte-Vm-TCB">
+                    <rect key="frame" x="0.0" y="70" width="390" height="38"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="42" id="vla-2Q-Ice"/>
-                        <constraint firstAttribute="width" constant="155" id="vpq-x5-CzS"/>
+                        <constraint firstAttribute="height" constant="38" id="vla-2Q-Ice"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                    <state key="normal" title="Finish">
+                    <state key="normal" title="Submit Feedback">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
@@ -36,6 +35,7 @@
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="vIe-j1-MFe" secondAttribute="bottom" constant="75" id="83N-8Z-PaV"/>
                 <constraint firstAttribute="trailing" secondItem="Vte-Vm-TCB" secondAttribute="trailing" id="Fm4-u5-JNv"/>
+                <constraint firstItem="Vte-Vm-TCB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bF2-Ub-UcH"/>
                 <constraint firstAttribute="trailing" secondItem="vIe-j1-MFe" secondAttribute="trailing" id="fBH-em-Cpy"/>
                 <constraint firstItem="vIe-j1-MFe" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="jT1-p3-8d5"/>
                 <constraint firstItem="Vte-Vm-TCB" firstAttribute="top" secondItem="vIe-j1-MFe" secondAttribute="bottom" constant="15" id="nj3-zt-gcg"/>
@@ -43,6 +43,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="bottomConstraint" destination="83N-8Z-PaV" id="WxX-Kx-2jh"/>
                 <outlet property="btnFinish" destination="Vte-Vm-TCB" id="0vz-tF-Zrh"/>
                 <outlet property="stackView1" destination="vIe-j1-MFe" id="cfs-lV-4xB"/>
             </connections>

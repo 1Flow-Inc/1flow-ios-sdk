@@ -15,7 +15,7 @@
 import UIKit
 
 final class OFSurveyManager: NSObject {
-    let apiController = OFAPIController()
+    var apiController = OFAPIController()
     var surveyList: SurveyListResponse?
     var surveyWindow: UIWindow?
     var isNetworkReachable = false
@@ -60,7 +60,12 @@ final class OFSurveyManager: NSObject {
             
         }
     }
-    
+
+    func cleanUpSurveyArray() {
+        self.surveyList = nil
+        self.apiController = OFAPIController()
+    }
+
     func setUserToSubmittedSurveyAsAnnonyous(newUserID: String) {
         if self.submittedSurveyDetails != nil {
             for index in 0..<self.submittedSurveyDetails!.count {

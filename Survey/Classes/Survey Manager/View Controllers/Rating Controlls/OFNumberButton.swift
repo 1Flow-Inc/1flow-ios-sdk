@@ -19,6 +19,7 @@ class OFNumberButton: UIButton {
     
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
+    var isEmoji = false
     override func awakeFromNib() {
         super.awakeFromNib()
         self.setTitleColor(UIColor.white, for: .selected)
@@ -44,12 +45,25 @@ class OFNumberButton: UIButton {
     }
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        if isSelected == true {
-            self.layer.backgroundColor = kPrimaryColor.cgColor
-            
-        } else {
-            self.layer.backgroundColor = UIColor.clear.cgColor
+        if isEmoji {
+            self.layer.cornerRadius = rect.width/2
+            if isSelected == true {
+                self.layer.backgroundColor = kPrimaryColor.cgColor
+                
+            } else {
+                self.layer.backgroundColor =  UIColor.clear.cgColor
+            }
         }
+        else {
+            self.layer.cornerRadius = 5.0
+            if isSelected == true {
+                self.layer.backgroundColor = kPrimaryColor.cgColor
+                
+            } else {
+                self.layer.backgroundColor =  kAppGreyBGColor.cgColor
+            }
+        }
+        
         
     }
 }

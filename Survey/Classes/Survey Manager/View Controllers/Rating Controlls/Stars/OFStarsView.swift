@@ -18,7 +18,11 @@ import UIKit
 class OFStarsView: UIView {
 
     @IBOutlet weak var stackView1: UIStackView!
+    @IBOutlet weak var ratingText: UILabel!
+
     weak var delegate: OFRatingViewProtocol?
+    
+    let ratingTextArray = ["Very dissatisfied","Somewhat dissatisfied","Not dissatisfied nor satisfied","Somewhat satisfied","Very satisfied"]
     
     var selectedButton: UIButton? {
         didSet {
@@ -34,8 +38,8 @@ class OFStarsView: UIView {
     }
     
     func setupImages() {
-        let starImage = UIImage.getStartImage()
-        let filledStarImage = UIImage.getStartImageSelected()
+        let starImage = UIImage.init(named: "unSelectedStar", in: OneFlowBundle.bundleForObject(self), compatibleWith: nil)
+        let filledStarImage = UIImage.init(named: "selectedStar", in: OneFlowBundle.bundleForObject(self), compatibleWith: nil)
         for view in self.stackView1.arrangedSubviews {
             if let btn = view as? UIButton {
                 btn.setImage(starImage, for: .normal)
@@ -45,8 +49,11 @@ class OFStarsView: UIView {
     }
     
     @IBAction func onSelectButton(_ sender: UIButton) {
-        
+        self.isUserInteractionEnabled = false
         let index = sender.tag
+        if index <= ratingTextArray.count {
+            ratingText.text = ratingTextArray[index-1]
+        }
         _ = self.stackView1.arrangedSubviews.map { view in
             if let btn = view as? UIButton {
                 if btn.tag <= index {
@@ -69,6 +76,9 @@ class OFStarsView: UIView {
                 return
             }
             let index = subviewTapped.tag
+            if index <= ratingTextArray.count {
+                ratingText.text = ratingTextArray[index-1]
+            }
             _ = self.stackView1.arrangedSubviews.map { view in
                 if let btn = view as? UIButton {
                     if btn.tag <= index {

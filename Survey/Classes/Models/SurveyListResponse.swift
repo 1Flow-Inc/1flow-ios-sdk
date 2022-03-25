@@ -46,7 +46,7 @@ struct SurveyListResponse: Codable {
             var input: Input?
             var message: String?
             var _id: String
-            var buttons: [FBButton]
+            var buttons: [FBButton]?
             var rules : Rule?
             
             struct Input: Codable {

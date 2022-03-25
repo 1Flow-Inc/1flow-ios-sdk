@@ -11,7 +11,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" customClass="OBJCOFThankYouView">
-            <rect key="frame" x="0.0" y="0.0" width="516" height="207"/>
+            <rect key="frame" x="0.0" y="0.0" width="516" height="200"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3b4-cJ-ae8">
@@ -21,31 +21,27 @@
                         <constraint firstAttribute="height" constant="53" id="o8J-3R-ckm"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thank you for your input!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yid-07-iTx">
-                    <rect key="frame" x="155" y="91" width="206" height="21.5"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thank you!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yid-07-iTx">
+                    <rect key="frame" x="212.5" y="83" width="91" height="70"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UaF-tW-ue5">
-                    <rect key="frame" x="139.5" y="130.5" width="237" height="16.5"/>
-                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
-                    <state key="normal" title="Real-time feedback powered by " image="WaterMark">
-                        <color key="titleColor" systemColor="labelColor"/>
-                    </state>
-                    <connections>
-                        <action selector="onClickWatermark:" destination="iN0-l3-epB" eventType="touchUpInside" id="s5B-Yw-RDD"/>
-                    </connections>
-                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Your answer has been recorded." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qqs-DT-Ewt">
+                    <rect key="frame" x="154" y="163" width="208" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.31372549020000001" green="0.33333333329999998" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="UaF-tW-ue5" firstAttribute="top" secondItem="yid-07-iTx" secondAttribute="bottom" constant="18" id="8g1-Dn-gqp"/>
-                <constraint firstAttribute="bottom" secondItem="UaF-tW-ue5" secondAttribute="bottom" constant="60" id="PcK-Tc-c36"/>
-                <constraint firstItem="UaF-tW-ue5" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="TM9-aB-243"/>
+                <constraint firstAttribute="bottom" secondItem="qqs-DT-Ewt" secondAttribute="bottom" constant="20" id="9dR-se-VBy"/>
                 <constraint firstItem="3b4-cJ-ae8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="ZXB-6n-sol"/>
+                <constraint firstItem="qqs-DT-Ewt" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="c8m-P7-P8a"/>
                 <constraint firstItem="3b4-cJ-ae8" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="igi-Bl-hGx"/>
-                <constraint firstItem="yid-07-iTx" firstAttribute="top" secondItem="3b4-cJ-ae8" secondAttribute="bottom" constant="18" id="kNj-Oh-dQU"/>
+                <constraint firstItem="qqs-DT-Ewt" firstAttribute="top" secondItem="yid-07-iTx" secondAttribute="bottom" constant="10" id="jv9-cz-PN3"/>
+                <constraint firstItem="yid-07-iTx" firstAttribute="top" secondItem="3b4-cJ-ae8" secondAttribute="bottom" constant="10" id="kNj-Oh-dQU"/>
                 <constraint firstItem="yid-07-iTx" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ucF-d4-83r"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -57,10 +53,6 @@
         </view>
     </objects>
     <resources>
-        <image name="WaterMark" width="50" height="16"/>
-        <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

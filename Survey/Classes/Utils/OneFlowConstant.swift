@@ -19,6 +19,8 @@ import UIKit
 var kPrimaryColor = UIColor(red: 0.36, green: 0.37, blue: 0.93, alpha: 1.0)
 var kPrimaryHightlightColor = kPrimaryColor.withAlphaComponent(0.21)
 let kBorderColor = UIColor(red: 0.76, green: 0.76, blue: 0.76, alpha: 1.0)
+let kAppGreyBGColor = UIColor.colorFromHex("F3F3F3")
+let kSubmitButtonBGColor = UIColor.colorFromHex("C4C4C4")
 
 let kEventNameFirstAppOpen = "first_open"
 let kEventNameAppUpdate = "app_updated"

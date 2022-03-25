@@ -42,10 +42,10 @@ class OFRatingViewController: UIViewController {
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var poweredByButton: UIButton!
+    @IBOutlet weak var bottomView: UIView!
 
     private var isKeyboardVisible = false
-    var panGestureRecognizer: UIPanGestureRecognizer?
-    var tapGestureRecognizer: UITapGestureRecognizer?
 
     var originalPosition: CGPoint?
     var currentPositionTouched: CGPoint?
@@ -61,6 +61,8 @@ class OFRatingViewController: UIViewController {
     private var shouldShowRating: Bool = false
     private var shouldOpenUrl: Bool = false
 
+    lazy var waterMarkURL = "https://1flow.app/?utm_source=1flow-ios-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 13.0, *) {
@@ -68,13 +70,6 @@ class OFRatingViewController: UIViewController {
         } else {
             // Fallback on earlier versions
         }
-        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureAction(_:)))
-        ratingView.addGestureRecognizer(panGestureRecognizer!)
-
-        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureAction(_:)))
-        tapGestureRecognizer?.delegate = self
-        self.view.addGestureRecognizer(tapGestureRecognizer!)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -86,6 +81,25 @@ class OFRatingViewController: UIViewController {
         self.containerView.alpha = 0.0
         self.ratingView.alpha = 0.0
         
+        self.ratingView.layer.shadowColor = UIColor.black.cgColor
+        self.ratingView.layer.shadowOpacity = 0.25
+        self.ratingView.layer.shadowOffset = CGSize.zero
+        self.ratingView.layer.shadowRadius = 8.0
+        
+        self.setPoweredByButtonText(fullText: " Powered by 1Flow", mainText: " Powered by ", creditsText: "1Flow")
+    }
+    
+    func setPoweredByButtonText(fullText: String, mainText: String, creditsText: String) {
+        let fontBig = UIFont.systemFont(ofSize: 12, weight:.regular)
+        let fontSmall = UIFont.systemFont(ofSize: 12, weight:.bold)
+        let attributedString = NSMutableAttributedString(string: fullText, attributes: nil)
+        
+        let bigRange = (attributedString.string as NSString).range(of: mainText)
+        let creditsRange = (attributedString.string as NSString).range(of: creditsText)
+        attributedString.setAttributes([NSAttributedString.Key.font: fontBig as Any, NSAttributedString.Key.foregroundColor: UIColor.colorFromHex("50555C")], range: bigRange)
+        attributedString.setAttributes([NSAttributedString.Key.font: fontSmall as Any, NSAttributedString.Key.foregroundColor: UIColor.colorFromHex("50555C")], range: creditsRange)
+        
+        self.poweredByButton.setAttributedTitle(attributedString, for: .normal)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -98,6 +112,17 @@ class OFRatingViewController: UIViewController {
         }
         if self.currentScreenIndex == -1 {
             self.presentNextScreen(nil)
+        }
+        let radius = 5.0
+        self.bottomView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: radius)
+    }
+    
+    @IBAction func onClickWatermark(_ sender: Any) {
+        guard let url = URL(string: waterMarkURL) else {
+            return
+        }
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [ : ], completionHandler: nil)
         }
     }
     
@@ -112,7 +137,7 @@ class OFRatingViewController: UIViewController {
     override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
         return UIInterfaceOrientation.portrait
     }
-    
+
     @objc func keyboardWasShown(notification: NSNotification) {
         let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
@@ -286,7 +311,7 @@ class OFRatingViewController: UIViewController {
             self.viewPrimaryTitle1.isHidden = true
         }
 
-        if let value = currentScreen.message {
+        if let value = currentScreen.message, value.count > 0 {
             self.viewSecondaryTitle.isHidden = false
             self.lblSecondaryTitle.text = value
         } else {
@@ -305,6 +330,13 @@ class OFRatingViewController: UIViewController {
             view.placeHolderText = currentScreen.input!.placeholder_text ?? "Write here..."
             view.maxCharsAllowed = currentScreen.input!.max_chars ?? 1000
             view.minCharsAllowed = currentScreen.input!.min_chars ?? 5
+            if let buttonArray = currentScreen.buttons {
+                if buttonArray.count > 0 {
+                    if let buttonTitle = buttonArray.first?.title {
+                        view.submitButtonTitle = buttonTitle
+                    }
+                }
+            }
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
             
@@ -360,23 +392,9 @@ class OFRatingViewController: UIViewController {
             self.viewPrimaryTitle1.isHidden = true
             self.viewSecondaryTitle.isHidden = true
             let view = OFThankYouView.loadFromNib()
+            view.delegate = self
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
-            
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4) { [weak self] in
-                guard let self = self else {
-                    return
-                }
-                //check if user have already closed the screen and animation still running to prevent from crash
-                if self.isClosingAnimationRunning == true {
-                    return
-                }
-                guard let completion = self.completionBlock else { return }
-                self.runCloseAnimation {
-                    completion(self.surveyResult)
-                }
-                
-            }
         }
 
         for subview in self.stackView.arrangedSubviews {
@@ -578,6 +596,18 @@ extension OFRatingViewController: OFRatingViewProtocol {
                 let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: "\(index)", answer_index: nil)
                 self.surveyResult.append(answer)
                 self.presentNextScreen(answer.answer_value)
+            }
+        }
+    }
+    
+    func onThankyouAnimationComplete() {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            if self.isClosingAnimationRunning == true {
+                return
+            }
+            guard let completion = self.completionBlock else { return }
+            self.runCloseAnimation {
+                completion(self.surveyResult)
             }
         }
     }

@@ -19,7 +19,7 @@ extension UIImage {
 
     class func getRadioButtonImage() -> UIImage? {
         
-        let borderWidth: CGFloat = 2.0
+        let borderWidth: CGFloat = 0.0
         let newRect = CGRect(x: 0, y: 0, width: 42, height: 42)
         
         UIGraphicsBeginImageContext(newRect.size)

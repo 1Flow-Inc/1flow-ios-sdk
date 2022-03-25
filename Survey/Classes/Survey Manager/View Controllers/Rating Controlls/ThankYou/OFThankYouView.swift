@@ -19,7 +19,7 @@ class OFThankYouView: UIView {
 
     @IBOutlet weak var animationView: UIView!
     @IBOutlet weak var lblTitle: UILabel!
-    
+    weak var delegate: OFRatingViewProtocol?
     var imageView: UIImageView?
     
     deinit {
@@ -33,11 +33,15 @@ class OFThankYouView: UIView {
         animationView.addSubview(imageView)
         imageView.animationDuration = 1.0
         imageView.animationRepeatCount = 1
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.2) {
-                imageView.image = imageView.animationImages?.last
-                imageView.startAnimating()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+            imageView.image = imageView.animationImages?.last
+            CATransaction.begin()
+            CATransaction.setCompletionBlock {
+                self.delegate?.onThankyouAnimationComplete()
             }
+            imageView.startAnimating()
+            CATransaction.commit()
+        }
     }
     
     @IBAction func onClickWatermark(_ sender: Any) {

@@ -20,6 +20,8 @@ class OFFollowupView: UIView {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var lblNumbers: UILabel!
     @IBOutlet weak var btnFinish: UIButton!
+    @IBOutlet weak var skipButton: UIButton!
+
     weak var delegate: OFRatingViewProtocol?
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
     var maxCharsAllowed = 1000 {
@@ -32,6 +34,8 @@ class OFFollowupView: UIView {
             if minCharsAllowed == 0 {
                 self.btnFinish.alpha = 1.0
                 self.btnFinish.isHidden = false
+                btnFinish.backgroundColor = kPrimaryColor
+                btnFinish.isUserInteractionEnabled = true
             }
         }
     }
@@ -46,24 +50,22 @@ class OFFollowupView: UIView {
         didSet {
             self.lblNumbers.text = "\(self.enteredText?.count ?? 0)/\(self.maxCharsAllowed)"
             if enteredText?.count ?? 0 >= minCharsAllowed {
-                if self.btnFinish.isHidden == true {
-                    self.btnFinish.alpha = 0.0
-                    self.btnFinish.isHidden = false
-                    UIView.animate(withDuration: 0.5) {
-                        self.btnFinish.alpha = 1.0
-                    }
-                }
+                btnFinish.backgroundColor = kPrimaryColor
+                btnFinish.isUserInteractionEnabled = true
+
             } else {
-                if self.btnFinish.isHidden == false {
-                    UIView.animate(withDuration: 0.5) {
-                        self.btnFinish.alpha = 0.0
-                    } completion: { _ in
-                        self.btnFinish.isHidden = true
-                    }
-                }
+                btnFinish.backgroundColor = kSubmitButtonBGColor
+                btnFinish.isUserInteractionEnabled = false
+
             }
         }
     }
+    var submitButtonTitle : String = "Submit Feedback" {
+        didSet {
+            btnFinish.setTitle(self.submitButtonTitle, for: .normal)
+        }
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         textView.delegate = self
@@ -78,14 +80,36 @@ class OFFollowupView: UIView {
         placeholderLabel.frame.origin = CGPoint(x: 5, y: (textView.font?.pointSize)! / 2)
         placeholderLabel.textColor = UIColor.lightGray
         placeholderLabel.isHidden = !textView.text.isEmpty
-        btnFinish.backgroundColor = kPrimaryColor
-        btnFinish.layer.cornerRadius = 2.0
+        btnFinish.layer.cornerRadius = 5.0
+        btnFinish.isHidden = false
+        btnFinish.backgroundColor = kSubmitButtonBGColor
+        btnFinish.isUserInteractionEnabled = false
+        
+        let skipAttributes: [NSAttributedString.Key: Any] = [
+             .font: UIFont.systemFont(ofSize: 14),
+             .foregroundColor: UIColor.colorFromHex("50555C"),
+             .underlineStyle: NSUnderlineStyle.single.rawValue
+         ] //
+        
+        let attributeString = NSMutableAttributedString(
+                string: "Skip",
+                attributes: skipAttributes
+             )
+        self.skipButton.setTitleColor(UIColor.colorFromHex("50555C"), for: .normal)
+        self.skipButton.setTitle("Skip", for: .normal)
+        self.skipButton.setAttributedTitle(attributeString, for: .normal)
     }
     
     @IBAction func onFinished(_ sender: UIButton) {
         if let text = textView.text, text.count >= minCharsAllowed {
+            self.isUserInteractionEnabled = false
             self.delegate?.followupViewEnterTextWith(text)
         }
+    }
+    
+    @IBAction func onSkip(_ sender: UIButton) {
+        self.isUserInteractionEnabled = false
+        self.delegate?.followupViewEnterTextWith("")
     }
 }
 
@@ -104,7 +128,7 @@ extension OFFollowupView: UITextViewDelegate {
         self.enteredText = textView.text
         let fixedWidth = textView.frame.size.width
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
-        let newHeight = newSize.height > 90 ? newSize.height : 90
+        let newHeight = newSize.height > 109 ? newSize.height : 109
         
         if let frame = textView.superview?.superview?.superview?.superview?.superview?.frame {
             if (frame.origin.y > 80) || (newHeight < textView.bounds.height) {

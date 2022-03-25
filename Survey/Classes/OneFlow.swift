@@ -146,6 +146,7 @@ public final class OneFlow: NSObject {
             OFProjectDetailsController.shared.logNewUserDetails { isSuccess in
                 if isSuccess == true {
                     shared.eventManager.surveyManager.setUserToSubmittedSurveyAsAnnonyous(newUserID: userID)
+                    shared.eventManager.setupSurveyManager()
                 }
             }
         }

@@ -40,7 +40,15 @@ final class OFAPIController: NSObject, APIProtocol {
     
     //MARK: - Surveys
     func getAllSurveys(_ completion: @escaping APICompletionBlock) {
-        self.getAPIWith(kURLGetSurvey, completion: completion)
+        var surveyUrl = kURLGetSurvey
+        if let sessionID : String = OFProjectDetailsController.shared.analytics_session_id {
+            surveyUrl = surveyUrl + "&session_id=" + sessionID
+        }
+        
+        if let userID : String = OFProjectDetailsController.shared.analytic_user_id {
+            surveyUrl = surveyUrl + "&user_id=" + userID
+        }
+        self.getAPIWith(surveyUrl, completion: completion)
     }
     
     func getAppStoreDetails(_ completion: @escaping APICompletionBlock) {

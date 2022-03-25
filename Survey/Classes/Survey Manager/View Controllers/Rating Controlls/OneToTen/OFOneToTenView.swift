@@ -49,8 +49,6 @@ class OFOneToTenView: UIView {
         didSet {
             if ratingMaxText != nil {
                 self.lblMaxValue.text = ratingMaxText
-            } else {
-                self.lblMaxValue.text = ""
             }
         }
     }
@@ -59,21 +57,16 @@ class OFOneToTenView: UIView {
         didSet {
             if ratingMinText != nil {
                 self.lblMinValue.text = ratingMinText
-            } else {
-                self.lblMinValue.text = ""
             }
         }
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        collectionView.layer.borderWidth = 0.5
-        collectionView.layer.borderColor = kBorderColor.cgColor
-        collectionView.layer.cornerRadius = 10.0
         let nib = UINib(nibName: "OFNumberCollectionViewCell", bundle: OneFlowBundle.bundleForObject(self))
         collectionView.register(nib, forCellWithReuseIdentifier: "OFNumberCollectionViewCell")
         collectionView.delegate = self
-        collectionView.dataSource = self   
+        collectionView.dataSource = self
     }
     
     var selectedButton: UIButton? {
@@ -83,6 +76,7 @@ class OFOneToTenView: UIView {
     }
 
     @objc func onSelectButton(_ sender: UIButton) {
+        self.isUserInteractionEnabled = false
         sender.isSelected = !sender.isSelected
         self.selectedButton?.isSelected = false
         if sender.isSelected == true {
@@ -108,36 +102,61 @@ extension OFOneToTenView: UICollectionViewDelegate, UICollectionViewDataSource, 
         let titleNumber = self.minValue + indexPath.item
         cell.btnNumber.tag = titleNumber
         if self.isForEmoji == true {
+            cell.btnNumber.isEmoji = true
             if let emojies = self.emojiArray {
+                cell.btnNumber.layer.backgroundColor = UIColor.clear.cgColor
+
                 cell.btnNumber.titleLabel?.font = UIFont.systemFont(ofSize: 30)
                 cell.btnNumber.setTitle(emojies[indexPath.item], for: .normal)
             }
         } else {
+            cell.btnNumber.isEmoji = false
+            cell.btnNumber.layer.backgroundColor = kAppGreyBGColor.cgColor
             cell.btnNumber.setTitle("\(titleNumber)", for: .normal)
         }
         
         if indexPath.item == 0 {
             cell.leftBorder.isHidden = true
         } else {
-            cell.leftBorder.isHidden = false
+            cell.leftBorder.isHidden = true
         }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        if self.isForEmoji {
+            return 0
+        }
+        let numberOfItems: CGFloat = CGFloat(maxValue - minValue) + 1
+        if numberOfItems > 5 {
+            return 6.0
+        }
+        else{
+            return 10.5
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if self.isForEmoji {
             var itemWidth = collectionView.bounds.width / CGFloat(emojiArray?.count ?? 1)
-            if itemWidth > 65 {
-                itemWidth = 65
+            if itemWidth > 55 {
+                itemWidth = 55
             }
-            return CGSize(width: itemWidth, height: 65)
+            return CGSize(width: itemWidth, height: 55)
         } else {
             let numberOfItems: CGFloat = CGFloat(maxValue - minValue) + 1
             var itemWidth = collectionView.bounds.width / numberOfItems
-            if itemWidth > 65 {
-                itemWidth = 65
+            if numberOfItems > 5 {
+                itemWidth = itemWidth - 6
             }
-            return CGSize(width: itemWidth, height: 65)
+            else{
+                itemWidth = itemWidth - 10.5
+
+            }
+            if itemWidth > 55 {
+                itemWidth = 55
+            }
+            return CGSize(width: itemWidth, height: 48)
         }
         
     }

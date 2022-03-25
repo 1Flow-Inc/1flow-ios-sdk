@@ -17,7 +17,7 @@ import CoreTelephony
 
 final class OFEventManager: NSObject {
 
-    let surveyManager = OFSurveyManager()
+    var surveyManager: OFSurveyManager!
     private let inAppController = OFInAppPurchaseEventsController()
     private var eventsArray = [[String: Any]]()
     var uploadTimer: Timer?
@@ -33,14 +33,14 @@ final class OFEventManager: NSObject {
     func configure() {
         OneFlowLog.writeLog("Event Manager configure")
         self.createAnalyticsSession()
-        self.surveyManager.isNetworkReachable = true
-        self.surveyManager.configureSurveys()
     }
     
     func finishPendingEvents() {
         if OFProjectDetailsController.shared.analytic_user_id != nil, OFProjectDetailsController.shared.analytics_session_id != nil {
             sendEventsToServer()
-            surveyManager.uploadPendingSurveyIfAvailable()
+            if let surveyManagerObj = self.surveyManager {
+                surveyManagerObj.uploadPendingSurveyIfAvailable()
+            }
         }
     }
     
@@ -61,7 +61,9 @@ final class OFEventManager: NSObject {
     
     func networkStatusChanged(_ isReachable: Bool) {
         self.isNetworkReachable = isReachable
-        self.surveyManager.networkStatusChanged(isReachable)
+        if let surveyManagerObj = self.surveyManager {
+            surveyManagerObj.networkStatusChanged(isReachable)
+        }
         if isReachable == true {
             if OFProjectDetailsController.shared.analytics_session_id != nil {
                 self.startUploadTimer()
@@ -99,7 +101,10 @@ final class OFEventManager: NSObject {
                             if let result = json["result"] as? [String: Any], let _id = result["_id"] as? String {
                                 OFProjectDetailsController.shared.analytics_session_id = _id
                                 OFProjectDetailsController.shared.logNewUserDetails { _ in
-                                    
+                                    if isSuccess == true {
+                                        guard let self = self else { return }
+                                        self.setupSurveyManager()
+                                    }
                                 }
                                 guard let self = self else { return }
                                 self.startEventManager()
@@ -116,6 +121,17 @@ final class OFEventManager: NSObject {
         } else {
             self.startEventManager()
         }
+    }
+    
+    func setupSurveyManager() {
+        if self.surveyManager == nil {
+            self.surveyManager = OFSurveyManager()
+        }
+        else {
+            self.surveyManager.cleanUpSurveyArray()
+        }
+        self.surveyManager.isNetworkReachable = true
+        self.surveyManager.configureSurveys()
     }
     
     private func startEventManager() {
@@ -204,7 +220,9 @@ final class OFEventManager: NSObject {
         } else {
             /// if Survey is enabled, then pass this event to survey manager to check if survey available or not
             if OFProjectDetailsController.shared.isSuveryEnabled == true {
-                self.surveyManager.newEventRecorded(name)
+                if let surveyManagerObj = self.surveyManager {
+                    surveyManagerObj.newEventRecorded(name)
+                }
             }
         }
     }

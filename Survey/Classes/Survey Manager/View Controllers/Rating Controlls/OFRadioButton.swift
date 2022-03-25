@@ -23,33 +23,17 @@ class OFRadioButton: UIButton {
     init(frame: CGRect, type: OFRadioButtonType) {
         super.init(frame: frame)
         self.radioButtonType = type
-        self.contentHorizontalAlignment = .left
-        self.contentVerticalAlignment = .top
-        if type == .radioButton {
-            let image = UIImage.getRadioButtonImage()
-            self.setImage(image, for: .normal)
-            let hightlighted = UIImage.getRadioButtonImageHighlighted()
-            self.setImage(hightlighted, for: .highlighted)
-            let selected = UIImage.getRadioButtonImageSelected()
-            self.setImage(selected, for: .selected)
-        } else {
-            let image = UIImage.getCheckboxImage()
-            self.setImage(image, for: .normal)
-            let hightlighted = UIImage.getCheckboxImageHighlighted()
-            self.setImage(hightlighted, for: .highlighted)
-            let selected = UIImage.getCheckboxImageSelected()
-            self.setImage(selected, for: .selected)
-        }
-        self.setTitleColor(UIColor.black, for: .normal)
-        self.layer.borderWidth = 0.5
-        self.layer.borderColor = kBorderColor.cgColor
-        self.layer.cornerRadius = 2.0
+        self.contentHorizontalAlignment = .leading
+        self.contentVerticalAlignment = .center
+        self.layer.cornerRadius = 5.0
+        self.setupButtonStyle()
+
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.imageEdgeInsets = UIEdgeInsets(top: 15, left: 14, bottom: 0, right: 0)
-        self.titleEdgeInsets = UIEdgeInsets(top: 12, left: 28, bottom: 12, right: 12)
+        self.titleEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 12)
+
     }
     
     required init?(coder: NSCoder) {
@@ -65,22 +49,42 @@ class OFRadioButton: UIButton {
     }
     
     func setupButtonStyle() {
-        if self.isHighlighted == true {
-            self.layer.borderColor = kPrimaryColor.cgColor
-        } else if self.isSelected == true {
-            self.layer.borderColor = kPrimaryColor.cgColor
+        self.layer.borderWidth = 0
 
-        } else {
-            self.layer.borderColor = kBorderColor.cgColor
+        if self.radioButtonType == .radioButton {
+            if self.isHighlighted == true {
+                
+            } else if self.isSelected == true {
+                self.layer.backgroundColor = kPrimaryColor.cgColor
+                self.setTitleColor(UIColor.white, for: .normal)
+
+            } else {
+                self.layer.backgroundColor = kAppGreyBGColor.cgColor
+                self.setTitleColor(UIColor.black, for: .normal)
+
+            }
+        }
+        else {
+            if self.isHighlighted == true {
+                self.layer.backgroundColor = kAppGreyBGColor.cgColor
+                self.setTitleColor(UIColor.black, for: .normal)
+                
+            } else if self.isSelected == true {
+                self.layer.borderWidth = CGFloat(2.0)
+                self.layer.borderColor = kPrimaryColor.cgColor
+                self.layer.backgroundColor = UIColor.white.cgColor
+                self.setTitleColor(UIColor.black, for: .normal)
+
+            } else {
+                self.layer.backgroundColor = kAppGreyBGColor.cgColor
+                self.setTitleColor(UIColor.black, for: .normal)
+            }
         }
     }
-    
+
     override var isSelected: Bool {
         didSet {
             self.setupButtonStyle()
         }
     }
-    
-    
-
 }

@@ -77,6 +77,9 @@ final class OFProjectDetailsController: NSObject {
                 return str
             }
         }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "systemID")
+        }
     }
 
     var analytic_user_id: String?
@@ -137,6 +140,7 @@ final class OFProjectDetailsController: NSObject {
                         self.currentLoggedUserID = newUserID
                         self.analytic_user_id = user_id
                         self.analytics_session_id = session_id
+                        self.systemID = newUserID
                         self.newUserID = nil
                         self.newUserData = nil
                         completion(true)

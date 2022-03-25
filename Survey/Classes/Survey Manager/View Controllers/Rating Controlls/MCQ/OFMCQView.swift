@@ -18,6 +18,7 @@ import UIKit
 class OFMCQView: UIView {
 
     @IBOutlet weak var stackView1: UIStackView!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
 
     weak var delegate: OFRatingViewProtocol?
     @IBOutlet weak var btnFinish: UIButton!
@@ -40,10 +41,10 @@ class OFMCQView: UIView {
                     if let option : SurveyListResponse.Survey.Screen.Input.Choice = selectedOption as? SurveyListResponse.Survey.Screen.Input.Choice, let optionID : String  = option._id {
                         if optionID == self.otherOptionID  {
                             if !otherOptionAnswer.isEmpty {
-                                self.delegate?.mcqViewChangeSelection(optionID, otherOptionAnswer)
+                            self.delegate?.mcqViewChangeSelection(optionID, otherOptionAnswer)
                             }
                         } else {
-                            self.delegate?.mcqViewChangeSelection(optionID, nil)
+                           self.delegate?.mcqViewChangeSelection(optionID, nil)
                         }
                     }
                 }
@@ -56,8 +57,16 @@ class OFMCQView: UIView {
         self.allOptions = options
         parentWidth = parentViewWidth
         if type == .checkBox {
-            btnFinish.backgroundColor = kPrimaryColor
-            btnFinish.layer.cornerRadius = 2.0
+            btnFinish.layer.cornerRadius = 5.0
+            btnFinish.isHidden = false
+            btnFinish.backgroundColor = kSubmitButtonBGColor
+            btnFinish.isUserInteractionEnabled = false
+            bottomConstraint.constant = 70.0
+
+        }
+        else {
+            btnFinish.isHidden = true
+            bottomConstraint.constant = 25.0
         }
         
         if let otherOptionId : String = otherOptionIdentifier {
@@ -74,8 +83,8 @@ class OFMCQView: UIView {
            
             if let option : SurveyListResponse.Survey.Screen.Input.Choice = currentOption as? SurveyListResponse.Survey.Screen.Input.Choice, let optionString : String  = option.title {
               
-                let button = OFRadioButton(frame: CGRect(x: 0, y: 0, width: parentViewWidth, height: 42), type: type)
-                button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+                let button = OFRadioButton(frame: CGRect(x: 0, y: 0, width: parentViewWidth, height: 43), type: type)
+                button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
                 button.titleLabel?.lineBreakMode = .byWordWrapping
                 
                 button.setTitle(optionString, for: .normal)
@@ -84,7 +93,7 @@ class OFMCQView: UIView {
                 
                 
                 self.stackView1.addArrangedSubview(button)
-                let height = self.labelSize(for: optionString, maxWidth: (parentViewWidth - 54))
+                let height = self.labelSize(for: optionString, maxWidth: (parentViewWidth))
                 button.translatesAutoresizingMaskIntoConstraints = false
                 button.heightAnchor.constraint(equalToConstant: height + 24).isActive = true
             }
@@ -95,11 +104,13 @@ class OFMCQView: UIView {
     
     
     func addTextFieldToView(_ button : UIButton) {
-        let otherOptionView = UIView.init(frame: CGRect(x: 42, y: 0, width: button.frame.size.width - 50 , height: button.frame.size.height))
-        otherOptionView.backgroundColor = .clear
+        let otherOptionView = UIView.init(frame: CGRect(x: 2, y: 2, width: button.frame.size.width - 4 , height: button.frame.size.height-4))
+        otherOptionView.backgroundColor = .white
         otherOptionView.tag = textFieldViewTag
+        otherOptionView.layer.cornerRadius = 5.0
+
         
-        let otherOptionTextField =  UITextField(frame: CGRect(x: 0, y: 0, width: otherOptionView.frame.size.width - 60 , height: otherOptionView.frame.size.height))
+        let otherOptionTextField =  UITextField(frame: CGRect(x: 25, y: 0, width: otherOptionView.frame.size.width - 60 , height: otherOptionView.frame.size.height))
         otherOptionTextField.placeholder = "Type your answer"
         otherOptionTextField.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         otherOptionTextField.borderStyle = UITextField.BorderStyle.none
@@ -109,7 +120,7 @@ class OFMCQView: UIView {
         otherOptionTextField.text = otherOptionAnswer
         otherOptionTF = otherOptionTextField
         
-        let enterButton = UIButton(frame: CGRect(x: otherOptionView.frame.size.width - 50, y: 8, width: 50, height: 28))
+        let enterButton = UIButton(frame: CGRect(x: otherOptionView.frame.size.width - 60, y: 5, width: 50, height: 28))
         enterButton.backgroundColor = kPrimaryColor
         enterButton.setTitle("Enter", for: .normal)
         enterButton.addTarget(self, action: #selector(enterButtonTapped), for: .touchUpInside)
@@ -145,6 +156,7 @@ class OFMCQView: UIView {
                     optionButton.setTitle(otherOptionAnswer, for: .normal)
                     self.setHeightForButton(optionButton)
                     if self.currentType == .radioButton {
+                        self.isUserInteractionEnabled = false
                         self.selectedButton?.isSelected = false
                         self.selectedButton = optionButton
                     } else {
@@ -235,21 +247,11 @@ class OFMCQView: UIView {
                 }
             }
             if isAnySelected == true {
-                if self.btnFinish.isHidden == true {
-                    self.btnFinish.alpha = 0.0
-                    self.btnFinish.isHidden = false
-                    UIView.animate(withDuration: 0.5) {
-                        self.btnFinish.alpha = 1.0
-                    }
-                }
+                btnFinish.backgroundColor = kPrimaryColor
+                btnFinish.isUserInteractionEnabled = true
             } else {
-                if self.btnFinish.isHidden == false {
-                    UIView.animate(withDuration: 0.5) {
-                        self.btnFinish.alpha = 0.0
-                    } completion: { _ in
-                        self.btnFinish.isHidden = true
-                    }
-                }
+                btnFinish.backgroundColor = kSubmitButtonBGColor
+                btnFinish.isUserInteractionEnabled = false
             }
         }
     }
@@ -257,6 +259,7 @@ class OFMCQView: UIView {
     @IBAction func onFinishTaped(_ sender: UIButton) {
         var selectedOptionIDs = [String]()
         var isOtherOptionSelected = false
+        self.isUserInteractionEnabled = false
         for view in self.stackView1.arrangedSubviews {
             if let btn = view as? UIButton {
                 if btn.isSelected == true {
@@ -286,6 +289,7 @@ class OFMCQView: UIView {
             self.selectedButton?.isSelected = false
             if sender.isSelected == true {
                 if !self.checkIfOptionNeedsTextAnswer(sender) {
+                    self.isUserInteractionEnabled = false
                     self.selectedButton = sender
                 }
             } else {
