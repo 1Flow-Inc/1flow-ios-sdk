@@ -248,6 +248,16 @@ final class OFSurveyManager: NSObject {
                         self.pendingSurveySubmission![survey._id] = surveyResponse
                     }
                     self.uploadPendingSurveyIfAvailable()
+                } else {
+                    OneFlow.recordEventName(kEventNameFlowClosed, parameters: ["survey_id": survey._id])
+                    if survey.survey_settings?.closed_as_finished == true {
+                        if self.submittedSurveyDetails == nil {
+                            self.submittedSurveyDetails = [SubmittedSurvey]()
+                        }
+                        let submittedSurvey = SubmittedSurvey(surveyID: survey._id, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: OFProjectDetailsController.shared.currentLoggedUserID)
+                        self.submittedSurveyDetails?.append(submittedSurvey)
+                        self.saveSubmittedSurvey()
+                    }
                 }
             }
             

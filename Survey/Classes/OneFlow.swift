@@ -132,16 +132,27 @@ public final class OneFlow: NSObject {
     }
     
     @objc class public func recordEventName(_ eventName: String, parameters: [String: Any]?) {
+        var parameterDic : [String : Any]? = nil
+        if let updatedParameterDic : [String : Any] = OneFlow.removeUnsupportedKeys(parameters) {
+            parameterDic = updatedParameterDic
+        }
         DispatchQueue.global().async {
-            shared.eventManager.recordEvent(eventName, parameters: parameters)
-        }        
+            shared.eventManager.recordEvent(eventName, parameters: parameterDic)
+        }
     }
     
     @objc class public func logUser(_ userID: String, userDetails: [String: Any]?) {
+
+        if let userDetailsDic : [String : Any] = OneFlow.removeUnsupportedKeys(userDetails) {
+            OFProjectDetailsController.shared.newUserData = userDetailsDic
+        }
+        else {
+            OFProjectDetailsController.shared.newUserData = nil
+        }
+        OneFlowLog.writeLog("Data can be Serialized")
         OneFlowLog.writeLog("Log new user")
         shared.eventManager.finishPendingEvents()
         OFProjectDetailsController.shared.newUserID = userID
-        OFProjectDetailsController.shared.newUserData = userDetails
         DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 1) {
             OFProjectDetailsController.shared.logNewUserDetails { isSuccess in
                 if isSuccess == true {
@@ -150,5 +161,59 @@ public final class OneFlow: NSObject {
                 }
             }
         }
-    } 
+    }
+    
+    @objc class private func getSerialisedString(_ value : Any) -> String? {
+        var newValue : String? = nil
+        if let valueDate = value as? Date {
+            let formatter = ISO8601DateFormatter()
+            newValue = formatter.string(from: valueDate)
+        }
+        else if let valueUrl = value as? URL {
+            newValue = valueUrl.absoluteString
+        }
+
+        return newValue
+    }
+    
+    @objc class private func removeUnsupportedKeys(_ userDetails: [String: Any]?) ->  [String: Any]? {
+        guard var userDetailsDic : [String : Any?] = userDetails else {return nil}
+        for (key, value) in userDetailsDic {
+            if value == nil {
+                userDetailsDic.removeValue(forKey: key)
+                continue
+            }
+            if !JSONSerialization.isValidJSONObject([key:value]) {
+                if let dicValue : [String : Any] = value as? [String : Any] {
+                    if let newDic : [String : Any] = self.removeUnsupportedKeys(dicValue) {
+                        userDetailsDic.updateValue(newDic, forKey: key)
+                    }
+                }
+                else if let arrayValue : [Any?]  = value as? [Any] {
+                    var newArray : [Any?] = []
+                    for arrayObj in arrayValue {
+                        if arrayObj == nil {
+                           continue
+                        }
+                        if (JSONSerialization.isValidJSONObject(["key":arrayObj])) {
+                            newArray.append(arrayObj)
+                        }
+                        else if let newValue = OneFlow.getSerialisedString(arrayObj as Any) {
+                            newArray.append(newValue)
+                        }
+                    }
+                    userDetailsDic.updateValue(newArray, forKey: key)
+                    
+                }
+                else if let newValue = OneFlow.getSerialisedString(value as Any) {
+                    userDetailsDic.updateValue(newValue, forKey: key)
+                }
+                else {
+                    userDetailsDic.removeValue(forKey: key)
+                }
+            }
+        }
+        return userDetailsDic as [String : Any]
+    }
+    
 }

@@ -113,7 +113,7 @@ class OFRatingViewController: UIViewController {
         if self.currentScreenIndex == -1 {
             self.presentNextScreen(nil)
         }
-        let radius = 5.0
+        let radius: CGFloat = 5.0
         self.bottomView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: radius)
     }
     
@@ -166,7 +166,7 @@ class OFRatingViewController: UIViewController {
             if self.allScreens!.count > self.currentScreenIndex, let screen = self.allScreens?[self.currentScreenIndex] {
                 self.setupUIAccordingToConfiguration(screen)
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-                    self.progressBar.setProgress(Float(CGFloat(self.currentScreenIndex + 1 )/CGFloat(self.allScreens!.count)), animated: true)
+                    self.progressBar.setProgress(Float(CGFloat(self.currentScreenIndex + 1 )/CGFloat(self.allScreens!.count - 1)), animated: true)
                 }
             } else {
                 //finish the survey
@@ -389,6 +389,7 @@ class OFRatingViewController: UIViewController {
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
         } else if currentScreen.input?.input_type == "thank_you" {
+            self.progressBar.isHidden = true
             self.viewPrimaryTitle1.isHidden = true
             self.viewSecondaryTitle.isHidden = true
             let view = OFThankYouView.loadFromNib()

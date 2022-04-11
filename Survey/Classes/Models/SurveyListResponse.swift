@@ -105,6 +105,7 @@ struct SurveyListResponse: Codable {
             var resurvey_option: Bool?
             var retake_survey: RetakeSurvey?
             var show_watermark: Bool?
+            var closed_as_finished: Bool? = false
             
             struct RetakeSurvey: Codable {
                 var _id: String?
