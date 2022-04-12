@@ -163,17 +163,15 @@ public final class OneFlow: NSObject {
         }
     }
     
-    @objc class private func getSerialisedString(_ value : Any) -> String? {
-        var newValue : String? = nil
+    @objc class private func getSerialisedString(_ value : Any) -> Any? {
         if let valueDate = value as? Date {
-            let formatter = ISO8601DateFormatter()
-            newValue = formatter.string(from: valueDate)
+            let interval = Int(valueDate.timeIntervalSince1970)
+            return interval
         }
         else if let valueUrl = value as? URL {
-            newValue = valueUrl.absoluteString
+            return valueUrl.absoluteString
         }
-
-        return newValue
+        return nil
     }
     
     @objc class private func removeUnsupportedKeys(_ userDetails: [String: Any]?) ->  [String: Any]? {
