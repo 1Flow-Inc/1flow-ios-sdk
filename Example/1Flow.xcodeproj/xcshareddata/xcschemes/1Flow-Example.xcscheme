@@ -28,7 +28,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43F7E8FF2797F9B200C4883B"
+               BlueprintIdentifier = "43F7E91D279826AC00C4883B"
                BuildableName = "1Flow_Tests.xctest"
                BlueprintName = "1Flow_Tests"
                ReferencedContainer = "container:1Flow.xcodeproj">
@@ -55,7 +55,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43F7E8FF2797F9B200C4883B"
+               BlueprintIdentifier = "43F7E91D279826AC00C4883B"
                BuildableName = "1Flow_Tests.xctest"
                BlueprintName = "1Flow_Tests"
                ReferencedContainer = "container:1Flow.xcodeproj">
@@ -65,7 +65,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43F7E8FF2797F9B200C4883B"
+               BlueprintIdentifier = "43F7E91D279826AC00C4883B"
                BuildableName = "1Flow_Tests.xctest"
                BlueprintName = "1Flow_Tests"
                ReferencedContainer = "container:1Flow.xcodeproj">

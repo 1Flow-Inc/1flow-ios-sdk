@@ -16,36 +16,37 @@ import Foundation
 import UIKit
 
 public final class OneFlow: NSObject {
-    private static let shared = OneFlow()
+    static let shared = OneFlow()
     private var networkTimer: Timer?
-    private let eventManager = OFEventManager()
+    var eventManager: EventManagerProtocol = OFEventManager()
     private var isSetupRunning: Bool = false
     private override init() {
     }
     let reachability = try! OFReachability(hostname: "www.apple.com")
     
     var apiController : APIProtocol = OFAPIController()
+    var projectDetailsController: ProjectDetailsProtocol = OFProjectDetailsController.shared
     
     @objc public static var enableSurveys: Bool = true {
         didSet {
-            OFProjectDetailsController.shared.isSuveryEnabled = enableSurveys
+            OneFlow.shared.projectDetailsController.isSuveryEnabled = enableSurveys
         }
     }
     
     @objc public class func configure(_ appKey: String) {
         OneFlowLog.writeLog("1Flow configuration started")
-        if OFProjectDetailsController.shared.appKey == nil {
-            OFProjectDetailsController.shared.appKey = appKey
-            OFProjectDetailsController.shared.setLoglevel(.none)
+        if OneFlow.shared.projectDetailsController.appKey == nil {
+            OneFlow.shared.projectDetailsController.appKey = appKey
+            OneFlow.shared.projectDetailsController.setLoglevel(.none)
             shared.setupOnce()
             shared.setupReachability()
         } else {
-            OneFlowLog.writeLog("1Flow already setup.")
+            OneFlowLog.writeLog("Error: 1Flow already setup.")
         }
     }
     
     private func setupOnce() {
-        let addUserRequest = AddUserRequest(system_id: OFProjectDetailsController.shared.systemID, device: AddUserRequest.DeviceDetails(os: "iOS", unique_id: OFProjectDetailsController.shared.uniqID, device_id: OFProjectDetailsController.shared.deviceID), location: nil, language: OFProjectDetailsController.shared.getLocalisedLanguageName())
+        let addUserRequest = AddUserRequest(system_id: OneFlow.shared.projectDetailsController.systemID, device: AddUserRequest.DeviceDetails(os: "iOS", unique_id: OneFlow.shared.projectDetailsController.uniqID, device_id: OneFlow.shared.projectDetailsController.deviceID), location: nil, language: OneFlow.shared.projectDetailsController.getLocalisedLanguageName())
         OneFlowLog.writeLog("Adding user")
         self.isSetupRunning = true
         self.apiController.addUser(addUserRequest, completion: { isSuccess, error, data in
@@ -55,7 +56,7 @@ public final class OneFlow: NSObject {
                     if surveyListResponse.success == 200, let userID = surveyListResponse.result?.analytic_user_id {
                         
                         OneFlowLog.writeLog("Add user - Success")
-                        OFProjectDetailsController.shared.analytic_user_id = userID
+                        OneFlow.shared.projectDetailsController.analytic_user_id = userID
                         OneFlow.shared.eventManager.isNetworkReachable = true
                         OneFlow.shared.eventManager.configure()
                         
@@ -80,8 +81,8 @@ public final class OneFlow: NSObject {
         switch reachability.connection {
         case .unavailable:
             OneFlowLog.writeLog("Network: Unreachable")
-            OFProjectDetailsController.shared.radioConnectivity = nil
-            OFProjectDetailsController.shared.isCarrierConnectivity = false
+            OneFlow.shared.projectDetailsController.radioConnectivity = nil
+            OneFlow.shared.projectDetailsController.isCarrierConnectivity = false
             
             if networkTimer != nil, networkTimer?.isValid == true {
                 networkTimer?.invalidate()
@@ -92,9 +93,9 @@ public final class OneFlow: NSObject {
         default:
             OneFlowLog.writeLog("Network: Reachable")
             if reachability.connection.description.lowercased() == "wifi" {
-                OFProjectDetailsController.shared.radioConnectivity = "wireless"
+                OneFlow.shared.projectDetailsController.radioConnectivity = "wireless"
             } else {
-                OFProjectDetailsController.shared.isCarrierConnectivity = true
+                OneFlow.shared.projectDetailsController.isCarrierConnectivity = true
             }
             
             if networkTimer != nil, networkTimer?.isValid == true {
@@ -144,17 +145,17 @@ public final class OneFlow: NSObject {
     @objc class public func logUser(_ userID: String, userDetails: [String: Any]?) {
 
         if let userDetailsDic : [String : Any] = OneFlow.removeUnsupportedKeys(userDetails) {
-            OFProjectDetailsController.shared.newUserData = userDetailsDic
+            OneFlow.shared.projectDetailsController.newUserData = userDetailsDic
         }
         else {
-            OFProjectDetailsController.shared.newUserData = nil
+            OneFlow.shared.projectDetailsController.newUserData = nil
         }
         OneFlowLog.writeLog("Data can be Serialized")
         OneFlowLog.writeLog("Log new user")
         shared.eventManager.finishPendingEvents()
-        OFProjectDetailsController.shared.newUserID = userID
+        OneFlow.shared.projectDetailsController.newUserID = userID
         DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 1) {
-            OFProjectDetailsController.shared.logNewUserDetails { isSuccess in
+            OneFlow.shared.projectDetailsController.logNewUserDetails { isSuccess in
                 if isSuccess == true {
                     shared.eventManager.surveyManager.setUserToSubmittedSurveyAsAnnonyous(newUserID: userID)
                     shared.eventManager.setupSurveyManager()

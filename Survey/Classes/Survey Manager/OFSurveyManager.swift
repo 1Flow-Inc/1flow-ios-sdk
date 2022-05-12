@@ -14,8 +14,10 @@
 
 import UIKit
 
+public let SurveyFinishNotification = Notification.Name("survey_finished")
+
 final class OFSurveyManager: NSObject {
-    var apiController = OFAPIController()
+    var apiController: APIProtocol = OFAPIController()
     var surveyList: SurveyListResponse?
     var surveyWindow: UIWindow?
     var isNetworkReachable = false
@@ -96,6 +98,7 @@ final class OFSurveyManager: NSObject {
             }
         }
     }
+
     private func fetchAllSurvey() {
         OneFlowLog.writeLog("Fetch Survey called")
         if self.surveyList != nil || self.isSurveyFetching == true {
@@ -224,14 +227,19 @@ final class OFSurveyManager: NSObject {
             controller.allScreens = screens
             self.surveyWindow?.rootViewController = controller
             let startDate = Date()
+            var callBackParameter = [String: Any]()
+            callBackParameter["survey_id"] = survey._id
+            callBackParameter["survey_name"] = survey.name
+            callBackParameter["trigger_event_name"] = eventName
+            callBackParameter["status"] = "NA"
+            
             controller.completionBlock = { [weak self] surveyResponse in
                 guard let self = self else { return }
-                
                 DispatchQueue.main.async {
                     self.surveyWindow?.isHidden = true
                     self.surveyWindow = nil
                 }
-
+                var callBackResponse = [[String: Any]]()
                 if surveyResponse.count > 0 {
                     if self.submittedSurveyDetails == nil {
                         self.submittedSurveyDetails = [SubmittedSurvey]()
@@ -240,14 +248,64 @@ final class OFSurveyManager: NSObject {
                     self.submittedSurveyDetails?.append(submittedSurvey)
                     self.saveSubmittedSurvey()
                     let interval = Int(Date().timeIntervalSince(startDate))
-                    let surveyResponse = SurveySubmitRequest(analytic_user_id: OFProjectDetailsController.shared.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, session_id: OFProjectDetailsController.shared.analytics_session_id, trigger_event: eventName, tot_duration: interval)
+                    let surveyResponseNew = SurveySubmitRequest(analytic_user_id: OFProjectDetailsController.shared.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, session_id: OFProjectDetailsController.shared.analytics_session_id, trigger_event: eventName, tot_duration: interval)
 
                     if self.pendingSurveySubmission == nil {
-                        self.pendingSurveySubmission = [survey._id : surveyResponse]
+                        self.pendingSurveySubmission = [survey._id : surveyResponseNew]
                     } else {
-                        self.pendingSurveySubmission![survey._id] = surveyResponse
+                        self.pendingSurveySubmission![survey._id] = surveyResponseNew
                     }
                     self.uploadPendingSurveyIfAvailable()
+                    if surveyResponse.count == (survey.screens!.count - 1) {
+                        callBackParameter["status"] = "finished"
+                    } else {
+                        callBackParameter["status"] = "closed"
+                    }
+                    for res in surveyResponse {
+                        var innerDic = [String: Any]()
+                        innerDic["screen_id"] = res.screen_id
+                        if let screen = screens.first(where: { $0._id == res.screen_id }) {
+                            innerDic["question_title"] = screen.title
+                            innerDic["question_type"] = screen.input?.input_type
+                            var question_ans = [[String: String]]()
+                            
+                            if screen.input?.input_type == "checkbox" {
+                                if let givenAnswer = res.answer_index?.components(separatedBy: ",") {
+                                    for answerID in givenAnswer {
+                                        var newDic = [String: String]()
+                                        if screen.input?.other_option_id == answerID {
+                                            if let otherOption = res.answer_value {
+                                                newDic["other_value"] = otherOption
+                                            }
+                                        }
+                                        if let selectedTitle = screen.input?.choices?.first(where: { $0._id == answerID })?.title {
+                                            newDic["answer_value"] = selectedTitle
+                                        }
+                                        question_ans.append(newDic)
+                                    }
+                                }
+                            } else if screen.input?.input_type == "mcq" {
+                                var newDic = [String: String]()
+                                if let otherOption = res.answer_value {
+                                    newDic["other_value"] = otherOption
+                                }
+                                if let a_value = res.answer_index {
+                                    if let selectedTitle = screen.input?.choices?.first(where: { $0._id == a_value })?.title {
+                                        newDic["answer_value"] = selectedTitle
+                                    }
+                                }
+                                question_ans.append(newDic)
+                            } else {
+                                if let a_value = res.answer_value {
+                                    let newDic = ["answer_value": a_value]
+                                    question_ans.append(newDic)
+                                }
+                            }
+                            innerDic["question_ans"] = question_ans
+                        }
+                        callBackResponse.append(innerDic)
+                    }
+                    callBackParameter["screens"] = callBackResponse
                 } else {
                     OneFlow.recordEventName(kEventNameFlowClosed, parameters: ["survey_id": survey._id])
                     if survey.survey_settings?.closed_as_finished == true {
@@ -258,7 +316,9 @@ final class OFSurveyManager: NSObject {
                         self.submittedSurveyDetails?.append(submittedSurvey)
                         self.saveSubmittedSurvey()
                     }
+                    callBackParameter["status"] = "skipped"
                 }
+                NotificationCenter.default.post(name: SurveyFinishNotification, object: nil, userInfo: callBackParameter)
             }
             
             controller.recordEmptyTextCompletionBlock = { [weak self] in
@@ -269,6 +329,8 @@ final class OFSurveyManager: NSObject {
                 let submittedSurvey = SubmittedSurvey(surveyID: survey._id, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: OFProjectDetailsController.shared.currentLoggedUserID)
                 self.submittedSurveyDetails?.append(submittedSurvey)
                 self.saveSubmittedSurvey()
+                callBackParameter["status"] = "skipped"
+                NotificationCenter.default.post(name: SurveyFinishNotification, object: nil, userInfo: callBackParameter)
             }
             self.surveyWindow?.makeKeyAndVisible()
         }
@@ -276,7 +338,7 @@ final class OFSurveyManager: NSObject {
     
     private func submitTheSurveyToServer(_ surveyID: String, surveyResponse:SurveySubmitRequest) {
         
-        OneFlowLog.writeLog("submitTheSurveyToServer called")
+        OneFlowLog.writeLog("submitSurveyToServer called")
         
         if self.isNetworkReachable == false {
             OneFlowLog.writeLog("Network not reachable. Returned")

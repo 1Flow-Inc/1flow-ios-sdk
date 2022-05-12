@@ -51,6 +51,12 @@ class OFMCQView: UIView {
             }
         }
     }
+
+    var submitButtonTitle : String = "Submit Feedback" {
+        didSet {
+            btnFinish.setTitle(self.submitButtonTitle, for: .normal)
+        }
+    }
    
     func setupViewWithOptions(_ options: [Codable], type: OFRadioButton.OFRadioButtonType, parentViewWidth: CGFloat, _ otherOptionIdentifier : String?) {
         self.currentType = type

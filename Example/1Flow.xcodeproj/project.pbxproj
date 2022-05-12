@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		437B678B281D1B63009D96FA /* MockAPIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B678A281D1B63009D96FA /* MockAPIController.swift */; };
+		437B6792281D27EA009D96FA /* OneFlowClassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B6791281D27EA009D96FA /* OneFlowClassTests.swift */; };
+		437B6794281D3213009D96FA /* MockProjectDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B6793281D3213009D96FA /* MockProjectDetailsController.swift */; };
+		43AE725C2821376E00E11A6D /* MockEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AE725B2821376E00E11A6D /* MockEventManager.swift */; };
 		43F7E928279826DD00C4883B /* OneFlowProductionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F7E927279826DD00C4883B /* OneFlowProductionTests.swift */; };
 		43F7E92A2798279000C4883B /* Pods_1Flow_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F7E9292798279000C4883B /* Pods_1Flow_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
@@ -29,7 +33,11 @@
 
 /* Begin PBXFileReference section */
 		0892DBABDE71D5D7BF1F3F7E /* Pods-1Flow_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1Flow_Tests.debug.xcconfig"; path = "Target Support Files/Pods-1Flow_Tests/Pods-1Flow_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		437B678A281D1B63009D96FA /* MockAPIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIController.swift; sourceTree = "<group>"; };
+		437B6791281D27EA009D96FA /* OneFlowClassTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneFlowClassTests.swift; sourceTree = "<group>"; };
+		437B6793281D3213009D96FA /* MockProjectDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProjectDetailsController.swift; sourceTree = "<group>"; };
 		4385C2A926BB994A008619AC /* Survey.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = Survey.podspec; path = ../Survey.podspec; sourceTree = "<group>"; };
+		43AE725B2821376E00E11A6D /* MockEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockEventManager.swift; sourceTree = "<group>"; };
 		43F7E91E279826AC00C4883B /* 1Flow_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = 1Flow_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43F7E927279826DD00C4883B /* OneFlowProductionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneFlowProductionTests.swift; sourceTree = "<group>"; };
 		43F7E9292798279000C4883B /* Pods_1Flow_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_1Flow_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,10 +78,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		437B6789281D1B3F009D96FA /* Mock Classes */ = {
+			isa = PBXGroup;
+			children = (
+				437B678A281D1B63009D96FA /* MockAPIController.swift */,
+				437B6793281D3213009D96FA /* MockProjectDetailsController.swift */,
+				43AE725B2821376E00E11A6D /* MockEventManager.swift */,
+			);
+			path = "Mock Classes";
+			sourceTree = "<group>";
+		};
 		43F7E91F279826AC00C4883B /* 1Flow_Tests */ = {
 			isa = PBXGroup;
 			children = (
 				43F7E927279826DD00C4883B /* OneFlowProductionTests.swift */,
+				437B6791281D27EA009D96FA /* OneFlowClassTests.swift */,
+				437B6789281D1B3F009D96FA /* Mock Classes */,
 			);
 			path = 1Flow_Tests;
 			sourceTree = "<group>";
@@ -325,6 +345,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				437B6794281D3213009D96FA /* MockProjectDetailsController.swift in Sources */,
+				437B6792281D27EA009D96FA /* OneFlowClassTests.swift in Sources */,
+				43AE725C2821376E00E11A6D /* MockEventManager.swift in Sources */,
+				437B678B281D1B63009D96FA /* MockAPIController.swift in Sources */,
 				43F7E928279826DD00C4883B /* OneFlowProductionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -43,7 +43,6 @@ class OneFlowProductionTests: XCTestCase {
         XCTAssertNotNil(appdel)
         appdel.setupOneFlow()
         XCTAssertEqual(OFProjectDetailsController.shared.appKey, "YOUR_1FLOW_PROJECT_KEY")
-        
     }
     
     func testCurrentlogLevel() {
@@ -54,14 +53,5 @@ class OneFlowProductionTests: XCTestCase {
         XCTAssertTrue(OFProjectDetailsController.shared.currentLogLevel == .none)
         
     }
-    
-}
-
-
-final class MockAPIController: NSObject, APIProtocol {
-    func addUser(_ parameter: AddUserRequest, completion: @escaping APICompletionBlock) {
-        print("MockAPIController addUser")
-    }
-    
     
 }

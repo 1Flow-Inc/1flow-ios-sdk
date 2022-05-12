@@ -19,6 +19,8 @@
 		2B0CD28930F021453392C2F9D51E6A7B /* OFDraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A3C40B9DC4D7BCE39CFBA985372177 /* OFDraggableView.swift */; };
 		37BD2BD47D2E4D301E8298455817D9D1 /* OFThankYouView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E13A9F5946263B995CC9BE017378A27B /* OFThankYouView.xib */; };
 		4092F3046B141DC8BA9E485ED09F1991 /* OFAPIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFD640325089F159562FBCA99BF1F0A2 /* OFAPIController.swift */; };
+		437B678E281D1C52009D96FA /* EndPointPovider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B678D281D1C52009D96FA /* EndPointPovider.swift */; };
+		437B6790281D232B009D96FA /* URLRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B678F281D232B009D96FA /* URLRequestManager.swift */; };
 		4D85DE7F8655578296333B2C7752771E /* OFRatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0F0757647F576A8EF051C306C7F224A /* OFRatingViewController.xib */; };
 		511955A4EA7FBFED050938B57DF0C5DB /* OneFlowConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF3F8ADB4CE492A2CF4EEEA0AC36CF4 /* OneFlowConstant.swift */; };
 		51857F0218111418C5556B124DF3EFAB /* OFOneToTenView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 10915AA5EF6F27BF8C1E221E1FFF3BBA /* OFOneToTenView.xib */; };
@@ -98,9 +100,11 @@
 		23A3C40B9DC4D7BCE39CFBA985372177 /* OFDraggableView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFDraggableView.swift; sourceTree = "<group>"; };
 		25CEFE4E894E1A5143834ACF970BF763 /* OFScreenTrackingController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFScreenTrackingController.swift; sourceTree = "<group>"; };
 		25D8092E539FE614E1E3F1FFB2F4E9EB /* OFReachability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFReachability.swift; sourceTree = "<group>"; };
-		2A466886A4304D10DD399C24F36CCE1B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		2A466886A4304D10DD399C24F36CCE1B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		35D6960850779D98FF229412FED4CDD0 /* Pods-1Flow_Example */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-1Flow_Example"; path = Pods_1Flow_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3946CFB5FB71B096C12266D2329FF6BE /* OFMCQView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFMCQView.swift; sourceTree = "<group>"; };
+		437B678D281D1C52009D96FA /* EndPointPovider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointPovider.swift; sourceTree = "<group>"; };
+		437B678F281D232B009D96FA /* URLRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestManager.swift; sourceTree = "<group>"; };
 		4385E10AC6E4BC7503B447884B9DB0B7 /* Pods-1Flow_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-1Flow_Example-frameworks.sh"; sourceTree = "<group>"; };
 		440F4D66CCB5CF18D2FE5D168806D26B /* Pods-1Flow_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Example-Info.plist"; sourceTree = "<group>"; };
 		4559617A4C16645A3813BC303C983910 /* OneFlowLog.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OneFlowLog.swift; sourceTree = "<group>"; };
@@ -117,7 +121,7 @@
 		6D4CA2AED13FC2C95BD54E89EFEE7E97 /* Pods-1Flow_Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Tests-Info.plist"; sourceTree = "<group>"; };
 		6EB492524404670ED946722955E31631 /* Pods-1Flow_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-1Flow_Example.modulemap"; sourceTree = "<group>"; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		76EC941154C5D9B552764DAA4880580E /* 1Flow.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = 1Flow.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		76EC941154C5D9B552764DAA4880580E /* 1Flow.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = 1Flow.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		7874CC097D6EAEAFC756B2474D34C2F4 /* 1Flow-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "1Flow-dummy.m"; sourceTree = "<group>"; };
 		83B487511F268AB784276A02EC056B61 /* Pods-1Flow_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-1Flow_Tests.modulemap"; sourceTree = "<group>"; };
 		83E570CEA3435FE81D04DF0039030F4A /* OFdone.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; name = OFdone.gif; path = Survey/Resources/OFdone.gif; sourceTree = "<group>"; };
@@ -125,7 +129,7 @@
 		868C512D7E06FC66CD4E00008A3CAB43 /* AddUserResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddUserResponse.swift; sourceTree = "<group>"; };
 		86E41BF52A611B3BF3B60152413A58A0 /* Pods-1Flow_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-1Flow_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		9A5925B01E4DF63DFE8FDDFEF2F6DA4C /* OFFollowupView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFFollowupView.swift; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A8EAF8E454A47AEEE4C89F896A55FBED /* SurveySubmitRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SurveySubmitRequest.swift; sourceTree = "<group>"; };
 		AC89EB3D05FF971717D5DAB95941C947 /* SurveyListResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SurveyListResponse.swift; sourceTree = "<group>"; };
 		AF369F06D34DD91EDC82436DE4756C4B /* OneFlowDataLogic.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OneFlowDataLogic.swift; sourceTree = "<group>"; };
@@ -246,7 +250,6 @@
 				E9D51AD92AF17DA4C2FA4E77E810F16F /* OFRatingViewController.swift */,
 				D38C759F8C3419DC0C4333C65B153142 /* Rating Controlls */,
 			);
-			name = "View Controllers";
 			path = "View Controllers";
 			sourceTree = "<group>";
 		};
@@ -257,6 +260,16 @@
 				8B464FED05CAD071C3D20CF8E30AA70D /* Pods-1Flow_Tests */,
 			);
 			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		437B678C281D1C31009D96FA /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				DFD640325089F159562FBCA99BF1F0A2 /* OFAPIController.swift */,
+				437B678D281D1C52009D96FA /* EndPointPovider.swift */,
+				437B678F281D232B009D96FA /* URLRequestManager.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		5168E15E56EFC7CD9F79FA43BA944FEA /* 1Flow */ = {
@@ -284,7 +297,6 @@
 			children = (
 				9A5925B01E4DF63DFE8FDDFEF2F6DA4C /* OFFollowupView.swift */,
 			);
-			name = Followup;
 			path = Followup;
 			sourceTree = "<group>";
 		};
@@ -293,7 +305,6 @@
 			children = (
 				4B2ACED2B258367A4CF8844EAF46A441 /* OFStarsView.swift */,
 			);
-			name = Stars;
 			path = Stars;
 			sourceTree = "<group>";
 		};
@@ -333,7 +344,6 @@
 			children = (
 				3946CFB5FB71B096C12266D2329FF6BE /* OFMCQView.swift */,
 			);
-			name = MCQ;
 			path = MCQ;
 			sourceTree = "<group>";
 		};
@@ -373,7 +383,6 @@
 				0CC0DB25EAEC2CF0F4B239A2B58E37E7 /* OFNumberCollectionViewCell.swift */,
 				6CD0394B20BE3B6856063B386505C537 /* OFOneToTenView.swift */,
 			);
-			name = OneToTen;
 			path = OneToTen;
 			sourceTree = "<group>";
 		};
@@ -420,7 +429,6 @@
 				7F028FA136DAE68C1D79945B4802A759 /* Stars */,
 				D58DB4BC3CE8B7465A0C1198C3CBCFC8 /* ThankYou */,
 			);
-			name = "Rating Controlls";
 			path = "Rating Controlls";
 			sourceTree = "<group>";
 		};
@@ -430,14 +438,13 @@
 				0674119740CAA2B58151316EB850BDF5 /* OFSwiftGIF.swift */,
 				E76A896BB89DFC28E081E194280545CE /* OFThankYouView.swift */,
 			);
-			name = ThankYou;
 			path = ThankYou;
 			sourceTree = "<group>";
 		};
 		DA054D7D3C1F943E4B5AC583376516C1 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				DFD640325089F159562FBCA99BF1F0A2 /* OFAPIController.swift */,
+				437B678C281D1C31009D96FA /* Networking */,
 				25D8092E539FE614E1E3F1FFB2F4E9EB /* OFReachability.swift */,
 				0CA1E7661F317BBA8D62BBF3387E3F87 /* OneFlowBundle.swift */,
 				1CF3F8ADB4CE492A2CF4EEEA0AC36CF4 /* OneFlowConstant.swift */,
@@ -649,6 +656,7 @@
 				015862A20FD8D98A98FA57CED286AE4E /* OFRatingViewProtocol.swift in Sources */,
 				DCC86374D800BDB4ABBFA5417FBD96E8 /* OFReachability.swift in Sources */,
 				8187A431AB44B10968BFEEB67249B448 /* OFRoundedConrnerView.swift in Sources */,
+				437B678E281D1C52009D96FA /* EndPointPovider.swift in Sources */,
 				EA2C4F406211A1FA6473A59E3D2B93F3 /* OFScreenTrackingController.swift in Sources */,
 				E38481DBF0D4A624DCAB02BB4C16CD11 /* OFStarsView.swift in Sources */,
 				6F1D32AF23669055EDAD8923736A0484 /* OFSurveyManager.swift in Sources */,
@@ -656,6 +664,7 @@
 				7AA817BA5A95CDC3D293E5B023666FFD /* OFThankYouView.swift in Sources */,
 				7CD6D224E3A5DB662D5B4A5DE782EB87 /* OFViewLoading.swift in Sources */,
 				9B0ADF8087CD51A7D23F64FAAC5D99E1 /* OneFlow.swift in Sources */,
+				437B6790281D232B009D96FA /* URLRequestManager.swift in Sources */,
 				9763B14A8292F3499D204297E782D680 /* OneFlowBundle.swift in Sources */,
 				511955A4EA7FBFED050938B57DF0C5DB /* OneFlowConstant.swift in Sources */,
 				2A99F44E561AD5921F785363FAE1988D /* OneFlowDataLogic.swift in Sources */,
@@ -875,8 +884,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};

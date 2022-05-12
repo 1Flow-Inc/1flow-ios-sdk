@@ -19,13 +19,20 @@ import _1Flow
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
     let kOneProjectKey = "YOUR_1FLOW_PROJECT_KEY"
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         setupOneFlow()
+        NotificationCenter.default.addObserver(self, selector: #selector(surveyDidFinished(notification:)), name: SurveyFinishNotification, object: nil)
         return true
+    }
+    
+    @objc func surveyDidFinished(notification: Notification) {
+        
+        if let userInfo = notification.userInfo {
+            print("Notification userInfo: \(userInfo)")
+        }
     }
 
     func setupOneFlow() {

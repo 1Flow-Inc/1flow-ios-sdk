@@ -31,7 +31,29 @@ enum OneFlowEnvironment: String {
     }
 }
 
-final class OFProjectDetailsController: NSObject {
+protocol ProjectDetailsProtocol {
+    var currentEnviromment: OneFlowEnvironment { get set }
+    var currentLogLevel: OneFlowLogLevel { get set }
+    var appKey: String! { get set }
+    var isSuveryEnabled: Bool { get set }
+    var deviceID: String! { get }
+    var uniqID: String! { get }
+    var systemID: String! { get set }
+    var analytic_user_id: String? { get set }
+    var analytics_session_id: String? { get set }
+    var currentLoggedUserID: String? { get set }
+    var radioConnectivity: String? { get set }
+    var isCarrierConnectivity: Bool { get set }
+    var newUserID: String? { get set }
+    var newUserData: [String: Any]? { get set }
+    
+    func setLoglevel(_ newLogLevel : OneFlowLogLevel)
+    func logNewUserDetails(_ completion: @escaping (Bool) -> Void)
+    func getLocalisedLanguageName() -> String
+}
+
+final class OFProjectDetailsController: NSObject, ProjectDetailsProtocol {
+
     static let shared = OFProjectDetailsController()
     
     var currentEnviromment: OneFlowEnvironment = .prod

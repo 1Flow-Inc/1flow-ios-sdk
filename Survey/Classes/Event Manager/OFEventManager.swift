@@ -15,7 +15,17 @@
 import UIKit
 import CoreTelephony
 
-final class OFEventManager: NSObject {
+protocol EventManagerProtocol {
+    func recordEvent(_ name: String, parameters: [String: Any]?)
+    func configure()
+    func setupSurveyManager()
+    var isNetworkReachable: Bool { get set }
+    func networkStatusChanged(_ isReachable: Bool)
+    func finishPendingEvents()
+    var surveyManager: OFSurveyManager! { get }
+}
+
+final class OFEventManager: NSObject, EventManagerProtocol {
 
     var surveyManager: OFSurveyManager!
     private let inAppController = OFInAppPurchaseEventsController()

@@ -239,45 +239,6 @@ class OFRatingViewController: UIViewController {
         }
     }
 
-    private func openAppStoreRateMeUrl(){
-        
-        OFAPIController().getAppStoreDetails { [weak self] isSuccess, error, data in
-            guard self != nil else {
-                return
-            }
-            if isSuccess == true, let data = data {
-                do{
-                    let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String : Any]
-                    if let results : NSArray =  json!["results"] as? NSArray {
-                        if results.count > 0 {
-                            let result : NSDictionary = results.firstObject as! NSDictionary
-                            if let trackId = result["trackId"]{
-                                let ratingUrl = "https://itunes.apple.com/app/id\(trackId)?action=write-review" // (Option 2) Open App Review Page
-                                OneFlowLog.writeLog("Data Logic : App store rating Url : \(ratingUrl)")
-
-                                guard let url = URL(string: ratingUrl) else {
-                                    return
-                                }
-                                DispatchQueue.main.async {
-                                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                                }
-                            }
-                        }
-                        else {
-                            OneFlowLog.writeLog("Data Logic : App Store track ID not found")
-                        }
-                    }
-                }catch{
-                    OneFlowLog.writeLog("Data Logic : App Store Url not found")
-                }
-                 
-                
-            } else {
-                OneFlowLog.writeLog(error?.localizedDescription ?? "NA")
-            }
-        }
-    }
-    
     private func performOpenUrlAction(_ urlString : String) {
         currentScreenIndex = -2
         guard let completion = self.completionBlock else { return }
@@ -385,6 +346,13 @@ class OFRatingViewController: UIViewController {
             view.currentType = .checkBox
             if let titleArray = currentScreen.input!.choices?.map({ return $0 }) {
                 view.setupViewWithOptions(titleArray, type: .checkBox, parentViewWidth: self.stackView.bounds.width, currentScreen.input?.other_option_id)
+            }
+            if let buttonArray = currentScreen.buttons {
+                if buttonArray.count > 0 {
+                    if let buttonTitle = buttonArray.first?.title {
+                        view.submitButtonTitle = buttonTitle
+                    }
+                }
             }
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
