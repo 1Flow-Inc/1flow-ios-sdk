@@ -29,7 +29,7 @@ typealias RatingViewCompletion = ((_ surveyResult: [SurveySubmitRequest.Answer])
 typealias RecordOnlyEmptyTextCompletion = (() -> Void)
 
 class OFRatingViewController: UIViewController {
-    
+    @IBOutlet weak var mostContainerView: UIView!
     @IBOutlet weak var ratingView: OFDraggableView!
     @IBOutlet weak var containerView: OFRoundedConrnerView!
     @IBOutlet weak var stackView: UIStackView!
@@ -41,12 +41,11 @@ class OFRatingViewController: UIViewController {
     @IBOutlet weak var lblSecondaryTitle: UILabel!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var progressBar: UIProgressView!
-    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var poweredByButton: UIButton!
+    @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var bottomView: UIView!
-
+    
     private var isKeyboardVisible = false
-
     var originalPosition: CGPoint?
     var currentPositionTouched: CGPoint?
 
@@ -60,7 +59,8 @@ class OFRatingViewController: UIViewController {
     private var isClosingAnimationRunning: Bool = false
     private var shouldShowRating: Bool = false
     private var shouldOpenUrl: Bool = false
-
+    var shouldRemoveWatermark = false
+    
     lazy var waterMarkURL = "https://1flow.app/?utm_source=1flow-ios-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow"
     
     override func viewDidLoad() {
@@ -85,8 +85,17 @@ class OFRatingViewController: UIViewController {
         self.ratingView.layer.shadowOpacity = 0.25
         self.ratingView.layer.shadowOffset = CGSize.zero
         self.ratingView.layer.shadowRadius = 8.0
+        self.mostContainerView.backgroundColor = kBackgroundColor
+        self.containerView.backgroundColor = kBackgroundColor
+        self.bottomView.backgroundColor = kBackgroundColor
+        self.stackView.arrangedSubviews.forEach({ $0.backgroundColor = kBackgroundColor })
         
         self.setPoweredByButtonText(fullText: " Powered by 1Flow", mainText: " Powered by ", creditsText: "1Flow")
+        if let closeImage = UIImage.init(named: "CloseButton", in: OneFlowBundle.bundleForObject(self), compatibleWith: nil)?.withRenderingMode(.alwaysTemplate) {
+            self.closeButton.setImage(closeImage, for: .normal)
+            self.closeButton.tintColor = kCloseButtonColor
+        }
+        self.poweredByButton.isHidden = self.shouldRemoveWatermark
     }
     
     func setPoweredByButtonText(fullText: String, mainText: String, creditsText: String) {
@@ -96,15 +105,21 @@ class OFRatingViewController: UIViewController {
         
         let bigRange = (attributedString.string as NSString).range(of: mainText)
         let creditsRange = (attributedString.string as NSString).range(of: creditsText)
-        attributedString.setAttributes([NSAttributedString.Key.font: fontBig as Any, NSAttributedString.Key.foregroundColor: UIColor.colorFromHex("50555C")], range: bigRange)
-        attributedString.setAttributes([NSAttributedString.Key.font: fontSmall as Any, NSAttributedString.Key.foregroundColor: UIColor.colorFromHex("50555C")], range: creditsRange)
-        
+        attributedString.setAttributes([NSAttributedString.Key.font: fontBig as Any, NSAttributedString.Key.foregroundColor: kWatermarkColor], range: bigRange)
+        attributedString.setAttributes([NSAttributedString.Key.font: fontSmall as Any, NSAttributedString.Key.foregroundColor: kWatermarkColor], range: creditsRange)
         self.poweredByButton.setAttributedTitle(attributedString, for: .normal)
+        
+        let highlightedString = NSMutableAttributedString(string: fullText, attributes: nil)
+        highlightedString.setAttributes([NSAttributedString.Key.font: fontBig as Any, NSAttributedString.Key.foregroundColor: kWatermarkColorHightlighted], range: bigRange)
+        highlightedString.setAttributes([NSAttributedString.Key.font: fontSmall as Any, NSAttributedString.Key.foregroundColor: kWatermarkColorHightlighted], range: creditsRange)
+        self.poweredByButton.setAttributedTitle(highlightedString, for: .highlighted)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.progressBar.tintColor = kPrimaryColor
+        self.progressBar.tintColor = kBrandColor
+        self.progressBar.trackTintColor = kBackgroundColor
+        
         UIView.animate(withDuration: 0.2) {
             self.view.backgroundColor = UIColor.black.withAlphaComponent(0.25)
         } completion: { _ in
@@ -268,6 +283,7 @@ class OFRatingViewController: UIViewController {
         if let value = currentScreen.title {
             self.viewPrimaryTitle1.isHidden = false
             self.lblPrimaryTitle1.text = value
+            self.lblPrimaryTitle1.textColor = kPrimaryTitleColor
         } else {
             self.viewPrimaryTitle1.isHidden = true
         }
@@ -275,6 +291,7 @@ class OFRatingViewController: UIViewController {
         if let value = currentScreen.message, value.count > 0 {
             self.viewSecondaryTitle.isHidden = false
             self.lblSecondaryTitle.text = value
+            self.lblSecondaryTitle.textColor = kSecondaryTitleColor
         } else {
             self.viewSecondaryTitle.isHidden = true
         }
@@ -288,7 +305,7 @@ class OFRatingViewController: UIViewController {
         if currentScreen.input?.input_type == "text" {
             let view = OFFollowupView.loadFromNib()
             view.delegate = self
-            view.placeHolderText = currentScreen.input!.placeholder_text ?? "Write here..."
+            view.placeHolderText = "Type here"//currentScreen.input!.placeholder_text ?? "Write here..."
             view.maxCharsAllowed = currentScreen.input!.max_chars ?? 1000
             view.minCharsAllowed = currentScreen.input!.min_chars ?? 5
             if let buttonArray = currentScreen.buttons {
@@ -368,6 +385,7 @@ class OFRatingViewController: UIViewController {
 
         for subview in self.stackView.arrangedSubviews {
             subview.alpha = 0.0
+            subview.backgroundColor = kBackgroundColor
         }
         
         UIView.animate(withDuration: 0.3) {
@@ -410,11 +428,8 @@ class OFRatingViewController: UIViewController {
                 }
             }
         }
-        
-        
     }
-    
-    
+
     func runCloseAnimation(_ completion: @escaping ()-> Void) {
         self.isClosingAnimationRunning = true
         UIView.animate(withDuration: 0.5) {

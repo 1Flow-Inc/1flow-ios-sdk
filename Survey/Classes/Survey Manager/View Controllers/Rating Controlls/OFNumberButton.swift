@@ -23,13 +23,13 @@ class OFNumberButton: UIButton {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.setTitleColor(UIColor.white, for: .selected)
-        self.setTitleColor(UIColor.black, for: .normal)
+        self.setTitleColor(kPrimaryTitleColor, for: .normal)
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setTitleColor(UIColor.white, for: .selected)
-        self.setTitleColor(UIColor.black, for: .normal)
+        self.setTitleColor(kPrimaryTitleColor, for: .normal)
     }
     
     required init?(coder: NSCoder) {
@@ -39,7 +39,7 @@ class OFNumberButton: UIButton {
     override var isHighlighted: Bool {
         didSet {
             if self.isSelected == false {
-                self.layer.backgroundColor = isHighlighted ? kPrimaryHightlightColor.cgColor : UIColor.white.cgColor
+                self.layer.backgroundColor = isHighlighted ? kBrandHightlightColor.cgColor : kOptionBackgroundColor.cgColor
             }
         }
     }
@@ -48,7 +48,7 @@ class OFNumberButton: UIButton {
         if isEmoji {
             self.layer.cornerRadius = rect.width/2
             if isSelected == true {
-                self.layer.backgroundColor = kPrimaryColor.cgColor
+                self.layer.backgroundColor = kBrandColor.cgColor
                 
             } else {
                 self.layer.backgroundColor =  UIColor.clear.cgColor
@@ -57,10 +57,10 @@ class OFNumberButton: UIButton {
         else {
             self.layer.cornerRadius = 5.0
             if isSelected == true {
-                self.layer.backgroundColor = kPrimaryColor.cgColor
+                self.layer.backgroundColor = kBrandColor.cgColor
                 
             } else {
-                self.layer.backgroundColor =  kAppGreyBGColor.cgColor
+                self.layer.backgroundColor =  kOptionBackgroundColor.cgColor
             }
         }
         

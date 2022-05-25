@@ -65,7 +65,7 @@ class OFMCQView: UIView {
         if type == .checkBox {
             btnFinish.layer.cornerRadius = 5.0
             btnFinish.isHidden = false
-            btnFinish.backgroundColor = kSubmitButtonBGColor
+            btnFinish.backgroundColor = kSubmitButtonColorDisable
             btnFinish.isUserInteractionEnabled = false
             bottomConstraint.constant = 70.0
 
@@ -127,7 +127,7 @@ class OFMCQView: UIView {
         otherOptionTF = otherOptionTextField
         
         let enterButton = UIButton(frame: CGRect(x: otherOptionView.frame.size.width - 60, y: 5, width: 50, height: 28))
-        enterButton.backgroundColor = kPrimaryColor
+        enterButton.backgroundColor = kBrandColor
         enterButton.setTitle("Enter", for: .normal)
         enterButton.addTarget(self, action: #selector(enterButtonTapped), for: .touchUpInside)
         enterButton.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .bold)
@@ -253,10 +253,10 @@ class OFMCQView: UIView {
                 }
             }
             if isAnySelected == true {
-                btnFinish.backgroundColor = kPrimaryColor
+                btnFinish.backgroundColor = kBrandColor
                 btnFinish.isUserInteractionEnabled = true
             } else {
-                btnFinish.backgroundColor = kSubmitButtonBGColor
+                btnFinish.backgroundColor = kSubmitButtonColorDisable
                 btnFinish.isUserInteractionEnabled = false
             }
         }

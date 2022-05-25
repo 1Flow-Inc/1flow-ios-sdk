@@ -12,11 +12,13 @@
             <connections>
                 <outlet property="bottomConstraint" destination="axD-5H-hmG" id="nCh-Kj-eWV"/>
                 <outlet property="bottomView" destination="7m0-NO-0B7" id="90O-7n-aHg"/>
+                <outlet property="closeButton" destination="Uze-xR-ioR" id="958-c7-AFd"/>
                 <outlet property="containerView" destination="dcZ-XD-uRM" id="kz8-eY-tKb"/>
                 <outlet property="dragViewWidthConstraint" destination="pVH-oX-lDY" id="p5W-gI-DwD"/>
                 <outlet property="imgDraggView" destination="aR0-p5-Dfi" id="x8a-vp-bCT"/>
                 <outlet property="lblPrimaryTitle1" destination="5Pm-tl-lMP" id="zJN-Dk-b8I"/>
                 <outlet property="lblSecondaryTitle" destination="o4a-Fd-pT0" id="hVb-vg-mWm"/>
+                <outlet property="mostContainerView" destination="N7H-4h-zdG" id="eEa-OZ-iiP"/>
                 <outlet property="poweredByButton" destination="Tjq-7E-DLp" id="c5z-uG-Pie"/>
                 <outlet property="progressBar" destination="YTb-0e-1ut" id="Wfj-YM-Hk0"/>
                 <outlet property="ratingView" destination="axG-11-bjr" id="MuI-Ow-enM"/>
@@ -114,33 +116,49 @@
                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7m0-NO-0B7">
                                     <rect key="frame" x="0.0" y="25" width="374" height="43"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tjq-7E-DLp">
-                                            <rect key="frame" x="126.5" y="0.0" width="121" height="16"/>
-                                            <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="12"/>
-                                            <state key="normal" title=" Powered by 1Flow" image="1FlowLogo">
-                                                <color key="titleColor" red="0.31372549020000001" green="0.33333333329999998" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="onClickWatermark:" destination="-1" eventType="touchUpInside" id="SYH-QR-ioX"/>
-                                            </connections>
-                                        </button>
-                                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YTb-0e-1ut">
-                                            <rect key="frame" x="-2" y="36" width="378" height="7"/>
-                                            <color key="tintColor" red="0.36470588235294116" green="0.37254901960784315" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qpD-Nn-u4x">
+                                            <rect key="frame" x="-2" y="0.0" width="378" height="43"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tjq-7E-DLp">
+                                                    <rect key="frame" x="0.0" y="0.0" width="378" height="16"/>
+                                                    <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="12"/>
+                                                    <state key="normal" title=" Powered by 1Flow" image="1FlowLogo">
+                                                        <color key="titleColor" red="0.31372549020000001" green="0.33333333329999998" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="onClickWatermark:" destination="-1" eventType="touchUpInside" id="SYH-QR-ioX"/>
+                                                    </connections>
+                                                </button>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="psr-gf-gVW">
+                                                    <rect key="frame" x="0.0" y="16" width="378" height="20"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="4Hd-5r-RVG"/>
+                                                    </constraints>
+                                                </view>
+                                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YTb-0e-1ut">
+                                                    <rect key="frame" x="0.0" y="36" width="378" height="7"/>
+                                                    <color key="tintColor" red="0.36470588235294116" green="0.37254901960784315" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="7" id="15m-uG-CVM"/>
+                                                    </constraints>
+                                                    <color key="trackTintColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
+                                                </progressView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="7" id="15m-uG-CVM"/>
+                                                <constraint firstItem="YTb-0e-1ut" firstAttribute="leading" secondItem="qpD-Nn-u4x" secondAttribute="leading" id="FaY-Fh-Nu1"/>
+                                                <constraint firstAttribute="trailing" secondItem="YTb-0e-1ut" secondAttribute="trailing" id="NpQ-1p-AMt"/>
                                             </constraints>
-                                            <color key="trackTintColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
-                                        </progressView>
+                                        </stackView>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstItem="Tjq-7E-DLp" firstAttribute="top" secondItem="7m0-NO-0B7" secondAttribute="top" id="19S-Dm-CiE"/>
-                                        <constraint firstAttribute="height" constant="43" id="ROn-gw-79h"/>
-                                        <constraint firstItem="YTb-0e-1ut" firstAttribute="leading" secondItem="7m0-NO-0B7" secondAttribute="leading" constant="-2" id="VGu-Jb-8IU"/>
-                                        <constraint firstAttribute="bottom" secondItem="YTb-0e-1ut" secondAttribute="bottom" id="YnX-FU-yab"/>
-                                        <constraint firstItem="Tjq-7E-DLp" firstAttribute="centerX" secondItem="7m0-NO-0B7" secondAttribute="centerX" id="fxo-sE-p1p"/>
-                                        <constraint firstAttribute="trailing" secondItem="YTb-0e-1ut" secondAttribute="trailing" constant="-2" id="t2K-OI-gOB"/>
+                                        <constraint firstItem="qpD-Nn-u4x" firstAttribute="leading" secondItem="7m0-NO-0B7" secondAttribute="leading" constant="-2" id="FsT-Ty-XWR"/>
+                                        <constraint firstAttribute="bottom" secondItem="qpD-Nn-u4x" secondAttribute="bottom" id="JQF-Qb-eMd"/>
+                                        <constraint firstAttribute="trailing" secondItem="qpD-Nn-u4x" secondAttribute="trailing" constant="-2" id="Jd0-oS-OSA"/>
+                                        <constraint firstItem="qpD-Nn-u4x" firstAttribute="top" secondItem="7m0-NO-0B7" secondAttribute="top" id="QsQ-CL-YZI"/>
+                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="43" id="nZs-B5-vtp"/>
                                     </constraints>
                                 </view>
                             </subviews>

@@ -20,10 +20,10 @@ extension UIColor {
     class func colorFromHex(_ hex: String) -> UIColor {
         if hex.count == 8 {
             let color = UIColor(hexaRGBA: hex)
-            return color ?? kPrimaryColor
+            return color ?? kBrandColor
         } else {
             let color = UIColor(hexaRGB: hex)
-            return color ?? kPrimaryColor
+            return color ?? kBrandColor
         }
     }
     

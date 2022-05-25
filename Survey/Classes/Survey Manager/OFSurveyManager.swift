@@ -191,7 +191,29 @@ final class OFSurveyManager: NSObject {
         
         if let colorHex = survey.style?.primary_color {
             let themeColor = UIColor.colorFromHex(colorHex)
-            kPrimaryColor = themeColor
+            kBrandColor = themeColor
+        }
+
+        if let colorHex = survey.survey_settings?.sdk_theme?.text_color {
+            let color = UIColor.colorFromHex(colorHex)
+            kPrimaryTitleColor = color
+        } else {
+            kPrimaryTitleColor = UIColor.black
+        }
+        
+        kSecondaryTitleColor = kPrimaryTitleColor.withAlphaComponent(0.8)
+        kFooterColor = kPrimaryTitleColor.withAlphaComponent(0.6)
+        kOptionBackgroundColor = kPrimaryTitleColor.withAlphaComponent(0.05)
+        kOptionBackgroundColorHightlighted = kPrimaryTitleColor.withAlphaComponent(0.05)
+        kWatermarkColor = kPrimaryTitleColor.withAlphaComponent(0.6)
+        kWatermarkColorHightlighted = kPrimaryTitleColor.withAlphaComponent(0.05)
+        kCloseButtonColor = kPrimaryTitleColor.withAlphaComponent(0.6)
+        kSubmitButtonColorDisable = kBrandColor.withAlphaComponent(0.5)
+        
+        if let backgroundColor = survey.survey_settings?.sdk_theme?.background_color {
+            kBackgroundColor = UIColor.colorFromHex(backgroundColor)
+        } else {
+            kBackgroundColor = UIColor.white
         }
         
         OneFlow.recordEventName(kEventNameSurveyImpression, parameters: ["survey_id": survey._id])
@@ -222,6 +244,7 @@ final class OFSurveyManager: NSObject {
             self.surveyWindow?.windowLevel = .alert
             
             let controller = OFRatingViewController(nibName: "OFRatingViewController", bundle: OneFlowBundle.bundleForObject(self))
+            controller.shouldRemoveWatermark = survey.survey_settings?.sdk_theme?.remove_watermark ?? false
             controller.modalPresentationStyle = .overFullScreen
             controller.view.backgroundColor = UIColor.clear
             controller.allScreens = screens

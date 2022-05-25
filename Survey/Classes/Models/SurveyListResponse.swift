@@ -106,11 +106,20 @@ struct SurveyListResponse: Codable {
             var retake_survey: RetakeSurvey?
             var show_watermark: Bool?
             var closed_as_finished: Bool? = false
+            var sdk_theme: SDKTheme?
             
             struct RetakeSurvey: Codable {
                 var _id: String?
                 var retake_input_value: Int?
                 var retake_select_value: String?
+            }
+
+            struct SDKTheme: Codable {
+                var background_color: String?
+//                var background_color_opacity: Int?
+                var remove_watermark: Bool?
+                var text_color: String?
+//                var text_color_opacity: String?
             }
         }
     }

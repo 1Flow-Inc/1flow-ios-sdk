@@ -57,7 +57,7 @@ extension UIImage {
         let shapePath = UIBezierPath(ovalIn: newRect.insetBy(dx: borderWidth/2, dy: borderWidth/2))
         shapePath.lineWidth = borderWidth
         UIColor.white.setFill()
-        kPrimaryColor.setStroke()
+        kBrandColor.setStroke()
         
         context.addPath(shapePath.cgPath)
         shapePath.fill()
@@ -84,7 +84,7 @@ extension UIImage {
         let shapePath = UIBezierPath(ovalIn: newRect.insetBy(dx: borderWidth/2, dy: borderWidth/2))
         shapePath.lineWidth = borderWidth
         UIColor.white.setFill()
-        kPrimaryColor.setStroke()
+        kBrandColor.setStroke()
         
         context.addPath(shapePath.cgPath)
         shapePath.fill()
@@ -136,7 +136,7 @@ extension UIImage {
         let shapePath = UIBezierPath(roundedRect: newRect.insetBy(dx: borderWidth/2, dy: borderWidth/2), cornerRadius: radius)
         shapePath.lineWidth = borderWidth
         UIColor.white.setFill()
-        kPrimaryColor.setStroke()
+        kBrandColor.setStroke()
         
         context.addPath(shapePath.cgPath)
         shapePath.fill()
@@ -161,8 +161,8 @@ extension UIImage {
         let radius: CGFloat = 6.0
         let shapePath = UIBezierPath(roundedRect: newRect.insetBy(dx: borderWidth/2, dy: borderWidth/2), cornerRadius: radius)
         shapePath.lineWidth = borderWidth
-        kPrimaryColor.setFill()
-        kPrimaryColor.setStroke()
+        kBrandColor.setFill()
+        kBrandColor.setStroke()
         
         context.addPath(shapePath.cgPath)
         shapePath.fill()
@@ -206,7 +206,7 @@ extension UIImage {
         let shapePath = UIImage.starPathInRect(rect: newRect)
         shapePath.lineWidth = borderWidth
         UIColor.white.setFill()
-        kPrimaryColor.setStroke()
+        kBrandColor.setStroke()
         
         context.addPath(shapePath.cgPath)
         shapePath.stroke()
@@ -229,8 +229,8 @@ extension UIImage {
         context.saveGState()
         let shapePath = UIImage.starPathInRect(rect: newRect)
         shapePath.lineWidth = borderWidth
-        kPrimaryColor.setFill()
-        kPrimaryColor.setStroke()
+        kBrandColor.setFill()
+        kBrandColor.setStroke()
         
         context.addPath(shapePath.cgPath)
         shapePath.fill()

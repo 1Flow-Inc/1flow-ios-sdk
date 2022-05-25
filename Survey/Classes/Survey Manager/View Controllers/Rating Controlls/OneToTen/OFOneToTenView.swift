@@ -65,8 +65,11 @@ class OFOneToTenView: UIView {
         super.awakeFromNib()
         let nib = UINib(nibName: "OFNumberCollectionViewCell", bundle: OneFlowBundle.bundleForObject(self))
         collectionView.register(nib, forCellWithReuseIdentifier: "OFNumberCollectionViewCell")
+        collectionView.backgroundColor = UIColor.clear
         collectionView.delegate = self
         collectionView.dataSource = self
+        self.lblMaxValue.textColor = kFooterColor
+        self.lblMinValue.textColor = kFooterColor
     }
     
     var selectedButton: UIButton? {

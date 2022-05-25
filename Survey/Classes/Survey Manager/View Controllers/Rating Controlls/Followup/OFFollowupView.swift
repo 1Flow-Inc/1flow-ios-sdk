@@ -34,7 +34,7 @@ class OFFollowupView: UIView {
             if minCharsAllowed == 0 {
                 self.btnFinish.alpha = 1.0
                 self.btnFinish.isHidden = false
-                btnFinish.backgroundColor = kPrimaryColor
+                btnFinish.backgroundColor = kBrandColor
                 btnFinish.isUserInteractionEnabled = true
             }
         }
@@ -50,11 +50,11 @@ class OFFollowupView: UIView {
         didSet {
             self.lblNumbers.text = "\(self.enteredText?.count ?? 0)/\(self.maxCharsAllowed)"
             if enteredText?.count ?? 0 >= minCharsAllowed {
-                btnFinish.backgroundColor = kPrimaryColor
+                btnFinish.backgroundColor = kBrandColor
                 btnFinish.isUserInteractionEnabled = true
 
             } else {
-                btnFinish.backgroundColor = kSubmitButtonBGColor
+                btnFinish.backgroundColor = kSubmitButtonColorDisable
                 btnFinish.isUserInteractionEnabled = false
 
             }
@@ -72,22 +72,25 @@ class OFFollowupView: UIView {
         textView.layer.borderColor = kBorderColor.cgColor
         textView.layer.borderWidth = 0.5
         textView.layer.cornerRadius = 2.0
+        textView.backgroundColor = UIColor.clear
+        textView.textColor = kPrimaryTitleColor
         placeholderLabel = UILabel()
         placeholderLabel.text = placeHolderText
         placeholderLabel.font = UIFont.systemFont(ofSize: (textView.font?.pointSize)!)
         placeholderLabel.sizeToFit()
         textView.addSubview(placeholderLabel)
         placeholderLabel.frame.origin = CGPoint(x: 5, y: (textView.font?.pointSize)! / 2)
-        placeholderLabel.textColor = UIColor.lightGray
+        placeholderLabel.textColor = kPlaceholderColor
         placeholderLabel.isHidden = !textView.text.isEmpty
         btnFinish.layer.cornerRadius = 5.0
         btnFinish.isHidden = false
-        btnFinish.backgroundColor = kSubmitButtonBGColor
+        btnFinish.backgroundColor = kSubmitButtonColorDisable
         btnFinish.isUserInteractionEnabled = false
+        lblNumbers.textColor = kWatermarkColor
         
         let skipAttributes: [NSAttributedString.Key: Any] = [
              .font: UIFont.systemFont(ofSize: 14),
-             .foregroundColor: UIColor.colorFromHex("50555C"),
+             .foregroundColor: kFooterColor,
              .underlineStyle: NSUnderlineStyle.single.rawValue
          ] //
         
@@ -95,7 +98,7 @@ class OFFollowupView: UIView {
                 string: "Skip",
                 attributes: skipAttributes
              )
-        self.skipButton.setTitleColor(UIColor.colorFromHex("50555C"), for: .normal)
+        self.skipButton.setTitleColor(kFooterColor, for: .normal)
         self.skipButton.setTitle("Skip", for: .normal)
         self.skipButton.setAttributedTitle(attributeString, for: .normal)
     }

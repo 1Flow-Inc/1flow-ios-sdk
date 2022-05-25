@@ -35,6 +35,7 @@ class OFStarsView: UIView {
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(checkGestureAction(_:)))
         self.stackView1.addGestureRecognizer(gesture)
         self.setupImages()
+        self.ratingText.textColor = kFooterColor
     }
     
     func setupImages() {

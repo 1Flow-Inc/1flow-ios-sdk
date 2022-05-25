@@ -55,29 +55,29 @@ class OFRadioButton: UIButton {
             if self.isHighlighted == true {
                 
             } else if self.isSelected == true {
-                self.layer.backgroundColor = kPrimaryColor.cgColor
+                self.layer.backgroundColor = kBrandColor.cgColor
                 self.setTitleColor(UIColor.white, for: .normal)
 
             } else {
-                self.layer.backgroundColor = kAppGreyBGColor.cgColor
-                self.setTitleColor(UIColor.black, for: .normal)
+                self.layer.backgroundColor = kOptionBackgroundColor.cgColor
+                self.setTitleColor(kPrimaryTitleColor, for: .normal)
 
             }
         }
         else {
             if self.isHighlighted == true {
-                self.layer.backgroundColor = kAppGreyBGColor.cgColor
-                self.setTitleColor(UIColor.black, for: .normal)
+                self.layer.backgroundColor = kOptionBackgroundColorHightlighted.cgColor
+                self.setTitleColor(kPrimaryTitleColor, for: .normal)
                 
             } else if self.isSelected == true {
                 self.layer.borderWidth = CGFloat(2.0)
-                self.layer.borderColor = kPrimaryColor.cgColor
-                self.layer.backgroundColor = UIColor.white.cgColor
-                self.setTitleColor(UIColor.black, for: .normal)
+                self.layer.borderColor = kBrandColor.cgColor
+                self.layer.backgroundColor = kOptionBackgroundColorHightlighted.cgColor
+                self.setTitleColor(kPrimaryTitleColor, for: .normal)
 
             } else {
-                self.layer.backgroundColor = kAppGreyBGColor.cgColor
-                self.setTitleColor(UIColor.black, for: .normal)
+                self.layer.backgroundColor = kOptionBackgroundColor.cgColor
+                self.setTitleColor(kPrimaryTitleColor, for: .normal)
             }
         }
     }
