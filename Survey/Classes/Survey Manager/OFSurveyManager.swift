@@ -14,6 +14,13 @@
 
 import UIKit
 
+struct EventStore {
+    let eventName: String
+    let timeInterval: Int
+}
+
+let kPendingSurveyRuleInterval: Int = 3
+
 public let SurveyFinishNotification = Notification.Name("survey_finished")
 
 final class OFSurveyManager: NSObject {
@@ -40,6 +47,7 @@ final class OFSurveyManager: NSObject {
         }
     }
     var submittedSurveyDetails: [SubmittedSurvey]?
+    var temporaryEventArray: [EventStore]?
     
     func saveSubmittedSurvey() {
         do {
@@ -116,6 +124,7 @@ final class OFSurveyManager: NSObject {
                 do {
                     let surveyListResponse = try JSONDecoder().decode(SurveyListResponse.self, from: data)
                     self.surveyList = surveyListResponse
+                    self.checkAfterSurveyLoadForExistingEvents()
                 } catch {
                     OneFlowLog.writeLog(error)
                 }
@@ -125,6 +134,34 @@ final class OFSurveyManager: NSObject {
             }
         }
     }
+
+    private func checkAfterSurveyLoadForExistingEvents() {
+        if let eventsArray = self.temporaryEventArray {
+            let timeInterval = Int(Date().timeIntervalSince1970)
+            let eventsToConsider = eventsArray.filter({ timeInterval - $0.timeInterval <= kPendingSurveyRuleInterval })
+            for event in eventsToConsider {
+                if let triggeredSurvey = surveyList?.result.first(where: { survey in
+                    if let surveyEventName = survey.trigger_event_name {
+                        let eventNames = surveyEventName.components(separatedBy: ",")
+                        if eventNames.contains(event.eventName) {
+                            return true
+                        }
+                    }
+                    
+                    return false
+                }){
+                    if self.validateTheSurvey(triggeredSurvey) == true {
+                        self.startSurvey(triggeredSurvey, eventName: event.eventName)
+                        break
+                    } else {
+                        OneFlowLog.writeLog("Survey already submitted. Do nothing.")
+                    }
+                }
+            }
+            self.temporaryEventArray = nil
+        }
+    }
+    
 
     func validateTheSurvey(_ survey: SurveyListResponse.Survey) -> Bool {
         if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id && $0.submittedByUserID == OFProjectDetailsController.shared.currentLoggedUserID }) {
@@ -184,6 +221,11 @@ final class OFSurveyManager: NSObject {
             }
         } else {
             OneFlowLog.writeLog("Survey not loaded yet")
+            if temporaryEventArray == nil {
+                self.temporaryEventArray = [EventStore]()
+            }
+            let eventObj = EventStore(eventName: eventName, timeInterval: Int(Date().timeIntervalSince1970))
+            self.temporaryEventArray?.append(eventObj)
         }
     }
     

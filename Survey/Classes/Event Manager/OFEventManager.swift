@@ -31,7 +31,6 @@ final class OFEventManager: NSObject, EventManagerProtocol {
     private let inAppController = OFInAppPurchaseEventsController()
     private var eventsArray = [[String: Any]]()
     var uploadTimer: Timer?
-//    let screenTrackingController = OFScreenTrackingController()
     var eventSaveTimer: Timer?
     let eventModificationQueue = DispatchQueue(label: "1flow-thread-safe-queue", attributes: .concurrent)
     var isNetworkReachable = false
@@ -62,7 +61,6 @@ final class OFEventManager: NSObject, EventManagerProtocol {
     
     @objc func applicationMovedToBackground() {
         if OFProjectDetailsController.shared.analytics_session_id != nil, self.isNetworkReachable == true {
-//            FBAPIController().uploadAllPendingEvents()
             self.sendEventsToServer()
         }
         self.uploadTimer?.invalidate()
@@ -136,8 +134,7 @@ final class OFEventManager: NSObject, EventManagerProtocol {
     func setupSurveyManager() {
         if self.surveyManager == nil {
             self.surveyManager = OFSurveyManager()
-        }
-        else {
+        } else {
             self.surveyManager.cleanUpSurveyArray()
         }
         self.surveyManager.isNetworkReachable = true
@@ -232,6 +229,9 @@ final class OFEventManager: NSObject, EventManagerProtocol {
             if OFProjectDetailsController.shared.isSuveryEnabled == true {
                 if let surveyManagerObj = self.surveyManager {
                     surveyManagerObj.newEventRecorded(name)
+                } else {
+                    self.surveyManager = OFSurveyManager()
+                    self.surveyManager.newEventRecorded(name)
                 }
             }
         }
@@ -244,6 +244,10 @@ final class OFEventManager: NSObject, EventManagerProtocol {
     
     @objc func sendEventsToServer() {
         OneFlowLog.writeLog("OFEventManager: sendEventsToServer")
+        guard let sessionID = OFProjectDetailsController.shared.analytics_session_id else {
+            OneFlowLog.writeLog("OFEventManager: Session is not created")
+            return
+        }
         var eventsCount = 0
         eventModificationQueue.sync {
             eventsCount = self.eventsArray.count
@@ -251,7 +255,7 @@ final class OFEventManager: NSObject, EventManagerProtocol {
         if eventsCount > 0 {
             OneFlowLog.writeLog("OFEventManager: Sending events to server: \(self.eventsArray.count)")
             let uploadedEvents = eventsCount
-            let finalParameters = ["events": self.eventsArray, "session_id": OFProjectDetailsController.shared.analytics_session_id as Any, "mode": OFProjectDetailsController.shared.currentEnviromment.rawValue] as [String : Any]
+            let finalParameters = ["events": self.eventsArray, "session_id": sessionID, "mode": OFProjectDetailsController.shared.currentEnviromment.rawValue] as [String : Any]
             
             OFAPIController().addEvents(finalParameters) { [weak self] isSuccess, error, data in
                 if isSuccess == true, let data = data {

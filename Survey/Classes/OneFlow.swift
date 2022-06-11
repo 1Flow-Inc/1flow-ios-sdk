@@ -52,8 +52,8 @@ public final class OneFlow: NSObject {
         self.apiController.addUser(addUserRequest, completion: { isSuccess, error, data in
             if isSuccess == true, let data = data {
                 do {
-                    let surveyListResponse = try JSONDecoder().decode(AddUserResponse.self, from: data)
-                    if surveyListResponse.success == 200, let userID = surveyListResponse.result?.analytic_user_id {
+                    let addUserResponse = try JSONDecoder().decode(AddUserResponse.self, from: data)
+                    if addUserResponse.success == 200, let userID = addUserResponse.result?.analytic_user_id {
                         
                         OneFlowLog.writeLog("Add user - Success")
                         OneFlow.shared.projectDetailsController.analytic_user_id = userID

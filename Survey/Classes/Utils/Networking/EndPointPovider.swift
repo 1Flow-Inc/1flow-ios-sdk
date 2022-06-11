@@ -20,13 +20,20 @@ enum EndPoints: EndPointProtocol {
     case logUser
     
     var url: String {
+        let BaseURL: String = {
+                if OFProjectDetailsController.shared.currentEnviromment == .dev {
+                    return "https://ez37ppkkcs.eu-west-1.awsapprunner.com/api/2021-06-15"
+                } else {
+                    return "https://y33xx6sddf.eu-west-1.awsapprunner.com/api/2021-06-15"
+                }
+        }()
         switch self {
         case .addUser:
-            return "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/project-analytics-user/incoming_webhook/add-user"
+            return BaseURL + "/add-user"
         case .createSession:
-            return "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/sessions/incoming_webhook/add_sessions"
+            return BaseURL + "/add-session"
         case .getSurveys:
-            var surveyUrl = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys?mode=\(OFProjectDetailsController.shared.currentEnviromment.rawValue)&platform=iOS"
+            var surveyUrl = BaseURL + "/surveys?&platform=iOS"
 
             if let sessionID : String = OFProjectDetailsController.shared.analytics_session_id {
                 surveyUrl = surveyUrl + "&session_id=" + sessionID
@@ -37,11 +44,11 @@ enum EndPoints: EndPointProtocol {
             }
             return surveyUrl
         case .addEvent:
-            return "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/events-bulk/incoming_webhook/insert-events"
+            return BaseURL + "/events"
         case .submitSurvey:
-            return "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/add_survey_response"
+            return BaseURL + "/add-responses"
         case .logUser:
-            return "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/Log-user/incoming_webhook/anonymous-user-api"
+            return BaseURL + "/log-user"
         }
     }
 }

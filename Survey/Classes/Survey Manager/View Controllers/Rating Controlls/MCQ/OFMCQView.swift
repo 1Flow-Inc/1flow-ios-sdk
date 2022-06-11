@@ -124,6 +124,7 @@ class OFMCQView: UIView {
         otherOptionTextField.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
         otherOptionTextField.delegate = self
         otherOptionTextField.text = otherOptionAnswer
+        otherOptionTextField.textColor = kPrimaryTitleColor
         otherOptionTF = otherOptionTextField
         
         let enterButton = UIButton(frame: CGRect(x: otherOptionView.frame.size.width - 60, y: 5, width: 50, height: 28))

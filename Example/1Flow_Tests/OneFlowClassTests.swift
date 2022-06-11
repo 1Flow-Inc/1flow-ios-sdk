@@ -12,12 +12,12 @@ import XCTest
 
 class OneFlowTests: XCTestCase {
     var apiController = MockAPIController()
-    var projectDetailsControoler = MockProjectDetailsController()
+    var projectDetailsControler = MockProjectDetailsController()
 
     override func setUp() {
         super.setUp()
         OneFlow.shared.apiController = apiController
-        OneFlow.shared.projectDetailsController = projectDetailsControoler
+        OneFlow.shared.projectDetailsController = projectDetailsControler
 //        apiController = MockAPIController()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -61,5 +61,15 @@ class OneFlowTests: XCTestCase {
             return
         }
         XCTAssertEqual(expectedInterval, receivedDate, "Interval should match")
+    }
+    
+    func testOneFlowConfigure_shouldCall_eventManagerConfigure() {
+        let expectation = XCTestExpectation()
+        projectDetailsControler.appKey = nil
+        let eventManager = MockEventManager(expectation)
+        OneFlow.shared.eventManager = eventManager
+        apiController.dataToRespond = MockResponseProvider.getDataForAddUserResponse()
+        OneFlow.configure("abc")
+        self.wait(for: [expectation], timeout: 4.0)
     }
 }

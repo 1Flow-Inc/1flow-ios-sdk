@@ -45,7 +45,7 @@ class MockEventManager: NSObject, EventManagerProtocol {
     }
 
     func configure() {
-        
+        eventExpectation.fulfill()
     }
 
     func setupSurveyManager() {

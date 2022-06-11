@@ -11,6 +11,8 @@
 		437B6792281D27EA009D96FA /* OneFlowClassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B6791281D27EA009D96FA /* OneFlowClassTests.swift */; };
 		437B6794281D3213009D96FA /* MockProjectDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B6793281D3213009D96FA /* MockProjectDetailsController.swift */; };
 		43AE725C2821376E00E11A6D /* MockEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AE725B2821376E00E11A6D /* MockEventManager.swift */; };
+		43B73B322848B88500F1D403 /* AddUserResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 43B73B312848B88500F1D403 /* AddUserResponse.json */; };
+		43B73B342848B8CE00F1D403 /* MockResponseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B73B332848B8CE00F1D403 /* MockResponseProvider.swift */; };
 		43F7E928279826DD00C4883B /* OneFlowProductionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F7E927279826DD00C4883B /* OneFlowProductionTests.swift */; };
 		43F7E92A2798279000C4883B /* Pods_1Flow_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F7E9292798279000C4883B /* Pods_1Flow_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
@@ -38,6 +40,8 @@
 		437B6793281D3213009D96FA /* MockProjectDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProjectDetailsController.swift; sourceTree = "<group>"; };
 		4385C2A926BB994A008619AC /* Survey.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = Survey.podspec; path = ../Survey.podspec; sourceTree = "<group>"; };
 		43AE725B2821376E00E11A6D /* MockEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockEventManager.swift; sourceTree = "<group>"; };
+		43B73B312848B88500F1D403 /* AddUserResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AddUserResponse.json; sourceTree = "<group>"; };
+		43B73B332848B8CE00F1D403 /* MockResponseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockResponseProvider.swift; sourceTree = "<group>"; };
 		43F7E91E279826AC00C4883B /* 1Flow_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = 1Flow_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43F7E927279826DD00C4883B /* OneFlowProductionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneFlowProductionTests.swift; sourceTree = "<group>"; };
 		43F7E9292798279000C4883B /* Pods_1Flow_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_1Flow_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -81,11 +85,21 @@
 		437B6789281D1B3F009D96FA /* Mock Classes */ = {
 			isa = PBXGroup;
 			children = (
+				43B73B2E2848B73500F1D403 /* Mock Responses */,
 				437B678A281D1B63009D96FA /* MockAPIController.swift */,
 				437B6793281D3213009D96FA /* MockProjectDetailsController.swift */,
 				43AE725B2821376E00E11A6D /* MockEventManager.swift */,
 			);
 			path = "Mock Classes";
+			sourceTree = "<group>";
+		};
+		43B73B2E2848B73500F1D403 /* Mock Responses */ = {
+			isa = PBXGroup;
+			children = (
+				43B73B312848B88500F1D403 /* AddUserResponse.json */,
+				43B73B332848B8CE00F1D403 /* MockResponseProvider.swift */,
+			);
+			path = "Mock Responses";
 			sourceTree = "<group>";
 		};
 		43F7E91F279826AC00C4883B /* 1Flow_Tests */ = {
@@ -226,11 +240,13 @@
 				TargetAttributes = {
 					43F7E91D279826AC00C4883B = {
 						CreatedOnToolsVersion = 13.2.1;
+						DevelopmentTeam = DQVMM49PG9;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = DQVMM49PG9;
 						LastSwiftMigration = 0900;
 					};
 				};
@@ -260,6 +276,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43B73B322848B88500F1D403 /* AddUserResponse.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +367,7 @@
 				43AE725C2821376E00E11A6D /* MockEventManager.swift in Sources */,
 				437B678B281D1B63009D96FA /* MockAPIController.swift in Sources */,
 				43F7E928279826DD00C4883B /* OneFlowProductionTests.swift in Sources */,
+				43B73B342848B8CE00F1D403 /* MockResponseProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +427,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = DQVMM49PG9;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
@@ -441,6 +460,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DQVMM49PG9;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
@@ -559,6 +579,7 @@
 			baseConfigurationReference = 6E329F3232B14AEBE7023E86 /* Pods-1Flow_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = DQVMM49PG9;
 				INFOPLIST_FILE = "$(SRCROOT)/1Flow/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -575,6 +596,7 @@
 			baseConfigurationReference = BECAD99124CB15DBE9CDDD38 /* Pods-1Flow_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = DQVMM49PG9;
 				INFOPLIST_FILE = "$(SRCROOT)/1Flow/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

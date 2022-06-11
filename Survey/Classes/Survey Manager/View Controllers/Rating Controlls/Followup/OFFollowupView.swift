@@ -20,7 +20,6 @@ class OFFollowupView: UIView {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var lblNumbers: UILabel!
     @IBOutlet weak var btnFinish: UIButton!
-    @IBOutlet weak var skipButton: UIButton!
 
     weak var delegate: OFRatingViewProtocol?
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
@@ -87,20 +86,6 @@ class OFFollowupView: UIView {
         btnFinish.backgroundColor = kSubmitButtonColorDisable
         btnFinish.isUserInteractionEnabled = false
         lblNumbers.textColor = kWatermarkColor
-        
-        let skipAttributes: [NSAttributedString.Key: Any] = [
-             .font: UIFont.systemFont(ofSize: 14),
-             .foregroundColor: kFooterColor,
-             .underlineStyle: NSUnderlineStyle.single.rawValue
-         ] //
-        
-        let attributeString = NSMutableAttributedString(
-                string: "Skip",
-                attributes: skipAttributes
-             )
-        self.skipButton.setTitleColor(kFooterColor, for: .normal)
-        self.skipButton.setTitle("Skip", for: .normal)
-        self.skipButton.setAttributedTitle(attributeString, for: .normal)
     }
     
     @IBAction func onFinished(_ sender: UIButton) {
@@ -108,11 +93,6 @@ class OFFollowupView: UIView {
             self.isUserInteractionEnabled = false
             self.delegate?.followupViewEnterTextWith(text)
         }
-    }
-    
-    @IBAction func onSkip(_ sender: UIButton) {
-        self.isUserInteractionEnabled = false
-        self.delegate?.followupViewEnterTextWith("")
     }
 }
 
