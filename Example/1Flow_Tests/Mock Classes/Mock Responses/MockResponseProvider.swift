@@ -23,4 +23,34 @@ class MockResponseProvider {
         }
         return nil
     }
+
+    static func getDataForSurveyResponse() -> Data? {
+        guard let bundle = Bundle(identifier: "-Flow.-Flow-Tests") else {
+            return nil
+        }
+        if let fileURL = bundle.url(forResource: "GetSurveyResponses", withExtension: "json") {
+            do {
+                let data = try Data(contentsOf: fileURL)
+                return data
+            } catch {
+                return nil
+            }
+        }
+        return nil
+    }
+
+    static func getDataForSavedSurvey() -> Data? {
+        guard let bundle = Bundle(identifier: "-Flow.-Flow-Tests") else {
+            return nil
+        }
+        if let fileURL = bundle.url(forResource: "SavedSurveyResponses", withExtension: "json") {
+            do {
+                let data = try Data(contentsOf: fileURL)
+                return data
+            } catch {
+                return nil
+            }
+        }
+        return nil
+    }
 }

@@ -20,12 +20,13 @@ public final class OneFlow: NSObject {
     private var networkTimer: Timer?
     var eventManager: EventManagerProtocol = OFEventManager()
     private var isSetupRunning: Bool = false
+    static var retryCount = 0
     private override init() {
     }
     let reachability = try! OFReachability(hostname: "www.apple.com")
     
     var apiController : APIProtocol = OFAPIController()
-    var projectDetailsController: ProjectDetailsProtocol = OFProjectDetailsController.shared
+    var projectDetailsController: ProjectDetailsManageable = OFProjectDetailsController.shared
     
     @objc public static var enableSurveys: Bool = true {
         didSet {
@@ -36,8 +37,8 @@ public final class OneFlow: NSObject {
     @objc public class func configure(_ appKey: String) {
         OneFlowLog.writeLog("1Flow configuration started")
         if OneFlow.shared.projectDetailsController.appKey == nil {
-            OneFlow.shared.projectDetailsController.appKey = appKey
-            OneFlow.shared.projectDetailsController.setLoglevel(.none)
+            shared.projectDetailsController.appKey = appKey
+            shared.projectDetailsController.setLoglevel(.none)
             shared.setupOnce()
             shared.setupReachability()
         } else {
@@ -145,7 +146,9 @@ public final class OneFlow: NSObject {
     @objc class public func logUser(_ userID: String, userDetails: [String: Any]?) {
 
         if let userDetailsDic : [String : Any] = OneFlow.removeUnsupportedKeys(userDetails) {
-            OneFlow.shared.projectDetailsController.newUserData = userDetailsDic
+            let logUserInfo = ["UserID":userID, "userDetails": userDetailsDic] as [String : Any]
+            UserDefaults.standard.set(logUserInfo, forKey: "OFlogUserInfo")
+            shared.projectDetailsController.newUserData = userDetailsDic
         }
         else {
             OneFlow.shared.projectDetailsController.newUserData = nil
@@ -153,10 +156,12 @@ public final class OneFlow: NSObject {
         OneFlowLog.writeLog("Data can be Serialized")
         OneFlowLog.writeLog("Log new user")
         shared.eventManager.finishPendingEvents()
-        OneFlow.shared.projectDetailsController.newUserID = userID
+        shared.projectDetailsController.newUserID = userID
+        shared.projectDetailsController.logUserRetryCount = 0
         DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 1) {
             OneFlow.shared.projectDetailsController.logNewUserDetails { isSuccess in
                 if isSuccess == true {
+                    UserDefaults.standard.removeObject(forKey: "OFlogUserInfo")
                     shared.eventManager.surveyManager.setUserToSubmittedSurveyAsAnnonyous(newUserID: userID)
                     shared.eventManager.setupSurveyManager()
                 }

@@ -2,28 +2,28 @@
   "success": 200,
   "message": "found",
   "result": {
-    "analytic_user_id": "62987f5dd88e8ca0fefc3d01",
+    "analytic_user_id": "analytic_user_id",
     "first_name": "",
     "last_name": "",
-    "system_id": "2E6DDE51-9B1B-4000-A53E-00CD569449B8",
+    "system_id": "system_id",
     "devices": [
       {
-        "_id": "62987f5dd88e8ca0fefc3d03",
+        "_id": "random_id",
         "os": "iOS",
-        "unique_id": "82A9B8EF-DD18-47A3-B863-0F4FABBC3364",
-        "device_id": "E7158FE2-EFC6-4ACE-8F24-7E3EF146CBBE",
-        "common_id": "62987f5dd88e8ca0fefc3d01"
+        "unique_id": "unique_id",
+        "device_id": "device_id",
+        "common_id": "common_id"
       }
     ],
     "locations": [
       {
-        "_id": "62987f5dd88e8ca0fefc3d0f",
-        "country": "India",
-        "city": "Surat",
-        "region": "GJ",
-        "longitude": 72.8293,
-        "latitude": 21.1888,
-        "common_id": "62987f5dd88e8ca0fefc3d01"
+        "_id": "random_id",
+        "country": "CountryName",
+        "city": "CityName",
+        "region": "StateName",
+        "longitude": 1.8293,
+        "latitude": 2.1288,
+        "common_id": "common_id"
       }
     ],
     "created_on": 1654161245153

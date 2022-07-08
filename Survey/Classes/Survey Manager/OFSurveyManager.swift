@@ -23,12 +23,26 @@ let kPendingSurveyRuleInterval: Int = 3
 
 public let SurveyFinishNotification = Notification.Name("survey_finished")
 
-final class OFSurveyManager: NSObject {
+protocol SurveyManageable {
+    var isNetworkReachable: Bool { get  set }
+    var projectDetailsController: ProjectDetailsManageable! { get set }
+
+    func uploadPendingSurveyIfAvailable()
+    func networkStatusChanged(_ isReachable: Bool)
+    func cleanUpSurveyArray()
+    func configureSurveys()
+    func newEventRecorded(_ eventName: String)
+    func setUserToSubmittedSurveyAsAnnonyous(newUserID: String)
+}
+
+class OFSurveyManager: NSObject, SurveyManageable {
     var apiController: APIProtocol = OFAPIController()
     var surveyList: SurveyListResponse?
     var surveyWindow: UIWindow?
     var isNetworkReachable = false
     private var isSurveyFetching = false
+    var projectDetailsController: ProjectDetailsManageable! = OFProjectDetailsController.shared
+    
     var pendingSurveySubmission: [String: SurveySubmitRequest]? {
         set {
             if let value = newValue, value.count > 0 {
@@ -135,7 +149,7 @@ final class OFSurveyManager: NSObject {
         }
     }
 
-    private func checkAfterSurveyLoadForExistingEvents() {
+    func checkAfterSurveyLoadForExistingEvents() {
         if let eventsArray = self.temporaryEventArray {
             let timeInterval = Int(Date().timeIntervalSince1970)
             let eventsToConsider = eventsArray.filter({ timeInterval - $0.timeInterval <= kPendingSurveyRuleInterval })
@@ -164,7 +178,7 @@ final class OFSurveyManager: NSObject {
     
 
     func validateTheSurvey(_ survey: SurveyListResponse.Survey) -> Bool {
-        if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id && $0.submittedByUserID == OFProjectDetailsController.shared.currentLoggedUserID }) {
+        if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id && $0.submittedByUserID == projectDetailsController.currentLoggedUserID }) {
 
             if survey.survey_settings?.resurvey_option == false {
                 OneFlowLog.writeLog("Resurvey option is false")
@@ -229,7 +243,7 @@ final class OFSurveyManager: NSObject {
         }
     }
     
-    private func startSurvey(_ survey: SurveyListResponse.Survey, eventName: String) {
+    func startSurvey(_ survey: SurveyListResponse.Survey, eventName: String) {
         
         if let colorHex = survey.style?.primary_color {
             let themeColor = UIColor.colorFromHex(colorHex)
@@ -251,7 +265,7 @@ final class OFSurveyManager: NSObject {
         kWatermarkColorHightlighted = kPrimaryTitleColor.withAlphaComponent(0.05)
         kCloseButtonColor = kPrimaryTitleColor.withAlphaComponent(0.6)
         kSubmitButtonColorDisable = kBrandColor.withAlphaComponent(0.5)
-        
+
         if let backgroundColor = survey.survey_settings?.sdk_theme?.background_color {
             kBackgroundColor = UIColor.colorFromHex(backgroundColor)
         } else {
@@ -287,9 +301,18 @@ final class OFSurveyManager: NSObject {
             
             let controller = OFRatingViewController(nibName: "OFRatingViewController", bundle: OneFlowBundle.bundleForObject(self))
             controller.shouldRemoveWatermark = survey.survey_settings?.sdk_theme?.remove_watermark ?? false
+            controller.shouldShowCloseButton = survey.survey_settings?.sdk_theme?.close_button ?? false
+            controller.shouldShowDarkOverlay = survey.survey_settings?.sdk_theme?.dark_overlay ?? true
+            controller.shouldShowProgressBar = survey.survey_settings?.sdk_theme?.progress_bar ?? true
+
             controller.modalPresentationStyle = .overFullScreen
             controller.view.backgroundColor = UIColor.clear
             controller.allScreens = screens
+            if let widgetPosition = survey.survey_settings?.sdk_theme?.widget_position {
+                controller.widgetPosition = widgetPosition
+                controller.setupWidgetPosition()
+
+            }
             self.surveyWindow?.rootViewController = controller
             let startDate = Date()
             var callBackParameter = [String: Any]()
@@ -309,11 +332,11 @@ final class OFSurveyManager: NSObject {
                     if self.submittedSurveyDetails == nil {
                         self.submittedSurveyDetails = [SubmittedSurvey]()
                     }
-                    let submittedSurvey = SubmittedSurvey(surveyID: survey._id, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: OFProjectDetailsController.shared.currentLoggedUserID)
+                    let submittedSurvey = SubmittedSurvey(surveyID: survey._id, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: self.projectDetailsController.currentLoggedUserID)
                     self.submittedSurveyDetails?.append(submittedSurvey)
                     self.saveSubmittedSurvey()
                     let interval = Int(Date().timeIntervalSince(startDate))
-                    let surveyResponseNew = SurveySubmitRequest(analytic_user_id: OFProjectDetailsController.shared.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, session_id: OFProjectDetailsController.shared.analytics_session_id, trigger_event: eventName, tot_duration: interval)
+                    let surveyResponseNew = SurveySubmitRequest(analytic_user_id: self.projectDetailsController.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, session_id: self.projectDetailsController.analytics_session_id, trigger_event: eventName, tot_duration: interval)
 
                     if self.pendingSurveySubmission == nil {
                         self.pendingSurveySubmission = [survey._id : surveyResponseNew]
@@ -377,7 +400,7 @@ final class OFSurveyManager: NSObject {
                         if self.submittedSurveyDetails == nil {
                             self.submittedSurveyDetails = [SubmittedSurvey]()
                         }
-                        let submittedSurvey = SubmittedSurvey(surveyID: survey._id, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: OFProjectDetailsController.shared.currentLoggedUserID)
+                        let submittedSurvey = SubmittedSurvey(surveyID: survey._id, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: self.projectDetailsController.currentLoggedUserID)
                         self.submittedSurveyDetails?.append(submittedSurvey)
                         self.saveSubmittedSurvey()
                     }
@@ -391,7 +414,7 @@ final class OFSurveyManager: NSObject {
                 if self.submittedSurveyDetails == nil {
                     self.submittedSurveyDetails = [SubmittedSurvey]()
                 }
-                let submittedSurvey = SubmittedSurvey(surveyID: survey._id, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: OFProjectDetailsController.shared.currentLoggedUserID)
+                let submittedSurvey = SubmittedSurvey(surveyID: survey._id, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: self.projectDetailsController.currentLoggedUserID)
                 self.submittedSurveyDetails?.append(submittedSurvey)
                 self.saveSubmittedSurvey()
                 callBackParameter["status"] = "skipped"
@@ -413,7 +436,7 @@ final class OFSurveyManager: NSObject {
         var surveyResponseTemp = surveyResponse
         if surveyResponseTemp.analytic_user_id == nil {
             OneFlowLog.writeLog("Survey did not have user")
-            guard let userID = OFProjectDetailsController.shared.analytic_user_id else {
+            guard let userID = projectDetailsController.analytic_user_id else {
                 OneFlowLog.writeLog("user yet not initialised")
                 return
             }
@@ -422,7 +445,7 @@ final class OFSurveyManager: NSObject {
         
         if surveyResponseTemp.session_id == nil {
             OneFlowLog.writeLog("Survey did not have session id")
-            guard let sessionID = OFProjectDetailsController.shared.analytics_session_id else {
+            guard let sessionID = projectDetailsController.analytics_session_id else {
                 OneFlowLog.writeLog("Session yet not created")
                 return
             }

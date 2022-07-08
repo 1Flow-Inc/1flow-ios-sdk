@@ -14,6 +14,21 @@
 
 import Foundation
 
+enum WidgetPosition : String, Codable {
+    case topLeft = "top-left"
+    case topCenter = "top-center"
+    case topRight = "top-right"
+    case middleLeft = "middle-left"
+    case middleCenter = "middle-center"
+    case middleRight = "middle-right"
+    case bottomLeft = "bottom-left"
+    case bottomCenter = "bottom-center"
+    case bottomRight = "bottom-right"
+    case topBanner = "top-banner"
+    case bottomBanner = "bottom-banner"
+    case fullScreen = "fullscreen"
+}
+
 struct SurveyListResponse: Codable {
     var success: Int
     var message: String?
@@ -118,6 +133,11 @@ struct SurveyListResponse: Codable {
                 var background_color: String?
 //                var background_color_opacity: Int?
                 var remove_watermark: Bool?
+                var dark_overlay: Bool?
+                var close_button: Bool?
+                var progress_bar: Bool?
+                var widget_position: WidgetPosition?
+
                 var text_color: String?
 //                var text_color_opacity: String?
             }

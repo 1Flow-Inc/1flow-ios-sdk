@@ -14,7 +14,7 @@ final class MockAPIController: APIProtocol {
     var dataToRespond: Data?
     
     func getAllSurveys(_ completion: @escaping APICompletionBlock) {
-        
+        completion(true, nil, dataToRespond)
     }
     
     func submitSurveyResponse(_ response: SurveySubmitRequest, completion: @escaping APICompletionBlock) {

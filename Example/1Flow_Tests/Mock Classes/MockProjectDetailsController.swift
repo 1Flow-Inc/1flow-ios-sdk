@@ -10,7 +10,8 @@
 @testable import _Flow_Example
 import Foundation
 
-class MockProjectDetailsController: ProjectDetailsProtocol {
+class MockProjectDetailsController: ProjectDetailsManageable {
+    var logUserRetryCount: Int = 1
 
     var currentEnviromment: OneFlowEnvironment = .dev
     

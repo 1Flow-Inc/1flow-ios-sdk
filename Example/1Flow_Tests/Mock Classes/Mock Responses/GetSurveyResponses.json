@@ -1,0 +1,176 @@
+{
+  "success": 200,
+  "message": "Survey found successfully",
+  "result": [
+    {
+      "_id": "survey_id",
+      "name": "Survey Name",
+      "description": "Survey Description",
+      "created_by": "6230db90ed45c700151dac5e",
+      "updated_by": "6230db90ed45c700151dac5e",
+      "num_responses": null,
+      "end_date": null,
+      "live": false,
+      "platforms": [
+        "android",
+        "iOS",
+        "windows"
+      ],
+      "trigger_event_name": "Trigger_event",
+      "icon": "&#x2708;&#xFE0F;",
+      "color": "#D2FC7A",
+      "status": "in-progress",
+      "deleted": false,
+      "deleted_on": null,
+      "schema_version": 2,
+      "project_id": "626a98d2f874e400192113e0",
+      "updated_on": 1652240298938,
+      "start_date": 1651154697717,
+      "created_on": 1651154697717,
+      "__v": 0,
+      "screens": [
+        {
+          "title": "Happy Day",
+          "message": "This will help us improve your experience.",
+          "_id": "707d658ee71bce0adb5e9044",
+          "input": {
+            "placeholder_text": null,
+            "min_val": 1,
+            "max_val": 5,
+            "emojis": [
+              
+            ],
+            "star_fill_color": null,
+            "min_chars": null,
+            "max_chars": null,
+            "number_of_choices": null,
+            "rating_min_text": null,
+            "rating_max_text": null,
+            "rating_text": {
+              "1s": "Very dissatisfied",
+              "2s": "Somewhat dissatisfied",
+              "3s": "Not dissatisfied nor satisfied",
+              "4s": "Somewhat satisfied",
+              "5s": "Very satisfied"
+            },
+            "_id": "626a9f75f874e400192118da",
+            "input_type": "rating-emojis",
+            "stars": false,
+            "emoji": true,
+            "other_option_id": "",
+            "choices": [
+              
+            ]
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "626a9f75f874e400192118db",
+              "action": "button_action_submit",
+              "title": "Submit"
+            }
+          ],
+          "rules": {
+            "userProperty": "",
+            "dataLogic": [
+              
+            ],
+            "_id": "626a9f75f874e400192118dc"
+          }
+        },
+        {
+          "title": "Thankyou",
+          "message": "",
+          "showWatermark": true,
+          "_id": "60f7bd9e1e74352b54e503fcA",
+          "input": {
+            "placeholder_text": null,
+            "min_val": null,
+            "max_val": null,
+            "emojis": [
+              
+            ],
+            "star_fill_color": null,
+            "min_chars": 10,
+            "max_chars": 100,
+            "number_of_choices": null,
+            "rating_min_text": null,
+            "rating_max_text": null,
+            "_id": "60f7bd9e1e74352b54e503fda",
+            "input_type": "thank_you",
+            "choices": [
+              
+            ]
+          },
+          "buttons": [
+            {
+              "button_type": "primary",
+              "_id": "60f7bd9e1e74352b54e503fea",
+              "action": "button_action_submit",
+              "title": "Submit"
+            }
+          ]
+        }
+      ],
+      "style": {
+        "display_mode": "light",
+        "font": "arial",
+        "primary_color": "2d4eff",
+        "color_opacity": 100,
+        "change_trigger": false,
+        "previous_change_color": false,
+        "corner_radius": 10,
+        "_id": "626a9f75f874e400192118dd"
+      },
+      "survey_settings": {
+        "show_watermark": true,
+        "resurvey_option": true,
+        "closed_as_finished": true,
+        "event_rules": [
+          
+        ],
+        "_id": "627b2faaa0ca0f001588b5ee",
+        "frequency_capping": {
+          "enabled": true,
+          "frequency_capping_input_value": null,
+          "frequency_capping_select_value": "hours",
+          "time_per_user": null,
+          "_id": "626a9f75f874e400192118d7"
+        },
+        "retake_survey": {
+          "retake_input_value": 0,
+          "retake_select_value": "hours",
+          "_id": "626a9f75f874e400192118d8"
+        },
+        "audience_rules": [
+          
+        ],
+        "page_rules": {
+          "url_type": "Current page URL",
+          "relation": "is not",
+          "url": "http://viraltech.in",
+          "time_spend_type": "Time on current page",
+          "time_spend_relation": "is equal to",
+          "time_spend": 5
+        },
+        "frequencyAndScheduling": {
+          "start_sending": {
+            "type": "string",
+            "value": "immediately",
+            "time": ""
+          },
+          "stop_sending": {
+            "type": "string",
+            "value": "never",
+            "time": ""
+          }
+        }
+      },
+      "survey_response": [
+        {
+          "responses": 8
+        }
+      ]
+    }
+  ]
+}

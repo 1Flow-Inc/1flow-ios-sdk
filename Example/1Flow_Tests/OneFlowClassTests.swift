@@ -62,7 +62,86 @@ class OneFlowTests: XCTestCase {
         }
         XCTAssertEqual(expectedInterval, receivedDate, "Interval should match")
     }
-    
+
+    func testRecordEvent_IfNotParsableParams_itShouldRemoveParameter() {
+        struct MockClass {
+            let name: String
+        }
+        
+        let obj = MockClass(name: "FirstName")
+        let expectation = XCTestExpectation()
+        let params = ["Number": "1234567890", "SomeObject": obj] as [String : Any]
+        let eventManager = MockEventManager(expectation)
+        OneFlow.shared.eventManager = eventManager
+        OneFlow.recordEventName("Event", parameters: params)
+        self.wait(for: [expectation], timeout: 1.0)
+        guard let receivedParams = eventManager.finalParameter else {
+            XCTFail("Event manager should receive parameter")
+            return
+        }
+        if let _ = receivedParams["SomeObject"] {
+            XCTFail("Parameter should remove SomeObject in final params")
+        }
+    }
+
+    func testLogUser_shouldUploadPendingEvent() {
+        let expectation = XCTestExpectation(description: "Should upload pending event")
+        let eventManager = MockEventManager(expectation)
+        OneFlow.shared.eventManager = eventManager
+        OneFlow.logUser("user_id", userDetails: nil)
+        self.wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testLogUser_shouldUploadPendingSurvey() {
+        let expectation = XCTestExpectation(description: "Should upload pending survey")
+        let surveyManager = MockSurveyManager(expectation)
+        let mockProjectDetails = MockProjectDetailsController()
+        mockProjectDetails.analytic_user_id = "abc"
+        mockProjectDetails.analytics_session_id = "xyz"
+        OneFlow.shared.eventManager = OFEventManager()
+        OneFlow.shared.eventManager.projectDetailsController = mockProjectDetails
+        OneFlow.shared.eventManager.surveyManager = surveyManager
+        OneFlow.logUser("user_id", userDetails: nil)
+        self.wait(for: [expectation], timeout: 4.0)
+    }
+
+    func testLogUser_IfDatePassedInParams_itShouldConvertToTimeInterval() {
+        let date = Date()
+        let expectedInterval = Int(date.timeIntervalSince1970)
+        let params = ["date": date]
+        let projectDetailsController = MockProjectDetailsController()
+        OneFlow.shared.projectDetailsController = projectDetailsController
+        OneFlow.logUser("abc", userDetails: params)
+        guard let receivedParams = projectDetailsController.newUserData else {
+            XCTFail("Project details controller should have new data")
+            return
+        }
+        guard let receivedDate = receivedParams["date"] as? Int else {
+            XCTFail("Date should be interger value in final params")
+            return
+        }
+        XCTAssertEqual(expectedInterval, receivedDate, "Interval should match")
+    }
+
+    func testLogUser_IfNotParsableParams_itShouldRemoveParameter() {
+        struct MockClass {
+            let name: String
+        }
+        
+        let obj = MockClass(name: "FirstName")
+        let params = ["Number": "1234567890", "SomeObject": obj] as [String : Any]
+        let projectDetailsController = MockProjectDetailsController()
+        OneFlow.shared.projectDetailsController = projectDetailsController
+        OneFlow.logUser("abc", userDetails: params)
+        guard let receivedParams = projectDetailsController.newUserData else {
+            XCTFail("Event manager should receive parameter")
+            return
+        }
+        if let _ = receivedParams["SomeObject"] {
+            XCTFail("Parameter should remove SomeObject in final params")
+        }
+    }
+
     func testOneFlowConfigure_shouldCall_eventManagerConfigure() {
         let expectation = XCTestExpectation()
         projectDetailsControler.appKey = nil
@@ -70,6 +149,16 @@ class OneFlowTests: XCTestCase {
         OneFlow.shared.eventManager = eventManager
         apiController.dataToRespond = MockResponseProvider.getDataForAddUserResponse()
         OneFlow.configure("abc")
-        self.wait(for: [expectation], timeout: 4.0)
+        self.wait(for: [expectation], timeout: 2.0)
+    }
+
+    func testOneFlowConfigure_shouldNotCall_eventManagerConfigure_ifAddUserFail() {
+        let expectation = XCTestExpectation()
+        expectation.isInverted = true
+        projectDetailsControler.appKey = nil
+        let eventManager = MockEventManager(expectation)
+        OneFlow.shared.eventManager = eventManager
+        OneFlow.configure("abc")
+        self.wait(for: [expectation], timeout: 2.0)
     }
 }

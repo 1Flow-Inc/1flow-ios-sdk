@@ -11,23 +11,29 @@ import XCTest
 @testable import _1Flow
 
 class MockEventManager: NSObject, EventManagerProtocol {
-    var eventExpectation: XCTestExpectation!
+    var eventExpectation: XCTestExpectation?
     var isNetworkReachable: Bool
-    var surveyManager: OFSurveyManager!
+    var surveyManager: SurveyManageable!
     var finalParameter: [String: Any]?
+    var projectDetailsController: ProjectDetailsManageable! = MockProjectDetailsController()
 
     override init() {
         isNetworkReachable = true
         super.init()
-        surveyManager = OFSurveyManager()
-        eventExpectation = XCTestExpectation()
+        surveyManager = MockSurveyManager()
     }
     
     init(_ expectation: XCTestExpectation) {
-        
         isNetworkReachable = true
         super.init()
-        surveyManager = OFSurveyManager()
+        surveyManager = MockSurveyManager()
+        eventExpectation = expectation
+    }
+
+    init(_ expectation: XCTestExpectation, surveyExpectation: XCTestExpectation) {
+        isNetworkReachable = true
+        super.init()
+        surveyManager = MockSurveyManager(surveyExpectation)
         eventExpectation = expectation
     }
 
@@ -36,16 +42,16 @@ class MockEventManager: NSObject, EventManagerProtocol {
     }
 
     func finishPendingEvents() {
-        
+        eventExpectation?.fulfill()
     }
 
     func recordEvent(_ name: String, parameters: [String: Any]?) {
         finalParameter = parameters
-        eventExpectation.fulfill()
+        eventExpectation?.fulfill()
     }
 
     func configure() {
-        eventExpectation.fulfill()
+        eventExpectation?.fulfill()
     }
 
     func setupSurveyManager() {

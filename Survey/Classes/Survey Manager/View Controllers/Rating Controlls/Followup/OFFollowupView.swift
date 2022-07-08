@@ -63,7 +63,9 @@ class OFFollowupView: UIView {
         didSet {
             btnFinish.setTitle(self.submitButtonTitle, for: .normal)
         }
-    }
+    }    
+    var keyboardHeight = 0.0
+    var widgetPosition : WidgetPosition = .bottomCenter
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -86,6 +88,10 @@ class OFFollowupView: UIView {
         btnFinish.backgroundColor = kSubmitButtonColorDisable
         btnFinish.isUserInteractionEnabled = false
         lblNumbers.textColor = kWatermarkColor
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @IBAction func onFinished(_ sender: UIButton) {
@@ -94,6 +100,17 @@ class OFFollowupView: UIView {
             self.delegate?.followupViewEnterTextWith(text)
         }
     }
+    
+    @objc func keyboardWasShown(notification: NSNotification) {
+        let info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        self.keyboardHeight = keyboardFrame.size.height
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        self.keyboardHeight = 0
+    }
+    
 }
 
 extension OFFollowupView: UITextViewDelegate {
@@ -107,16 +124,31 @@ extension OFFollowupView: UITextViewDelegate {
     }
     
     func textViewDidChange(_ textView: UITextView) {
+        guard let window = UIApplication.shared.keyWindow else {
+            return
+        }
         placeholderLabel.isHidden = !textView.text.isEmpty
         self.enteredText = textView.text
         let fixedWidth = textView.frame.size.width
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         let newHeight = newSize.height > 109 ? newSize.height : 109
-        
-        if let frame = textView.superview?.superview?.superview?.superview?.superview?.frame {
-            if (frame.origin.y > 80) || (newHeight < textView.bounds.height) {
-                self.textViewHeightConstraint.constant = newHeight
+        //App calculates height which total screen hight - open keyboard size - safe area instest - 20 (this is to give some gap)
+        let availableHeight = CGFloat(UIScreen.main.bounds.size.height - window.safeAreaInsets.top -  keyboardHeight - 30 )
+        if widgetPosition == .fullScreen {
+            if let frame = textView.superview?.superview?.frame {
+                if (frame.size.height < availableHeight) || (newHeight < textView.bounds.height) {
+                    self.textViewHeightConstraint.constant = newHeight
+                    self.delegate?.followupTextViewHeightDidChange()
+                }
             }
         }
+        else {
+            if let frame = textView.superview?.superview?.superview?.superview?.superview?.frame {
+                if (frame.size.height < availableHeight) || (newHeight < textView.bounds.height) {
+                    self.textViewHeightConstraint.constant = newHeight
+                }
+            }
+        }
+       
     }
 }

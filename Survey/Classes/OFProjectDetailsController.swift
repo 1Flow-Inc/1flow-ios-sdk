@@ -31,7 +31,7 @@ enum OneFlowEnvironment: String {
     }
 }
 
-protocol ProjectDetailsProtocol {
+protocol ProjectDetailsManageable {
     var currentEnviromment: OneFlowEnvironment { get set }
     var currentLogLevel: OneFlowLogLevel { get set }
     var appKey: String! { get set }
@@ -46,13 +46,14 @@ protocol ProjectDetailsProtocol {
     var isCarrierConnectivity: Bool { get set }
     var newUserID: String? { get set }
     var newUserData: [String: Any]? { get set }
+    var logUserRetryCount : Int {get set}
     
     func setLoglevel(_ newLogLevel : OneFlowLogLevel)
     func logNewUserDetails(_ completion: @escaping (Bool) -> Void)
     func getLocalisedLanguageName() -> String
 }
 
-final class OFProjectDetailsController: NSObject, ProjectDetailsProtocol {
+final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
 
     static let shared = OFProjectDetailsController()
     
@@ -123,6 +124,7 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsProtocol {
     
     var radioConnectivity: String?
     var isCarrierConnectivity: Bool = false
+    var logUserRetryCount = 0
     
     var newUserID: String?
     var newUserData: [String: Any]?
@@ -167,16 +169,27 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsProtocol {
                         self.newUserData = nil
                         completion(true)
                     } else {
-                        completion(false)
+                        self.handleLogUserFailure(completion)
                     }
                 } catch {
                     OneFlowLog.writeLog("LogUser error: \(error)")
-                    completion(false)
+                    self.handleLogUserFailure(completion)
                 }
             } else {
                 OneFlowLog.writeLog("LogUser Failed: Error: \(error as Any)")
-                completion(false)
+                self.handleLogUserFailure(completion)
             }
+        }
+    }
+    
+    func handleLogUserFailure(_ completion: @escaping (Bool) -> Void) {
+        if self.logUserRetryCount < 3 {
+            self.logUserRetryCount = self.logUserRetryCount + 1
+            DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 30) {
+                self.logNewUserDetails(completion)
+            }
+        } else {
+            completion(false)
         }
     }
     

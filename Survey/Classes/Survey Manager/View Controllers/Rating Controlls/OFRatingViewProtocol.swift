@@ -21,4 +21,5 @@ protocol OFRatingViewProtocol: AnyObject {
     func followupViewEnterTextWith(_ text: String?)
     func checkBoxViewDidFinishPicking(_ selectedOptions: [String],_ otherTextAnswer: String?)
     func onThankyouAnimationComplete()
+    func followupTextViewHeightDidChange()
 }

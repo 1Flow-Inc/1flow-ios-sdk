@@ -45,13 +45,21 @@ class OFRatingViewController: UIViewController {
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var bottomView: UIView!
     
+    @IBOutlet weak var containerLeading: NSLayoutConstraint!
+    @IBOutlet weak var containerTrailing: NSLayoutConstraint!
+    @IBOutlet weak var containerBottom: NSLayoutConstraint!
+    @IBOutlet weak var containerTop: NSLayoutConstraint!
+    
+    @IBOutlet weak var stackViewTop: NSLayoutConstraint!
+    @IBOutlet weak var stackViewBottom: NSLayoutConstraint!
     private var isKeyboardVisible = false
     var originalPosition: CGPoint?
     var currentPositionTouched: CGPoint?
 
     var allScreens: [SurveyListResponse.Survey.Screen]?
     var surveyResult = [SurveySubmitRequest.Answer]()
-    
+    var widgetPosition = WidgetPosition.bottomCenter
+
     var completionBlock: RatingViewCompletion?
     var currentScreenIndex = -1
     var recordEmptyTextCompletionBlock: RecordOnlyEmptyTextCompletion?
@@ -60,7 +68,15 @@ class OFRatingViewController: UIViewController {
     private var shouldShowRating: Bool = false
     private var shouldOpenUrl: Bool = false
     var shouldRemoveWatermark = false
+    var shouldShowCloseButton = true
+    var shouldShowDarkOverlay = true
+    var shouldShowProgressBar = true
+
+    var centerConstraint  : NSLayoutConstraint!
+    var stackViewCenterConstraint  : NSLayoutConstraint!
     
+    var keyboardRect : CGRect!
+
     lazy var waterMarkURL = "https://1flow.app/?utm_source=1flow-ios-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow"
     
     override func viewDidLoad() {
@@ -95,7 +111,113 @@ class OFRatingViewController: UIViewController {
             self.closeButton.setImage(closeImage, for: .normal)
             self.closeButton.tintColor = kCloseButtonColor
         }
-        self.poweredByButton.isHidden = self.shouldRemoveWatermark
+        self.poweredByButton.isHidden = !self.shouldRemoveWatermark
+        self.closeButton.isHidden = !self.shouldShowCloseButton
+        self.progressBar.isHidden = !self.shouldShowProgressBar
+        setupWidgetPosition()
+        
+    }
+    
+    func setupWidgetPosition() {
+        if isWidgetPositionBottom() {
+            
+        } else if isWidgetPositionMiddle() {
+            self.bottomConstraint.isActive = false
+            centerConstraint = self.ratingView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+            centerConstraint.isActive = true
+            if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
+                self.containerBottom.constant = bottomPadding + 10
+            }
+
+        }
+        else if isWidgetPositionTop() {
+            self.bottomConstraint.isActive = false
+            self.ratingView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+            if let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top {
+                self.containerTop.constant = topPadding + 15
+            }
+            self.containerBottom.constant =  10
+
+        }
+        else if isWidgetPositionTopBanner() {
+            self.bottomConstraint.isActive = false
+            self.ratingView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+            if let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top {
+                self.containerTop.constant = topPadding + 15
+            }
+            self.containerBottom.constant =  10
+            self.containerLeading.constant = 0
+            self.containerTrailing.constant = 0
+            self.ratingView.backgroundColor = kBackgroundColor
+        }
+        else if isWidgetPositionBottomBanner() {
+            if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
+                self.containerBottom.constant = bottomPadding + 10
+            }
+            self.containerLeading.constant = 0
+            self.containerTrailing.constant = 0
+            self.ratingView.backgroundColor = kBackgroundColor
+
+        }
+        else if isWidgetPositionFullScreen() {
+            if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
+                self.containerBottom.constant = bottomPadding + 10
+            }
+            self.containerLeading.constant = 0
+            self.containerTrailing.constant = 0
+            if let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top {
+                self.containerTop.constant = topPadding + 15
+            }
+            self.ratingView.backgroundColor = kBackgroundColor
+            centerConstraint = self.ratingView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+            centerConstraint.isActive = true
+            stackViewCenterConstraint = self.stackView.centerYAnchor.constraint(equalTo: self.containerView.centerYAnchor)
+            stackViewCenterConstraint.isActive = true
+            self.stackViewTop.priority = .defaultLow
+            self.stackViewBottom.priority = .defaultLow
+        }
+    }
+    
+    func isWidgetPositionBottom() -> Bool {
+        if widgetPosition == .bottomLeft || widgetPosition == .bottomCenter || widgetPosition == .bottomRight {
+            return true
+        }
+        return false
+    }
+    
+    func isWidgetPositionMiddle() -> Bool {
+        if widgetPosition == .middleLeft || widgetPosition == .middleCenter || widgetPosition == .middleRight {
+            return true
+        }
+        return false
+    }
+    
+    func isWidgetPositionTop() -> Bool {
+        if widgetPosition == .topLeft || widgetPosition == .topCenter || widgetPosition == .topRight {
+            return true
+        }
+        return false
+    }
+    
+    func isWidgetPositionFullScreen() -> Bool {
+        if widgetPosition == .fullScreen {
+            return true
+        }
+        return false
+    }
+    
+    func isWidgetPositionTopBanner() -> Bool {
+        if widgetPosition == .topBanner {
+            return true
+        }
+        return false
+    }
+    
+    func isWidgetPositionBottomBanner() -> Bool {
+        if widgetPosition == .bottomBanner {
+            return true
+        }
+        return false
     }
     
     func setPoweredByButtonText(fullText: String, mainText: String, creditsText: String) {
@@ -119,12 +241,14 @@ class OFRatingViewController: UIViewController {
         super.viewDidAppear(animated)
         self.progressBar.tintColor = kBrandColor
         self.progressBar.trackTintColor = kBackgroundColor
-        
-        UIView.animate(withDuration: 0.2) {
-            self.view.backgroundColor = UIColor.black.withAlphaComponent(0.25)
-        } completion: { _ in
-            
+        if self.shouldShowDarkOverlay {
+            UIView.animate(withDuration: 0.2) {
+                self.view.backgroundColor = UIColor.black.withAlphaComponent(0.25)
+            } completion: { _ in
+                
+            }
         }
+       
         if self.currentScreenIndex == -1 {
             self.presentNextScreen(nil)
         }
@@ -155,18 +279,51 @@ class OFRatingViewController: UIViewController {
 
     @objc func keyboardWasShown(notification: NSNotification) {
         let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        keyboardRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         self.isKeyboardVisible = true
-        self.bottomConstraint.constant = keyboardFrame.size.height //+ 20
-        self.ratingView.setNeedsUpdateConstraints()
-        UIView.animate(withDuration: 0.4, animations: { () -> Void in
-            self.view.layoutIfNeeded()
-        })
+        self.changePositionAsPerKeyboard()
+    }
+    
+    func changePositionAsPerKeyboard() {
+        if let _ = keyboardRect  {
+            if isWidgetPositionBottom() || isWidgetPositionBottomBanner() {
+                self.bottomConstraint.constant = keyboardRect.size.height //+ 20
+            }
+            self.ratingView.setNeedsUpdateConstraints()
+            if isWidgetPositionMiddle() {
+                if let centerConstraint = self.centerConstraint  {
+                    let difference = (ratingView.frame.origin.y + ratingView.frame.size.height + 20) - keyboardRect.origin.y
+                    if difference > 0 {
+                        centerConstraint.constant = -difference
+                    }
+                }
+            }
+            else if isWidgetPositionFullScreen() {
+                if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
+                    if let stackViewConstraint = self.stackViewCenterConstraint {
+                        let difference = (stackView.frame.origin.y + stackView.frame.size.height + 30 + bottomPadding) - keyboardRect.origin.y
+                        if difference > 0 {
+                            stackViewConstraint.constant = stackViewConstraint.constant - difference
+                        }
+                    }
+                }
+                
+            }
+            
+            UIView.animate(withDuration: 0.4, animations: { () -> Void in
+                self.view.layoutIfNeeded()
+            })
+        }
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
         self.isKeyboardVisible = false
-        
+        if let centerConstraint = self.centerConstraint {
+            centerConstraint.constant = 0
+        }
+        if let stackCenterConstraint = self.stackViewCenterConstraint {
+            stackCenterConstraint.constant = 0
+        }
         self.bottomConstraint.constant = 0
         self.ratingView.setNeedsUpdateConstraints()
         UIView.animate(withDuration: 0.4, animations: { () -> Void in
@@ -305,6 +462,7 @@ class OFRatingViewController: UIViewController {
         if currentScreen.input?.input_type == "text" {
             let view = OFFollowupView.loadFromNib()
             view.delegate = self
+            view.widgetPosition = self.widgetPosition
             view.placeHolderText = "Type here"//currentScreen.input!.placeholder_text ?? "Write here..."
             view.maxCharsAllowed = currentScreen.input!.max_chars ?? 1000
             view.minCharsAllowed = currentScreen.input!.min_chars ?? 5
@@ -397,21 +555,59 @@ class OFRatingViewController: UIViewController {
             self.stackView.alpha = 1.0
             
             if self.currentScreenIndex == 0 {
-                let originalPosition = self.ratingView.frame.origin.y
-                self.ratingView.frame.origin.y = self.view.frame.size.height
-                self.ratingView.alpha = 1.0
-                self.containerView.alpha = 1.0
-                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: UIView.AnimationOptions.curveEaseInOut) {
-                    self.ratingView.frame.origin.y = originalPosition
-                } completion: { _ in
-                    var totalDelay = 0.0
-                    for subView in self.stackView.arrangedSubviews {
-                        UIView.animate(withDuration: 0.5, delay: totalDelay, options: UIView.AnimationOptions.allowUserInteraction) {
-                            subView.alpha = 1.0
-                        } completion: { _ in
-
+                if self.isWidgetPositionBottom() || self.isWidgetPositionBottomBanner() {
+                    let originalPosition = self.ratingView.frame.origin.y
+                    self.ratingView.frame.origin.y = self.view.frame.size.height
+                    self.ratingView.alpha = 1.0
+                    self.containerView.alpha = 1.0
+                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: UIView.AnimationOptions.curveEaseInOut) {
+                        self.ratingView.frame.origin.y = originalPosition
+                    } completion: { _ in
+                        var totalDelay = 0.0
+                        for subView in self.stackView.arrangedSubviews {
+                            UIView.animate(withDuration: 0.5, delay: totalDelay, options: UIView.AnimationOptions.allowUserInteraction) {
+                                subView.alpha = 1.0
+                            } completion: { _ in
+                                
+                            }
+                            totalDelay += 0.2
                         }
-                        totalDelay += 0.2
+                        
+                    }
+                } else if self.isWidgetPositionMiddle() || self.isWidgetPositionFullScreen() {
+                    self.ratingView.alpha = 1.0
+                    self.ratingView.isHidden = true
+                  
+
+                    for subView in self.stackView.arrangedSubviews {
+                        subView.alpha = 1.0
+                    }
+                    self.containerView.alpha = 1.0
+                    
+                    UIView.transition(with: self.ratingView, duration: 0.5, options: .transitionCrossDissolve) {
+                        self.ratingView.isHidden = false
+                    }
+                    
+                    
+                }
+                else if self.isWidgetPositionTop() || self.isWidgetPositionTopBanner()  {
+                    let originalPosition = self.ratingView.frame.origin.y
+                    self.ratingView.frame.origin.y = 0 - self.ratingView.frame.size.height
+                    self.ratingView.alpha = 1.0
+                    self.containerView.alpha = 1.0
+                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: UIView.AnimationOptions.curveEaseInOut) {
+                        self.ratingView.frame.origin.y = originalPosition
+                    } completion: { _ in
+                        var totalDelay = 0.0
+                        for subView in self.stackView.arrangedSubviews {
+                            UIView.animate(withDuration: 0.5, delay: totalDelay, options: UIView.AnimationOptions.allowUserInteraction) {
+                                subView.alpha = 1.0
+                            } completion: { _ in
+                                
+                            }
+                            totalDelay += 0.2
+                        }
+                        
                     }
                     
                 }
@@ -432,15 +628,28 @@ class OFRatingViewController: UIViewController {
 
     func runCloseAnimation(_ completion: @escaping ()-> Void) {
         self.isClosingAnimationRunning = true
-        UIView.animate(withDuration: 0.5) {
-            self.ratingView.frame.origin.y = self.ratingView.frame.origin.y + self.ratingView.frame.size.height
+        if isWidgetPositionBottom() || isWidgetPositionBottomBanner() {
+            UIView.animate(withDuration: 0.5) {
+                self.ratingView.frame.origin.y = self.ratingView.frame.origin.y + self.ratingView.frame.size.height
+            }
+        } else if isWidgetPositionMiddle() || isWidgetPositionFullScreen() {
+            UIView.transition(with: self.ratingView, duration: 0.5, options: .transitionCrossDissolve) {
+                self.ratingView.alpha = 0.0
+            }
         }
-        
-        UIView.animate(withDuration: 0.3, delay: 0.5, options: UIView.AnimationOptions.curveEaseIn) {
-            self.view.backgroundColor = UIColor.clear
-        } completion: { _ in
-            completion()
+        else if isWidgetPositionTop() || isWidgetPositionTopBanner() {
+            UIView.animate(withDuration: 0.5) {
+                self.ratingView.frame.origin.y = 0 - self.ratingView.frame.size.height
+            }
         }
+        if self.shouldShowDarkOverlay {
+            UIView.animate(withDuration: 0.3, delay: 0.5, options: UIView.AnimationOptions.curveEaseIn) {
+                self.view.backgroundColor = UIColor.clear
+            } completion: { _ in
+                completion()
+            }
+        }
+       
     }
     
     @objc func tapGestureAction(_ panGesture: UITapGestureRecognizer) {
@@ -490,10 +699,6 @@ class OFRatingViewController: UIViewController {
         if self.isKeyboardVisible == true {
             self.view.endEditing(true)
             return
-        }
-        guard let completion = self.completionBlock else { return }
-        self.runCloseAnimation {
-            completion(self.surveyResult)
         }
     }
     
@@ -594,5 +799,9 @@ extension OFRatingViewController: OFRatingViewProtocol {
                 completion(self.surveyResult)
             }
         }
+    }
+    
+    func followupTextViewHeightDidChange() {
+        self.changePositionAsPerKeyboard()
     }
 }
