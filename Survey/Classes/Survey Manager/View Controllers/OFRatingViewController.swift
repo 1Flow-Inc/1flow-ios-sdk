@@ -648,8 +648,9 @@ class OFRatingViewController: UIViewController {
             } completion: { _ in
                 completion()
             }
+        } else {
+            completion()
         }
-       
     }
     
     @objc func tapGestureAction(_ panGesture: UITapGestureRecognizer) {
