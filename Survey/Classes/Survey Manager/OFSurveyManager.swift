@@ -301,7 +301,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
             
             let controller = OFRatingViewController(nibName: "OFRatingViewController", bundle: OneFlowBundle.bundleForObject(self))
             controller.shouldRemoveWatermark = survey.survey_settings?.sdk_theme?.remove_watermark ?? false
-            controller.shouldShowCloseButton = survey.survey_settings?.sdk_theme?.close_button ?? false
+            controller.shouldShowCloseButton = survey.survey_settings?.sdk_theme?.close_button ?? true
             controller.shouldShowDarkOverlay = survey.survey_settings?.sdk_theme?.dark_overlay ?? true
             controller.shouldShowProgressBar = survey.survey_settings?.sdk_theme?.progress_bar ?? true
 
