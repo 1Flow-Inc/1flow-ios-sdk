@@ -19,6 +19,7 @@ protocol OFRatingViewProtocol: AnyObject {
     func starsViewChangeSelection(_ selectedIndex: Int?)
     func mcqViewChangeSelection(_ selectedOptionID: String,_ otherTextAnswer : String?)
     func followupViewEnterTextWith(_ text: String?)
+    func shortAnswerViewEnterTextWith(_ text: String?)
     func checkBoxViewDidFinishPicking(_ selectedOptions: [String],_ otherTextAnswer: String?)
     func onThankyouAnimationComplete()
     func followupTextViewHeightDidChange()

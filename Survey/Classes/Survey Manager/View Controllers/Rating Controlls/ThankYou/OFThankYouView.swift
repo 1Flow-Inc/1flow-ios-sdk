@@ -19,6 +19,7 @@ class OFThankYouView: UIView {
 
     @IBOutlet weak var animationView: UIView!
     @IBOutlet weak var lblTitle: UILabel!
+    @IBOutlet weak var lblDescription: UILabel!
     weak var delegate: OFRatingViewProtocol?
     var imageView: UIImageView?
     
@@ -33,6 +34,9 @@ class OFThankYouView: UIView {
         animationView.addSubview(imageView)
         imageView.animationDuration = 1.0
         imageView.animationRepeatCount = 1
+        lblTitle.textColor = kPrimaryTitleColor
+        lblDescription.textColor = kSecondaryTitleColor
+        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
             imageView.image = imageView.animationImages?.last
             CATransaction.begin()

@@ -64,7 +64,7 @@ class OFFollowupView: UIView {
             btnFinish.setTitle(self.submitButtonTitle, for: .normal)
         }
     }    
-    var keyboardHeight = 0.0
+    var keyboardHeight: CGFloat = 0.0
     var widgetPosition : WidgetPosition = .bottomCenter
 
     override func awakeFromNib() {

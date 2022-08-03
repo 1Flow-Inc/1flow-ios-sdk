@@ -19,6 +19,8 @@
 		2B0CD28930F021453392C2F9D51E6A7B /* OFDraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A3C40B9DC4D7BCE39CFBA985372177 /* OFDraggableView.swift */; };
 		37BD2BD47D2E4D301E8298455817D9D1 /* OFThankYouView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E13A9F5946263B995CC9BE017378A27B /* OFThankYouView.xib */; };
 		4092F3046B141DC8BA9E485ED09F1991 /* OFAPIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFD640325089F159562FBCA99BF1F0A2 /* OFAPIController.swift */; };
+		4321243828900C3300420887 /* OFShortAnswerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4321243728900C3200420887 /* OFShortAnswerView.xib */; };
+		4321243B28900C4F00420887 /* OFShortAnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4321243A28900C4F00420887 /* OFShortAnswerView.swift */; };
 		437B678E281D1C52009D96FA /* EndPointPovider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B678D281D1C52009D96FA /* EndPointPovider.swift */; };
 		437B6790281D232B009D96FA /* URLRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B678F281D232B009D96FA /* URLRequestManager.swift */; };
 		4D85DE7F8655578296333B2C7752771E /* OFRatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0F0757647F576A8EF051C306C7F224A /* OFRatingViewController.xib */; };
@@ -103,6 +105,8 @@
 		2A466886A4304D10DD399C24F36CCE1B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		35D6960850779D98FF229412FED4CDD0 /* Pods-1Flow_Example */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-1Flow_Example"; path = Pods_1Flow_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3946CFB5FB71B096C12266D2329FF6BE /* OFMCQView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFMCQView.swift; sourceTree = "<group>"; };
+		4321243728900C3200420887 /* OFShortAnswerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OFShortAnswerView.xib; path = Survey/Resources/OFShortAnswerView.xib; sourceTree = "<group>"; };
+		4321243A28900C4F00420887 /* OFShortAnswerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OFShortAnswerView.swift; sourceTree = "<group>"; };
 		437B678D281D1C52009D96FA /* EndPointPovider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointPovider.swift; sourceTree = "<group>"; };
 		437B678F281D232B009D96FA /* URLRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestManager.swift; sourceTree = "<group>"; };
 		4385E10AC6E4BC7503B447884B9DB0B7 /* Pods-1Flow_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-1Flow_Example-frameworks.sh"; sourceTree = "<group>"; };
@@ -262,6 +266,14 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
+		4321243928900C4F00420887 /* ShortAnswer */ = {
+			isa = PBXGroup;
+			children = (
+				4321243A28900C4F00420887 /* OFShortAnswerView.swift */,
+			);
+			path = ShortAnswer;
+			sourceTree = "<group>";
+		};
 		437B678C281D1C31009D96FA /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -361,6 +373,7 @@
 				117779851FC82938EF6957E3092B163E /* FeedbackAssets.xcassets */,
 				83E570CEA3435FE81D04DF0039030F4A /* OFdone.gif */,
 				5CBC3F08026BC0B90F21634484F46053 /* OFFollowupView.xib */,
+				4321243728900C3200420887 /* OFShortAnswerView.xib */,
 				20176961C5C9E9773275CA72BC02A2B6 /* OFMCQView.xib */,
 				B3CAD1D71022ECE5D6F28739687D5629 /* OFNumberCollectionViewCell.xib */,
 				10915AA5EF6F27BF8C1E221E1FFF3BBA /* OFOneToTenView.xib */,
@@ -423,6 +436,7 @@
 				073DE525C7D9611E46EB5680D562F609 /* OFRatingViewProtocol.swift */,
 				50C76520288E89CCD31D74B10C8E5877 /* OFRoundedConrnerView.swift */,
 				D0DA8F8F5E8DB4B1F2B4268910301956 /* OFViewLoading.swift */,
+				4321243928900C4F00420887 /* ShortAnswer */,
 				637A4987D7ED40D364F768FAFCA0028F /* Followup */,
 				C622378FBC052115A81D703CCF0D9708 /* MCQ */,
 				CE100230B7B1F42A29FDF24BB470916B /* OneToTen */,
@@ -587,6 +601,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4321243828900C3300420887 /* OFShortAnswerView.xib in Resources */,
 				DA5B25D13BA88CBEEC0773D123AD4A5F /* FeedbackAssets.xcassets in Resources */,
 				C18B5F127EC4247899C02CAFB32A8437 /* OFdone.gif in Resources */,
 				A1E837B355AC378197FEE883FCB18F0B /* OFFollowupView.xib in Resources */,
@@ -662,6 +677,7 @@
 				6F1D32AF23669055EDAD8923736A0484 /* OFSurveyManager.swift in Sources */,
 				135ACED7C48DF032DC75938F53BC9FE7 /* OFSwiftGIF.swift in Sources */,
 				7AA817BA5A95CDC3D293E5B023666FFD /* OFThankYouView.swift in Sources */,
+				4321243B28900C4F00420887 /* OFShortAnswerView.swift in Sources */,
 				7CD6D224E3A5DB662D5B4A5DE782EB87 /* OFViewLoading.swift in Sources */,
 				9B0ADF8087CD51A7D23F64FAAC5D99E1 /* OneFlow.swift in Sources */,
 				437B6790281D232B009D96FA /* URLRequestManager.swift in Sources */,

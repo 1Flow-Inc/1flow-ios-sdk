@@ -71,6 +71,9 @@ class OFRatingViewController: UIViewController {
     var shouldShowCloseButton = true
     var shouldShowDarkOverlay = true
     var shouldShowProgressBar = true
+    
+    private var isFirstQuestionLaunched = false
+
 
     var centerConstraint  : NSLayoutConstraint!
     var stackViewCenterConstraint  : NSLayoutConstraint!
@@ -111,7 +114,7 @@ class OFRatingViewController: UIViewController {
             self.closeButton.setImage(closeImage, for: .normal)
             self.closeButton.tintColor = kCloseButtonColor
         }
-        self.poweredByButton.isHidden = !self.shouldRemoveWatermark
+        self.poweredByButton.isHidden = self.shouldRemoveWatermark
         self.closeButton.isHidden = !self.shouldShowCloseButton
         self.progressBar.isHidden = !self.shouldShowProgressBar
         setupWidgetPosition()
@@ -436,7 +439,7 @@ class OFRatingViewController: UIViewController {
     
     private func setupUIAccordingToConfiguration(_ currentScreen: SurveyListResponse.Survey.Screen) {
 
-        self.stackView.alpha = 0.0
+            self.stackView.alpha = 0.0
         if let value = currentScreen.title {
             self.viewPrimaryTitle1.isHidden = false
             self.lblPrimaryTitle1.text = value
@@ -463,7 +466,7 @@ class OFRatingViewController: UIViewController {
             let view = OFFollowupView.loadFromNib()
             view.delegate = self
             view.widgetPosition = self.widgetPosition
-            view.placeHolderText = "Type here"//currentScreen.input!.placeholder_text ?? "Write here..."
+            view.placeHolderText = currentScreen.input!.placeholder_text ?? "Type here"
             view.maxCharsAllowed = currentScreen.input!.max_chars ?? 1000
             view.minCharsAllowed = currentScreen.input!.min_chars ?? 5
             if let buttonArray = currentScreen.buttons {
@@ -476,7 +479,22 @@ class OFRatingViewController: UIViewController {
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
             
-        } else if currentScreen.input?.input_type == "rating" ||  currentScreen.input?.input_type == "rating-5-star" {
+        } else if currentScreen.input?.input_type == "short-text" {
+            let view = OFShortAnswerView.loadFromNib()
+            view.delegate = self
+            view.placeHolderText = currentScreen.input!.placeholder_text ?? "Type here"
+            view.minCharsAllowed = 0 // currentScreen.input!.min_chars ?? 5
+            if let buttonArray = currentScreen.buttons {
+                if buttonArray.count > 0 {
+                    if let buttonTitle = buttonArray.first?.title {
+                        view.submitButtonTitle = buttonTitle
+                    }
+                }
+            }
+            view.isHidden = true
+            self.stackView.insertArrangedSubview(view, at: indexToAddOn)
+            
+        }  else if currentScreen.input?.input_type == "rating" ||  currentScreen.input?.input_type == "rating-5-star" {
             let view = OFStarsView.loadFromNib()
             view.delegate = self
             view.isHidden = true
@@ -540,6 +558,10 @@ class OFRatingViewController: UIViewController {
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
         }
+        else {
+            presentNextScreen(nil)
+            return
+        }
 
         for subview in self.stackView.arrangedSubviews {
             subview.alpha = 0.0
@@ -554,7 +576,8 @@ class OFRatingViewController: UIViewController {
         } completion: { _ in
             self.stackView.alpha = 1.0
             
-            if self.currentScreenIndex == 0 {
+            if self.currentScreenIndex == 0 || !self.isFirstQuestionLaunched {
+                self.isFirstQuestionLaunched = true
                 if self.isWidgetPositionBottom() || self.isWidgetPositionBottomBanner() {
                     let originalPosition = self.ratingView.frame.origin.y
                     self.ratingView.frame.origin.y = self.view.frame.size.height
@@ -643,12 +666,11 @@ class OFRatingViewController: UIViewController {
             }
         }
         if self.shouldShowDarkOverlay {
-            UIView.animate(withDuration: 0.3, delay: 0.5, options: UIView.AnimationOptions.curveEaseIn) {
-                self.view.backgroundColor = UIColor.clear
-            } completion: { _ in
-                completion()
-            }
-        } else {
+            self.view.backgroundColor = UIColor.black.withAlphaComponent(0.001)
+        }
+        UIView.animate(withDuration: 0.3, delay: 0.5, options: UIView.AnimationOptions.curveEaseIn) {
+            self.view.backgroundColor = UIColor.clear
+        } completion: { _ in
             completion()
         }
     }
@@ -756,6 +778,31 @@ extension OFRatingViewController: OFRatingViewProtocol {
     }
     
     func followupViewEnterTextWith(_ text: String?) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+            
+            if let inputString = text, let screen = self.allScreens?[self.currentScreenIndex] {
+                let finalString = inputString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                if finalString.count > 0 {
+                    let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: inputString, answer_index: nil)
+                    self.surveyResult.append(answer)
+                } else {
+                    if let screens = self.allScreens, screens.count == 1 {
+                        if let completionEmptyText = self.recordEmptyTextCompletionBlock {
+                            completionEmptyText()
+                        }
+                    } else if let screens = self.allScreens, screens.count <= 2, let lastScreen = screens.last, lastScreen.input?.input_type == "thank_you" {
+                        if let completionEmptyText = self.recordEmptyTextCompletionBlock {
+                            completionEmptyText()
+                        }
+                    }
+                }
+                self.view.endEditing(true)
+                self.presentNextScreen(inputString)
+            }
+        }
+    }
+    
+    func shortAnswerViewEnterTextWith(_ text: String?) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
             
             if let inputString = text, let screen = self.allScreens?[self.currentScreenIndex] {

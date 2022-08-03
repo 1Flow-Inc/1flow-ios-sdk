@@ -38,7 +38,13 @@ enum EndPoints: EndPointProtocol {
             if let sessionID : String = OFProjectDetailsController.shared.analytics_session_id {
                 surveyUrl = surveyUrl + "&session_id=" + sessionID
             }
-
+            
+            if let bundle = Bundle.allFrameworks.first(where: { $0.bundleIdentifier?.contains("1Flow") ?? false } ) {
+                if let libraryVersion = bundle.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String {
+                    surveyUrl = surveyUrl + "&min_version=" + libraryVersion
+                }
+            }
+            
             if let userID : String = OFProjectDetailsController.shared.analytic_user_id {
                 surveyUrl = surveyUrl + "&user_id=" + userID
             }
