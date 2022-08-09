@@ -23,7 +23,7 @@ class URLRequestManager: URLRequestManagerProtocol {
         OneFlowLog.writeLog("API Call: \(endPoint.url)")
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                OneFlowLog.writeLog("API Call: \(endPoint.url) - Failed")
+                OneFlowLog.writeLog("API Call: \(endPoint.url) - Failed: \(error.localizedDescription)", .error)
                 completion(false, error, nil)
                 return
             }
@@ -34,8 +34,8 @@ class URLRequestManager: URLRequestManagerProtocol {
                     }
                 }
             } catch {
+                OneFlowLog.writeLog("API Call: \(endPoint.url) - Deconding Error \(error.localizedDescription)", .error)
             }
-            OneFlowLog.writeLog("API Call: \(endPoint.url) - Success")
             completion(true, nil, data)
             
         }.resume()
@@ -48,22 +48,13 @@ class URLRequestManager: URLRequestManagerProtocol {
         if let appKey = OFProjectDetailsController.shared.appKey {
             request.addValue(appKey, forHTTPHeaderField: "one_flow_key")
         }
-
-        do {
-            if let json = try JSONSerialization.jsonObject(with: parameters, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                OneFlowLog.writeLog("Request Param", .verbose)
-                OneFlowLog.writeLog(json, .verbose)
-            }
-        } catch {
-        }
-
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
         OneFlowLog.writeLog("API Call: \(endPoint.url)")
 
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                OneFlowLog.writeLog("API Call: \(endPoint.url) - Failed")
+                OneFlowLog.writeLog("API Call: \(endPoint.url) - Failed: \(error.localizedDescription)", .error)
                 completion(false, error, nil)
                 return
             }
@@ -74,8 +65,8 @@ class URLRequestManager: URLRequestManagerProtocol {
                     }
                 }
             } catch {
+                OneFlowLog.writeLog("API Call: \(endPoint.url) - Deconding Error \(error.localizedDescription)", .error)
             }
-            OneFlowLog.writeLog("API Call: \(endPoint.url) - Success")
             completion(true, nil, data)
             
         }.resume()

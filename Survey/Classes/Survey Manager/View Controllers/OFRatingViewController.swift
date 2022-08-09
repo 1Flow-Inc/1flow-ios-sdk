@@ -665,7 +665,7 @@ class OFRatingViewController: UIViewController {
                 self.ratingView.frame.origin.y = 0 - self.ratingView.frame.size.height
             }
         }
-        if self.shouldShowDarkOverlay {
+        if !self.shouldShowDarkOverlay {
             self.view.backgroundColor = UIColor.black.withAlphaComponent(0.001)
         }
         UIView.animate(withDuration: 0.3, delay: 0.5, options: UIView.AnimationOptions.curveEaseIn) {

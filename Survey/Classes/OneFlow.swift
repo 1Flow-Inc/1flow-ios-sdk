@@ -38,7 +38,7 @@ public final class OneFlow: NSObject {
         OneFlowLog.writeLog("1Flow configuration started")
         if OneFlow.shared.projectDetailsController.appKey == nil {
             shared.projectDetailsController.appKey = appKey
-            shared.projectDetailsController.setLoglevel(.none)
+            shared.projectDetailsController.setLoglevel(.error)
             shared.setupOnce()
             shared.setupReachability()
         } else {
@@ -145,6 +145,12 @@ public final class OneFlow: NSObject {
     
     @objc class public func logUser(_ userID: String, userDetails: [String: Any]?) {
 
+        let userID = userID.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        if userID.isEmpty {
+            OneFlowLog.writeLog("User id must not be empty to log user", .error)
+            return
+        }
+        
         if let userDetailsDic : [String : Any] = OneFlow.removeUnsupportedKeys(userDetails) {
             let logUserInfo = ["UserID":userID, "userDetails": userDetailsDic] as [String : Any]
             UserDefaults.standard.set(logUserInfo, forKey: "OFlogUserInfo")

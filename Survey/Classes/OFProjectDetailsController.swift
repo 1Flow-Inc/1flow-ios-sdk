@@ -144,6 +144,7 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
     
     func logNewUserDetails(_ completion: @escaping (Bool) -> Void) {
         guard let analyticsID = self.analytic_user_id, let sessionID = self.analytics_session_id, let newUserID = self.newUserID else {
+            OneFlowLog.writeLog("Log user validation failed", .error)
             completion(false)
             return
         }

@@ -29,7 +29,7 @@ class OneFlowProductionTests: XCTestCase {
     }
     
     func testCurrentEnvironmentMode() {
-        // This is an example of a functional test case.
+
         let appdel : AppDelegate =  UIApplication.shared.delegate as! AppDelegate
         XCTAssertNotNil(appdel)
         appdel.setupOneFlow()
@@ -38,7 +38,7 @@ class OneFlowProductionTests: XCTestCase {
     }
     
     func testCurrentProjectKey() {
-        // This is an example of a functional test case.
+
         let appdel : AppDelegate =  UIApplication.shared.delegate as! AppDelegate
         XCTAssertNotNil(appdel)
         appdel.setupOneFlow()
@@ -46,11 +46,11 @@ class OneFlowProductionTests: XCTestCase {
     }
     
     func testCurrentlogLevel() {
-        // This is an example of a functional test case.
+
         let appdel : AppDelegate =  UIApplication.shared.delegate as! AppDelegate
         XCTAssertNotNil(appdel)
         appdel.setupOneFlow()
-        XCTAssertTrue(OFProjectDetailsController.shared.currentLogLevel == .none)
+        XCTAssertTrue(OFProjectDetailsController.shared.currentLogLevel == .error)
         
     }
     
