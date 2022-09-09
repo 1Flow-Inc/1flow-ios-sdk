@@ -321,7 +321,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
             callBackParameter["trigger_event_name"] = eventName
             callBackParameter["status"] = "NA"
             
-            controller.completionBlock = { [weak self] surveyResponse in
+            controller.completionBlock = { [weak self] surveyResponse, isCompleted in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.surveyWindow?.isHidden = true
@@ -344,7 +344,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
                         self.pendingSurveySubmission![survey._id] = surveyResponseNew
                     }
                     self.uploadPendingSurveyIfAvailable()
-                    if surveyResponse.count == (survey.screens!.count - 1) {
+                    if isCompleted {
                         callBackParameter["status"] = "finished"
                     } else {
                         callBackParameter["status"] = "closed"

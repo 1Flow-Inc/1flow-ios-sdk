@@ -24,8 +24,7 @@ enum RatingStyle {
     case ReviewPrompt
     case ThankYou
 }
-
-typealias RatingViewCompletion = ((_ surveyResult: [SurveySubmitRequest.Answer]) -> Void)
+typealias RatingViewCompletion = ((_ surveyResult: [SurveySubmitRequest.Answer], _ isCompleted: Bool) -> Void)
 typealias RecordOnlyEmptyTextCompletion = (() -> Void)
 
 class OFRatingViewController: UIViewController {
@@ -81,7 +80,8 @@ class OFRatingViewController: UIViewController {
     var keyboardRect : CGRect!
 
     lazy var waterMarkURL = "https://1flow.app/?utm_source=1flow-ios-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow"
-    
+    var isSurveyComplete = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 13.0, *) {
@@ -341,13 +341,16 @@ class OFRatingViewController: UIViewController {
             if self.allScreens!.count > self.currentScreenIndex, let screen = self.allScreens?[self.currentScreenIndex] {
                 self.setupUIAccordingToConfiguration(screen)
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-                    self.progressBar.setProgress(Float(CGFloat(self.currentScreenIndex + 1 )/CGFloat(self.allScreens!.count - 1)), animated: true)
+                    if let surveyScreens = self.allScreens {
+                        let filteredSurveyScreens = surveyScreens.filter { $0.input?.input_type != "end-screen" && $0.input?.input_type != "thank_you"  }
+                        self.progressBar.setProgress(Float(CGFloat(self.currentScreenIndex + 1 )/CGFloat(filteredSurveyScreens.count + 1)), animated: true)
+                    }
                 }
             } else {
                 //finish the survey
                 guard let completion = self.completionBlock else { return }
                 self.runCloseAnimation {
-                    completion(self.surveyResult)
+                    completion(self.surveyResult, self.isSurveyComplete)
                 }
             }
         }
@@ -388,13 +391,48 @@ class OFRatingViewController: UIViewController {
         })
         return nextSurveyIndex
     }
+    
+    private func checkandPerformEndScreenAction() {
+        OneFlowLog.writeLog("End Screen logic : Check for end screen data logic")
+        OneFlowDataLogic().getNextAction(currentIndex: currentScreenIndex, allSurveys: self.allScreens!, previousAnswer : "",  completion: { (action, nextIndex, urlToOpen) -> Void in
+            if let actionToPerform : String  = action {
+                if actionToPerform == "open-url" {
+                    if let actionUrl : String = urlToOpen {
+                        OneFlowLog.writeLog("End Screen logic : URL action detected with url \(actionUrl)")
+                        self.performOpenUrlAction(actionUrl)
+                        return
+                    }
+                }
+                else if actionToPerform == "rating" {
+                    OneFlowLog.writeLog("End Screen logic : Rating detected")
+                    self.performRatingAction()
+                    return
+                }
+                else {
+                    guard let completion = self.completionBlock else { return }
+                    self.runCloseAnimation {
+                        completion(self.surveyResult, self.isSurveyComplete)
+                    }
+                }
+                
+            }
+            else {
+                OneFlowLog.writeLog("End Screen logic : No Action detected")
+                guard let completion = self.completionBlock else { return }
+                self.runCloseAnimation {
+                    completion(self.surveyResult, self.isSurveyComplete)
+                }
+            }
+        })
+    }
 
     private func performRatingAction() {
         currentScreenIndex = -2
+        self.isSurveyComplete = true
         guard let completion = self.completionBlock else { return }
         self.runCloseAnimation {
             self.openRatemePopup()
-            completion(self.surveyResult)
+            completion(self.surveyResult, self.isSurveyComplete)
         }
     }
 
@@ -416,11 +454,12 @@ class OFRatingViewController: UIViewController {
 
     private func performOpenUrlAction(_ urlString : String) {
         currentScreenIndex = -2
+        self.isSurveyComplete = true
         guard let completion = self.completionBlock else { return }
         self.runCloseAnimation {
             guard let url = URL(string: urlString) else {
                 OneFlowLog.writeLog("Data Logic : Invalid Url received from server")
-                completion(self.surveyResult)
+                completion(self.surveyResult, self.isSurveyComplete)
                 return
             }
             DispatchQueue.main.async {
@@ -433,7 +472,7 @@ class OFRatingViewController: UIViewController {
                 }
                 
             }
-            completion(self.surveyResult)
+            completion(self.surveyResult, self.isSurveyComplete)
         }
     }
     
@@ -496,6 +535,9 @@ class OFRatingViewController: UIViewController {
             
         }  else if currentScreen.input?.input_type == "rating" ||  currentScreen.input?.input_type == "rating-5-star" {
             let view = OFStarsView.loadFromNib()
+            if let ratingDic : [String : String] = currentScreen.input?.rating_text {
+                view.ratingDic = ratingDic
+            }
             view.delegate = self
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
@@ -549,12 +591,40 @@ class OFRatingViewController: UIViewController {
             }
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
-        } else if currentScreen.input?.input_type == "thank_you" {
-            self.progressBar.isHidden = true
+        } else if currentScreen.input?.input_type == "end-screen" || currentScreen.input?.input_type == "thank_you" {
+        
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+                self.progressBar.setProgress(1.0, animated: true)
+            }
+            self.isSurveyComplete = true
             self.viewPrimaryTitle1.isHidden = true
             self.viewSecondaryTitle.isHidden = true
             let view = OFThankYouView.loadFromNib()
             view.delegate = self
+            view.thankyouTitle = currentScreen.title ?? "Thank you!"
+            view.thankyouDescription = currentScreen.message ?? "Your answer has been recorded."
+
+            view.isHidden = true
+            let shouldFadeAway = (self.allScreens?[self.currentScreenIndex].rules?.dismiss_behavior?.fades_away) ?? true
+            if !shouldFadeAway {
+                self.closeButton.isHidden = false
+            }
+            self.stackView.insertArrangedSubview(view, at: indexToAddOn)
+        }
+        else if currentScreen.input?.input_type == "welcome-screen" {
+            self.viewPrimaryTitle1.isHidden = true
+            self.viewSecondaryTitle.isHidden = true
+            let view = OFWelcomeView.loadFromNib()
+            view.delegate = self
+            view.welcomeTitle = currentScreen.title ?? "Welcome"
+            view.welcomeDescription = currentScreen.message ?? ""
+            if let buttonArray = currentScreen.buttons {
+                if buttonArray.count > 0 {
+                    if let buttonTitle = buttonArray.first?.title {
+                        view.continueTitle = buttonTitle
+                    }
+                }
+            }
             view.isHidden = true
             self.stackView.insertArrangedSubview(view, at: indexToAddOn)
         }
@@ -650,6 +720,7 @@ class OFRatingViewController: UIViewController {
     }
 
     func runCloseAnimation(_ completion: @escaping ()-> Void) {
+        OneFlowLog.writeLog("End Screen logic : Running close animation")
         self.isClosingAnimationRunning = true
         if isWidgetPositionBottom() || isWidgetPositionBottomBanner() {
             UIView.animate(withDuration: 0.5) {
@@ -707,7 +778,7 @@ class OFRatingViewController: UIViewController {
                                }, completion: { (isCompleted) in
                                 if isCompleted {
                                     guard let completion = self.completionBlock else { return }
-                                    completion(self.surveyResult)
+                                    completion(self.surveyResult, self.isSurveyComplete)
                                 }
                                })
             } else {
@@ -727,13 +798,13 @@ class OFRatingViewController: UIViewController {
     
 
     @IBAction func onCloseTapped(_ sender: UIButton) {
-
+        OneFlowLog.writeLog("End Screen logic : onCloseTapped")
         if self.isKeyboardVisible == true {
             self.view.endEditing(true)
         }
         guard let completion = self.completionBlock else { return }
         self.runCloseAnimation {
-            completion(self.surveyResult)
+            completion(self.surveyResult, self.isSurveyComplete)
         }
     }
     
@@ -838,18 +909,28 @@ extension OFRatingViewController: OFRatingViewProtocol {
     }
     
     func onThankyouAnimationComplete() {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+        let shouldFadeAway = (self.allScreens?[self.currentScreenIndex].rules?.dismiss_behavior?.fades_away) ?? true
+        if !shouldFadeAway {
+            OneFlowLog.writeLog("End Screen logic : should not fade away as per survey logic")
+            return
+        }
+        let delay = (self.allScreens?[self.currentScreenIndex].rules?.dismiss_behavior?.delay_in_seconds) ?? 0
+        OneFlowLog.writeLog("End Screen logic : delay added for \(delay) seconds")
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1 + CGFloat(delay)) {
             if self.isClosingAnimationRunning == true {
+                OneFlowLog.writeLog("End Screen logic : already closed so no animation and no need to check for end screen data logic")
                 return
             }
-            guard let completion = self.completionBlock else { return }
-            self.runCloseAnimation {
-                completion(self.surveyResult)
-            }
+            self.checkandPerformEndScreenAction()
         }
     }
     
     func followupTextViewHeightDidChange() {
         self.changePositionAsPerKeyboard()
+    }
+    
+    func onWelcomeNextTapped() {
+        self.presentNextScreen("")
     }
 }

@@ -19,6 +19,8 @@
 		2B0CD28930F021453392C2F9D51E6A7B /* OFDraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A3C40B9DC4D7BCE39CFBA985372177 /* OFDraggableView.swift */; };
 		37BD2BD47D2E4D301E8298455817D9D1 /* OFThankYouView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E13A9F5946263B995CC9BE017378A27B /* OFThankYouView.xib */; };
 		4092F3046B141DC8BA9E485ED09F1991 /* OFAPIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFD640325089F159562FBCA99BF1F0A2 /* OFAPIController.swift */; };
+		4309E16D28C11E520089B32F /* OFWelcomeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4309E16C28C11E520089B32F /* OFWelcomeView.xib */; };
+		4309E17028C11ED80089B32F /* OFWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4309E16F28C11ED80089B32F /* OFWelcomeView.swift */; };
 		4321243828900C3300420887 /* OFShortAnswerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4321243728900C3200420887 /* OFShortAnswerView.xib */; };
 		4321243B28900C4F00420887 /* OFShortAnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4321243A28900C4F00420887 /* OFShortAnswerView.swift */; };
 		437B678E281D1C52009D96FA /* EndPointPovider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B678D281D1C52009D96FA /* EndPointPovider.swift */; };
@@ -105,6 +107,8 @@
 		2A466886A4304D10DD399C24F36CCE1B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		35D6960850779D98FF229412FED4CDD0 /* Pods-1Flow_Example */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-1Flow_Example"; path = Pods_1Flow_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3946CFB5FB71B096C12266D2329FF6BE /* OFMCQView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFMCQView.swift; sourceTree = "<group>"; };
+		4309E16C28C11E520089B32F /* OFWelcomeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OFWelcomeView.xib; path = Survey/Resources/OFWelcomeView.xib; sourceTree = "<group>"; };
+		4309E16F28C11ED80089B32F /* OFWelcomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OFWelcomeView.swift; sourceTree = "<group>"; };
 		4321243728900C3200420887 /* OFShortAnswerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OFShortAnswerView.xib; path = Survey/Resources/OFShortAnswerView.xib; sourceTree = "<group>"; };
 		4321243A28900C4F00420887 /* OFShortAnswerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OFShortAnswerView.swift; sourceTree = "<group>"; };
 		437B678D281D1C52009D96FA /* EndPointPovider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointPovider.swift; sourceTree = "<group>"; };
@@ -266,6 +270,14 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
+		4309E16E28C11ED80089B32F /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				4309E16F28C11ED80089B32F /* OFWelcomeView.swift */,
+			);
+			path = Welcome;
+			sourceTree = "<group>";
+		};
 		4321243928900C4F00420887 /* ShortAnswer */ = {
 			isa = PBXGroup;
 			children = (
@@ -377,11 +389,12 @@
 				20176961C5C9E9773275CA72BC02A2B6 /* OFMCQView.xib */,
 				B3CAD1D71022ECE5D6F28739687D5629 /* OFNumberCollectionViewCell.xib */,
 				10915AA5EF6F27BF8C1E221E1FFF3BBA /* OFOneToTenView.xib */,
-				FC414A557D0C4788B213CA8A8594CFF8 /* OFProjectDetailsController.swift */,
 				E0F0757647F576A8EF051C306C7F224A /* OFRatingViewController.xib */,
 				5220DA0913FE5E48934091F9E80A2662 /* OFStarsView.xib */,
 				E13A9F5946263B995CC9BE017378A27B /* OFThankYouView.xib */,
+				4309E16C28C11E520089B32F /* OFWelcomeView.xib */,
 				4D071EBEE0B57DFE73847F069C430A91 /* OneFlow.swift */,
+				FC414A557D0C4788B213CA8A8594CFF8 /* OFProjectDetailsController.swift */,
 				FC258C459369D2997FBAE5CF2DD0BFE2 /* Event Manager */,
 				B4BD419E74D05E164B8B550402DFDE56 /* Models */,
 				1EC4D1F27EF40ACD6D6D149DF9D096DC /* Survey Manager */,
@@ -436,6 +449,7 @@
 				073DE525C7D9611E46EB5680D562F609 /* OFRatingViewProtocol.swift */,
 				50C76520288E89CCD31D74B10C8E5877 /* OFRoundedConrnerView.swift */,
 				D0DA8F8F5E8DB4B1F2B4268910301956 /* OFViewLoading.swift */,
+				4309E16E28C11ED80089B32F /* Welcome */,
 				4321243928900C4F00420887 /* ShortAnswer */,
 				637A4987D7ED40D364F768FAFCA0028F /* Followup */,
 				C622378FBC052115A81D703CCF0D9708 /* MCQ */,
@@ -609,6 +623,7 @@
 				7FF1CD612CDE14169E8F5E74D8657C34 /* OFNumberCollectionViewCell.xib in Resources */,
 				51857F0218111418C5556B124DF3EFAB /* OFOneToTenView.xib in Resources */,
 				4D85DE7F8655578296333B2C7752771E /* OFRatingViewController.xib in Resources */,
+				4309E16D28C11E520089B32F /* OFWelcomeView.xib in Resources */,
 				68B2DCB42DD1519C54FEE8A90CC8B698 /* OFStarsView.xib in Resources */,
 				37BD2BD47D2E4D301E8298455817D9D1 /* OFThankYouView.xib in Resources */,
 			);
@@ -661,6 +676,7 @@
 				D8658F0DA6CE2243E544829C9E5EC64C /* OFEventManager.swift in Sources */,
 				81D7E020E252FF9A6D782982CEA12B44 /* OFFollowupView.swift in Sources */,
 				721DC33780197E40158C07B5C409AB45 /* OFInAppPurchaseEventsController.swift in Sources */,
+				4309E17028C11ED80089B32F /* OFWelcomeView.swift in Sources */,
 				01710666F67968142BC8CE38306F80AF /* OFMCQView.swift in Sources */,
 				02577249A0C03F4C83398761938EE263 /* OFNumberButton.swift in Sources */,
 				A0216D3EBF38F3E0A60B6C11B1C176C5 /* OFNumberCollectionViewCell.swift in Sources */,

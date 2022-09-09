@@ -23,6 +23,19 @@ class OFThankYouView: UIView {
     weak var delegate: OFRatingViewProtocol?
     var imageView: UIImageView?
     
+    var thankyouTitle: String = "Thank you" {
+        didSet {
+            self.lblTitle.text = thankyouTitle
+        }
+    }
+    
+    var thankyouDescription: String = "" {
+        didSet {
+            self.lblDescription.text = thankyouDescription
+        }
+    }
+
+    
     deinit {
         imageView?.animationImages = nil
     }

@@ -21,14 +21,14 @@
                         <constraint firstAttribute="height" constant="53" id="o8J-3R-ckm"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thank you!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yid-07-iTx">
-                    <rect key="frame" x="212.5" y="83" width="91" height="70"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thank you!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yid-07-iTx">
+                    <rect key="frame" x="0.0" y="83" width="516" height="70"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Your answer has been recorded." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qqs-DT-Ewt">
-                    <rect key="frame" x="154" y="163" width="208" height="17"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Your answer has been recorded." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qqs-DT-Ewt">
+                    <rect key="frame" x="0.0" y="163" width="516" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.31372549020000001" green="0.33333333329999998" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <nil key="highlightedColor"/>
@@ -37,12 +37,14 @@
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="qqs-DT-Ewt" secondAttribute="bottom" constant="20" id="9dR-se-VBy"/>
+                <constraint firstItem="yid-07-iTx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CZ8-Bc-XWu"/>
+                <constraint firstItem="qqs-DT-Ewt" firstAttribute="leading" secondItem="yid-07-iTx" secondAttribute="leading" id="Mue-zH-W8j"/>
+                <constraint firstItem="qqs-DT-Ewt" firstAttribute="trailing" secondItem="yid-07-iTx" secondAttribute="trailing" id="Wqg-kZ-zMb"/>
                 <constraint firstItem="3b4-cJ-ae8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="ZXB-6n-sol"/>
-                <constraint firstItem="qqs-DT-Ewt" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="c8m-P7-P8a"/>
                 <constraint firstItem="3b4-cJ-ae8" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="igi-Bl-hGx"/>
                 <constraint firstItem="qqs-DT-Ewt" firstAttribute="top" secondItem="yid-07-iTx" secondAttribute="bottom" constant="10" id="jv9-cz-PN3"/>
                 <constraint firstItem="yid-07-iTx" firstAttribute="top" secondItem="3b4-cJ-ae8" secondAttribute="bottom" constant="10" id="kNj-Oh-dQU"/>
-                <constraint firstItem="yid-07-iTx" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ucF-d4-83r"/>
+                <constraint firstAttribute="trailing" secondItem="yid-07-iTx" secondAttribute="trailing" id="wuo-jf-Dp5"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

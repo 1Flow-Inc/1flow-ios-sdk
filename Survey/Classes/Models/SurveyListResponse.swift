@@ -79,6 +79,8 @@ struct SurveyListResponse: Codable {
                 var rating_max_text: String?
                 var rating_min_text: String?
                 var other_option_id: String?
+                var rating_text: [String:String]?
+
                 
                 struct Choice: Codable {
                     var _id: String?
@@ -88,11 +90,16 @@ struct SurveyListResponse: Codable {
             struct Rule : Codable {
                 var userProperty : String
                 var dataLogic : [DataLogic]?
+                var dismiss_behavior : DismissBehaviour?
                 struct DataLogic : Codable {
                     var condition : String?
                     var values : String?
                     var type : String?
                     var action : String?
+                }
+                struct DismissBehaviour : Codable {
+                    var fades_away : Bool?
+                    var delay_in_seconds : Int?
                 }
             }
            

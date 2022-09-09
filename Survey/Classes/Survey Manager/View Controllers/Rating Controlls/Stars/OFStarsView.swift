@@ -22,8 +22,31 @@ class OFStarsView: UIView {
 
     weak var delegate: OFRatingViewProtocol?
     
-    let ratingTextArray = ["Very dissatisfied","Somewhat dissatisfied","Not dissatisfied nor satisfied","Somewhat satisfied","Very satisfied"]
+    private var ratingTextArray = ["Very dissatisfied","Somewhat dissatisfied","Not dissatisfied nor satisfied","Somewhat satisfied","Very satisfied"]
     
+    var ratingDic = ["":""] {
+        didSet {
+            if let defaultText = ratingDic["0"] {
+                self.ratingText.text = defaultText
+            }
+            if let firstOption = ratingDic["1"] {
+                self.ratingTextArray[0] = firstOption
+            }
+            if let secondOption = ratingDic["2"] {
+                self.ratingTextArray[1] = secondOption
+            }
+            if let thirdOption = ratingDic["3"] {
+                self.ratingTextArray[2] = thirdOption
+            }
+            if let fourthOption = ratingDic["4"] {
+                self.ratingTextArray[3] = fourthOption
+            }
+            if let fifthOption = ratingDic["5"] {
+                self.ratingTextArray[4] = fifthOption
+            }
+        }
+    }
+
     var selectedButton: UIButton? {
         didSet {
             self.delegate?.starsViewChangeSelection(selectedButton?.tag ?? nil)
