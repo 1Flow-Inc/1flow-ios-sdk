@@ -11,6 +11,9 @@
 import Foundation
 
 class MockProjectDetailsController: ProjectDetailsManageable {
+    
+    let oneFlowSDKVersion: String = "Mock_version"
+
     var logUserRetryCount: Int = 1
 
     var currentEnviromment: OneFlowEnvironment = .dev

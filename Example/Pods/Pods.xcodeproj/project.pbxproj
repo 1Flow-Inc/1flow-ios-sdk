@@ -155,7 +155,7 @@
 		DFD640325089F159562FBCA99BF1F0A2 /* OFAPIController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFAPIController.swift; sourceTree = "<group>"; };
 		E0F0757647F576A8EF051C306C7F224A /* OFRatingViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFRatingViewController.xib; path = Survey/Resources/OFRatingViewController.xib; sourceTree = "<group>"; };
 		E13A9F5946263B995CC9BE017378A27B /* OFThankYouView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFThankYouView.xib; path = Survey/Resources/OFThankYouView.xib; sourceTree = "<group>"; };
-		E262A6333816A67FC1DC3F18ADFD3B2E /* 1Flow */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = 1Flow; path = _1Flow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E262A6333816A67FC1DC3F18ADFD3B2E /* _1Flow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = _1Flow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E76A896BB89DFC28E081E194280545CE /* OFThankYouView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFThankYouView.swift; sourceTree = "<group>"; };
 		E781BB31BC6BF18AA4A5191199751E47 /* OFRadioButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFRadioButton.swift; sourceTree = "<group>"; };
 		E9D51AD92AF17DA4C2FA4E77E810F16F /* OFRatingViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFRatingViewController.swift; sourceTree = "<group>"; };
@@ -234,7 +234,7 @@
 		17B296D93456A7988F1C965C3BC807E8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E262A6333816A67FC1DC3F18ADFD3B2E /* 1Flow */,
+				E262A6333816A67FC1DC3F18ADFD3B2E /* _1Flow.framework */,
 				35D6960850779D98FF229412FED4CDD0 /* Pods-1Flow_Example */,
 				129F5B23C9DB6DF1374F687B58A680CD /* Pods-1Flow_Tests */,
 			);
@@ -578,7 +578,7 @@
 			);
 			name = 1Flow;
 			productName = _1Flow;
-			productReference = E262A6333816A67FC1DC3F18ADFD3B2E /* 1Flow */;
+			productReference = E262A6333816A67FC1DC3F18ADFD3B2E /* _1Flow.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -815,6 +815,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 2022.09.11;
 				MODULEMAP_FILE = "Target Support Files/1Flow/1Flow.modulemap";
 				PRODUCT_MODULE_NAME = _1Flow;
 				PRODUCT_NAME = _1Flow;
@@ -848,6 +849,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 2022.09.11;
 				MODULEMAP_FILE = "Target Support Files/1Flow/1Flow.modulemap";
 				PRODUCT_MODULE_NAME = _1Flow;
 				PRODUCT_NAME = _1Flow;

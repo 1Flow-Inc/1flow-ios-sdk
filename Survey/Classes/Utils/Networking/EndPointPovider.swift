@@ -42,7 +42,11 @@ enum EndPoints: EndPointProtocol {
             if let bundle = Bundle.allFrameworks.first(where: { $0.bundleIdentifier?.contains("1Flow") ?? false } ) {
                 if let libraryVersion = bundle.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String {
                     surveyUrl = surveyUrl + "&min_version=" + libraryVersion
+                } else {
+                    surveyUrl = surveyUrl + "&min_version=" + OFProjectDetailsController.shared.oneFlowSDKVersion
                 }
+            } else {
+                surveyUrl = surveyUrl + "&min_version=" + OFProjectDetailsController.shared.oneFlowSDKVersion
             }
             
             if let userID : String = OFProjectDetailsController.shared.analytic_user_id {

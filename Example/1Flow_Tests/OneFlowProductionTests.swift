@@ -53,5 +53,16 @@ class OneFlowProductionTests: XCTestCase {
         XCTAssertTrue(OFProjectDetailsController.shared.currentLogLevel == .error)
         
     }
-    
+
+    func testSDKVersionIsUpdated() {
+        if let bundle = Bundle.allFrameworks.first(where: { $0.bundleIdentifier?.contains("1Flow") ?? false } ) {
+            if let libraryVersion = bundle.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String {
+                XCTAssertTrue(OFProjectDetailsController.shared.oneFlowSDKVersion == libraryVersion, "SDK version is not updated")
+            } else {
+                XCTFail("Library version not found")
+            }
+        } else {
+            XCTFail("Library not found")
+        }
+    }
 }

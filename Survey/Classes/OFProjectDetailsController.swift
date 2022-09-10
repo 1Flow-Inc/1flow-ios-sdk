@@ -46,7 +46,8 @@ protocol ProjectDetailsManageable {
     var isCarrierConnectivity: Bool { get set }
     var newUserID: String? { get set }
     var newUserData: [String: Any]? { get set }
-    var logUserRetryCount : Int {get set}
+    var logUserRetryCount : Int { get set }
+    var oneFlowSDKVersion: String { get }
     
     func setLoglevel(_ newLogLevel : OneFlowLogLevel)
     func logNewUserDetails(_ completion: @escaping (Bool) -> Void)
@@ -56,7 +57,7 @@ protocol ProjectDetailsManageable {
 final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
 
     static let shared = OFProjectDetailsController()
-    
+    let oneFlowSDKVersion: String = "2022.09.11"
     var currentEnviromment: OneFlowEnvironment = .prod
     var currentLogLevel: OneFlowLogLevel = .none
 
