@@ -128,16 +128,24 @@ class OFRatingViewController: UIViewController {
             self.bottomConstraint.isActive = false
             centerConstraint = self.ratingView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
             centerConstraint.isActive = true
-            if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
-                self.containerBottom.constant = bottomPadding + 10
+            if #available(iOS 11.0, *) {
+                if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
+                    self.containerBottom.constant = bottomPadding + 10
+                }
+            } else {
+                self.containerBottom.constant = 10
             }
 
         }
         else if isWidgetPositionTop() {
             self.bottomConstraint.isActive = false
             self.ratingView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-            if let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top {
-                self.containerTop.constant = topPadding + 15
+            if #available(iOS 11.0, *) {
+                if let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top {
+                    self.containerTop.constant = topPadding + 15
+                }
+            } else {
+                self.containerTop.constant = 30
             }
             self.containerBottom.constant =  10
 
@@ -145,8 +153,12 @@ class OFRatingViewController: UIViewController {
         else if isWidgetPositionTopBanner() {
             self.bottomConstraint.isActive = false
             self.ratingView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-            if let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top {
-                self.containerTop.constant = topPadding + 15
+            if #available(iOS 11.0, *) {
+                if let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top {
+                    self.containerTop.constant = topPadding + 15
+                }
+            } else {
+                self.containerTop.constant = 15
             }
             self.containerBottom.constant =  10
             self.containerLeading.constant = 0
@@ -154,8 +166,12 @@ class OFRatingViewController: UIViewController {
             self.ratingView.backgroundColor = kBackgroundColor
         }
         else if isWidgetPositionBottomBanner() {
-            if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
-                self.containerBottom.constant = bottomPadding + 10
+            if #available(iOS 11.0, *) {
+                if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
+                    self.containerBottom.constant = bottomPadding + 10
+                }
+            } else {
+                self.containerBottom.constant = 10
             }
             self.containerLeading.constant = 0
             self.containerTrailing.constant = 0
@@ -163,13 +179,21 @@ class OFRatingViewController: UIViewController {
 
         }
         else if isWidgetPositionFullScreen() {
-            if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
-                self.containerBottom.constant = bottomPadding + 10
+            if #available(iOS 11.0, *) {
+                if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
+                    self.containerBottom.constant = bottomPadding + 10
+                }
+            } else {
+                self.containerBottom.constant = 10
             }
             self.containerLeading.constant = 0
             self.containerTrailing.constant = 0
-            if let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top {
-                self.containerTop.constant = topPadding + 15
+            if #available(iOS 11.0, *) {
+                if let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top {
+                    self.containerTop.constant = topPadding + 15
+                }
+            } else {
+                self.containerTop.constant = 15
             }
             self.ratingView.backgroundColor = kBackgroundColor
             centerConstraint = self.ratingView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
@@ -302,11 +326,13 @@ class OFRatingViewController: UIViewController {
                 }
             }
             else if isWidgetPositionFullScreen() {
-                if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
-                    if let stackViewConstraint = self.stackViewCenterConstraint {
-                        let difference = (stackView.frame.origin.y + stackView.frame.size.height + 30 + bottomPadding) - keyboardRect.origin.y
-                        if difference > 0 {
-                            stackViewConstraint.constant = stackViewConstraint.constant - difference
+                if #available(iOS 11.0, *) {
+                    if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
+                        if let stackViewConstraint = self.stackViewCenterConstraint {
+                            let difference = (stackView.frame.origin.y + stackView.frame.size.height + 30 + bottomPadding) - keyboardRect.origin.y
+                            if difference > 0 {
+                                stackViewConstraint.constant = stackViewConstraint.constant - difference
+                            }
                         }
                     }
                 }
@@ -448,10 +474,53 @@ class OFRatingViewController: UIViewController {
                 OneFlowLog.writeLog("Could not fetch currentWindowScene while showing rating")
             }
         } else {
-            SKStoreReviewController.requestReview()
+            if #available(iOS 10.3, *) {
+                SKStoreReviewController.requestReview()
+            } else {
+                self.openAppStoreRateMeUrl()
+            }
         }
     }
 
+    private func openAppStoreRateMeUrl(){
+        
+        OFAPIController().getAppStoreDetails { [weak self] isSuccess, error, data in
+            guard self != nil else {
+                return
+            }
+            if isSuccess == true, let data = data {
+                do{
+                    let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String : Any]
+                    if let results : NSArray =  json!["results"] as? NSArray {
+                        if results.count > 0 {
+                            let result : NSDictionary = results.firstObject as! NSDictionary
+                            if let trackId = result["trackId"]{
+                                let ratingUrl = "https://itunes.apple.com/app/id\(trackId)?action=write-review" // (Option 2) Open App Review Page
+                                OneFlowLog.writeLog("Data Logic : App store rating Url : \(ratingUrl)")
+
+                                guard let url = URL(string: ratingUrl) else {
+                                    return
+                                }
+                                DispatchQueue.main.async {
+                                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                                }
+                            }
+                        }
+                        else {
+                            OneFlowLog.writeLog("Data Logic : App Store track ID not found")
+                        }
+                    }
+                }catch{
+                    OneFlowLog.writeLog("Data Logic : App Store Url not found")
+                }
+                 
+                
+            } else {
+                OneFlowLog.writeLog(error?.localizedDescription ?? "NA")
+            }
+        }
+    }
+    
     private func performOpenUrlAction(_ urlString : String) {
         currentScreenIndex = -2
         self.isSurveyComplete = true

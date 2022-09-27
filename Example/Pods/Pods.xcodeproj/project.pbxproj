@@ -96,7 +96,7 @@
 		10915AA5EF6F27BF8C1E221E1FFF3BBA /* OFOneToTenView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFOneToTenView.xib; path = Survey/Resources/OFOneToTenView.xib; sourceTree = "<group>"; };
 		117779851FC82938EF6957E3092B163E /* FeedbackAssets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = FeedbackAssets.xcassets; path = Survey/Resources/FeedbackAssets.xcassets; sourceTree = "<group>"; };
 		12843B3748030EE6069A8B69D0A0B804 /* 1Flow.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = 1Flow.debug.xcconfig; sourceTree = "<group>"; };
-		129F5B23C9DB6DF1374F687B58A680CD /* Pods-1Flow_Tests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-1Flow_Tests"; path = Pods_1Flow_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		129F5B23C9DB6DF1374F687B58A680CD /* Pods_1Flow_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_1Flow_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		14BA1AE24E90E8E4C860A975E0D29D5D /* Pods-1Flow_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-1Flow_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		168D06B35F03AF5FFB0AC5A4EFC489CC /* Pods-1Flow_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-1Flow_Example-dummy.m"; sourceTree = "<group>"; };
 		1CF3F8ADB4CE492A2CF4EEEA0AC36CF4 /* OneFlowConstant.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OneFlowConstant.swift; sourceTree = "<group>"; };
@@ -105,7 +105,7 @@
 		25CEFE4E894E1A5143834ACF970BF763 /* OFScreenTrackingController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFScreenTrackingController.swift; sourceTree = "<group>"; };
 		25D8092E539FE614E1E3F1FFB2F4E9EB /* OFReachability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFReachability.swift; sourceTree = "<group>"; };
 		2A466886A4304D10DD399C24F36CCE1B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		35D6960850779D98FF229412FED4CDD0 /* Pods-1Flow_Example */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-1Flow_Example"; path = Pods_1Flow_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		35D6960850779D98FF229412FED4CDD0 /* Pods_1Flow_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_1Flow_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3946CFB5FB71B096C12266D2329FF6BE /* OFMCQView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFMCQView.swift; sourceTree = "<group>"; };
 		4309E16C28C11E520089B32F /* OFWelcomeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OFWelcomeView.xib; path = Survey/Resources/OFWelcomeView.xib; sourceTree = "<group>"; };
 		4309E16F28C11ED80089B32F /* OFWelcomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OFWelcomeView.swift; sourceTree = "<group>"; };
@@ -235,8 +235,8 @@
 			isa = PBXGroup;
 			children = (
 				E262A6333816A67FC1DC3F18ADFD3B2E /* _1Flow.framework */,
-				35D6960850779D98FF229412FED4CDD0 /* Pods-1Flow_Example */,
-				129F5B23C9DB6DF1374F687B58A680CD /* Pods-1Flow_Tests */,
+				35D6960850779D98FF229412FED4CDD0 /* Pods_1Flow_Example.framework */,
+				129F5B23C9DB6DF1374F687B58A680CD /* Pods_1Flow_Tests.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -541,7 +541,7 @@
 			);
 			name = "Pods-1Flow_Example";
 			productName = Pods_1Flow_Example;
-			productReference = 35D6960850779D98FF229412FED4CDD0 /* Pods-1Flow_Example */;
+			productReference = 35D6960850779D98FF229412FED4CDD0 /* Pods_1Flow_Example.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		71FA10E67433B368A58D9B34F000020B /* Pods-1Flow_Tests */ = {
@@ -560,7 +560,7 @@
 			);
 			name = "Pods-1Flow_Tests";
 			productName = Pods_1Flow_Tests;
-			productReference = 129F5B23C9DB6DF1374F687B58A680CD /* Pods-1Flow_Tests */;
+			productReference = 129F5B23C9DB6DF1374F687B58A680CD /* Pods_1Flow_Tests.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		BA3171932CBE96702763AB78AB528D8D /* 1Flow */ = {
@@ -745,7 +745,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "Target Support Files/Pods-1Flow_Tests/Pods-1Flow_Tests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-1Flow_Tests/Pods-1Flow_Tests.modulemap";
@@ -779,7 +779,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "Target Support Files/Pods-1Flow_Example/Pods-1Flow_Example-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-1Flow_Example/Pods-1Flow_Example.modulemap";
@@ -813,9 +813,9 @@
 				GCC_PREFIX_HEADER = "Target Support Files/1Flow/1Flow-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/1Flow/1Flow-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2022.09.11;
+				MARKETING_VERSION = 2022.09.27;
 				MODULEMAP_FILE = "Target Support Files/1Flow/1Flow.modulemap";
 				PRODUCT_MODULE_NAME = _1Flow;
 				PRODUCT_NAME = _1Flow;
@@ -847,9 +847,9 @@
 				GCC_PREFIX_HEADER = "Target Support Files/1Flow/1Flow-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/1Flow/1Flow-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2022.09.11;
+				MARKETING_VERSION = 2022.09.27;
 				MODULEMAP_FILE = "Target Support Files/1Flow/1Flow.modulemap";
 				PRODUCT_MODULE_NAME = _1Flow;
 				PRODUCT_NAME = _1Flow;
@@ -941,7 +941,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "Target Support Files/Pods-1Flow_Tests/Pods-1Flow_Tests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-1Flow_Tests/Pods-1Flow_Tests.modulemap";
@@ -1042,7 +1042,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "Target Support Files/Pods-1Flow_Example/Pods-1Flow_Example-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-1Flow_Example/Pods-1Flow_Example.modulemap";

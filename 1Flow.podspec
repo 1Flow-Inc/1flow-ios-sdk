@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = '1Flow'
-  s.version          = '2022.09.11'
+  s.version          = '2022.09.27'
   s.summary          = '1Flow Framework'
 
 # This description is used to generate tags and improve search results.
@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
   s.license          = { :type => 'Apache', :file => 'LICENSE' }
   s.author           = '1Flow Inc.'
   s.source           = { :git => 'https://github.com/1Flow-Inc/1Flow.git', :tag => s.version.to_s }
-  s.ios.deployment_target = '11.0'
+  s.ios.deployment_target = '10.0'
   s.swift_version = '5'
 
   s.source_files = '1Flow/Classes/**/*'

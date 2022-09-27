@@ -27,14 +27,10 @@ class URLRequestManager: URLRequestManagerProtocol {
                 completion(false, error, nil)
                 return
             }
-            do {
-                if let data = data {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                        OneFlowLog.writeLog(json, .verbose)
-                    }
+            if let data = data {
+                if let JSONString = String(data: data, encoding: String.Encoding.utf8) {
+                    OneFlowLog.writeLog(JSONString, .verbose)
                 }
-            } catch {
-                OneFlowLog.writeLog("API Call: \(endPoint.url) - Deconding Error \(error.localizedDescription)", .error)
             }
             completion(true, nil, data)
             

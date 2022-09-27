@@ -23,7 +23,12 @@ class OFRadioButton: UIButton {
     init(frame: CGRect, type: OFRadioButtonType) {
         super.init(frame: frame)
         self.radioButtonType = type
-        self.contentHorizontalAlignment = .leading
+        if #available(iOS 11.0, *) {
+            self.contentHorizontalAlignment = .leading
+        } else {
+            // Fallback on earlier versions
+            self.contentHorizontalAlignment = .left
+        }
         self.contentVerticalAlignment = .center
         self.layer.cornerRadius = 5.0
         self.setupButtonStyle()

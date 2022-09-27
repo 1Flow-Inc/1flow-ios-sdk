@@ -18,6 +18,7 @@ enum EndPoints: EndPointProtocol {
     case addEvent
     case submitSurvey
     case logUser
+    case appStoreRating
     
     var url: String {
         let BaseURL: String = {
@@ -48,6 +49,10 @@ enum EndPoints: EndPointProtocol {
             } else {
                 surveyUrl = surveyUrl + "&min_version=" + OFProjectDetailsController.shared.oneFlowSDKVersion
             }
+            if let langStr = self.getPreferredLocale().languageCode {
+                surveyUrl = surveyUrl + "&language_code=" + langStr
+                OneFlowLog.writeLog("Language Code: \(langStr)")
+            }
             
             if let userID : String = OFProjectDetailsController.shared.analytic_user_id {
                 surveyUrl = surveyUrl + "&user_id=" + userID
@@ -59,6 +64,18 @@ enum EndPoints: EndPointProtocol {
             return BaseURL + "/add-responses"
         case .logUser:
             return BaseURL + "/log-user"
+        case .appStoreRating:
+            guard let bundleID = Bundle.main.bundleIdentifier else {
+                return ""
+            }
+            return "http://itunes.apple.com/lookup?bundleId=" + bundleID
         }
+    }
+
+    func getPreferredLocale() -> Locale {
+        guard let preferredIdentifier = Locale.preferredLanguages.first else {
+            return Locale.current
+        }
+        return Locale(identifier: preferredIdentifier)
     }
 }

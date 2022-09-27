@@ -79,4 +79,8 @@ final class OFAPIController: NSObject, APIProtocol {
             fatalError(error.localizedDescription)
         }
     }
+
+    func getAppStoreDetails(_ completion: @escaping APICompletionBlock) {
+        urlRequestManager.getAPIWith(EndPoints.appStoreRating, completion: completion)
+    }
 }

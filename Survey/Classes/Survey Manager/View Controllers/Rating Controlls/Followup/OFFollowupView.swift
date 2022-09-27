@@ -133,7 +133,12 @@ extension OFFollowupView: UITextViewDelegate {
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         let newHeight = newSize.height > 109 ? newSize.height : 109
         //App calculates height which total screen hight - open keyboard size - safe area instest - 20 (this is to give some gap)
-        let availableHeight = CGFloat(UIScreen.main.bounds.size.height - window.safeAreaInsets.top -  keyboardHeight - 30 )
+        let availableHeight: CGFloat
+        if #available(iOS 11.0, *) {
+            availableHeight = CGFloat(UIScreen.main.bounds.size.height - window.safeAreaInsets.top -  keyboardHeight - 30 )
+        } else {
+            availableHeight = CGFloat(UIScreen.main.bounds.size.height -  keyboardHeight - 30 )
+        }
         if widgetPosition == .fullScreen {
             if let frame = textView.superview?.superview?.frame {
                 if (frame.size.height < availableHeight) || (newHeight < textView.bounds.height) {
