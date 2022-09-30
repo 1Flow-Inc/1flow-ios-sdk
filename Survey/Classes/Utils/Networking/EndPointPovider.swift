@@ -49,7 +49,7 @@ enum EndPoints: EndPointProtocol {
             } else {
                 surveyUrl = surveyUrl + "&min_version=" + OFProjectDetailsController.shared.oneFlowSDKVersion
             }
-            if let langStr = self.getPreferredLocale().languageCode {
+            if let langStr = Locale.current.languageCode {
                 surveyUrl = surveyUrl + "&language_code=" + langStr
                 OneFlowLog.writeLog("Language Code: \(langStr)")
             }
@@ -70,12 +70,5 @@ enum EndPoints: EndPointProtocol {
             }
             return "http://itunes.apple.com/lookup?bundleId=" + bundleID
         }
-    }
-
-    func getPreferredLocale() -> Locale {
-        guard let preferredIdentifier = Locale.preferredLanguages.first else {
-            return Locale.current
-        }
-        return Locale(identifier: preferredIdentifier)
     }
 }

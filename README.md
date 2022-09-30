@@ -41,7 +41,7 @@ You can install 1Flow Library by using CocoaPods. To use the 1Flow, first you ne
 <!-- REQUIREMENTS -->
 ### Requirements
 
-iOS 11.0 and Above
+iOS 10.0 and Above
 
 <!-- INSTALLATION -->
 ### Installation

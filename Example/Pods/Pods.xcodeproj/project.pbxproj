@@ -815,7 +815,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2022.09.27;
+				MARKETING_VERSION = 2022.10.01;
 				MODULEMAP_FILE = "Target Support Files/1Flow/1Flow.modulemap";
 				PRODUCT_MODULE_NAME = _1Flow;
 				PRODUCT_NAME = _1Flow;
@@ -849,7 +849,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2022.09.27;
+				MARKETING_VERSION = 2022.10.01;
 				MODULEMAP_FILE = "Target Support Files/1Flow/1Flow.modulemap";
 				PRODUCT_MODULE_NAME = _1Flow;
 				PRODUCT_NAME = _1Flow;

@@ -55,6 +55,8 @@
 		43F7E91E279826AC00C4883B /* 1Flow_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = 1Flow_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43F7E927279826DD00C4883B /* OneFlowProductionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneFlowProductionTests.swift; sourceTree = "<group>"; };
 		43F7E9292798279000C4883B /* Pods_1Flow_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_1Flow_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43F9824D28E7811200526D79 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/Main.strings; sourceTree = "<group>"; };
+		43F9824E28E7811300526D79 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		4F23405AE36D6647A29A8B9F /* Pods-1Flow_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1Flow_Tests.release.xcconfig"; path = "Target Support Files/Pods-1Flow_Tests/Pods-1Flow_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		5D90DEBFAC69FB42E4D2BFA1 /* Pods_1Flow_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_1Flow_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD01AFB9204008FA782 /* 1Flow_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 1Flow_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -274,6 +276,7 @@
 				English,
 				en,
 				Base,
+				hi,
 			);
 			mainGroup = 607FACC71AFB9204008FA782;
 			productRefGroup = 607FACD11AFB9204008FA782 /* Products */;
@@ -415,6 +418,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				607FACDA1AFB9204008FA782 /* Base */,
+				43F9824D28E7811200526D79 /* hi */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -423,6 +427,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				607FACDF1AFB9204008FA782 /* Base */,
+				43F9824E28E7811300526D79 /* hi */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";
