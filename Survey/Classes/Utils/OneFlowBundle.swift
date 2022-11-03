@@ -19,7 +19,22 @@ class OneFlowBundle {
         #if SWIFT_PACKAGE
         return Bundle.module
         #else
-        return Bundle(for: obj.classForCoder)
+        return OneFlowBundle.resourceBundle
         #endif
     }
+}
+
+extension OneFlowBundle {
+    static let resourceBundle: Bundle = {
+        let myBundle = Bundle(for: OneFlowBundle.self)
+
+        guard let resourceBundleURL = myBundle.url(
+            forResource: "SurveySDK", withExtension: "bundle")
+            else { fatalError("SurveySDK.bundle not found!") }
+
+        guard let resourceBundle = Bundle(url: resourceBundleURL)
+            else { fatalError("Cannot access SurveySDK.bundle!") }
+
+        return resourceBundle
+    }()
 }

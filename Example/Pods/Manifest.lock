@@ -1,7 +1,7 @@
 PODS:
-  - 1Flow (0.1.28):
-    - 1Flow/Survey (= 0.1.28)
-  - 1Flow/Survey (0.1.28)
+  - 1Flow (2022.10.01):
+    - 1Flow/Survey (= 2022.10.01)
+  - 1Flow/Survey (2022.10.01)
 
 DEPENDENCIES:
   - 1Flow (from `../`)
@@ -11,8 +11,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  1Flow: 9eacec1f36484404b5801f465eaea99e22956780
+  1Flow: 6672ee509bd421f16488c2ec10f2dc35edf8ad11
 
 PODFILE CHECKSUM: 9829bb51fd4c14a5203098125eb7e3b83bde8e49
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
