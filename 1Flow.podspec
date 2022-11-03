@@ -28,6 +28,8 @@ Pod::Spec.new do |s|
   s.source_files = '1Flow/Classes/**/*'
   s.subspec 'Survey' do |survey|
       survey.source_files = 'Survey/Classes/**/*'
-      survey.resources = 'Survey/Resources/**/*'
+      survey.resource_bundles = {
+          'SurveySDK' => ['Survey/Resources/**/*']
+      }
     end
 end
