@@ -369,7 +369,8 @@ class OFRatingViewController: UIViewController {
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
                     if let surveyScreens = self.allScreens {
                         let filteredSurveyScreens = surveyScreens.filter { $0.input?.input_type != "end-screen" && $0.input?.input_type != "thank_you"  }
-                        self.progressBar.setProgress(Float(CGFloat(self.currentScreenIndex + 1 )/CGFloat(filteredSurveyScreens.count + 1)), animated: true)
+                        let extraScreens = (surveyScreens.count - filteredSurveyScreens.count) > 0 ? 1 : 0
+                        self.progressBar.setProgress(Float(CGFloat(self.currentScreenIndex + 1 )/CGFloat(filteredSurveyScreens.count + extraScreens)), animated: true)
                     }
                 }
             } else {
