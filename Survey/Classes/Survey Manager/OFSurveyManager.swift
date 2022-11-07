@@ -218,7 +218,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
             return
         }
         if let surveyList = self.surveyList {
-            if let triggerredSurvey = surveyList.result.first(where: { survey in
+            let triggerredSruvey = surveyList.result.filter({ survey in
                 if let surveyEventName = survey.trigger_event_name {
                     let eventNames = surveyEventName.components(separatedBy: ",")
                     if eventNames.contains(eventName) {
@@ -226,11 +226,13 @@ class OFSurveyManager: NSObject, SurveyManageable {
                     }
                 }
                 return false
-            }) {
-                if self.validateTheSurvey(triggerredSurvey) == true {
-                    self.startSurvey(triggerredSurvey, eventName: eventName)
+            })
+            for survey in triggerredSruvey {
+                if self.validateTheSurvey(survey) == true {
+                    self.startSurvey(survey, eventName: eventName)
+                    break
                 } else {
-                    OneFlowLog.writeLog("Survey validation not passed")
+                    OneFlowLog.writeLog("Survey validation not passed. Looking for next survey")
                 }
             }
         } else {
