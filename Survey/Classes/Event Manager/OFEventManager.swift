@@ -131,12 +131,11 @@ class OFEventManager: NSObject, EventManagerProtocol {
                                 }
                                 self.startEventManager()
                             } else {
-                                OneFlowLog.writeLog("OFEventManager - Create Session - Failed")
+                                OneFlowLog.writeLog("OFEventManager - Create Session - Failed", .error)
                             }
                         }
                     } catch {
-                        OneFlowLog.writeLog("OFEventManager - Create Session - Failed")
-                        OneFlowLog.writeLog(error)
+                        OneFlowLog.writeLog("OFEventManager - Create Session - Failed: \(error)", .error)
                     }
                 }
             }
@@ -259,7 +258,7 @@ class OFEventManager: NSObject, EventManagerProtocol {
     @objc func sendEventsToServer() {
         OneFlowLog.writeLog("OFEventManager: sendEventsToServer")
         guard let sessionID = projectDetailsController.analytics_session_id else {
-            OneFlowLog.writeLog("OFEventManager: Session is not created")
+            OneFlowLog.writeLog("OFEventManager: Session is not created", .info)
             return
         }
         var eventsCount = 0
@@ -276,9 +275,7 @@ class OFEventManager: NSObject, EventManagerProtocol {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
                             OneFlowLog.writeLog("OFEventManager: sendEventsToServer - Success")
-                            #if DEBUG
                             OneFlowLog.writeLog("OFEventManager: Response: \(json)")
-                            #endif
                             if let status = json["success"] as? Int, status == 200 {
                                 guard let self = self else { return }
                                 self.eventModificationQueue.sync {
@@ -292,11 +289,10 @@ class OFEventManager: NSObject, EventManagerProtocol {
                                 }
                             }
                         } else {
-                            OneFlowLog.writeLog("OFEventManager: sendEventsToServer - Failed")
+                            OneFlowLog.writeLog("OFEventManager: sendEventsToServer - Failed", .error)
                         }
                     } catch {
-                        OneFlowLog.writeLog("OFEventManager: sendEventsToServer - Failed")
-                        OneFlowLog.writeLog(error)
+                        OneFlowLog.writeLog("OFEventManager: sendEventsToServer - Failed: \(error)", .error)
                     }
                 }
             }
@@ -333,7 +329,7 @@ extension OFEventManager: OFInAppPurchaseEventsDelegate {
             let temp = try JSONSerialization.jsonObject(with: JSONEncoder().encode(event)) as? [String: Any]
             self.recordEvent(kEventNameInAppPurchase, parameters: temp)
         } catch {
-            OneFlowLog.writeLog(error)
+            OneFlowLog.writeLog("\(#function): \(error)", .error)
         }
         
     }

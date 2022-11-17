@@ -39,6 +39,16 @@ class ViewController: UIViewController {
         let params = ["firstName": "myFirstName", "lastName": "myLastName", "number": 987654] as [String : Any]
         OneFlow.logUser("iOS_user_2", userDetails: params)
     }
-
+    
+    @IBAction func onButton1(_ sender: Any) {
+        OneFlow.recordEventName("button1_single_use", parameters: nil)
+    }
+    
+    @IBAction func onButton2(_ sender: Any) {
+        OneFlow.recordEventName("button2_single_use", parameters: nil)
+    }
+    
+    @IBAction func onButton3(_ sender: Any) {
+        OneFlow.recordEventName("button3_recurring", parameters: nil)
+    }
 }
-

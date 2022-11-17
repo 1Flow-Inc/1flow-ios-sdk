@@ -38,11 +38,11 @@ public final class OneFlow: NSObject {
         OneFlowLog.writeLog("1Flow configuration started")
         if OneFlow.shared.projectDetailsController.appKey == nil {
             shared.projectDetailsController.appKey = appKey
-            shared.projectDetailsController.setLoglevel(.error)
+            shared.projectDetailsController.setLoglevel(.info)
             shared.setupOnce()
             shared.setupReachability()
         } else {
-            OneFlowLog.writeLog("Error: 1Flow already setup.")
+            OneFlowLog.writeLog("Error: 1Flow already setup.", .info)
         }
     }
     
@@ -62,14 +62,14 @@ public final class OneFlow: NSObject {
                         OneFlow.shared.eventManager.configure()
                         
                     } else {
-                        OneFlowLog.writeLog("Add user - Failed")
+                        OneFlowLog.writeLog("Add user - Failed", .error)
                     }
                 } catch {
-                    OneFlowLog.writeLog("Add user - Failed")
+                    OneFlowLog.writeLog("Add user - Failed", .error)
                     OneFlowLog.writeLog(error.localizedDescription)
                 }
             } else {
-                OneFlowLog.writeLog("Add user - Failed")
+                OneFlowLog.writeLog("Add user - Failed", .error)
             }
             self.isSetupRunning = false
         })
@@ -129,7 +129,7 @@ public final class OneFlow: NSObject {
             try reachability.startNotifier()
             OneFlowLog.writeLog("Network Objerver - Success")
         } catch {
-            OneFlowLog.writeLog("Network Objerver - Failed")
+            OneFlowLog.writeLog("Network Objerver - Failed", .error)
         }
     }
     
@@ -147,7 +147,7 @@ public final class OneFlow: NSObject {
 
         let userID = userID.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         if userID.isEmpty {
-            OneFlowLog.writeLog("User id must not be empty to log user", .error)
+            OneFlowLog.writeLog("User id must not be empty to log user", .info)
             return
         }
         

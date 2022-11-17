@@ -1001,6 +1001,11 @@ extension OFRatingViewController: OFRatingViewProtocol {
     }
     
     func onWelcomeNextTapped() {
+        if allScreens?.count == 1 {
+//            if there is only welcome screen then turn this booean ON
+            isSurveyComplete = true
+            OneFlowLog.writeLog("only welcome screen. turning completed true", .verbose)
+        }
         self.presentNextScreen("")
     }
 }

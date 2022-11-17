@@ -42,6 +42,11 @@ class OFSurveyManager: NSObject, SurveyManageable {
     var isNetworkReachable = false
     private var isSurveyFetching = false
     var projectDetailsController: ProjectDetailsManageable! = OFProjectDetailsController.shared
+    var isThrottlingActivated: Bool? = false
+    var globalTime: Int?
+    var activatedBySurveyID: String?
+    var throttlingActivatedTime: Int?
+    var deactivateItem: DispatchWorkItem?
     
     var pendingSurveySubmission: [String: SurveySubmitRequest]? {
         set {
@@ -68,7 +73,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
             let data = try JSONEncoder().encode(submittedSurveyDetails)
             UserDefaults.standard.setValue(data, forKey: "FBSubmittedSurveys")
         } catch {
-            OneFlowLog.writeLog("[Error]: Unable to save submitted survey: \(error.localizedDescription)")
+            OneFlowLog.writeLog("[Error]: Unable to save submitted survey: \(error.localizedDescription)", .error)
         }
     }
     
@@ -79,7 +84,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
             do {
                 submittedSurveyDetails = try JSONDecoder().decode([SubmittedSurvey].self, from: data)
             } catch {
-                OneFlowLog.writeLog("[Error]: Decoding Submitted Survey details: \(error.localizedDescription)")
+                OneFlowLog.writeLog("[Error]: Decoding Submitted Survey details: \(error.localizedDescription)", .error)
             }
             
         }
@@ -124,11 +129,11 @@ class OFSurveyManager: NSObject, SurveyManageable {
     private func fetchAllSurvey() {
         OneFlowLog.writeLog("Fetch Survey called")
         if self.surveyList != nil || self.isSurveyFetching == true {
-            OneFlowLog.writeLog("Survey already Fetched")
+            OneFlowLog.writeLog("Survey already Fetched", .info)
             return
         }
         self.isSurveyFetching = true
-        OneFlowLog.writeLog("Fetch Survey - Started")
+        OneFlowLog.writeLog("Fetch Survey - Started", .info)
         apiController.getAllSurveys { [weak self] isSuccess, error, data in
             guard let self = self else {
                 return
@@ -138,13 +143,18 @@ class OFSurveyManager: NSObject, SurveyManageable {
                 do {
                     let surveyListResponse = try JSONDecoder().decode(SurveyListResponse.self, from: data)
                     self.surveyList = surveyListResponse
+                    self.activatedBySurveyID = surveyListResponse.throttlingMobileSDKConfig?.activatedBySurveyID
+                    self.isThrottlingActivated = surveyListResponse.throttlingMobileSDKConfig?.isThrottlingActivated
+                    self.globalTime = surveyListResponse.throttlingMobileSDKConfig?.globalTime
+                    self.throttlingActivatedTime = surveyListResponse.throttlingMobileSDKConfig?.throttlingActivatedTime
+                    self.setupGlobalTimerToDeactivateThrottling()
                     self.checkAfterSurveyLoadForExistingEvents()
                 } catch {
-                    OneFlowLog.writeLog(error)
+                    OneFlowLog.writeLog("\(#function) error: \(error)", .error)
                 }
                 
             } else {
-                OneFlowLog.writeLog(error?.localizedDescription ?? "NA")
+                OneFlowLog.writeLog("\(#function) \(error?.localizedDescription ?? "NA")", .error)
             }
         }
     }
@@ -181,7 +191,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
         if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id && $0.submittedByUserID == projectDetailsController.currentLoggedUserID }) {
 
             if survey.survey_settings?.resurvey_option == false {
-                OneFlowLog.writeLog("Resurvey option is false")
+                OneFlowLog.writeLog("\(#function)Resurvey option is false", .info)
                 return false
             }
 
@@ -198,7 +208,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
                 case "days":
                     totalInterval = value * 60 * 60 * 24
                 default:
-                    OneFlowLog.writeLog("retake_select_value is neither of minutes, hours or days")
+                    OneFlowLog.writeLog("\(#function) retake_select_value is neither of minutes, hours or days", .info)
                     return false
                 }
                 let currentInterval = Int(Date().timeIntervalSince1970)
@@ -206,7 +216,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
                     return false
                 }
             } else {
-                OneFlowLog.writeLog("retake_survey, retake_input_value or retake_select_value not specified")
+                OneFlowLog.writeLog("\(#function) retake_survey, retake_input_value or retake_select_value not specified", .info)
                 return false
             }
         }
@@ -232,11 +242,11 @@ class OFSurveyManager: NSObject, SurveyManageable {
                     self.startSurvey(survey, eventName: eventName)
                     break
                 } else {
-                    OneFlowLog.writeLog("Survey validation not passed. Looking for next survey")
+                    OneFlowLog.writeLog("Survey validation not passed. Looking for next survey", .info)
                 }
             }
         } else {
-            OneFlowLog.writeLog("Survey not loaded yet")
+            OneFlowLog.writeLog("Survey not loaded yet", .info)
             if temporaryEventArray == nil {
                 self.temporaryEventArray = [EventStore]()
             }
@@ -244,8 +254,73 @@ class OFSurveyManager: NSObject, SurveyManageable {
             self.temporaryEventArray?.append(eventObj)
         }
     }
-    
+
+    func validateSurveyThrottling(survey: SurveyListResponse.Survey) -> Bool {
+        OneFlowLog.writeLog("Validating Survey Throttling", .info)
+        if survey.survey_settings?.override_global_throttling == true {
+            return true
+        } else if isThrottlingActivated == true {
+            guard let activatedBySurveyID = activatedBySurveyID else {
+                // if somehow backend return activated true but not return activatedBySurveyID then return true. otherwise it will never show the survey.
+                return true
+            }
+            if activatedBySurveyID == survey._id {
+                guard let lastSubmitted = submittedSurveyDetails?.last, let throttlingActivatedTime = throttlingActivatedTime else {
+                    return true
+                }
+                if lastSubmitted.surveyID == survey._id {
+                    if lastSubmitted.submissionTime < throttlingActivatedTime {
+                        return true
+                    } else {
+                        return false
+                    }
+                } else {
+                    return true
+                }
+            } else {
+                return false
+            }
+        } else {
+            return true
+        }
+    }
+
+    func setupGlobalTimerToDeactivateThrottling() {
+        guard let globalTime = globalTime, globalTime > 0 else {
+            OneFlowLog.writeLog("Global throttling time not available. Throttling stopped", .verbose)
+            isThrottlingActivated = false
+            activatedBySurveyID = nil
+            deactivateItem?.cancel()
+            return
+        }
+        if isThrottlingActivated == true {
+            let currentTime = Int(Date().timeIntervalSince1970)
+            let timeRemains =  Double((throttlingActivatedTime ?? currentTime) - currentTime + globalTime)
+            deactivateItem?.cancel()
+            OneFlowLog.writeLog("Scheduling throttling for: \(timeRemains) seconds", .verbose)
+            deactivateItem = DispatchWorkItem {
+                OneFlowLog.writeLog("Throttling stopped", .verbose)
+                self.isThrottlingActivated = false
+                self.activatedBySurveyID = nil
+            }
+            if let deactivateItem = deactivateItem {
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + timeRemains, execute: deactivateItem)
+            }
+        } else {
+            OneFlowLog.writeLog("Throttling not activated yet", .verbose)
+        }
+    }
+
     func startSurvey(_ survey: SurveyListResponse.Survey, eventName: String) {
+        if validateSurveyThrottling(survey: survey) == false {
+            OneFlowLog.writeLog("Survey Throttling validation not passed", .info)
+            return
+        }
+        OneFlowLog.writeLog("Survey Throttling validation passed", .info)
+        isThrottlingActivated = true
+        activatedBySurveyID = survey._id
+        throttlingActivatedTime = Int(Date().timeIntervalSince1970)
+        setupGlobalTimerToDeactivateThrottling()
         
         if let colorHex = survey.style?.primary_color {
             let themeColor = UIColor.colorFromHex(colorHex)
@@ -398,7 +473,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
                     callBackParameter["screens"] = callBackResponse
                 } else {
                     OneFlow.recordEventName(kEventNameFlowClosed, parameters: ["survey_id": survey._id])
-                    if survey.survey_settings?.closed_as_finished == true {
+                    if survey.survey_settings?.closed_as_finished == true || isCompleted {
                         if self.submittedSurveyDetails == nil {
                             self.submittedSurveyDetails = [SubmittedSurvey]()
                         }
@@ -419,8 +494,6 @@ class OFSurveyManager: NSObject, SurveyManageable {
                 let submittedSurvey = SubmittedSurvey(surveyID: survey._id, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: self.projectDetailsController.currentLoggedUserID)
                 self.submittedSurveyDetails?.append(submittedSurvey)
                 self.saveSubmittedSurvey()
-                callBackParameter["status"] = "skipped"
-                NotificationCenter.default.post(name: SurveyFinishNotification, object: nil, userInfo: callBackParameter)
             }
             self.surveyWindow?.makeKeyAndVisible()
         }
@@ -431,24 +504,24 @@ class OFSurveyManager: NSObject, SurveyManageable {
         OneFlowLog.writeLog("submitSurveyToServer called")
         
         if self.isNetworkReachable == false {
-            OneFlowLog.writeLog("Network not reachable. Returned")
+            OneFlowLog.writeLog("Network not reachable. Returned", .info)
             return
         }
         
         var surveyResponseTemp = surveyResponse
         if surveyResponseTemp.analytic_user_id == nil {
-            OneFlowLog.writeLog("Survey did not have user")
+            OneFlowLog.writeLog("Survey did not have user", .info)
             guard let userID = projectDetailsController.analytic_user_id else {
-                OneFlowLog.writeLog("user yet not initialised")
+                OneFlowLog.writeLog("user yet not initialised", .info)
                 return
             }
             surveyResponseTemp.analytic_user_id = userID
         }
         
         if surveyResponseTemp.session_id == nil {
-            OneFlowLog.writeLog("Survey did not have session id")
+            OneFlowLog.writeLog("Survey did not have session id", .info)
             guard let sessionID = projectDetailsController.analytics_session_id else {
-                OneFlowLog.writeLog("Session yet not created")
+                OneFlowLog.writeLog("Session yet not created", .info)
                 return
             }
             surveyResponseTemp.session_id = sessionID
@@ -466,10 +539,10 @@ class OFSurveyManager: NSObject, SurveyManageable {
                         OneFlowLog.writeLog(json)
                     }
                 } catch {
-                    OneFlowLog.writeLog("Error in response - Submit survey: \(error.localizedDescription)")
+                    OneFlowLog.writeLog("Error in response - Submit survey: \(error.localizedDescription)", .error)
                 }
             } else {
-                OneFlowLog.writeLog("Error - Submit survey: \(error?.localizedDescription ?? "NA")")
+                OneFlowLog.writeLog("Error - Submit survey: \(error?.localizedDescription ?? "NA")", .error)
             }
         }
     }

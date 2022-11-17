@@ -50,7 +50,7 @@ class OneFlowProductionTests: XCTestCase {
         let appdel : AppDelegate =  UIApplication.shared.delegate as! AppDelegate
         XCTAssertNotNil(appdel)
         appdel.setupOneFlow()
-        XCTAssertTrue(OFProjectDetailsController.shared.currentLogLevel == .error)
+        XCTAssertTrue(OFProjectDetailsController.shared.currentLogLevel == .info)
         
     }
 

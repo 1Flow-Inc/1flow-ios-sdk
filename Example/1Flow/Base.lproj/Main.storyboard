@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -40,15 +40,45 @@
                                     <action selector="onRecordEvent_startSurvey:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="bPh-Ze-kDn"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wvZ-te-rUm">
+                                <rect key="frame" x="273" y="10" width="76" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button2"/>
+                                <connections>
+                                    <action selector="onButton2:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="1P4-MO-aD6"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lUU-gm-wxr">
+                                <rect key="frame" x="26" y="626" width="76" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button3"/>
+                                <connections>
+                                    <action selector="onButton3:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Uj1-0K-sxb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pa9-BQ-vNI">
+                                <rect key="frame" x="26" y="10" width="73" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button1"/>
+                                <connections>
+                                    <action selector="onButton1:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="APq-N6-goB"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="4oS-n8-BsL" firstAttribute="centerX" secondItem="uia-pA-UWd" secondAttribute="centerX" id="Awt-gv-S7G"/>
                             <constraint firstItem="1Ra-cK-Wt0" firstAttribute="centerX" secondItem="uia-pA-UWd" secondAttribute="centerX" id="Evs-NI-iN0"/>
                             <constraint firstItem="uia-pA-UWd" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="Ka5-vX-21G"/>
+                            <constraint firstItem="wvZ-te-rUm" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="10" id="Nc4-Z3-pqy"/>
                             <constraint firstItem="uia-pA-UWd" firstAttribute="top" secondItem="4oS-n8-BsL" secondAttribute="bottom" constant="20" id="Tif-oW-Mrd"/>
                             <constraint firstItem="1Ra-cK-Wt0" firstAttribute="top" secondItem="uia-pA-UWd" secondAttribute="bottom" constant="20" id="XB8-XL-EZJ"/>
                             <constraint firstItem="uia-pA-UWd" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="cLF-p8-1m2"/>
+                            <constraint firstItem="Pa9-BQ-vNI" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="10" id="eQf-nh-5oy"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="lUU-gm-wxr" secondAttribute="bottom" constant="10" id="rqx-3Y-gAf"/>
+                            <constraint firstItem="lUU-gm-wxr" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="10" id="rwD-e0-77q"/>
+                            <constraint firstItem="Pa9-BQ-vNI" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="10" id="tcw-lS-U7z"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="wvZ-te-rUm" secondAttribute="trailing" constant="10" id="z1w-EG-cSp"/>
                         </constraints>
                     </view>
                 </viewController>

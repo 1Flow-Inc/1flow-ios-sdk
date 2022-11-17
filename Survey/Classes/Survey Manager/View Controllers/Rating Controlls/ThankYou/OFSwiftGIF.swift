@@ -18,7 +18,7 @@ extension UIImageView {
     static func fromGif(frame: CGRect, resourceName: String, bundle: Bundle) -> UIImageView? {
         
         guard let path = bundle.path(forResource: resourceName, ofType: "gif") else {
-            OneFlowLog.writeLog("[Error] gif not exist]")
+            OneFlowLog.writeLog("[Error] gif not exist]", .error)
             return nil
         }
         let url = URL(fileURLWithPath: path)

@@ -22,7 +22,7 @@ final class OFScreenTrackingController: NSObject {
     var currentTabbarController: UITabBarController?
     
     func startTacking() {
-        OneFlowLog.writeLog("startTacking")
+        OneFlowLog.writeLog("startTracking")
         DispatchQueue.main.async {
             self.getCurrentViewController()
         }

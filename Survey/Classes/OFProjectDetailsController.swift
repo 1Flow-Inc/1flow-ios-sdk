@@ -57,7 +57,7 @@ protocol ProjectDetailsManageable {
 final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
 
     static let shared = OFProjectDetailsController()
-    let oneFlowSDKVersion: String = "2022.11.07"
+    let oneFlowSDKVersion: String = "2022.11.17"
     var currentEnviromment: OneFlowEnvironment = .prod
     var currentLogLevel: OneFlowLogLevel = .none
 
@@ -174,11 +174,11 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
                         self.handleLogUserFailure(completion)
                     }
                 } catch {
-                    OneFlowLog.writeLog("LogUser error: \(error)")
+                    OneFlowLog.writeLog("LogUser error: \(error)", .error)
                     self.handleLogUserFailure(completion)
                 }
             } else {
-                OneFlowLog.writeLog("LogUser Failed: Error: \(error as Any)")
+                OneFlowLog.writeLog("LogUser Failed: Error: \(error as Any)", .error)
                 self.handleLogUserFailure(completion)
             }
         }

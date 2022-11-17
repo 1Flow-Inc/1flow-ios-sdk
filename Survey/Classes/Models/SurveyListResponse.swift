@@ -33,6 +33,7 @@ struct SurveyListResponse: Codable {
     var success: Int
     var message: String?
     var result: [Survey]
+    var throttlingMobileSDKConfig: ThrottlingConfiguration?
     
     struct Survey: Codable {
         var name: String
@@ -81,7 +82,6 @@ struct SurveyListResponse: Codable {
                 var other_option_id: String?
                 var rating_text: [String:String]?
 
-                
                 struct Choice: Codable {
                     var _id: String?
                     var title: String?
@@ -129,6 +129,7 @@ struct SurveyListResponse: Codable {
             var show_watermark: Bool?
             var closed_as_finished: Bool? = false
             var sdk_theme: SDKTheme?
+            var override_global_throttling: Bool?
             
             struct RetakeSurvey: Codable {
                 var _id: String?
@@ -138,16 +139,20 @@ struct SurveyListResponse: Codable {
 
             struct SDKTheme: Codable {
                 var background_color: String?
-//                var background_color_opacity: Int?
                 var remove_watermark: Bool?
                 var dark_overlay: Bool?
                 var close_button: Bool?
                 var progress_bar: Bool?
                 var widget_position: WidgetPosition?
-
                 var text_color: String?
-//                var text_color_opacity: String?
             }
         }
+    }
+
+    struct ThrottlingConfiguration: Codable {
+        var isThrottlingActivated: Bool?
+        var globalTime: Int?
+        var activatedBySurveyID: String?
+        var throttlingActivatedTime: Int?
     }
 }
