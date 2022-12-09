@@ -102,7 +102,7 @@ class OFEventManager: NSObject, EventManagerProtocol {
             let deviceDetails = CreateSessionRequest.DeviceDetails(os: "iOS", unique_id: projectDetailsController.uniqID, device_id: projectDetailsController.deviceID, carrier: carrierName, manufacturer: "apple", model: self.machineName(), os_ver: osVersion, screen_width: width, screen_height: height)
             let connectivity = CreateSessionRequest.Connectivity(carrier: (OFProjectDetailsController.shared.isCarrierConnectivity == true) ? carrierName : nil, radio: OFProjectDetailsController.shared.radioConnectivity)
             
-            let sessionRequest: CreateSessionRequest = CreateSessionRequest(analytic_user_id: projectDetailsController.analytic_user_id ?? "", system_id: projectDetailsController.systemID, device: deviceDetails, location: nil, connectivity: connectivity, location_check: true, app_version: self.getAppVersion(), app_build_number: self.getAppBuildNumber(), library_version: libraryVersion)
+            let sessionRequest: CreateSessionRequest = CreateSessionRequest(analytic_user_id: projectDetailsController.analytic_user_id ?? "", system_id: projectDetailsController.systemID, device: deviceDetails, connectivity: connectivity, app_version: self.getAppVersion(), app_build_number: self.getAppBuildNumber(), library_version: libraryVersion)
             OneFlowLog.writeLog("OFEventManager - Create Session")
             OFAPIController().createSession(sessionRequest) { [weak self] isSuccess, error, data in
                 guard let self = self else {

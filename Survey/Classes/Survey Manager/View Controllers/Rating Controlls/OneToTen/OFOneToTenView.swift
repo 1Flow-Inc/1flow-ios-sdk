@@ -70,6 +70,8 @@ class OFOneToTenView: UIView {
         collectionView.dataSource = self
         self.lblMaxValue.textColor = kFooterColor
         self.lblMinValue.textColor = kFooterColor
+        self.lblMaxValue.font = OneFlow.fontConfiguration?.openTextCharCountFont
+        self.lblMinValue.font = OneFlow.fontConfiguration?.openTextCharCountFont
     }
     
     var selectedButton: UIButton? {
@@ -115,6 +117,7 @@ extension OFOneToTenView: UICollectionViewDelegate, UICollectionViewDataSource, 
         } else {
             cell.btnNumber.isEmoji = false
             cell.btnNumber.layer.backgroundColor = kAppGreyBGColor.cgColor
+            cell.btnNumber.titleLabel?.font = OneFlow.fontConfiguration?.numberFont
             cell.btnNumber.setTitle("\(titleNumber)", for: .normal)
         }
         

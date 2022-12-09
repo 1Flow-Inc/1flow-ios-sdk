@@ -59,6 +59,7 @@ class OFStarsView: UIView {
         self.stackView1.addGestureRecognizer(gesture)
         self.setupImages()
         self.ratingText.textColor = kFooterColor
+        self.ratingText.font = OneFlow.fontConfiguration?.openTextCharCountFont
     }
     
     func setupImages() {

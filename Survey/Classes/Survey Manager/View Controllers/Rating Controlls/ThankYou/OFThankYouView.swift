@@ -35,7 +35,6 @@ class OFThankYouView: UIView {
         }
     }
 
-    
     deinit {
         imageView?.animationImages = nil
     }
@@ -49,7 +48,8 @@ class OFThankYouView: UIView {
         imageView.animationRepeatCount = 1
         lblTitle.textColor = kPrimaryTitleColor
         lblDescription.textColor = kSecondaryTitleColor
-        
+        lblTitle.font = OneFlow.fontConfiguration?.titleFont
+        lblDescription.font = OneFlow.fontConfiguration?.subTitleFont
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
             imageView.image = imageView.animationImages?.last
             CATransaction.begin()

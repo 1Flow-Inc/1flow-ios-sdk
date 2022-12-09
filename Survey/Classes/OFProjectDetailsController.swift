@@ -57,7 +57,7 @@ protocol ProjectDetailsManageable {
 final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
 
     static let shared = OFProjectDetailsController()
-    let oneFlowSDKVersion: String = "2022.11.17"
+    let oneFlowSDKVersion: String = "2022.12.09"
     var currentEnviromment: OneFlowEnvironment = .prod
     var currentLogLevel: OneFlowLogLevel = .none
 
@@ -145,7 +145,7 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
     
     func logNewUserDetails(_ completion: @escaping (Bool) -> Void) {
         guard let analyticsID = self.analytic_user_id, let sessionID = self.analytics_session_id, let newUserID = self.newUserID else {
-            OneFlowLog.writeLog("Log user validation failed", .error)
+            OneFlowLog.writeLog("Log user returned", .info)
             completion(false)
             return
         }

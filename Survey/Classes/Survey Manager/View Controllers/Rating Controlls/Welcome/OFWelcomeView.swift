@@ -45,11 +45,13 @@ class OFWelcomeView: UIView {
         super.awakeFromNib()
         lblTitle.textColor = kPrimaryTitleColor
         lblDescription.textColor = kSecondaryTitleColor
-        
+        lblTitle.font = OneFlow.fontConfiguration?.titleFont
+        lblDescription.font = OneFlow.fontConfiguration?.subTitleFont
         btnContinue.layer.cornerRadius = 5.0
         btnContinue.isHidden = false
         btnContinue.backgroundColor = kBrandColor
         btnContinue.isUserInteractionEnabled = true
+        btnContinue.titleLabel?.font = OneFlow.fontConfiguration?.submitButtonFont
     }
     
     @IBAction func onContinueTapped(_ sender: Any) {

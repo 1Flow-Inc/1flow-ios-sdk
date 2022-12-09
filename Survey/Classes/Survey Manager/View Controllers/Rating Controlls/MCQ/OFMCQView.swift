@@ -68,9 +68,8 @@ class OFMCQView: UIView {
             btnFinish.backgroundColor = kSubmitButtonColorDisable
             btnFinish.isUserInteractionEnabled = false
             bottomConstraint.constant = 70.0
-
-        }
-        else {
+            btnFinish.titleLabel?.font = OneFlow.fontConfiguration?.submitButtonFont
+        } else {
             btnFinish.isHidden = true
             bottomConstraint.constant = 25.0
         }
@@ -90,13 +89,12 @@ class OFMCQView: UIView {
             if let option : SurveyListResponse.Survey.Screen.Input.Choice = currentOption as? SurveyListResponse.Survey.Screen.Input.Choice, let optionString : String  = option.title {
               
                 let button = OFRadioButton(frame: CGRect(x: 0, y: 0, width: parentViewWidth, height: 43), type: type)
-                button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+                button.titleLabel?.font = OneFlow.fontConfiguration?.checkboxButtonFont
                 button.titleLabel?.lineBreakMode = .byWordWrapping
                 
                 button.setTitle(optionString, for: .normal)
                 button.tag = i
                 button.addTarget(self, action: #selector(onSelectButton(_:)), for: .touchUpInside)
-                
                 
                 self.stackView1.addArrangedSubview(button)
                 let height = self.labelSize(for: optionString, maxWidth: (parentViewWidth))
@@ -104,10 +102,7 @@ class OFMCQView: UIView {
                 button.heightAnchor.constraint(equalToConstant: height + 24).isActive = true
             }
         }
-        
-  
     }
-    
     
     func addTextFieldToView(_ button : UIButton) {
         let otherOptionView = UIView.init(frame: CGRect(x: 2, y: 2, width: button.frame.size.width - 4 , height: button.frame.size.height-4))
@@ -118,7 +113,7 @@ class OFMCQView: UIView {
         
         let otherOptionTextField =  UITextField(frame: CGRect(x: 25, y: 0, width: otherOptionView.frame.size.width - 60 , height: otherOptionView.frame.size.height))
         otherOptionTextField.placeholder = "Type your answer"
-        otherOptionTextField.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        otherOptionTextField.font = OneFlow.fontConfiguration?.openTextFont
         otherOptionTextField.borderStyle = UITextField.BorderStyle.none
         otherOptionTextField.keyboardType = UIKeyboardType.default
         otherOptionTextField.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
@@ -131,7 +126,7 @@ class OFMCQView: UIView {
         enterButton.backgroundColor = kBrandColor
         enterButton.setTitle("Enter", for: .normal)
         enterButton.addTarget(self, action: #selector(enterButtonTapped), for: .touchUpInside)
-        enterButton.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .bold)
+        enterButton.titleLabel?.font = OneFlow.fontConfiguration?.checkboxEnterButtonFont
         if let enterIcon : UIImage = UIImage.init(named: "Enter", in: OneFlowBundle.bundleForObject(self), compatibleWith: nil) {
             enterButton.setImage(enterIcon, for: .normal)
         }
@@ -230,7 +225,7 @@ class OFMCQView: UIView {
         let label =  UILabel(frame: CGRect(x: 0, y: 0, width: maxWidth, height: .greatestFiniteMagnitude))
         label.numberOfLines = 0
         label.text = text
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = OneFlow.fontConfiguration?.checkboxButtonFont
         label.sizeToFit()
         return label.frame.height
     }

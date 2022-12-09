@@ -38,7 +38,7 @@ class OFShortAnswerView: UIView {
                 //self.textField.placeholder = placeHolderText
                 self.textField.attributedPlaceholder = NSAttributedString(
                     string: placeHolderText,
-                    attributes: [NSAttributedString.Key.foregroundColor: kPlaceholderColor]
+                    attributes: [NSAttributedString.Key.foregroundColor: kPlaceholderColor, NSAttributedString.Key.font: OneFlow.fontConfiguration?.textFieldFont ?? UIFont.systemFont(ofSize: 14)]
                 )
             }
         }
@@ -68,10 +68,12 @@ class OFShortAnswerView: UIView {
         btnFinish.isHidden = false
         btnFinish.backgroundColor = kSubmitButtonColorDisable
         btnFinish.isUserInteractionEnabled = false
+        btnFinish.titleLabel?.font = OneFlow.fontConfiguration?.submitButtonFont
         setupTextFieldAppreance()
         textField.delegate = self
         textField.addTarget(self, action: #selector(OFShortAnswerView.textFieldDidChange(_:)),
                                       for: .editingChanged)
+        textField.font = OneFlow.fontConfiguration?.textFieldFont
        
     }
     

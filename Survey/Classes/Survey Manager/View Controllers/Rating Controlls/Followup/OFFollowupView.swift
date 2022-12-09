@@ -75,9 +75,10 @@ class OFFollowupView: UIView {
         textView.layer.cornerRadius = 2.0
         textView.backgroundColor = UIColor.clear
         textView.textColor = kPrimaryTitleColor
+        textView.font = OneFlow.fontConfiguration?.openTextFont
         placeholderLabel = UILabel()
         placeholderLabel.text = placeHolderText
-        placeholderLabel.font = UIFont.systemFont(ofSize: (textView.font?.pointSize)!)
+        placeholderLabel.font = textView.font
         placeholderLabel.sizeToFit()
         textView.addSubview(placeholderLabel)
         placeholderLabel.frame.origin = CGPoint(x: 5, y: (textView.font?.pointSize)! / 2)
@@ -87,7 +88,9 @@ class OFFollowupView: UIView {
         btnFinish.isHidden = false
         btnFinish.backgroundColor = kSubmitButtonColorDisable
         btnFinish.isUserInteractionEnabled = false
+        btnFinish.titleLabel?.font = OneFlow.fontConfiguration?.submitButtonFont
         lblNumbers.textColor = kWatermarkColor
+        lblNumbers.font = OneFlow.fontConfiguration?.openTextCharCountFont
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 

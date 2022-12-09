@@ -41,11 +41,11 @@ class ViewController: UIViewController {
     }
     
     @IBAction func onButton1(_ sender: Any) {
-        OneFlow.recordEventName("button1_single_use", parameters: nil)
+        OneFlow.recordEventName("all_types_of_survey", parameters: nil)
     }
     
     @IBAction func onButton2(_ sender: Any) {
-        OneFlow.recordEventName("button2_single_use", parameters: nil)
+        OneFlow.recordEventName("start_all_survey_types", parameters: nil)
     }
     
     @IBAction func onButton3(_ sender: Any) {

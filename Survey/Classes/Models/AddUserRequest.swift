@@ -17,21 +17,11 @@ import Foundation
 struct AddUserRequest: Codable {
     var system_id: String
     var device: DeviceDetails
-    var location: LocationDetails?
-    var location_check: Bool = true
     var mode = OFProjectDetailsController.shared.currentEnviromment.rawValue
     var language: String
     struct DeviceDetails:Codable {
         var os: String
         var unique_id: String
         var device_id: String
-    }
-    
-    struct LocationDetails: Codable {
-        var city: String?
-        var region: String?
-        var country: String?
-        var latitude: Double?
-        var longitude: Double?
     }
 }

@@ -553,6 +553,7 @@ class OFRatingViewController: UIViewController {
             self.viewPrimaryTitle1.isHidden = false
             self.lblPrimaryTitle1.text = value
             self.lblPrimaryTitle1.textColor = kPrimaryTitleColor
+            self.lblPrimaryTitle1.font = OneFlow.fontConfiguration?.titleFont
         } else {
             self.viewPrimaryTitle1.isHidden = true
         }
@@ -561,6 +562,7 @@ class OFRatingViewController: UIViewController {
             self.viewSecondaryTitle.isHidden = false
             self.lblSecondaryTitle.text = value
             self.lblSecondaryTitle.textColor = kSecondaryTitleColor
+            self.lblSecondaryTitle.font = OneFlow.fontConfiguration?.subTitleFont
         } else {
             self.viewSecondaryTitle.isHidden = true
         }

@@ -18,9 +18,7 @@ struct CreateSessionRequest: Codable {
     var analytic_user_id: String
     var system_id: String
     var device: DeviceDetails?
-    var location: LocationDetails?
     var connectivity: Connectivity?
-    var location_check: Bool = true
     var app_version: String?
     var app_build_number: String?
     var library_version: String?
@@ -37,14 +35,7 @@ struct CreateSessionRequest: Codable {
         var screen_width: Int?
         var screen_height: Int?
     }
-    
-    struct LocationDetails: Codable {
-        var city: String?
-        var region: String?
-        var country: String?
-        var latitude: Double?
-        var longitude: Double?
-    }
+
     struct Connectivity: Codable {
         var carrier: String?
         var radio: String?

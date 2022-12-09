@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(surveyDidFinished(notification:)), name: SurveyFinishNotification, object: nil)
         return true
     }
-    
+     
     @objc func surveyDidFinished(notification: Notification) {
         
         if let userInfo = notification.userInfo {
@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func setupOneFlow() {
-        OneFlow.configure(kOneProjectKey)
+        OneFlow.configure(kOneProjectKey, fontName: "Avenir Next")
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
