@@ -28,7 +28,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func onRecordEvent_startSurvey(_ sender: Any) {
-        OneFlow.recordEventName("start_all_survey_data_logic", parameters: nil)
+//        OneFlow.recordEventName("start_all_survey_data_logic", parameters: nil)
+        OneFlow.useFont(fontFamily: nil)
     }
     
     @IBAction func onRecordEvent_withParams(_ sender: Any) {
@@ -49,6 +50,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func onButton3(_ sender: Any) {
-        OneFlow.recordEventName("button3_recurring", parameters: nil)
+//        OneFlow.recordEventName("button3_recurring", parameters: nil)
+        OneFlow.useFont(fontFamily: "Zapfino")
     }
 }

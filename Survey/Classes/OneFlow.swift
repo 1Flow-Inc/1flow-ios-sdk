@@ -34,11 +34,10 @@ public final class OneFlow: NSObject {
         }
     }
     
-    @objc public class func configure(_ appKey: String, fontName: String? = nil) {
+    @objc public class func configure(_ appKey: String) {
         OneFlowLog.writeLog("1Flow configuration started")
         if OneFlow.shared.projectDetailsController.appKey == nil {
             shared.projectDetailsController.appKey = appKey
-            OneFlow.fontConfiguration = SurveyFontConfiguration(fontName: fontName)
             shared.projectDetailsController.setLoglevel(.info)
             shared.setupOnce()
             shared.setupReachability()
@@ -46,7 +45,11 @@ public final class OneFlow: NSObject {
             OneFlowLog.writeLog("Error: 1Flow already setup.", .info)
         }
     }
-    
+
+    @objc public class func useFont(fontFamily: String?) {
+        OneFlow.fontConfiguration = SurveyFontConfiguration(fontName: fontFamily)
+    }
+
     private func setupOnce() {
         let addUserRequest = AddUserRequest(system_id: OneFlow.shared.projectDetailsController.systemID, device: AddUserRequest.DeviceDetails(os: "iOS", unique_id: OneFlow.shared.projectDetailsController.uniqID, device_id: OneFlow.shared.projectDetailsController.deviceID), language: OneFlow.shared.projectDetailsController.getLocalisedLanguageName())
         OneFlowLog.writeLog("Adding user")

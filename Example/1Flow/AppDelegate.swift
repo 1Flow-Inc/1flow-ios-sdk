@@ -36,7 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func setupOneFlow() {
-        OneFlow.configure(kOneProjectKey, fontName: "Avenir Next")
+        OneFlow.configure(kOneProjectKey)
+        OneFlow.useFont(fontFamily: "Avenir Next")
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
