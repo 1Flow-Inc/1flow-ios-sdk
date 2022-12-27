@@ -24,7 +24,7 @@ public final class OneFlow: NSObject {
     private override init() {
     }
     let reachability = try! OFReachability(hostname: "www.apple.com")
-    static var fontConfiguration: SurveyFontConfigurable?
+    static var fontConfiguration: SurveyFontConfigurable? = SurveyFontConfiguration()
     var apiController : APIProtocol = OFAPIController()
     var projectDetailsController: ProjectDetailsManageable = OFProjectDetailsController.shared
     

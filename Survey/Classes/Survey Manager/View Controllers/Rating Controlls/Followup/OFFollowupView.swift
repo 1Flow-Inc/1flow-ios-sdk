@@ -81,7 +81,7 @@ class OFFollowupView: UIView {
         placeholderLabel.font = textView.font
         placeholderLabel.sizeToFit()
         textView.addSubview(placeholderLabel)
-        placeholderLabel.frame.origin = CGPoint(x: 5, y: (textView.font?.pointSize)! / 2)
+        placeholderLabel.frame.origin = CGPoint(x: 5, y: (textView.font?.pointSize) ?? 16 / 2)
         placeholderLabel.textColor = kPlaceholderColor
         placeholderLabel.isHidden = !textView.text.isEmpty
         btnFinish.layer.cornerRadius = 5.0

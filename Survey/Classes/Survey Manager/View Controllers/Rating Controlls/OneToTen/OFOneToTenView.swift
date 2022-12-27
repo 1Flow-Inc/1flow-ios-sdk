@@ -29,7 +29,7 @@ class OFOneToTenView: UIView {
     }
     var emojiArray: [String]? {
         didSet {
-            let numberOfItems = CGFloat(emojiArray!.count)
+            let numberOfItems = CGFloat(emojiArray?.count ?? 0)
             collectionViewWidth.constant = (numberOfItems * 65)
             collectionView.reloadData()
         }
