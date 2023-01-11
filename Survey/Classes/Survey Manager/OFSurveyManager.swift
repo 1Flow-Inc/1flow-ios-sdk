@@ -413,7 +413,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
                     self.submittedSurveyDetails?.append(submittedSurvey)
                     self.saveSubmittedSurvey()
                     let interval = Int(Date().timeIntervalSince(startDate))
-                    let surveyResponseNew = SurveySubmitRequest(analytic_user_id: self.projectDetailsController.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, session_id: self.projectDetailsController.analytics_session_id, trigger_event: eventName, tot_duration: interval)
+                    let surveyResponseNew = SurveySubmitRequest(analytic_user_id: self.projectDetailsController.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, trigger_event: eventName, tot_duration: interval)
 
                     if self.pendingSurveySubmission == nil {
                         self.pendingSurveySubmission = [survey._id : surveyResponseNew]
@@ -518,14 +518,6 @@ class OFSurveyManager: NSObject, SurveyManageable {
             surveyResponseTemp.analytic_user_id = userID
         }
         
-        if surveyResponseTemp.session_id == nil {
-            OneFlowLog.writeLog("Survey did not have session id", .info)
-            guard let sessionID = projectDetailsController.analytics_session_id else {
-                OneFlowLog.writeLog("Session yet not created", .info)
-                return
-            }
-            surveyResponseTemp.session_id = sessionID
-        }
         OneFlowLog.writeLog("Calling API to submit survey")
         apiController.submitSurveyResponse(surveyResponseTemp) { [weak self] isSuccess, error, data in
             

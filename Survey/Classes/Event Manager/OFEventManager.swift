@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import UIKit
-import CoreTelephony
 
 protocol EventManagerProtocol {
     func recordEvent(_ name: String, parameters: [String: Any]?)
@@ -44,11 +43,12 @@ class OFEventManager: NSObject, EventManagerProtocol {
     
     func configure() {
         OneFlowLog.writeLog("Event Manager configure")
-        self.createAnalyticsSession()
+        self.startEventManager()
+        self.setupSurveyManager()
     }
     
     func finishPendingEvents() {
-        if projectDetailsController.analytic_user_id != nil, projectDetailsController.analytics_session_id != nil {
+        if projectDetailsController.analytic_user_id != nil {
             sendEventsToServer()
             if let surveyManagerObj = self.surveyManager {
                 surveyManagerObj.uploadPendingSurveyIfAvailable()
@@ -57,13 +57,13 @@ class OFEventManager: NSObject, EventManagerProtocol {
     }
     
     @objc func applicationBecomeActive() {
-        if projectDetailsController.analytics_session_id != nil && self.isNetworkReachable == true {
+        if projectDetailsController.analytic_user_id != nil && self.isNetworkReachable == true {
             self.startUploadTimer()
         }
     }
     
     @objc func applicationMovedToBackground() {
-        if projectDetailsController.analytics_session_id != nil, self.isNetworkReachable == true {
+        if projectDetailsController.analytic_user_id != nil, self.isNetworkReachable == true {
             self.sendEventsToServer()
         }
         self.uploadTimer?.invalidate()
@@ -76,71 +76,12 @@ class OFEventManager: NSObject, EventManagerProtocol {
             surveyManagerObj.networkStatusChanged(isReachable)
         }
         if isReachable == true {
-            if projectDetailsController.analytics_session_id != nil {
+            if projectDetailsController.analytic_user_id != nil {
                 self.startUploadTimer()
             }
         } else {
             self.uploadTimer?.invalidate()
             self.uploadTimer = nil
-        }
-    }
-    
-    private func createAnalyticsSession() {
-        if projectDetailsController.analytics_session_id == nil {
-            let networkInfo = CTTelephonyNetworkInfo()
-            let carrier = networkInfo.subscriberCellularProvider
-            let carrierName = carrier?.carrierName
-            let osVersion = UIDevice.current.systemVersion
-            let width = Int(UIScreen.main.bounds.size.width)
-            let height = Int(UIScreen.main.bounds.size.height)
-            var libraryVersion: String?
-            
-            if let bundle = Bundle.allFrameworks.first(where: { $0.bundleIdentifier?.contains("1Flow") ?? false } ) {
-                libraryVersion = bundle.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String
-            }
-            
-            let deviceDetails = CreateSessionRequest.DeviceDetails(os: "iOS", unique_id: projectDetailsController.uniqID, device_id: projectDetailsController.deviceID, carrier: carrierName, manufacturer: "apple", model: self.machineName(), os_ver: osVersion, screen_width: width, screen_height: height)
-            let connectivity = CreateSessionRequest.Connectivity(carrier: (OFProjectDetailsController.shared.isCarrierConnectivity == true) ? carrierName : nil, radio: OFProjectDetailsController.shared.radioConnectivity)
-            
-            let sessionRequest: CreateSessionRequest = CreateSessionRequest(analytic_user_id: projectDetailsController.analytic_user_id ?? "", system_id: projectDetailsController.systemID, device: deviceDetails, connectivity: connectivity, app_version: self.getAppVersion(), app_build_number: self.getAppBuildNumber(), library_version: libraryVersion)
-            OneFlowLog.writeLog("OFEventManager - Create Session")
-            OFAPIController().createSession(sessionRequest) { [weak self] isSuccess, error, data in
-                guard let self = self else {
-                    return
-                }
-                if isSuccess == true, let data = data {
-                    do {
-                        if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
-                            OneFlowLog.writeLog("OFEventManager - Create Session - Success")
-                            if let result = json["result"] as? [String: Any], let _id = result["_id"] as? String {
-                                self.projectDetailsController.analytics_session_id = _id
-                                if let logUserInfo : [String : Any] =  UserDefaults.standard.object(forKey: "OFlogUserInfo") as? [String : Any] {
-                                    if let userID : String = logUserInfo["UserID"] as? String, let userDetails : [String : Any] =  logUserInfo["userDetails"] as? [String : Any] {
-                                        self.projectDetailsController.newUserID = userID
-                                        self.projectDetailsController.newUserData = userDetails
-                                    }
-                                }
-                                self.projectDetailsController.logUserRetryCount = 0
-                                self.projectDetailsController.logNewUserDetails { isLogUserSuccess in
-                                    if isSuccess == true {
-                                        if isLogUserSuccess {
-                                            UserDefaults.standard.removeObject(forKey: "OFlogUserInfo")
-                                        }
-                                        self.setupSurveyManager()
-                                    }
-                                }
-                                self.startEventManager()
-                            } else {
-                                OneFlowLog.writeLog("OFEventManager - Create Session - Failed", .error)
-                            }
-                        }
-                    } catch {
-                        OneFlowLog.writeLog("OFEventManager - Create Session - Failed: \(error)", .error)
-                    }
-                }
-            }
-        } else {
-            self.startEventManager()
         }
     }
     
@@ -155,17 +96,19 @@ class OFEventManager: NSObject, EventManagerProtocol {
     }
     
     private func startEventManager() {
+        let previousLoggedEvents = self.eventsArray
         if let eventsArray = UserDefaults.standard.value(forKey: "FBPendingEventsList") as? [[String: Any]] {
             eventModificationQueue.sync {
                 self.eventsArray = eventsArray
             }
-            
+            self.eventsArray += previousLoggedEvents
             UserDefaults.standard.removeObject(forKey: "FBPendingEventsList")
             self.sendEventsToServer()
         }
         self.recordEvent(kEventNameSessionStart, parameters: nil)
         self.startUploadTimer()
         self.setupDefaultEventsObservers()
+        self.sendEventsToServer()
     }
     
     private func setupDefaultEventsObservers() {
@@ -233,20 +176,21 @@ class OFEventManager: NSObject, EventManagerProtocol {
                 }
                 self.eventSaveTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(saveEventArray), userInfo: nil, repeats: false)
             }
-        }
-        
-        if name == kEventNameSurveyImpression {
-            self.sendEventsToServer()
-        } else {
-            /// if Survey is enabled, then pass this event to survey manager to check if survey available or not
-            if OFProjectDetailsController.shared.isSuveryEnabled == true {
-                if let surveyManagerObj = self.surveyManager {
-                    surveyManagerObj.newEventRecorded(name)
-                } else {
-                    self.surveyManager = OFSurveyManager()
-                    self.surveyManager.newEventRecorded(name)
+            if name != kEventNameSurveyImpression {
+                /// if Survey is enabled, then pass this event to survey manager to check if survey available or not
+                if OFProjectDetailsController.shared.isSuveryEnabled == true {
+                    if let surveyManagerObj = self.surveyManager {
+                        surveyManagerObj.newEventRecorded(name)
+                    } else {
+                        self.surveyManager = OFSurveyManager()
+                        self.surveyManager.newEventRecorded(name)
+                    }
                 }
             }
+        }
+
+        if name == kEventNameSurveyImpression {
+            self.sendEventsToServer()
         }
     }
     
@@ -257,8 +201,8 @@ class OFEventManager: NSObject, EventManagerProtocol {
     
     @objc func sendEventsToServer() {
         OneFlowLog.writeLog("OFEventManager: sendEventsToServer")
-        guard let sessionID = projectDetailsController.analytics_session_id else {
-            OneFlowLog.writeLog("OFEventManager: Session is not created", .info)
+        guard let userId = projectDetailsController.analytic_user_id else {
+            OneFlowLog.writeLog("OFEventManager: User is not created", .info)
             return
         }
         var eventsCount = 0
@@ -268,7 +212,7 @@ class OFEventManager: NSObject, EventManagerProtocol {
         if eventsCount > 0 {
             OneFlowLog.writeLog("OFEventManager: Sending events to server: \(self.eventsArray.count)")
             let uploadedEvents = eventsCount
-            let finalParameters = ["events": self.eventsArray, "session_id": sessionID, "mode": projectDetailsController.currentEnviromment.rawValue] as [String : Any]
+            let finalParameters = ["events": self.eventsArray, "user_id": userId] as [String : Any]
             
             OFAPIController().addEvents(finalParameters) { [weak self] isSuccess, error, data in
                 if isSuccess == true, let data = data {

@@ -21,7 +21,6 @@ protocol APIProtocol {
     func submitSurveyResponse(_ response: SurveySubmitRequest, completion: @escaping APICompletionBlock)
     func addUser(_ parameter: AddUserRequest, completion: @escaping APICompletionBlock)
     func logUser(_ parameter: [String: Any], completion: @escaping APICompletionBlock)
-    func createSession(_ parameter: CreateSessionRequest, completion: @escaping APICompletionBlock)
     func addEvents(_ parameter: [String: Any], completion: @escaping APICompletionBlock)
 }
 
@@ -62,15 +61,6 @@ final class OFAPIController: NSObject, APIProtocol {
     }
     
     //MARK: - Analytics
-    func createSession(_ parameter: CreateSessionRequest, completion: @escaping APICompletionBlock) {
-        do {
-            let jsonData = try JSONEncoder().encode(parameter)
-            urlRequestManager.postAPIWith(EndPoints.createSession, parameters: jsonData, completion: completion)
-        } catch {
-            fatalError(error.localizedDescription)
-        }
-    }
-    
     func addEvents(_ parameter: [String: Any], completion: @escaping APICompletionBlock) {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: parameter, options: .prettyPrinted)

@@ -16,7 +16,7 @@ class EventManagerTest: XCTestCase {
         // Arrange
         let eventManager = OFEventManager()
         let mockProjectDetails = MockProjectDetailsController()
-        mockProjectDetails.analytics_session_id = "something"
+        mockProjectDetails.analytic_user_id = "Some_id"
         eventManager.projectDetailsController = mockProjectDetails
         eventManager.isNetworkReachable = true
         // Act
@@ -35,7 +35,6 @@ class EventManagerTest: XCTestCase {
         // Arrange
         let eventManager = OFEventManager()
         let mockProjectDetails = MockProjectDetailsController()
-        mockProjectDetails.analytics_session_id = "something"
         eventManager.projectDetailsController = mockProjectDetails
         eventManager.isNetworkReachable = true
         eventManager.uploadTimer = Timer.scheduledTimer(timeInterval: 60, target: eventManager, selector: #selector(eventManager.sendEventsToServer), userInfo: nil, repeats: true)
@@ -60,7 +59,7 @@ class EventManagerTest: XCTestCase {
         let eventManager = SampleClass(expectation: expectation)
         
         let mockProjectDetails = MockProjectDetailsController()
-        mockProjectDetails.analytics_session_id = "something"
+        mockProjectDetails.analytic_user_id = "Some_user"
         eventManager.projectDetailsController = mockProjectDetails
         eventManager.isNetworkReachable = true
         // Act
@@ -74,7 +73,6 @@ class EventManagerTest: XCTestCase {
         // Arrange
         let eventManager = OFEventManager()
         let mockProjectDetails = MockProjectDetailsController()
-        mockProjectDetails.analytics_session_id = "something"
         eventManager.projectDetailsController = mockProjectDetails
         eventManager.isNetworkReachable = true
         eventManager.uploadTimer = Timer.scheduledTimer(timeInterval: 60, target: eventManager, selector: #selector(eventManager.sendEventsToServer), userInfo: nil, repeats: true)
@@ -88,7 +86,6 @@ class EventManagerTest: XCTestCase {
         // Arrange
         let eventManager = OFEventManager()
         let mockProjectDetails = MockProjectDetailsController()
-        mockProjectDetails.analytics_session_id = "something"
         eventManager.projectDetailsController = mockProjectDetails
         eventManager.isNetworkReachable = true
         eventManager.uploadTimer = nil

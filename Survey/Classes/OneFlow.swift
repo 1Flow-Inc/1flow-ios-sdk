@@ -37,10 +37,16 @@ public final class OneFlow: NSObject {
     @objc public class func configure(_ appKey: String) {
         OneFlowLog.writeLog("1Flow configuration started")
         if OneFlow.shared.projectDetailsController.appKey == nil {
+            shared.setupReachability()
             shared.projectDetailsController.appKey = appKey
             shared.projectDetailsController.setLoglevel(.info)
-            shared.setupOnce()
-            shared.setupReachability()
+            DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 3, execute: {
+                if OFProjectDetailsController.shared.analytic_user_id == nil {
+                    if shared.isSetupRunning == false {
+                        shared.setupOnce()
+                    }
+                }
+            })
         } else {
             OneFlowLog.writeLog("Error: 1Flow already setup.", .info)
         }
@@ -51,7 +57,38 @@ public final class OneFlow: NSObject {
     }
 
     private func setupOnce() {
-        let addUserRequest = AddUserRequest(system_id: OneFlow.shared.projectDetailsController.systemID, device: AddUserRequest.DeviceDetails(os: "iOS", unique_id: OneFlow.shared.projectDetailsController.uniqID, device_id: OneFlow.shared.projectDetailsController.deviceID), language: OneFlow.shared.projectDetailsController.getLocalisedLanguageName())
+
+        let context = AddUserRequest.Context(
+            app: AddUserRequest.Context.AppDetails(
+                version: projectDetailsController.appVersion,
+                build: projectDetailsController.buildVersion
+            ),
+            device: AddUserRequest.Context.DeviceDetails(
+                manufacturer: "apple",
+                model: projectDetailsController.modelName
+            ),
+            library: AddUserRequest.Context.LibraryDetails(
+                version: projectDetailsController.libraryVersion,
+                name: "iOS"
+            ),
+            network: AddUserRequest.Context.NetworkDetails(
+                carrier: projectDetailsController.careerName,
+                wifi: projectDetailsController.isWifiConnection
+            ),
+            os: AddUserRequest.Context.OSDetails(
+                name: "iOS",
+                version: projectDetailsController.osVersion
+            ),
+            screen: AddUserRequest.Context.ScreenDetails(
+                width: projectDetailsController.screenWidth,
+                height: projectDetailsController.screenHeight,
+                type: "mobile"
+            )
+        )
+        let addUserRequest = AddUserRequest(
+            user_id: OneFlow.shared.projectDetailsController.systemID,
+            context: context
+        )
         OneFlowLog.writeLog("Adding user")
         self.isSetupRunning = true
         self.apiController.addUser(addUserRequest, completion: { isSuccess, error, data in
@@ -81,13 +118,11 @@ public final class OneFlow: NSObject {
     }
 
     @objc func reachabilityChanged(note: Notification) {
-        
         let reachability = note.object as! OFReachability
         switch reachability.connection {
         case .unavailable:
             OneFlowLog.writeLog("Network: Unreachable")
-            OneFlow.shared.projectDetailsController.radioConnectivity = nil
-            OneFlow.shared.projectDetailsController.isCarrierConnectivity = false
+            OneFlow.shared.projectDetailsController.isWifiConnection = false
             
             if networkTimer != nil, networkTimer?.isValid == true {
                 networkTimer?.invalidate()
@@ -98,9 +133,9 @@ public final class OneFlow: NSObject {
         default:
             OneFlowLog.writeLog("Network: Reachable")
             if reachability.connection.description.lowercased() == "wifi" {
-                OneFlow.shared.projectDetailsController.radioConnectivity = "wireless"
+                OneFlow.shared.projectDetailsController.isWifiConnection = true
             } else {
-                OneFlow.shared.projectDetailsController.isCarrierConnectivity = true
+                OneFlow.shared.projectDetailsController.isWifiConnection = false
             }
             
             if networkTimer != nil, networkTimer?.isValid == true {
@@ -111,6 +146,7 @@ public final class OneFlow: NSObject {
             
             break
         }
+        self.setupOnce()
     }
     
     @objc private func networkNotAvailable() {
@@ -127,13 +163,13 @@ public final class OneFlow: NSObject {
     }
     
     private func setupReachability() {
-        OneFlowLog.writeLog("Network Objerver - Starting")
+        OneFlowLog.writeLog("Network Observer - Starting")
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(note:)), name: .OFreachabilityChanged, object: reachability)
         do {
             try reachability.startNotifier()
-            OneFlowLog.writeLog("Network Objerver - Success")
+            OneFlowLog.writeLog("Network Observer - Success")
         } catch {
-            OneFlowLog.writeLog("Network Objerver - Failed", .error)
+            OneFlowLog.writeLog("Network Observer - Failed", .error)
         }
     }
     

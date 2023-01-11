@@ -11,6 +11,23 @@
 import Foundation
 
 class MockProjectDetailsController: ProjectDetailsManageable {
+    var appVersion: String = "NA"
+    
+    var buildVersion: String = "NA"
+    
+    var modelName: String? = "NA"
+    
+    var libraryVersion: String?
+    
+    var osVersion: String = "NA"
+    
+    var screenWidth: Int = 100
+    
+    var screenHeight: Int = 100
+    
+    var isWifiConnection: Bool = true
+    
+    var careerName: String?
     
     let oneFlowSDKVersion: String = "Mock_version"
 
@@ -24,15 +41,9 @@ class MockProjectDetailsController: ProjectDetailsManageable {
     
     var isSuveryEnabled: Bool = false
     
-    var deviceID: String! = "Mock_Device_ID"
-    
-    var uniqID: String! = "Mock_uniq_id"
-    
     var systemID: String! = "mock_system_id"
     
     var analytic_user_id: String?
-    
-    var analytics_session_id: String?
     
     var currentLoggedUserID: String?
     

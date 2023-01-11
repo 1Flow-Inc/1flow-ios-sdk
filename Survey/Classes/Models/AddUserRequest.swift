@@ -15,13 +15,46 @@
 import Foundation
 
 struct AddUserRequest: Codable {
-    var system_id: String
-    var device: DeviceDetails
-    var mode = OFProjectDetailsController.shared.currentEnviromment.rawValue
-    var language: String
-    struct DeviceDetails:Codable {
-        var os: String
-        var unique_id: String
-        var device_id: String
+    var user_id: String
+    var context: Context
+
+    struct Context: Codable {
+        var app: AppDetails
+        var device: DeviceDetails
+        var library: LibraryDetails
+        var network: NetworkDetails
+        var os: OSDetails
+        var screen: ScreenDetails
+
+        struct AppDetails: Codable {
+            var version: String
+            var build: String
+        }
+
+        struct DeviceDetails: Codable {
+            var manufacturer: String
+            var model: String?
+        }
+
+        struct LibraryDetails: Codable {
+            var version: String?
+            var name: String
+        }
+
+        struct NetworkDetails: Codable {
+            var carrier: String?
+            var wifi: Bool
+        }
+
+        struct OSDetails: Codable {
+            var name: String
+            var version: String
+        }
+
+        struct ScreenDetails: Codable {
+            var width: Int
+            var height: Int
+            var type: String
+        }
     }
 }

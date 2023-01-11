@@ -29,6 +29,7 @@ class OneFlowTests: XCTestCase {
     
     func testConfigureOneFlow_CallingMultipleTimeOnlyCallAddUserOnce() {
         OneFlow.configure("MyKey")
+        OneFlow.shared.reachabilityChanged(note: Notification(name: Notification.Name.init(rawValue: ""), object: OneFlow.shared.reachability, userInfo: nil))
         XCTAssertTrue(apiController.isAddUserCalled, "Add user not called when calling configure")
         apiController.isAddUserCalled = false
         OneFlow.configure("MyKey2")
@@ -97,7 +98,6 @@ class OneFlowTests: XCTestCase {
         let surveyManager = MockSurveyManager(expectation)
         let mockProjectDetails = MockProjectDetailsController()
         mockProjectDetails.analytic_user_id = "abc"
-        mockProjectDetails.analytics_session_id = "xyz"
         OneFlow.shared.eventManager = OFEventManager()
         OneFlow.shared.eventManager.projectDetailsController = mockProjectDetails
         OneFlow.shared.eventManager.surveyManager = surveyManager
@@ -149,6 +149,7 @@ class OneFlowTests: XCTestCase {
         OneFlow.shared.eventManager = eventManager
         apiController.dataToRespond = MockResponseProvider.getDataForAddUserResponse()
         OneFlow.configure("abc")
+        OneFlow.shared.reachabilityChanged(note: Notification(name: Notification.Name.init(rawValue: ""), object: OneFlow.shared.reachability, userInfo: nil))
         self.wait(for: [expectation], timeout: 2.0)
     }
 
@@ -158,7 +159,7 @@ class OneFlowTests: XCTestCase {
         projectDetailsControler.appKey = nil
         let eventManager = MockEventManager(expectation)
         OneFlow.shared.eventManager = eventManager
-        OneFlow.configure("abc")
+        OneFlow.shared.reachabilityChanged(note: Notification(name: Notification.Name.init(rawValue: ""), object: OneFlow.shared.reachability, userInfo: nil))
         self.wait(for: [expectation], timeout: 2.0)
     }
 }

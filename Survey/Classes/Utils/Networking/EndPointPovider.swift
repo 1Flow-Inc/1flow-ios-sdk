@@ -13,7 +13,6 @@ protocol EndPointProtocol {
 
 enum EndPoints: EndPointProtocol {
     case addUser
-    case createSession
     case getSurveys
     case addEvent
     case submitSurvey
@@ -25,45 +24,36 @@ enum EndPoints: EndPointProtocol {
                 if OFProjectDetailsController.shared.currentEnviromment == .dev {
                     return "https://ez37ppkkcs.eu-west-1.awsapprunner.com/api/2021-06-15"
                 } else {
-                    return "https://y33xx6sddf.eu-west-1.awsapprunner.com/api/2021-06-15"
+                    return "https://api-sdk.1flow.app/api/2021-06-15"
                 }
         }()
         switch self {
         case .addUser:
-            return BaseURL + "/add-user"
-        case .createSession:
-            return BaseURL + "/add-session"
+            return BaseURL + "/v3/user"
         case .getSurveys:
-            var surveyUrl = BaseURL + "/surveys?&platform=iOS"
-
-            if let sessionID : String = OFProjectDetailsController.shared.analytics_session_id {
-                surveyUrl = surveyUrl + "&session_id=" + sessionID
+            var surveyUrl = BaseURL + "/v3/survey?platform=iOS"
+            if let userID : String = OFProjectDetailsController.shared.analytic_user_id {
+                surveyUrl = surveyUrl + "&user_id=" + userID
             }
-            
-            if let bundle = Bundle.allFrameworks.first(where: { $0.bundleIdentifier?.contains("1Flow") ?? false } ) {
-                if let libraryVersion = bundle.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String {
-                    surveyUrl = surveyUrl + "&min_version=" + libraryVersion
-                } else {
-                    surveyUrl = surveyUrl + "&min_version=" + OFProjectDetailsController.shared.oneFlowSDKVersion
-                }
+
+            if let libraryVersion =
+                OFProjectDetailsController.shared.libraryVersion {
+                surveyUrl = surveyUrl + "&min_version=" + libraryVersion
             } else {
                 surveyUrl = surveyUrl + "&min_version=" + OFProjectDetailsController.shared.oneFlowSDKVersion
             }
+
             if let langStr = Locale.current.languageCode {
                 surveyUrl = surveyUrl + "&language_code=" + langStr
                 OneFlowLog.writeLog("Language Code: \(langStr)")
             }
-            
-            if let userID : String = OFProjectDetailsController.shared.analytic_user_id {
-                surveyUrl = surveyUrl + "&user_id=" + userID
-            }
             return surveyUrl
         case .addEvent:
-            return BaseURL + "/events"
+            return BaseURL + "/v3/track"
         case .submitSurvey:
-            return BaseURL + "/add-responses"
+            return BaseURL + "/v3/response"
         case .logUser:
-            return BaseURL + "/log-user"
+            return BaseURL + "/v3/identify"
         case .appStoreRating:
             guard let bundleID = Bundle.main.bundleIdentifier else {
                 return ""

@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import CoreTelephony
 import Foundation
 import UIKit
 
@@ -36,18 +37,23 @@ protocol ProjectDetailsManageable {
     var currentLogLevel: OneFlowLogLevel { get set }
     var appKey: String! { get set }
     var isSuveryEnabled: Bool { get set }
-    var deviceID: String! { get }
-    var uniqID: String! { get }
     var systemID: String! { get set }
     var analytic_user_id: String? { get set }
-    var analytics_session_id: String? { get set }
     var currentLoggedUserID: String? { get set }
-    var radioConnectivity: String? { get set }
-    var isCarrierConnectivity: Bool { get set }
     var newUserID: String? { get set }
     var newUserData: [String: Any]? { get set }
     var logUserRetryCount : Int { get set }
     var oneFlowSDKVersion: String { get }
+
+    var appVersion: String { get }
+    var buildVersion: String { get }
+    var modelName: String? { get }
+    var libraryVersion: String? { get }
+    var osVersion: String { get }
+    var screenWidth: Int { get }
+    var screenHeight: Int { get }
+    var isWifiConnection: Bool { get set }
+    var careerName: String? { get }
     
     func setLoglevel(_ newLogLevel : OneFlowLogLevel)
     func logNewUserDetails(_ completion: @escaping (Bool) -> Void)
@@ -57,7 +63,7 @@ protocol ProjectDetailsManageable {
 final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
 
     static let shared = OFProjectDetailsController()
-    let oneFlowSDKVersion: String = "2022.12.29"
+    let oneFlowSDKVersion: String = "2023.01.11"
     var currentEnviromment: OneFlowEnvironment = .prod
     var currentLogLevel: OneFlowLogLevel = .none
 
@@ -72,24 +78,6 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
     }
 
     var isSuveryEnabled: Bool = true
-
-    var deviceID: String! {
-        get {
-            return UIDevice.current.identifierForVendor?.uuidString
-        }
-    }
-
-    var uniqID: String! {
-        get {
-            if let str = UserDefaults.standard.value(forKey: "uniqIDString") as? String {
-                return str
-            } else {
-                let str = UUID().uuidString
-                UserDefaults.standard.set(str, forKey: "uniqIDString")
-                return str
-            }
-        }
-    }
 
     var systemID: String! {
         get {
@@ -107,7 +95,6 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
     }
 
     var analytic_user_id: String?
-    var analytics_session_id: String?
     
     var currentLoggedUserID: String? {
         get {
@@ -123,8 +110,7 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
         }
     }
     
-    var radioConnectivity: String?
-    var isCarrierConnectivity: Bool = false
+    var isWifiConnection: Bool = true
     var logUserRetryCount = 0
     
     var newUserID: String?
@@ -144,16 +130,15 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
     }
     
     func logNewUserDetails(_ completion: @escaping (Bool) -> Void) {
-        guard let analyticsID = self.analytic_user_id, let sessionID = self.analytics_session_id, let newUserID = self.newUserID else {
+        guard let analyticsID = self.analytic_user_id, let newUserID = self.newUserID else {
             OneFlowLog.writeLog("Log user returned", .info)
             completion(false)
             return
         }
         var finalParameter = [String: Any]()
         finalParameter["anonymous_user_id"] = analyticsID
-        finalParameter["session_id"] = sessionID
-        finalParameter["system_id"] = newUserID
-        finalParameter["mode"] = currentEnviromment.rawValue
+        finalParameter["user_id"] = newUserID
+        finalParameter["log_user"] = true
         if let details = self.newUserData {
             finalParameter["parameters"] =  details
         }
@@ -162,10 +147,9 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
             if isSuccess == true, let data = data {
                 do {
                     let loggedUser = try JSONDecoder().decode(LogUserResponse.self, from: data)
-                    if loggedUser.success == 200, let user_id = loggedUser.result?.analytic_user_id, let session_id = loggedUser.result?.session_id {
+                    if loggedUser.success == 200, let user_id = loggedUser.result?.analytic_user_id {
                         self.currentLoggedUserID = newUserID
                         self.analytic_user_id = user_id
-                        self.analytics_session_id = session_id
                         self.systemID = newUserID
                         self.newUserID = nil
                         self.newUserData = nil
@@ -206,4 +190,51 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
         OneFlowLog.writeLog("Default Language returned")
         return "English"
     }
+
+    lazy var appVersion: String = {
+        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
+        return appVersion
+    }()
+
+    lazy var buildVersion: String = {
+        let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as! String
+        return buildNumber
+    }()
+
+    lazy var modelName: String? = {
+        var systemInfo = utsname()
+        uname(&systemInfo)
+        let modelCode = withUnsafePointer(to: &systemInfo.machine) {
+            $0.withMemoryRebound(to: CChar.self, capacity: 1) {
+                ptr in String.init(validatingUTF8: ptr)
+            }
+        }
+        return modelCode
+    }()
+
+    lazy var libraryVersion: String? = {
+        if let bundle = Bundle.allFrameworks.first(where: { $0.bundleIdentifier?.contains("1Flow") ?? false } ) {
+            return bundle.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String
+        } else {
+            return "NA"
+        }
+    }()
+
+    lazy var osVersion: String = {
+        return UIDevice.current.systemVersion
+    }()
+
+    lazy var screenWidth: Int = {
+        return Int(UIScreen.main.bounds.size.width)
+    }()
+
+    lazy var screenHeight: Int = {
+        return Int(UIScreen.main.bounds.size.height)
+    }()
+
+    lazy var careerName: String? = {
+        let networkInfo = CTTelephonyNetworkInfo()
+        let carrier = networkInfo.subscriberCellularProvider
+        return carrier?.carrierName
+    }()
 }
