@@ -44,11 +44,10 @@ protocol ProjectDetailsManageable {
     var newUserData: [String: Any]? { get set }
     var logUserRetryCount : Int { get set }
     var oneFlowSDKVersion: String { get }
-
     var appVersion: String { get }
     var buildVersion: String { get }
     var modelName: String? { get }
-    var libraryVersion: String? { get }
+    var libraryVersion: String { get }
     var osVersion: String { get }
     var screenWidth: Int { get }
     var screenHeight: Int { get }
@@ -63,7 +62,7 @@ protocol ProjectDetailsManageable {
 final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
 
     static let shared = OFProjectDetailsController()
-    let oneFlowSDKVersion: String = "2023.01.11"
+    let oneFlowSDKVersion: String = "2023.01.18"
     var currentEnviromment: OneFlowEnvironment = .prod
     var currentLogLevel: OneFlowLogLevel = .none
 
@@ -212,11 +211,11 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
         return modelCode
     }()
 
-    lazy var libraryVersion: String? = {
-        if let bundle = Bundle.allFrameworks.first(where: { $0.bundleIdentifier?.contains("1Flow") ?? false } ) {
-            return bundle.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String
+    lazy var libraryVersion: String = {
+        if let bundle = Bundle.allFrameworks.first(where: { $0.bundleIdentifier?.contains("1Flow") ?? false } ), let versionString = bundle.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String {
+            return versionString
         } else {
-            return "NA"
+            return oneFlowSDKVersion
         }
     }()
 

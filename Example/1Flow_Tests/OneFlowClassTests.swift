@@ -89,6 +89,9 @@ class OneFlowTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Should upload pending event")
         let eventManager = MockEventManager(expectation)
         OneFlow.shared.eventManager = eventManager
+        let mockProjectDetails = MockProjectDetailsController()
+        mockProjectDetails.analytic_user_id = "abc"
+        OneFlow.shared.projectDetailsController = mockProjectDetails
         OneFlow.logUser("user_id", userDetails: nil)
         self.wait(for: [expectation], timeout: 1.0)
     }
@@ -99,6 +102,7 @@ class OneFlowTests: XCTestCase {
         let mockProjectDetails = MockProjectDetailsController()
         mockProjectDetails.analytic_user_id = "abc"
         OneFlow.shared.eventManager = OFEventManager()
+        OneFlow.shared.projectDetailsController = mockProjectDetails
         OneFlow.shared.eventManager.projectDetailsController = mockProjectDetails
         OneFlow.shared.eventManager.surveyManager = surveyManager
         OneFlow.logUser("user_id", userDetails: nil)

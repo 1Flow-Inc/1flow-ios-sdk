@@ -36,12 +36,7 @@ enum EndPoints: EndPointProtocol {
                 surveyUrl = surveyUrl + "&user_id=" + userID
             }
 
-            if let libraryVersion =
-                OFProjectDetailsController.shared.libraryVersion {
-                surveyUrl = surveyUrl + "&min_version=" + libraryVersion
-            } else {
-                surveyUrl = surveyUrl + "&min_version=" + OFProjectDetailsController.shared.oneFlowSDKVersion
-            }
+            surveyUrl = surveyUrl + "&min_version=" + OFProjectDetailsController.shared.libraryVersion
 
             if let langStr = Locale.current.languageCode {
                 surveyUrl = surveyUrl + "&language_code=" + langStr

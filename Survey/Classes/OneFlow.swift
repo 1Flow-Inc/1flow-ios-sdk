@@ -21,6 +21,7 @@ public final class OneFlow: NSObject {
     var eventManager: EventManagerProtocol = OFEventManager()
     private var isSetupRunning: Bool = false
     static var retryCount = 0
+    var identifyCallPending = false
     private override init() {
     }
     let reachability = try! OFReachability(hostname: "www.apple.com")
@@ -38,6 +39,7 @@ public final class OneFlow: NSObject {
         OneFlowLog.writeLog("1Flow configuration started")
         if OneFlow.shared.projectDetailsController.appKey == nil {
             shared.setupReachability()
+            shared.projectDetailsController.currentEnviromment = .prod
             shared.projectDetailsController.appKey = appKey
             shared.projectDetailsController.setLoglevel(.info)
             DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 3, execute: {
@@ -101,7 +103,18 @@ public final class OneFlow: NSObject {
                         OneFlow.shared.projectDetailsController.analytic_user_id = userID
                         OneFlow.shared.eventManager.isNetworkReachable = true
                         OneFlow.shared.eventManager.configure()
-                        
+                        if OneFlow.shared.identifyCallPending {
+                            OneFlowLog.writeLog("Calling pending log user", .info)
+                            OneFlow.shared.identifyCallPending = false
+                            OneFlow.shared.projectDetailsController.logNewUserDetails { isSuccess in
+                                if isSuccess == true {
+                                    OneFlow.shared.eventManager.surveyManager.setUserToSubmittedSurveyAsAnnonyous(newUserID: userID)
+                                    OneFlow.shared.eventManager.setupSurveyManager()
+                                }
+                            }
+                        } else {
+                            OneFlowLog.writeLog("No pending log user", .info)
+                        }
                     } else {
                         OneFlowLog.writeLog("Add user - Failed", .error)
                     }
@@ -195,9 +208,14 @@ public final class OneFlow: NSObject {
             let logUserInfo = ["UserID":userID, "userDetails": userDetailsDic] as [String : Any]
             UserDefaults.standard.set(logUserInfo, forKey: "OFlogUserInfo")
             shared.projectDetailsController.newUserData = userDetailsDic
-        }
-        else {
+        } else {
             OneFlow.shared.projectDetailsController.newUserData = nil
+        }
+        guard shared.projectDetailsController.analytic_user_id != nil else {
+            OneFlowLog.writeLog("Analytics user id yet not generated.", .info)
+            shared.projectDetailsController.newUserID = userID
+            OneFlow.shared.identifyCallPending = true
+            return
         }
         OneFlowLog.writeLog("Data can be Serialized")
         OneFlowLog.writeLog("Log new user")
