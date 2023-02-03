@@ -69,6 +69,10 @@ class OFEventManager: NSObject, EventManagerProtocol {
         self.uploadTimer?.invalidate()
         self.uploadTimer = nil
     }
+
+    @objc func applicationWillEnterForeground() {
+        self.recordEvent(kEventNameSessionStart, parameters: nil)
+    }
     
     func networkStatusChanged(_ isReachable: Bool) {
         self.isNetworkReachable = isReachable
@@ -115,6 +119,8 @@ class OFEventManager: NSObject, EventManagerProtocol {
         
         DispatchQueue.main.async { [self] in
             NotificationCenter.default.addObserver(self, selector: #selector(applicationMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
+
+            NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
             
             NotificationCenter.default.addObserver(self, selector: #selector(applicationBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
         }

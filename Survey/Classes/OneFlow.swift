@@ -101,19 +101,20 @@ public final class OneFlow: NSObject {
                         
                         OneFlowLog.writeLog("Add user - Success")
                         OneFlow.shared.projectDetailsController.analytic_user_id = userID
-                        OneFlow.shared.eventManager.isNetworkReachable = true
-                        OneFlow.shared.eventManager.configure()
                         if OneFlow.shared.identifyCallPending {
                             OneFlowLog.writeLog("Calling pending log user", .info)
                             OneFlow.shared.identifyCallPending = false
                             OneFlow.shared.projectDetailsController.logNewUserDetails { isSuccess in
                                 if isSuccess == true {
+                                    OneFlow.shared.eventManager.isNetworkReachable = true
+                                    OneFlow.shared.eventManager.configure()
                                     OneFlow.shared.eventManager.surveyManager.setUserToSubmittedSurveyAsAnnonyous(newUserID: userID)
-                                    OneFlow.shared.eventManager.setupSurveyManager()
                                 }
                             }
                         } else {
                             OneFlowLog.writeLog("No pending log user", .info)
+                            OneFlow.shared.eventManager.isNetworkReachable = true
+                            OneFlow.shared.eventManager.configure()
                         }
                     } else {
                         OneFlowLog.writeLog("Add user - Failed", .error)

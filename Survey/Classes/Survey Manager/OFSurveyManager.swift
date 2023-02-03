@@ -19,8 +19,6 @@ struct EventStore {
     let timeInterval: Int
 }
 
-let kPendingSurveyRuleInterval: Int = 3
-
 public let SurveyFinishNotification = Notification.Name("survey_finished")
 
 protocol SurveyManageable {
@@ -161,9 +159,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
 
     func checkAfterSurveyLoadForExistingEvents() {
         if let eventsArray = self.temporaryEventArray {
-            let timeInterval = Int(Date().timeIntervalSince1970)
-            let eventsToConsider = eventsArray.filter({ timeInterval - $0.timeInterval <= kPendingSurveyRuleInterval })
-            for event in eventsToConsider {
+            for event in eventsArray {
                 if let triggeredSurvey = surveyList?.result.first(where: { survey in
                     if let surveyEventName = survey.trigger_event_name {
                         let eventNames = surveyEventName.components(separatedBy: ",")
@@ -171,7 +167,6 @@ class OFSurveyManager: NSObject, SurveyManageable {
                             return true
                         }
                     }
-                    
                     return false
                 }){
                     if self.validateTheSurvey(triggeredSurvey) == true {
