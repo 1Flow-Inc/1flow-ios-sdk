@@ -43,7 +43,6 @@ protocol ProjectDetailsManageable {
     var newUserID: String? { get set }
     var newUserData: [String: Any]? { get set }
     var logUserRetryCount : Int { get set }
-    var oneFlowSDKVersion: String { get }
     var appVersion: String { get }
     var buildVersion: String { get }
     var modelName: String? { get }
@@ -62,7 +61,7 @@ protocol ProjectDetailsManageable {
 final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
 
     static let shared = OFProjectDetailsController()
-    let oneFlowSDKVersion: String = "2023.02.03"
+    let oneFlowSDKVersion: String = "2023.02.07"
     var currentEnviromment: OneFlowEnvironment = .prod
     var currentLogLevel: OneFlowLogLevel = .none
 
@@ -212,11 +211,7 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
     }()
 
     lazy var libraryVersion: String = {
-        if let bundle = Bundle.allFrameworks.first(where: { $0.bundleIdentifier?.contains("1Flow") ?? false } ), let versionString = bundle.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String {
-            return versionString
-        } else {
-            return oneFlowSDKVersion
-        }
+        return oneFlowSDKVersion
     }()
 
     lazy var osVersion: String = {
