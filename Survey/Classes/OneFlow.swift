@@ -39,7 +39,6 @@ public final class OneFlow: NSObject {
         OneFlowLog.writeLog("1Flow configuration started")
         if OneFlow.shared.projectDetailsController.appKey == nil {
             shared.setupReachability()
-            shared.projectDetailsController.currentEnviromment = .prod
             shared.projectDetailsController.appKey = appKey
             shared.projectDetailsController.setLoglevel(.info)
             DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 3, execute: {

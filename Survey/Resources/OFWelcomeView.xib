@@ -11,23 +11,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" customClass="OBJCOFWelcomeView">
-            <rect key="frame" x="0.0" y="0.0" width="400" height="200"/>
+            <rect key="frame" x="0.0" y="0.0" width="400" height="73"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yid-07-iTx">
-                    <rect key="frame" x="0.0" y="30" width="400" height="53.5"/>
-                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="We would love you invite you to answer a few quick questions. This will help us improve your experience." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qqs-DT-Ewt">
-                    <rect key="frame" x="0.0" y="93.5" width="400" height="33.5"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <color key="textColor" red="0.31372549020000001" green="0.33333333329999998" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A3m-C6-uK6">
-                    <rect key="frame" x="0.0" y="142" width="400" height="38"/>
+                    <rect key="frame" x="0.0" y="15" width="400" height="38"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="38" id="xWo-DC-EPa"/>
                     </constraints>
@@ -42,24 +30,16 @@
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="A3m-C6-uK6" firstAttribute="top" secondItem="qqs-DT-Ewt" secondAttribute="bottom" constant="15" id="5l3-hA-cZU"/>
+                <constraint firstItem="A3m-C6-uK6" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="2Cs-q4-svi"/>
                 <constraint firstItem="A3m-C6-uK6" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="9Rh-JS-Hxv"/>
-                <constraint firstItem="yid-07-iTx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CZ8-Bc-XWu"/>
-                <constraint firstItem="qqs-DT-Ewt" firstAttribute="leading" secondItem="yid-07-iTx" secondAttribute="leading" id="Mue-zH-W8j"/>
-                <constraint firstItem="qqs-DT-Ewt" firstAttribute="trailing" secondItem="yid-07-iTx" secondAttribute="trailing" id="Wqg-kZ-zMb"/>
                 <constraint firstAttribute="trailing" secondItem="A3m-C6-uK6" secondAttribute="trailing" id="Yga-Da-UsF"/>
                 <constraint firstAttribute="bottom" secondItem="A3m-C6-uK6" secondAttribute="bottom" constant="20" id="ZPC-mR-Lhj"/>
-                <constraint firstItem="qqs-DT-Ewt" firstAttribute="top" secondItem="yid-07-iTx" secondAttribute="bottom" constant="10" id="jv9-cz-PN3"/>
-                <constraint firstAttribute="trailing" secondItem="yid-07-iTx" secondAttribute="trailing" id="wuo-jf-Dp5"/>
-                <constraint firstItem="yid-07-iTx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="30" id="yxG-zF-fmX"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="btnContinue" destination="A3m-C6-uK6" id="iG1-eN-sin"/>
-                <outlet property="lblDescription" destination="qqs-DT-Ewt" id="MVG-C5-teJ"/>
-                <outlet property="lblTitle" destination="yid-07-iTx" id="VtH-Yz-kRY"/>
             </connections>
-            <point key="canvasLocation" x="278.26086956521743" y="-123.54910714285714"/>
+            <point key="canvasLocation" x="278.26086956521743" y="-166.40625"/>
         </view>
     </objects>
     <resources>

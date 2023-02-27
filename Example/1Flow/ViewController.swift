@@ -28,29 +28,27 @@ class ViewController: UIViewController {
     }
     
     @IBAction func onRecordEvent_startSurvey(_ sender: Any) {
-//        OneFlow.recordEventName("start_all_survey_data_logic", parameters: nil)
-        OneFlow.useFont(fontFamily: nil)
+        OneFlow.recordEventName("4", parameters: nil)
     }
     
     @IBAction func onRecordEvent_withParams(_ sender: Any) {
-        OneFlow.recordEventName("button_clicked", parameters: ["title": "Submit", "number": 200, "purchase": "weekly"])
+        OneFlow.recordEventName("5", parameters: nil)
     }
     
     @IBAction func onLogUser(_ sender: Any) {
-        let params = ["firstName": "myFirstName", "lastName": "myLastName", "number": 987654] as [String : Any]
-        OneFlow.logUser("iOS_user_2", userDetails: params)
+        OneFlow.recordEventName("6", parameters: nil)
     }
     
     @IBAction func onButton1(_ sender: Any) {
-        OneFlow.recordEventName("all_types_of_survey", parameters: nil)
+        OneFlow.recordEventName("1", parameters: nil)
     }
     
     @IBAction func onButton2(_ sender: Any) {
-        OneFlow.recordEventName("start_all_survey_types", parameters: nil)
+        OneFlow.recordEventName("2", parameters: nil)
     }
     
     @IBAction func onButton3(_ sender: Any) {
-//        OneFlow.recordEventName("button3_recurring", parameters: nil)
-        OneFlow.useFont(fontFamily: "Zapfino")
+        OneFlow.recordEventName("3", parameters: nil)
+//        OneFlow.useFont(fontFamily: "Zapfino")
     }
 }

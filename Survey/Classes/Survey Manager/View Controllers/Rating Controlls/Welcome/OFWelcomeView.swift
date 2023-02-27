@@ -17,23 +17,9 @@ import UIKit
 @objc(OBJCOFWelcomeView)
 class OFWelcomeView: UIView {
 
-    @IBOutlet weak var lblTitle: UILabel!
-    @IBOutlet weak var lblDescription: UILabel!
     @IBOutlet weak var btnContinue: UIButton!
     weak var delegate: OFRatingViewProtocol?
     var imageView: UIImageView?
-    
-    var welcomeTitle: String = "" {
-        didSet {
-            self.lblTitle.text = welcomeTitle
-        }
-    }
-    
-    var welcomeDescription: String = "" {
-        didSet {
-            self.lblDescription.text = welcomeDescription
-        }
-    }
     
     var continueTitle: String = "" {
         didSet {
@@ -43,10 +29,6 @@ class OFWelcomeView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        lblTitle.textColor = kPrimaryTitleColor
-        lblDescription.textColor = kSecondaryTitleColor
-        lblTitle.font = OneFlow.fontConfiguration?.titleFont
-        lblDescription.font = OneFlow.fontConfiguration?.subTitleFont
         btnContinue.layer.cornerRadius = 5.0
         btnContinue.isHidden = false
         btnContinue.backgroundColor = kBrandColor

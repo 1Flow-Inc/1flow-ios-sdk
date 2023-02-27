@@ -43,6 +43,9 @@ class OFRatingViewController: UIViewController {
     @IBOutlet weak var poweredByButton: UIButton!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var webContainerView: OFWebContainerView!
+    @IBOutlet weak var webContainerHeight: NSLayoutConstraint!
     
     @IBOutlet weak var containerLeading: NSLayoutConstraint!
     @IBOutlet weak var containerTrailing: NSLayoutConstraint!
@@ -51,6 +54,8 @@ class OFRatingViewController: UIViewController {
     
     @IBOutlet weak var stackViewTop: NSLayoutConstraint!
     @IBOutlet weak var stackViewBottom: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewHeight: NSLayoutConstraint!
+
     private var isKeyboardVisible = false
     var originalPosition: CGPoint?
     var currentPositionTouched: CGPoint?
@@ -122,22 +127,19 @@ class OFRatingViewController: UIViewController {
     }
     
     func setupWidgetPosition() {
+        let minimumSpace = UIScreen.main.bounds.height * 20.0 / 100.0
+        
         if isWidgetPositionBottom() {
+            self.containerTop.constant = minimumSpace
             
         } else if isWidgetPositionMiddle() {
             self.bottomConstraint.isActive = false
             centerConstraint = self.ratingView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
             centerConstraint.isActive = true
-            if #available(iOS 11.0, *) {
-                if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
-                    self.containerBottom.constant = bottomPadding + 10
-                }
-            } else {
-                self.containerBottom.constant = 10
-            }
+            self.containerBottom.constant = minimumSpace / 2
+            self.containerTop.constant = minimumSpace / 2
 
-        }
-        else if isWidgetPositionTop() {
+        } else if isWidgetPositionTop() {
             self.bottomConstraint.isActive = false
             self.ratingView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
             if #available(iOS 11.0, *) {
@@ -147,10 +149,9 @@ class OFRatingViewController: UIViewController {
             } else {
                 self.containerTop.constant = 30
             }
-            self.containerBottom.constant =  10
+            self.containerBottom.constant =  minimumSpace
 
-        }
-        else if isWidgetPositionTopBanner() {
+        } else if isWidgetPositionTopBanner() {
             self.bottomConstraint.isActive = false
             self.ratingView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
             if #available(iOS 11.0, *) {
@@ -160,12 +161,11 @@ class OFRatingViewController: UIViewController {
             } else {
                 self.containerTop.constant = 15
             }
-            self.containerBottom.constant =  10
+            self.containerBottom.constant =  minimumSpace / 2
             self.containerLeading.constant = 0
             self.containerTrailing.constant = 0
             self.ratingView.backgroundColor = kBackgroundColor
-        }
-        else if isWidgetPositionBottomBanner() {
+        } else if isWidgetPositionBottomBanner() {
             if #available(iOS 11.0, *) {
                 if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
                     self.containerBottom.constant = bottomPadding + 10
@@ -177,8 +177,7 @@ class OFRatingViewController: UIViewController {
             self.containerTrailing.constant = 0
             self.ratingView.backgroundColor = kBackgroundColor
 
-        }
-        else if isWidgetPositionFullScreen() {
+        } else if isWidgetPositionFullScreen() {
             if #available(iOS 11.0, *) {
                 if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
                     self.containerBottom.constant = bottomPadding + 10
@@ -198,13 +197,23 @@ class OFRatingViewController: UIViewController {
             self.ratingView.backgroundColor = kBackgroundColor
             centerConstraint = self.ratingView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
             centerConstraint.isActive = true
-            stackViewCenterConstraint = self.stackView.centerYAnchor.constraint(equalTo: self.containerView.centerYAnchor)
+            stackViewCenterConstraint = self.scrollView.centerYAnchor.constraint(equalTo: self.containerView.centerYAnchor)
             stackViewCenterConstraint.isActive = true
-            self.stackViewTop.priority = .defaultLow
-            self.stackViewBottom.priority = .defaultLow
+            self.setupTopBottomIfNeeded()
         }
     }
-    
+    func setupTopBottomIfNeeded() {
+        if self.isWidgetPositionFullScreen() {
+            if self.stackView.bounds.height < self.view.bounds.height {
+                self.stackViewTop.priority = .defaultLow
+                self.stackViewBottom.priority = .defaultLow
+            } else {
+                self.stackViewTop.priority = .required
+                self.stackViewBottom.priority = .required
+            }
+        }
+    }
+
     func isWidgetPositionBottom() -> Bool {
         if widgetPosition == .bottomLeft || widgetPosition == .bottomCenter || widgetPosition == .bottomRight {
             return true
@@ -314,29 +323,25 @@ class OFRatingViewController: UIViewController {
     func changePositionAsPerKeyboard() {
         if let _ = keyboardRect  {
             if isWidgetPositionBottom() || isWidgetPositionBottomBanner() {
-                self.bottomConstraint.constant = keyboardRect.size.height //+ 20
+                self.bottomConstraint.constant = keyboardRect.size.height + 20 //+ 20
             }
             self.ratingView.setNeedsUpdateConstraints()
             if isWidgetPositionMiddle() {
-                if let centerConstraint = self.centerConstraint  {
-                    let difference = (ratingView.frame.origin.y + ratingView.frame.size.height + 20) - keyboardRect.origin.y
-                    if difference > 0 {
-                        centerConstraint.constant = -difference
-                    }
-                }
-            }
-            else if isWidgetPositionFullScreen() {
-                if #available(iOS 11.0, *) {
-                    if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
-                        if let stackViewConstraint = self.stackViewCenterConstraint {
-                            let difference = (stackView.frame.origin.y + stackView.frame.size.height + 30 + bottomPadding) - keyboardRect.origin.y
-                            if difference > 0 {
-                                stackViewConstraint.constant = stackViewConstraint.constant - difference
-                            }
-                        }
-                    }
-                }
-                
+                self.containerBottom.constant = keyboardRect.size.height + 10
+            } else if isWidgetPositionFullScreen() {
+                self.containerBottom.constant = keyboardRect.size.height + 10
+//                if #available(iOS 11.0, *) {
+//                    if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
+//                        if let stackViewConstraint = self.stackViewCenterConstraint {
+//                            let difference = (stackView.frame.origin.y + stackView.frame.size.height + 30 + bottomPadding) - keyboardRect.origin.y
+//                            if difference > 0 {
+//                                stackViewConstraint.constant = stackViewConstraint.constant - difference - 100
+//                            }
+//                        }
+//                    }
+//                }
+            } else if isWidgetPositionTop() {
+                self.containerBottom.constant = keyboardRect.size.height + 10
             }
             
             UIView.animate(withDuration: 0.4, animations: { () -> Void in
@@ -354,6 +359,13 @@ class OFRatingViewController: UIViewController {
             stackCenterConstraint.constant = 0
         }
         self.bottomConstraint.constant = 0
+        if #available(iOS 11.0, *) {
+            if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
+                self.containerBottom.constant = bottomPadding + 10
+            }
+        } else {
+            self.containerBottom.constant = 10
+        }
         self.ratingView.setNeedsUpdateConstraints()
         UIView.animate(withDuration: 0.4, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -547,13 +559,18 @@ class OFRatingViewController: UIViewController {
     }
     
     private func setupUIAccordingToConfiguration(_ currentScreen: SurveyListResponse.Survey.Screen) {
-
-            self.stackView.alpha = 0.0
+        self.stackView.alpha = 0.0
+        self.webContainerView.stopLoadingContent()
         if let value = currentScreen.title {
             self.viewPrimaryTitle1.isHidden = false
             self.lblPrimaryTitle1.text = value
             self.lblPrimaryTitle1.textColor = kPrimaryTitleColor
             self.lblPrimaryTitle1.font = OneFlow.fontConfiguration?.titleFont
+            if currentScreen.input?.input_type == "welcome-screen" {
+                self.lblPrimaryTitle1.textAlignment = .center
+            } else {
+                self.lblPrimaryTitle1.textAlignment = .natural
+            }
         } else {
             self.viewPrimaryTitle1.isHidden = true
         }
@@ -563,16 +580,30 @@ class OFRatingViewController: UIViewController {
             self.lblSecondaryTitle.text = value
             self.lblSecondaryTitle.textColor = kSecondaryTitleColor
             self.lblSecondaryTitle.font = OneFlow.fontConfiguration?.subTitleFont
+            if currentScreen.input?.input_type == "welcome-screen" {
+                self.lblSecondaryTitle.textAlignment = .center
+            } else {
+                self.lblSecondaryTitle.textAlignment = .natural
+            }
         } else {
             self.viewSecondaryTitle.isHidden = true
         }
 
-        let indexToAddOn = 2
+        if let mediaContent = currentScreen.media_embed_html {
+            webContainerView.isHidden = false
+            self.webContainerHeight.constant = 0
+            webContainerView.delegate = self
+            webContainerView.loadHTMLContent(mediaContent)
+        } else {
+            webContainerView.isHidden = true
+        }
+
+        var indexToAddOn = 3
         if self.stackView.arrangedSubviews.count > indexToAddOn {
             let subView = self.stackView.arrangedSubviews[indexToAddOn]
             subView.removeFromSuperview()
         }
-        
+
         if currentScreen.input?.input_type == "text" {
             let view = OFFollowupView.loadFromNib()
             view.delegate = self
@@ -681,15 +712,15 @@ class OFRatingViewController: UIViewController {
             if !shouldFadeAway {
                 self.closeButton.isHidden = false
             }
-            self.stackView.insertArrangedSubview(view, at: indexToAddOn)
+            /// For thank you page, web container will be on 4th position. So add thanks you view at 3rd in stack view
+            /// since thank you screen is last screen it will not affect anything
+            /// if thank you screen to be presented in in between other screens, then we need to arrange subview index again
+            self.stackView.insertArrangedSubview(view, at: 2)
+            indexToAddOn = 2
         }
         else if currentScreen.input?.input_type == "welcome-screen" {
-            self.viewPrimaryTitle1.isHidden = true
-            self.viewSecondaryTitle.isHidden = true
             let view = OFWelcomeView.loadFromNib()
             view.delegate = self
-            view.welcomeTitle = currentScreen.title ?? "Welcome"
-            view.welcomeDescription = currentScreen.message ?? ""
             if let buttonArray = currentScreen.buttons {
                 if buttonArray.count > 0 {
                     if let buttonTitle = buttonArray.first?.title {
@@ -711,8 +742,8 @@ class OFRatingViewController: UIViewController {
         }
         
         UIView.animate(withDuration: 0.3) {
-            if self.stackView.arrangedSubviews.count > 2 {
-                self.stackView.arrangedSubviews[2].isHidden = false
+            if self.stackView.arrangedSubviews.count > indexToAddOn {
+                self.stackView.arrangedSubviews[indexToAddOn].isHidden = false
             }
             
         } completion: { _ in
@@ -752,10 +783,7 @@ class OFRatingViewController: UIViewController {
                     UIView.transition(with: self.ratingView, duration: 0.5, options: .transitionCrossDissolve) {
                         self.ratingView.isHidden = false
                     }
-                    
-                    
-                }
-                else if self.isWidgetPositionTop() || self.isWidgetPositionTopBanner()  {
+                } else if self.isWidgetPositionTop() || self.isWidgetPositionTopBanner()  {
                     let originalPosition = self.ratingView.frame.origin.y
                     self.ratingView.frame.origin.y = 0 - self.ratingView.frame.size.height
                     self.ratingView.alpha = 1.0
@@ -772,11 +800,8 @@ class OFRatingViewController: UIViewController {
                             }
                             totalDelay += 0.2
                         }
-                        
                     }
-                    
                 }
-
             } else {
                 var totalDelay = 0.0
                 for subView in self.stackView.arrangedSubviews {
@@ -787,6 +812,7 @@ class OFRatingViewController: UIViewController {
                     }
                     totalDelay += 0.2
                 }
+                self.setupTopBottomIfNeeded()
             }
         }
     }
@@ -911,7 +937,7 @@ extension OFRatingViewController: OFRatingViewProtocol {
     
     func checkBoxViewDidFinishPicking(_ selectedOptions: [String], _ otherTextAnswer: String?) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-            if let screen = self.allScreens?[self.currentScreenIndex] {       
+            if let screen = self.allScreens?[self.currentScreenIndex] {
                 let finalString = selectedOptions.joined(separator: ",")
                 let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: otherTextAnswer, answer_index: finalString)
                 self.surveyResult.append(answer)
@@ -1009,5 +1035,12 @@ extension OFRatingViewController: OFRatingViewProtocol {
             OneFlowLog.writeLog("only welcome screen. turning completed true", .verbose)
         }
         self.presentNextScreen("")
+    }
+}
+extension OFRatingViewController: WebContainerDelegate {
+    func webContainerDidLoadWith(_ contentHeight: CGFloat) {
+        self.webContainerHeight.constant = contentHeight
+        self.view.layoutIfNeeded()
+        self.setupTopBottomIfNeeded()
     }
 }

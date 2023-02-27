@@ -23,6 +23,7 @@
 		375373795E4FA75DD1D74ED1B3A939B9 /* OFMCQView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFAE9B72FB09181AFBA99DF0CC3B8778 /* OFMCQView.xib */; };
 		4141A220721A1BEB017604A1B019DC2B /* OneFlowLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C021754A0834FBD81DFE50FCFCCC35 /* OneFlowLog.swift */; };
 		4360555D2940A5B700EE033C /* SurveyFontConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4360555C2940A5B700EE033C /* SurveyFontConfiguration.swift */; };
+		437886E8299817FD009FEF25 /* OFWebContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437886E52994F834009FEF25 /* OFWebContainerView.swift */; };
 		456E187205471A0E4F5664985E58C1F2 /* OFNumberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B862F4EB82AD7324DCA6E87D6CE751E4 /* OFNumberCollectionViewCell.swift */; };
 		59F429E9A2443A8E8C94FD6B05F4B26E /* OneFlowDataLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB801BBB8506FE7B3939B5A8D1BB69A /* OneFlowDataLogic.swift */; };
 		5A184F8666A7A40B450D0B22BBA3771B /* URLRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96122D973B495DA43C5195C9C7C9561E /* URLRequestManager.swift */; };
@@ -41,7 +42,7 @@
 		7C1A88EE9F810183C5850912C7935119 /* Pods-1Flow_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1C7B01C82D9FD4B5698CE204588A64 /* Pods-1Flow_Tests-dummy.m */; };
 		8130EADBAFAE8CD00A4601770494D30D /* FeedbackAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4567C2AC22713B5B00944F21C95BC69A /* FeedbackAssets.xcassets */; };
 		8349B68B1BA11C05487DFD91805381C3 /* OFMCQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCD5151EFCC8B02EC76AA5A5536C12E /* OFMCQView.swift */; };
-		838909CAC0BFBF6378D2AF5C59662370 /* 1Flow-SurveySDK in Resources */ = {isa = PBXBuildFile; fileRef = 528DEFCB4735A3F217174EEA89E94E89 /* 1Flow-SurveySDK */; };
+		838909CAC0BFBF6378D2AF5C59662370 /* SurveySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528DEFCB4735A3F217174EEA89E94E89 /* SurveySDK.bundle */; };
 		83C89CF3C99567775BAC14E9A4AA42EA /* OFStarsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4434702501960A4010466421ADB8857D /* OFStarsView.xib */; };
 		855F2B3C763DAB211F46869DBFA38764 /* OFFollowupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C8295EEA29D6750AE6491ACD052391CF /* OFFollowupView.xib */; };
 		86CBF890731B30C6496D5702A28461B9 /* Pods-1Flow_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 168D06B35F03AF5FFB0AC5A4EFC489CC /* Pods-1Flow_Example-dummy.m */; };
@@ -122,6 +123,7 @@
 		37F68474155312269760AB343384C91B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		3E2310CE2A961C5269B0DA843140BC0F /* OFSwiftGIF.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFSwiftGIF.swift; sourceTree = "<group>"; };
 		4360555C2940A5B700EE033C /* SurveyFontConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyFontConfiguration.swift; sourceTree = "<group>"; };
+		437886E52994F834009FEF25 /* OFWebContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OFWebContainerView.swift; sourceTree = "<group>"; };
 		4385E10AC6E4BC7503B447884B9DB0B7 /* Pods-1Flow_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-1Flow_Example-frameworks.sh"; sourceTree = "<group>"; };
 		440F4D66CCB5CF18D2FE5D168806D26B /* Pods-1Flow_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Example-Info.plist"; sourceTree = "<group>"; };
 		4434702501960A4010466421ADB8857D /* OFStarsView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFStarsView.xib; path = Survey/Resources/OFStarsView.xib; sourceTree = "<group>"; };
@@ -129,7 +131,7 @@
 		49451910C05864670203C5E333DA1CF2 /* OFThankYouView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFThankYouView.swift; sourceTree = "<group>"; };
 		4D4DC93E32C3FCF2C2F13B5E1C1369E3 /* Pods-1Flow_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		4E24F685B9D5080DED7C1E60041F54EA /* 1Flow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = 1Flow.release.xcconfig; sourceTree = "<group>"; };
-		528DEFCB4735A3F217174EEA89E94E89 /* 1Flow-SurveySDK */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "1Flow-SurveySDK"; path = SurveySDK.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		528DEFCB4735A3F217174EEA89E94E89 /* SurveySDK.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SurveySDK.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		5897AFC739FF869E71A96D91EFA4082B /* OFInAppPurchaseEventsController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFInAppPurchaseEventsController.swift; sourceTree = "<group>"; };
 		5BB7D439D18A5611B7C398C52CE2AE23 /* Pods-1Flow_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-1Flow_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		6AF2BC77415485944007BB70E378E8C9 /* OFProjectDetailsController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OFProjectDetailsController.swift; path = Survey/Classes/OFProjectDetailsController.swift; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 				CA6697BA4BD440ACDE4686AA279AE74B /* OFRatingViewProtocol.swift */,
 				2CFD92A986067B84E1EC0CED905C1422 /* OFRoundedConrnerView.swift */,
 				E062047567E938CCEDAA172D752348EF /* OFViewLoading.swift */,
+				437886E42994F7F7009FEF25 /* WebContainer */,
 				3BB988F4161E3CF3D609D6373BF90679 /* Followup */,
 				6356E024297D4CA3738B445176ADCBAB /* MCQ */,
 				1D05185E9556B8AF0FD8875F22E15443 /* OneToTen */,
@@ -326,7 +329,7 @@
 			isa = PBXGroup;
 			children = (
 				E262A6333816A67FC1DC3F18ADFD3B2E /* 1Flow */,
-				528DEFCB4735A3F217174EEA89E94E89 /* 1Flow-SurveySDK */,
+				528DEFCB4735A3F217174EEA89E94E89 /* SurveySDK.bundle */,
 				35D6960850779D98FF229412FED4CDD0 /* Pods-1Flow_Example */,
 				129F5B23C9DB6DF1374F687B58A680CD /* Pods-1Flow_Tests */,
 			);
@@ -339,6 +342,14 @@
 				F82C440AA56316ECD1D19F00D329DAE4 /* OFFollowupView.swift */,
 			);
 			path = Followup;
+			sourceTree = "<group>";
+		};
+		437886E42994F7F7009FEF25 /* WebContainer */ = {
+			isa = PBXGroup;
+			children = (
+				437886E52994F834009FEF25 /* OFWebContainerView.swift */,
+			);
+			path = WebContainer;
 			sourceTree = "<group>";
 		};
 		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
@@ -561,7 +572,7 @@
 			);
 			name = "1Flow-SurveySDK";
 			productName = SurveySDK;
-			productReference = 528DEFCB4735A3F217174EEA89E94E89 /* 1Flow-SurveySDK */;
+			productReference = 528DEFCB4735A3F217174EEA89E94E89 /* SurveySDK.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		37DC2BD35530AAFFCBFCF00785D455F7 /* Pods-1Flow_Example */ = {
@@ -629,6 +640,11 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					15ECB5A08AF26C41C1FFF13630AE92F3 = {
+						LastSwiftMigration = 1320;
+					};
+				};
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -656,7 +672,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				838909CAC0BFBF6378D2AF5C59662370 /* 1Flow-SurveySDK in Resources */,
+				838909CAC0BFBF6378D2AF5C59662370 /* SurveySDK.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -732,6 +748,7 @@
 				0BFC3F5485EEFC70311CC7D8E259EF69 /* OFAPIController.swift in Sources */,
 				7A3AE033F0A57985AE57523345DF0DBB /* OFDraggableView.swift in Sources */,
 				CA27C9C21B3EF4D7B1A86B7663360E2C /* OFEventManager.swift in Sources */,
+				437886E8299817FD009FEF25 /* OFWebContainerView.swift in Sources */,
 				DF54078572F472241285F89E0D31CC19 /* OFFollowupView.swift in Sources */,
 				CDF5B121E8412199D11D6E512B135C2C /* OFInAppPurchaseEventsController.swift in Sources */,
 				8349B68B1BA11C05487DFD91805381C3 /* OFMCQView.swift in Sources */,
@@ -863,13 +880,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C76E8BEDDFFD9626322B32069777AB63 /* 1Flow.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/1Flow";
 				IBSC_MODULE = _1Flow;
 				INFOPLIST_FILE = "Target Support Files/1Flow/ResourceBundle-SurveySDK-1Flow-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = SurveySDK;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -879,13 +900,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4E24F685B9D5080DED7C1E60041F54EA /* 1Flow.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/1Flow";
 				IBSC_MODULE = _1Flow;
 				INFOPLIST_FILE = "Target Support Files/1Flow/ResourceBundle-SurveySDK-1Flow-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = SurveySDK;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = bundle;
 			};

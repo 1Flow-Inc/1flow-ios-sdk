@@ -369,7 +369,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
                 return
             }
             self.surveyWindow?.isHidden = false
-            self.surveyWindow?.windowLevel = .alert
+            self.surveyWindow?.windowLevel = .normal
             
             let controller = OFRatingViewController(nibName: "OFRatingViewController", bundle: OneFlowBundle.bundleForObject(self))
             controller.shouldRemoveWatermark = survey.survey_settings?.sdk_theme?.remove_watermark ?? false

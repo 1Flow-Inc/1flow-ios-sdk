@@ -64,6 +64,7 @@ struct SurveyListResponse: Codable {
             var _id: String
             var buttons: [FBButton]?
             var rules : Rule?
+            var media_embed_html: String?
             
             struct Input: Codable {
                 var _id: String
