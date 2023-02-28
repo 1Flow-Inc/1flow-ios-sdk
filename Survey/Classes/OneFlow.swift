@@ -40,7 +40,6 @@ public final class OneFlow: NSObject {
         if OneFlow.shared.projectDetailsController.appKey == nil {
             shared.setupReachability()
             shared.projectDetailsController.appKey = appKey
-            shared.projectDetailsController.currentEnviromment = .dev
             shared.projectDetailsController.setLoglevel(.info)
             DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 3, execute: {
                 if OFProjectDetailsController.shared.analytic_user_id == nil {
