@@ -45,6 +45,8 @@ class OFRatingViewController: UIViewController {
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var webContainerView: OFWebContainerView!
+    @IBOutlet weak var bottomPaddingView: UIView!
+    @IBOutlet weak var topPaddingView: UIView!
     @IBOutlet weak var webContainerHeight: NSLayoutConstraint!
     
     @IBOutlet weak var containerLeading: NSLayoutConstraint!
@@ -164,19 +166,21 @@ class OFRatingViewController: UIViewController {
             self.containerBottom.constant =  minimumSpace / 2
             self.containerLeading.constant = 0
             self.containerTrailing.constant = 0
-            self.ratingView.backgroundColor = kBackgroundColor
+            self.topPaddingView.isHidden = false
+            self.topPaddingView.backgroundColor = kBackgroundColor
         } else if isWidgetPositionBottomBanner() {
             if #available(iOS 11.0, *) {
                 if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
                     self.containerBottom.constant = bottomPadding + 10
                 }
             } else {
-                self.containerBottom.constant = 10
+                self.containerBottom.constant = 0
             }
+            self.containerTop.constant = minimumSpace
             self.containerLeading.constant = 0
             self.containerTrailing.constant = 0
-            self.ratingView.backgroundColor = kBackgroundColor
-
+            self.bottomPaddingView.isHidden = false
+            self.bottomPaddingView.backgroundColor = kBackgroundColor
         } else if isWidgetPositionFullScreen() {
             if #available(iOS 11.0, *) {
                 if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
@@ -323,24 +327,14 @@ class OFRatingViewController: UIViewController {
     func changePositionAsPerKeyboard() {
         if let _ = keyboardRect  {
             if isWidgetPositionBottom() || isWidgetPositionBottomBanner() {
-                self.bottomConstraint.constant = keyboardRect.size.height + 20 //+ 20
+                self.bottomConstraint.constant = keyboardRect.size.height + 20
             }
             self.ratingView.setNeedsUpdateConstraints()
             if isWidgetPositionMiddle() {
                 self.containerBottom.constant = keyboardRect.size.height + 10
             } else if isWidgetPositionFullScreen() {
                 self.containerBottom.constant = keyboardRect.size.height + 10
-//                if #available(iOS 11.0, *) {
-//                    if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
-//                        if let stackViewConstraint = self.stackViewCenterConstraint {
-//                            let difference = (stackView.frame.origin.y + stackView.frame.size.height + 30 + bottomPadding) - keyboardRect.origin.y
-//                            if difference > 0 {
-//                                stackViewConstraint.constant = stackViewConstraint.constant - difference - 100
-//                            }
-//                        }
-//                    }
-//                }
-            } else if isWidgetPositionTop() {
+            } else if isWidgetPositionTop() || isWidgetPositionTopBanner() {
                 self.containerBottom.constant = keyboardRect.size.height + 10
             }
             

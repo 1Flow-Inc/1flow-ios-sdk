@@ -11,6 +11,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OFRatingViewController" customModule="SurveySDK" customModuleProvider="target">
             <connections>
                 <outlet property="bottomConstraint" destination="axD-5H-hmG" id="nCh-Kj-eWV"/>
+                <outlet property="bottomPaddingView" destination="Hma-vD-SZl" id="TqX-g4-0j1"/>
                 <outlet property="bottomView" destination="7m0-NO-0B7" id="90O-7n-aHg"/>
                 <outlet property="closeButton" destination="Uze-xR-ioR" id="958-c7-AFd"/>
                 <outlet property="containerBottom" destination="Yt6-Jt-8zJ" id="qfW-R4-BcD"/>
@@ -31,6 +32,7 @@
                 <outlet property="stackView" destination="Er2-Uu-bxu" id="8KW-hd-TfL"/>
                 <outlet property="stackViewBottom" destination="tOd-gV-a2n" id="waX-9l-4iZ"/>
                 <outlet property="stackViewTop" destination="EXA-80-VRX" id="CwE-si-gki"/>
+                <outlet property="topPaddingView" destination="2Sq-Bg-oJ6" id="brX-WA-sPx"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="viewPrimaryTitle1" destination="riG-ra-p1o" id="hnd-lf-LMB"/>
                 <outlet property="viewSecondaryTitle" destination="73l-Aw-oLw" id="2Jh-GN-f9H"/>
@@ -44,7 +46,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="axG-11-bjr" customClass="OFDraggableView" customModule="SurveySDK" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="760" width="414" height="136"/>
+                    <rect key="frame" x="0.0" y="800" width="414" height="96"/>
                     <subviews>
                         <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aR0-p5-Dfi">
                             <rect key="frame" x="185" y="12" width="44" height="5"/>
@@ -54,8 +56,12 @@
                                 <constraint firstAttribute="width" constant="44" id="pVH-oX-lDY"/>
                             </constraints>
                         </imageView>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Sq-Bg-oJ6">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="0.0"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7H-4h-zdG">
-                            <rect key="frame" x="20" y="40" width="374" height="58"/>
+                            <rect key="frame" x="20" y="0.0" width="374" height="58"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dcZ-XD-uRM" customClass="OBJCOFRoundedConrnerView">
                                     <rect key="frame" x="0.0" y="-10" width="374" height="35"/>
@@ -206,15 +212,27 @@
                                 <constraint firstItem="7m0-NO-0B7" firstAttribute="top" secondItem="dcZ-XD-uRM" secondAttribute="bottom" id="xus-YW-0zD"/>
                             </constraints>
                         </view>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hma-vD-SZl">
+                            <rect key="frame" x="0.0" y="58" width="414" height="38"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        </view>
                     </subviews>
                     <constraints>
                         <constraint firstItem="N7H-4h-zdG" firstAttribute="leading" secondItem="axG-11-bjr" secondAttribute="leading" constant="20" id="15B-yE-rUg"/>
                         <constraint firstAttribute="width" constant="450" id="6Ie-9I-FcN"/>
+                        <constraint firstAttribute="trailing" secondItem="Hma-vD-SZl" secondAttribute="trailing" id="8eQ-rk-CMZ"/>
                         <constraint firstItem="aR0-p5-Dfi" firstAttribute="centerX" secondItem="axG-11-bjr" secondAttribute="centerX" id="8nq-iQ-df9"/>
+                        <constraint firstAttribute="bottom" secondItem="Hma-vD-SZl" secondAttribute="bottom" id="FIY-Qj-nT9"/>
                         <constraint firstAttribute="trailing" secondItem="N7H-4h-zdG" secondAttribute="trailing" constant="20" id="IR0-0N-0Iy"/>
+                        <constraint firstItem="2Sq-Bg-oJ6" firstAttribute="leading" secondItem="axG-11-bjr" secondAttribute="leading" id="Umz-DL-AEo"/>
                         <constraint firstAttribute="bottom" secondItem="N7H-4h-zdG" secondAttribute="bottom" constant="38" id="Yt6-Jt-8zJ"/>
+                        <constraint firstItem="Hma-vD-SZl" firstAttribute="leading" secondItem="axG-11-bjr" secondAttribute="leading" id="ekX-Us-CiK"/>
+                        <constraint firstItem="2Sq-Bg-oJ6" firstAttribute="top" secondItem="axG-11-bjr" secondAttribute="top" id="iNR-xb-6Xo"/>
+                        <constraint firstAttribute="trailing" secondItem="2Sq-Bg-oJ6" secondAttribute="trailing" id="j0G-pN-fXD"/>
+                        <constraint firstItem="Hma-vD-SZl" firstAttribute="top" secondItem="N7H-4h-zdG" secondAttribute="bottom" id="lEZ-fs-AjX"/>
                         <constraint firstItem="aR0-p5-Dfi" firstAttribute="top" secondItem="axG-11-bjr" secondAttribute="top" constant="12" id="qU0-wu-pL6"/>
-                        <constraint firstItem="N7H-4h-zdG" firstAttribute="top" secondItem="axG-11-bjr" secondAttribute="top" constant="40" id="whc-gQ-elQ"/>
+                        <constraint firstItem="N7H-4h-zdG" firstAttribute="top" secondItem="2Sq-Bg-oJ6" secondAttribute="bottom" id="qqi-RF-bHT"/>
+                        <constraint firstItem="N7H-4h-zdG" firstAttribute="top" secondItem="axG-11-bjr" secondAttribute="top" id="whc-gQ-elQ"/>
                     </constraints>
                     <variation key="default">
                         <mask key="constraints">
@@ -229,7 +247,7 @@
                     </variation>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="luR-eH-Dfn">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="760"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="800"/>
                     <connections>
                         <action selector="onBlankSpaceTapped:" destination="-1" eventType="touchUpInside" id="reh-lV-p1X"/>
                     </connections>
