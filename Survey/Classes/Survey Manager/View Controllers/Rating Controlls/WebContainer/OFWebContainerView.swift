@@ -48,13 +48,11 @@ class OFWebContainerView: UIView, WKNavigationDelegate {
         self.webview?.scrollView.showsVerticalScrollIndicator = false
         self.webview?.scrollView.showsHorizontalScrollIndicator = false
         let finalString: String
-//        if string.hasPrefix("<img") {
-//            finalString = string.replacingOccurrences(of: "max-width", with: "width")
-//        } else {
+        if string.hasPrefix("<img") {
+            finalString = string.replacingOccurrences(of: "max-width", with: "width")
+        } else {
             finalString = string
-//        }
-//        let finalString = string.replacingOccurrences(of: "max-width", with: "width")
-//        let finalString = "<video style='width:100%; height:auto; max-width:100%; max-height:100%; object-fit:cover;' controls autoplay src='https://development-storage.s3.eu-west-1.amazonaws.com/survey_videos/ce5671c4-4e9d-4f54-9e0d-1842a51adb5e.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIATGUFCSZE7C6FDZN3%2F20230223%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20230223T131216Z&X-Amz-Expires=3600&X-Amz-Signature=ec05da10484da04f2cff81706fe30d5414189e275eb90f649ee6d2e19f7469a7&X-Amz-SignedHeaders=host'></video>"
+        }
         self.webview?.loadHTMLString(finalString, baseURL: nil)
     }
 
