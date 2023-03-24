@@ -1,0 +1,27 @@
+
+/* Class = "UIButton"; normalTitle = "Log user"; ObjectID = "1Ra-cK-Wt0"; */
+"1Ra-cK-Wt0.normalTitle" = "Log user";
+
+/* Class = "UIButton"; normalTitle = "Record Event - All Survey"; ObjectID = "4oS-n8-BsL"; */
+"4oS-n8-BsL.normalTitle" = "Record Event - All Survey";
+
+/* Class = "UIButton"; configuration.title = "Button1"; ObjectID = "Pa9-BQ-vNI"; */
+"Pa9-BQ-vNI.configuration.title" = "Button1";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Pa9-BQ-vNI"; */
+"Pa9-BQ-vNI.normalTitle" = "Button";
+
+/* Class = "UIButton"; configuration.title = "Button3"; ObjectID = "lUU-gm-wxr"; */
+"lUU-gm-wxr.configuration.title" = "Button3";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "lUU-gm-wxr"; */
+"lUU-gm-wxr.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Record Event - With param"; ObjectID = "uia-pA-UWd"; */
+"uia-pA-UWd.normalTitle" = "Record Event - With param";
+
+/* Class = "UIButton"; configuration.title = "Button2"; ObjectID = "wvZ-te-rUm"; */
+"wvZ-te-rUm.configuration.title" = "Button2";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "wvZ-te-rUm"; */
+"wvZ-te-rUm.normalTitle" = "Button";

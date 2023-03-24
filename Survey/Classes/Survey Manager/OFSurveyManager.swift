@@ -343,6 +343,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
         } else {
             kBackgroundColor = UIColor.white
         }
+        let uniqueID = UUID().uuidString
         
         OneFlow.recordEventName(kEventNameSurveyImpression, parameters: ["survey_id": survey._id])
         guard let screens = survey.screens else { return }
@@ -408,7 +409,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
                     self.submittedSurveyDetails?.append(submittedSurvey)
                     self.saveSubmittedSurvey()
                     let interval = Int(Date().timeIntervalSince(startDate))
-                    let surveyResponseNew = SurveySubmitRequest(analytic_user_id: self.projectDetailsController.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, trigger_event: eventName, tot_duration: interval)
+                    let surveyResponseNew = SurveySubmitRequest(analytic_user_id: self.projectDetailsController.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, trigger_event: eventName, tot_duration: interval, _id: uniqueID)
 
                     if self.pendingSurveySubmission == nil {
                         self.pendingSurveySubmission = [survey._id : surveyResponseNew]

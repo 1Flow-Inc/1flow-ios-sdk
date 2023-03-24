@@ -35,6 +35,8 @@ class OFEventManager: NSObject, EventManagerProtocol {
     let eventModificationQueue = DispatchQueue(label: "1flow-thread-safe-queue", attributes: .concurrent)
     var isNetworkReachable = false
     var projectDetailsController: ProjectDetailsManageable! = OFProjectDetailsController.shared
+    /// turn on the flag when event submission start and turn it off after done
+    var isEventSentInProgress = false
 
     override init() {
         super.init()
@@ -167,11 +169,12 @@ class OFEventManager: NSObject, EventManagerProtocol {
         
         /// barrier is used to handle bulk events e.g. log events with loops
         eventModificationQueue.async(flags: .barrier) {
+            let uniqueID = UUID().uuidString
             if let parameters = parameters {
-                let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "parameters": parameters as Any, "plt": "i"] as [String : Any]
+                let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "parameters": parameters as Any, "plt": "i", "_id": uniqueID] as [String : Any]
                 self.eventsArray.append(newEventDic)
             } else {
-                let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "plt": "i"] as [String : Any]
+                let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "plt": "i", "_id": uniqueID] as [String : Any]
                 self.eventsArray.append(newEventDic)
             }
             
@@ -206,6 +209,10 @@ class OFEventManager: NSObject, EventManagerProtocol {
     }
     
     @objc func sendEventsToServer() {
+        if isEventSentInProgress {
+            OneFlowLog.writeLog("Event sending already in progress", .info)
+            return
+        }
         OneFlowLog.writeLog("OFEventManager: sendEventsToServer")
         guard let userId = projectDetailsController.analytic_user_id else {
             OneFlowLog.writeLog("OFEventManager: User is not created", .info)
@@ -219,7 +226,7 @@ class OFEventManager: NSObject, EventManagerProtocol {
             OneFlowLog.writeLog("OFEventManager: Sending events to server: \(self.eventsArray.count)")
             let uploadedEvents = eventsCount
             let finalParameters = ["events": self.eventsArray, "user_id": userId] as [String : Any]
-            
+            isEventSentInProgress = true
             OFAPIController().addEvents(finalParameters) { [weak self] isSuccess, error, data in
                 if isSuccess == true, let data = data {
                     do {
@@ -245,6 +252,7 @@ class OFEventManager: NSObject, EventManagerProtocol {
                         OneFlowLog.writeLog("OFEventManager: sendEventsToServer - Failed: \(error)", .error)
                     }
                 }
+                self?.isEventSentInProgress = false
             }
         } else {
             OneFlowLog.writeLog("EventManger: No Events to send")

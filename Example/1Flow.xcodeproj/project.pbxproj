@@ -45,6 +45,8 @@
 		43366DA6285881CC00F302F7 /* SavedSurveyResponses.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SavedSurveyResponses.json; sourceTree = "<group>"; };
 		43366DA8285882BC00F302F7 /* GetSurveyResponses.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetSurveyResponses.json; sourceTree = "<group>"; };
 		43366DAA285A18A500F302F7 /* EventManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManagerTests.swift; sourceTree = "<group>"; };
+		435CC2D129BB038900CAB03A /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Main.strings; sourceTree = "<group>"; };
+		435CC2D229BB038900CAB03A /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		437B678A281D1B63009D96FA /* MockAPIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIController.swift; sourceTree = "<group>"; };
 		437B6791281D27EA009D96FA /* OneFlowClassTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneFlowClassTests.swift; sourceTree = "<group>"; };
 		437B6793281D3213009D96FA /* MockProjectDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProjectDetailsController.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 				en,
 				Base,
 				hi,
+				ar,
 			);
 			mainGroup = 607FACC71AFB9204008FA782;
 			productRefGroup = 607FACD11AFB9204008FA782 /* Products */;
@@ -419,6 +422,7 @@
 			children = (
 				607FACDA1AFB9204008FA782 /* Base */,
 				43F9824D28E7811200526D79 /* hi */,
+				435CC2D129BB038900CAB03A /* ar */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -428,6 +432,7 @@
 			children = (
 				607FACDF1AFB9204008FA782 /* Base */,
 				43F9824E28E7811300526D79 /* hi */,
+				435CC2D229BB038900CAB03A /* ar */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";

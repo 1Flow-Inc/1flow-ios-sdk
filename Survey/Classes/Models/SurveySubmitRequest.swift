@@ -22,6 +22,7 @@ struct SurveySubmitRequest: Codable {
     var session_id: String?
     var trigger_event: String?
     var tot_duration: Int
+    var _id: String?
     
     struct Answer: Codable {
         var screen_id: String

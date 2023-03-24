@@ -78,10 +78,13 @@ class OFFollowupView: UIView {
         textView.font = OneFlow.fontConfiguration?.openTextFont
         placeholderLabel = UILabel()
         placeholderLabel.text = placeHolderText
+        placeholderLabel.textAlignment = .natural
         placeholderLabel.font = textView.font
         placeholderLabel.sizeToFit()
         textView.addSubview(placeholderLabel)
-        placeholderLabel.frame.origin = CGPoint(x: 5, y: (textView.font?.pointSize ?? 16) / 2)
+        placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
+        placeholderLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10 + (textView.font?.pointSize ?? 16) / 2).isActive = true
+        placeholderLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5).isActive = true
         placeholderLabel.textColor = kPlaceholderColor
         placeholderLabel.isHidden = !textView.text.isEmpty
         btnFinish.layer.cornerRadius = 5.0

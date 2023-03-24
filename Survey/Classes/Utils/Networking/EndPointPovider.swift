@@ -5,6 +5,7 @@
 //  Created by Rohan Moradiya on 30/04/22.
 //
 
+//https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/SDK-Credentials/incoming_webhook/Oneflow-dev-sdk-v3-credentials
 import Foundation
 
 protocol EndPointProtocol {
@@ -22,7 +23,7 @@ enum EndPoints: EndPointProtocol {
     var url: String {
         let BaseURL: String = {
                 if OFProjectDetailsController.shared.currentEnviromment == .dev {
-                    return "https://ez37ppkkcs.eu-west-1.awsapprunner.com/api/2021-06-15"
+                    return "https://dev-sdk.1flow.app/api/2021-06-15"
                 } else {
                     return "https://api-sdk.1flow.app/api/2021-06-15"
                 }
