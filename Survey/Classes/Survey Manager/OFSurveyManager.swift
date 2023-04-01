@@ -346,6 +346,10 @@ class OFSurveyManager: NSObject, SurveyManageable {
         let uniqueID = UUID().uuidString
         
         OneFlow.recordEventName(kEventNameSurveyImpression, parameters: ["survey_id": survey._id])
+        OneFlow.shared.eventManager.recordInternalEvent(
+            name: InternalEvent.flowStarted,
+            parameters: [InternalKey.flowId : survey._id]
+        )
         guard let screens = survey.screens else { return }
         DispatchQueue.main.async {
             
@@ -381,6 +385,8 @@ class OFSurveyManager: NSObject, SurveyManageable {
             controller.modalPresentationStyle = .overFullScreen
             controller.view.backgroundColor = UIColor.clear
             controller.allScreens = screens
+            controller.surveyID = survey._id
+            controller.surveyName = survey.name
             if let widgetPosition = survey.survey_settings?.sdk_theme?.widget_position {
                 controller.widgetPosition = widgetPosition
                 controller.setupWidgetPosition()

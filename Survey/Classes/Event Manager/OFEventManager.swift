@@ -16,6 +16,7 @@ import UIKit
 
 protocol EventManagerProtocol {
     func recordEvent(_ name: String, parameters: [String: Any]?)
+    func recordInternalEvent(name: String, parameters: [String: Any])
     func configure()
     func setupSurveyManager()
     var isNetworkReachable: Bool { get set }
@@ -163,7 +164,18 @@ class OFEventManager: NSObject, EventManagerProtocol {
             self.uploadTimer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(sendEventsToServer), userInfo: nil, repeats: true)
         }
     }
-    
+
+    func recordInternalEvent(
+        name: String,
+        parameters: [String : Any]
+    ) {
+        eventModificationQueue.async(flags: .barrier) {
+            let uniqueID = UUID().uuidString
+            let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "parameters": parameters as Any, "plt": "i", "_id": uniqueID] as [String : Any]
+            self.eventsArray.append(newEventDic)
+        }
+    }
+
     func recordEvent(_ name: String, parameters: [String: Any]?) {
         OneFlowLog.writeLog("OFEventManager: Record Event- name:\(name), parameters: \(parameters as Any)")
         

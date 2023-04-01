@@ -77,6 +77,8 @@ class OFRatingViewController: UIViewController {
     var shouldShowCloseButton = true
     var shouldShowDarkOverlay = true
     var shouldShowProgressBar = true
+    var surveyID: String?
+    var surveyName: String?
     
     private var isFirstQuestionLaunched = false
 
@@ -87,7 +89,7 @@ class OFRatingViewController: UIViewController {
     var keyboardRect : CGRect!
 
     lazy var waterMarkURL = "https://1flow.app/?utm_source=1flow-ios-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow"
-    var isSurveyComplete = false
+    var isSurveyFullyAnswered = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -125,58 +127,55 @@ class OFRatingViewController: UIViewController {
         self.closeButton.isHidden = !self.shouldShowCloseButton
         self.progressBar.isHidden = !self.shouldShowProgressBar
         setupWidgetPosition()
-        
     }
     
     func setupWidgetPosition() {
-        let minimumSpace = UIScreen.main.bounds.height * 20.0 / 100.0
+        let topSpacing: CGFloat
+        let bottomSpacing: CGFloat
+        
+        if #available(iOS 11.0, *) {
+            if let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top {
+                topSpacing = topPadding
+            } else {
+                topSpacing = 15
+            }
+            if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
+                bottomSpacing = bottomPadding
+            } else {
+                bottomSpacing = 15
+            }
+        } else {
+            topSpacing = 15
+            bottomSpacing = 15
+        }
+        
         
         if isWidgetPositionBottom() {
-            self.containerTop.constant = minimumSpace
-            
+            self.containerTop.constant = topSpacing
         } else if isWidgetPositionMiddle() {
             self.bottomConstraint.isActive = false
             centerConstraint = self.ratingView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
             centerConstraint.isActive = true
-            self.containerBottom.constant = minimumSpace / 2
-            self.containerTop.constant = minimumSpace / 2
+            self.containerBottom.constant = bottomSpacing
+            self.containerTop.constant = topSpacing
 
         } else if isWidgetPositionTop() {
             self.bottomConstraint.isActive = false
             self.ratingView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-            if #available(iOS 11.0, *) {
-                if let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top {
-                    self.containerTop.constant = topPadding + 15
-                }
-            } else {
-                self.containerTop.constant = 30
-            }
-            self.containerBottom.constant =  minimumSpace
-
+            self.containerTop.constant = topSpacing + 15
+            self.containerBottom.constant = bottomSpacing
         } else if isWidgetPositionTopBanner() {
             self.bottomConstraint.isActive = false
             self.ratingView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-            if #available(iOS 11.0, *) {
-                if let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top {
-                    self.containerTop.constant = topPadding + 15
-                }
-            } else {
-                self.containerTop.constant = 15
-            }
-            self.containerBottom.constant =  minimumSpace / 2
+            self.containerTop.constant = topSpacing
+            self.containerBottom.constant = bottomSpacing
             self.containerLeading.constant = 0
             self.containerTrailing.constant = 0
             self.topPaddingView.isHidden = false
             self.topPaddingView.backgroundColor = kBackgroundColor
         } else if isWidgetPositionBottomBanner() {
-            if #available(iOS 11.0, *) {
-                if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
-                    self.containerBottom.constant = bottomPadding + 10
-                }
-            } else {
-                self.containerBottom.constant = 0
-            }
-            self.containerTop.constant = minimumSpace
+            self.containerBottom.constant = bottomSpacing
+            self.containerTop.constant = topSpacing
             self.containerLeading.constant = 0
             self.containerTrailing.constant = 0
             self.bottomPaddingView.isHidden = false
@@ -191,13 +190,7 @@ class OFRatingViewController: UIViewController {
             }
             self.containerLeading.constant = 0
             self.containerTrailing.constant = 0
-            if #available(iOS 11.0, *) {
-                if let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top {
-                    self.containerTop.constant = topPadding + 15
-                }
-            } else {
-                self.containerTop.constant = 15
-            }
+            self.containerTop.constant = topSpacing
             self.ratingView.backgroundColor = kBackgroundColor
             centerConstraint = self.ratingView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
             centerConstraint.isActive = true
@@ -206,14 +199,25 @@ class OFRatingViewController: UIViewController {
             self.setupTopBottomIfNeeded()
         }
     }
+
     func setupTopBottomIfNeeded() {
         if self.isWidgetPositionFullScreen() {
-            if self.stackView.bounds.height < self.view.bounds.height {
-                self.stackViewTop.priority = .defaultLow
-                self.stackViewBottom.priority = .defaultLow
+            if self.isKeyboardVisible {
+                if self.stackView.bounds.height < (self.view.bounds.height - keyboardRect.height - 46) {
+                    self.stackViewTop.priority = .defaultLow
+                    self.stackViewBottom.priority = .defaultLow
+                } else {
+                    self.stackViewTop.priority = .required
+                    self.stackViewBottom.priority = .required
+                }
             } else {
-                self.stackViewTop.priority = .required
-                self.stackViewBottom.priority = .required
+                if self.stackView.bounds.height < self.view.bounds.height {
+                    self.stackViewTop.priority = .defaultLow
+                    self.stackViewBottom.priority = .defaultLow
+                } else {
+                    self.stackViewTop.priority = .required
+                    self.stackViewBottom.priority = .required
+                }
             }
         }
     }
@@ -280,7 +284,7 @@ class OFRatingViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.progressBar.tintColor = kBrandColor
-        self.progressBar.trackTintColor = kBackgroundColor
+//        self.progressBar.trackTintColor = kBackgroundColor
         if self.shouldShowDarkOverlay {
             UIView.animate(withDuration: 0.2) {
                 self.view.backgroundColor = UIColor.black.withAlphaComponent(0.25)
@@ -327,7 +331,7 @@ class OFRatingViewController: UIViewController {
     func changePositionAsPerKeyboard() {
         if let _ = keyboardRect  {
             if isWidgetPositionBottom() || isWidgetPositionBottomBanner() {
-                self.bottomConstraint.constant = keyboardRect.size.height + 20
+                self.bottomConstraint.constant = keyboardRect.size.height
             }
             self.ratingView.setNeedsUpdateConstraints()
             if isWidgetPositionMiddle() {
@@ -340,6 +344,7 @@ class OFRatingViewController: UIViewController {
             
             UIView.animate(withDuration: 0.4, animations: { () -> Void in
                 self.view.layoutIfNeeded()
+                self.scrollView.scrollRectToVisible(CGRect(x: self.scrollView.contentSize.width - 1, y: self.scrollView.contentSize.height - 1, width: 1, height: 1), animated: false)
             })
         }
     }
@@ -355,11 +360,12 @@ class OFRatingViewController: UIViewController {
         self.bottomConstraint.constant = 0
         if #available(iOS 11.0, *) {
             if let bottomPadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom {
-                self.containerBottom.constant = bottomPadding + 10
+                self.containerBottom.constant = bottomPadding
             }
         } else {
-            self.containerBottom.constant = 10
+            self.containerBottom.constant = 15
         }
+        setupTopBottomIfNeeded()
         self.ratingView.setNeedsUpdateConstraints()
         UIView.animate(withDuration: 0.4, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -370,8 +376,13 @@ class OFRatingViewController: UIViewController {
     fileprivate func presentNextScreen(_ previousAnswer : String?) {
         if let newIndex = self.getNextQuestionIndex(previousAnswer) {
             currentScreenIndex = newIndex
-            if self.allScreens!.count > self.currentScreenIndex, let screen = self.allScreens?[self.currentScreenIndex] {
+            if self.allScreens!.count > self.currentScreenIndex,
+                let screen = self.allScreens?[self.currentScreenIndex] {
                 self.setupUIAccordingToConfiguration(screen)
+                OneFlow.shared.eventManager.recordInternalEvent(
+                    name: InternalEvent.flowStepSeen,
+                    parameters: [InternalKey.stepId: screen._id, InternalKey.flowId: surveyID as Any]
+                )
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
                     if let surveyScreens = self.allScreens {
                         let filteredSurveyScreens = surveyScreens.filter { $0.input?.input_type != "end-screen" && $0.input?.input_type != "thank_you"  }
@@ -383,7 +394,7 @@ class OFRatingViewController: UIViewController {
                 //finish the survey
                 guard let completion = self.completionBlock else { return }
                 self.runCloseAnimation {
-                    completion(self.surveyResult, self.isSurveyComplete)
+                    completion(self.surveyResult, self.isSurveyFullyAnswered)
                 }
             }
         }
@@ -444,7 +455,7 @@ class OFRatingViewController: UIViewController {
                 else {
                     guard let completion = self.completionBlock else { return }
                     self.runCloseAnimation {
-                        completion(self.surveyResult, self.isSurveyComplete)
+                        completion(self.surveyResult, self.isSurveyFullyAnswered)
                     }
                 }
                 
@@ -453,7 +464,7 @@ class OFRatingViewController: UIViewController {
                 OneFlowLog.writeLog("End Screen logic : No Action detected")
                 guard let completion = self.completionBlock else { return }
                 self.runCloseAnimation {
-                    completion(self.surveyResult, self.isSurveyComplete)
+                    completion(self.surveyResult, self.isSurveyFullyAnswered)
                 }
             }
         })
@@ -461,11 +472,10 @@ class OFRatingViewController: UIViewController {
 
     private func performRatingAction() {
         currentScreenIndex = -2
-        self.isSurveyComplete = true
         guard let completion = self.completionBlock else { return }
         self.runCloseAnimation {
             self.openRatemePopup()
-            completion(self.surveyResult, self.isSurveyComplete)
+            completion(self.surveyResult, self.isSurveyFullyAnswered)
         }
     }
 
@@ -530,12 +540,11 @@ class OFRatingViewController: UIViewController {
     
     private func performOpenUrlAction(_ urlString : String) {
         currentScreenIndex = -2
-        self.isSurveyComplete = true
         guard let completion = self.completionBlock else { return }
         self.runCloseAnimation {
             guard let url = URL(string: urlString) else {
                 OneFlowLog.writeLog("Data Logic : Invalid Url received from server")
-                completion(self.surveyResult, self.isSurveyComplete)
+                completion(self.surveyResult, self.isSurveyFullyAnswered)
                 return
             }
             DispatchQueue.main.async {
@@ -548,7 +557,7 @@ class OFRatingViewController: UIViewController {
                 }
                 
             }
-            completion(self.surveyResult, self.isSurveyComplete)
+            completion(self.surveyResult, self.isSurveyFullyAnswered)
         }
     }
     
@@ -693,7 +702,6 @@ class OFRatingViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
                 self.progressBar.setProgress(1.0, animated: true)
             }
-            self.isSurveyComplete = true
             self.viewPrimaryTitle1.isHidden = true
             self.viewSecondaryTitle.isHidden = true
             let view = OFThankYouView.loadFromNib()
@@ -812,6 +820,17 @@ class OFRatingViewController: UIViewController {
     }
 
     func runCloseAnimation(_ completion: @escaping ()-> Void) {
+        if self.isSurveyFullyAnswered {
+            OneFlow.shared.eventManager.recordInternalEvent(
+                name: InternalEvent.flowCompleted,
+                parameters: [InternalKey.flowId: surveyID as Any]
+            )
+        } else {
+            OneFlow.shared.eventManager.recordInternalEvent(
+                name: InternalEvent.flowEnded,
+                parameters: [InternalKey.flowId: surveyID as Any]
+            )
+        }
         OneFlowLog.writeLog("End Screen logic : Running close animation")
         self.isClosingAnimationRunning = true
         if isWidgetPositionBottom() || isWidgetPositionBottomBanner() {
@@ -870,7 +889,7 @@ class OFRatingViewController: UIViewController {
                                }, completion: { (isCompleted) in
                                 if isCompleted {
                                     guard let completion = self.completionBlock else { return }
-                                    completion(self.surveyResult, self.isSurveyComplete)
+                                    completion(self.surveyResult, self.isSurveyFullyAnswered)
                                 }
                                })
             } else {
@@ -887,20 +906,22 @@ class OFRatingViewController: UIViewController {
             return
         }
     }
-    
 
     @IBAction func onCloseTapped(_ sender: UIButton) {
         OneFlowLog.writeLog("End Screen logic : onCloseTapped")
         if self.isKeyboardVisible == true {
             self.view.endEditing(true)
         }
+        if let currentScreen = self.allScreens?[currentScreenIndex] {
+            if !(currentScreen.input?.input_type == "end-screen" || currentScreen.input?.input_type == "thank_you") {
+                self.isSurveyFullyAnswered = false
+            }
+        }
         guard let completion = self.completionBlock else { return }
         self.runCloseAnimation {
-            completion(self.surveyResult, self.isSurveyComplete)
+            completion(self.surveyResult, self.isSurveyFullyAnswered)
         }
     }
-    
-    
 }
 
 extension OFRatingViewController : UIGestureRecognizerDelegate {
@@ -912,6 +933,19 @@ extension OFRatingViewController: OFRatingViewProtocol {
     func oneToTenViewChangeSelection(_ selectedIndex: Int?) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
             if let index = selectedIndex, let screen = self.allScreens?[self.currentScreenIndex] {
+                OneFlow.shared.eventManager.recordInternalEvent(
+                    name: InternalEvent.questionAnswered,
+                    parameters: [
+                        InternalKey.questionId: screen._id,
+                        InternalKey.stepId: screen._id,
+                        InternalKey.flowId: self.surveyID as Any,
+                        InternalKey.type: screen.input?.input_type as Any,
+                        InternalKey.answer: "\(index)",
+                        InternalKey.questionTitle: screen.title as Any,
+                        InternalKey.questionDescription: screen.message as Any,
+                        InternalKey.surveyName: self.surveyName as Any,
+                    ]
+                )
                 let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: "\(index)", answer_index: nil)
                 self.surveyResult.append(answer)
                 self.presentNextScreen(answer.answer_value)
@@ -922,6 +956,30 @@ extension OFRatingViewController: OFRatingViewProtocol {
     func mcqViewChangeSelection(_ selectedOptionID: String,_ otherTextAnswer : String?) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
             if  let screen = self.allScreens?[self.currentScreenIndex] {
+                if let choices = screen.input?.choices {
+                    let rawAnswer: String
+                    if let otherTextAnswer = otherTextAnswer {
+                        rawAnswer = otherTextAnswer
+                    } else if let title = choices.first(where: { $0._id == selectedOptionID })?.title {
+                        rawAnswer = title
+                    } else {
+                        rawAnswer = ""
+                    }
+                    
+                    OneFlow.shared.eventManager.recordInternalEvent(
+                        name: InternalEvent.questionAnswered,
+                        parameters: [
+                            InternalKey.questionId: screen._id,
+                            InternalKey.stepId: screen._id,
+                            InternalKey.flowId: self.surveyID as Any,
+                            InternalKey.type: screen.input?.input_type as Any,
+                            InternalKey.answer: rawAnswer,
+                            InternalKey.questionTitle: screen.title as Any,
+                            InternalKey.questionDescription: screen.message as Any,
+                            InternalKey.surveyName: self.surveyName as Any,
+                        ]
+                    )
+                }
                 let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: otherTextAnswer, answer_index: selectedOptionID)
                 self.surveyResult.append(answer)
                 self.presentNextScreen(answer.answer_index)
@@ -933,6 +991,31 @@ extension OFRatingViewController: OFRatingViewProtocol {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
             if let screen = self.allScreens?[self.currentScreenIndex] {
                 let finalString = selectedOptions.joined(separator: ",")
+                if let choices = screen.input?.choices {
+                    var rawAnswers = choices.filter { choice in
+                        if screen.input?.other_option_id == choice._id {
+                            return false
+                        } else {
+                            return selectedOptions.contains(choice._id ?? "")
+                        }
+                    }.compactMap({$0.title}).joined(separator: ",")
+                    if let otherTextAnswer = otherTextAnswer {
+                        rawAnswers += "," + otherTextAnswer
+                    }
+                    OneFlow.shared.eventManager.recordInternalEvent(
+                        name: InternalEvent.questionAnswered,
+                        parameters: [
+                            InternalKey.questionId: screen._id,
+                            InternalKey.stepId: screen._id,
+                            InternalKey.flowId: self.surveyID as Any,
+                            InternalKey.type: screen.input?.input_type as Any,
+                            InternalKey.answer: rawAnswers,
+                            InternalKey.questionTitle: screen.title as Any,
+                            InternalKey.questionDescription: screen.message as Any,
+                            InternalKey.surveyName: self.surveyName as Any,
+                        ]
+                    )
+                }
                 let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: otherTextAnswer, answer_index: finalString)
                 self.surveyResult.append(answer)
                 self.presentNextScreen(answer.answer_index)
@@ -945,6 +1028,19 @@ extension OFRatingViewController: OFRatingViewProtocol {
             
             if let inputString = text, let screen = self.allScreens?[self.currentScreenIndex] {
                 let finalString = inputString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                OneFlow.shared.eventManager.recordInternalEvent(
+                    name: InternalEvent.questionAnswered,
+                    parameters: [
+                        InternalKey.questionId: screen._id,
+                        InternalKey.stepId: screen._id,
+                        InternalKey.flowId: self.surveyID as Any,
+                        InternalKey.type: screen.input?.input_type as Any,
+                        InternalKey.answer: inputString,
+                        InternalKey.questionTitle: screen.title as Any,
+                        InternalKey.questionDescription: screen.message as Any,
+                        InternalKey.surveyName: self.surveyName as Any,
+                    ]
+                )
                 if finalString.count > 0 {
                     let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: inputString, answer_index: nil)
                     self.surveyResult.append(answer)
@@ -970,6 +1066,19 @@ extension OFRatingViewController: OFRatingViewProtocol {
             
             if let inputString = text, let screen = self.allScreens?[self.currentScreenIndex] {
                 let finalString = inputString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                OneFlow.shared.eventManager.recordInternalEvent(
+                    name: InternalEvent.questionAnswered,
+                    parameters: [
+                        InternalKey.questionId: screen._id,
+                        InternalKey.stepId: screen._id,
+                        InternalKey.flowId: self.surveyID as Any,
+                        InternalKey.type: screen.input?.input_type as Any,
+                        InternalKey.answer: inputString,
+                        InternalKey.questionTitle: screen.title as Any,
+                        InternalKey.questionDescription: screen.message as Any,
+                        InternalKey.surveyName: self.surveyName as Any,
+                    ]
+                )
                 if finalString.count > 0 {
                     let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: inputString, answer_index: nil)
                     self.surveyResult.append(answer)
@@ -993,6 +1102,19 @@ extension OFRatingViewController: OFRatingViewProtocol {
     func starsViewChangeSelection(_ selectedIndex: Int?) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
             if let index = selectedIndex, let screen = self.allScreens?[self.currentScreenIndex] {
+                OneFlow.shared.eventManager.recordInternalEvent(
+                    name: InternalEvent.questionAnswered,
+                    parameters: [
+                        InternalKey.questionId: screen._id,
+                        InternalKey.stepId: screen._id,
+                        InternalKey.flowId: self.surveyID as Any,
+                        InternalKey.type: screen.input?.input_type as Any,
+                        InternalKey.answer: "\(index)",
+                        InternalKey.questionTitle: screen.title as Any,
+                        InternalKey.questionDescription: screen.message as Any,
+                        InternalKey.surveyName: self.surveyName as Any,
+                    ]
+                )
                 let answer = SurveySubmitRequest.Answer(screen_id: screen._id, answer_value: "\(index)", answer_index: nil)
                 self.surveyResult.append(answer)
                 self.presentNextScreen(answer.answer_value)
@@ -1019,13 +1141,19 @@ extension OFRatingViewController: OFRatingViewProtocol {
     }
     
     func followupTextViewHeightDidChange() {
-        self.changePositionAsPerKeyboard()
+        self.setupTopBottomIfNeeded()
+        self.scrollView.scrollRectToVisible(CGRect(x: scrollView.contentSize.width - 1, y: scrollView.contentSize.height - 1, width: 1, height: 1), animated: false)
     }
     
     func onWelcomeNextTapped() {
+        if let screen = self.allScreens?[self.currentScreenIndex] {
+            OneFlow.shared.eventManager.recordInternalEvent(
+                name: InternalEvent.flowStepClicked,
+                parameters: [InternalKey.stepId: screen._id, InternalKey.flowId: surveyID as Any]
+            )
+        }
+
         if allScreens?.count == 1 {
-//            if there is only welcome screen then turn this booean ON
-            isSurveyComplete = true
             OneFlowLog.writeLog("only welcome screen. turning completed true", .verbose)
         }
         self.presentNextScreen("")

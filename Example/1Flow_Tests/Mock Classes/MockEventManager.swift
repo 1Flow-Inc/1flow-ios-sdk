@@ -38,7 +38,6 @@ class MockEventManager: NSObject, EventManagerProtocol {
     }
 
     func networkStatusChanged(_ isReachable: Bool) {
-        
     }
 
     func finishPendingEvents() {
@@ -50,11 +49,13 @@ class MockEventManager: NSObject, EventManagerProtocol {
         eventExpectation?.fulfill()
     }
 
+    func recordInternalEvent(name: String, parameters: [String : Any]) {
+    }
+
     func configure() {
         eventExpectation?.fulfill()
     }
 
     func setupSurveyManager() {
-        
     }
 }

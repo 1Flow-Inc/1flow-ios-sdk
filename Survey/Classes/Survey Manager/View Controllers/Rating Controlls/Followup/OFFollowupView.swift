@@ -76,6 +76,11 @@ class OFFollowupView: UIView {
         textView.backgroundColor = UIColor.clear
         textView.textColor = kPrimaryTitleColor
         textView.font = OneFlow.fontConfiguration?.openTextFont
+//        if widgetPosition == .fullScreen {
+//            textView.isScrollEnabled = true
+//        } else {
+            textView.isScrollEnabled = false
+//        }
         placeholderLabel = UILabel()
         placeholderLabel.text = placeHolderText
         placeholderLabel.textAlignment = .natural
@@ -135,25 +140,30 @@ extension OFFollowupView: UITextViewDelegate {
         let fixedWidth = textView.frame.size.width
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         let newHeight = newSize.height > 109 ? newSize.height : 109
+        self.textViewHeightConstraint.constant = newHeight
+        self.delegate?.followupTextViewHeightDidChange()
         //App calculates height which total screen hight - open keyboard size - safe area instest - 20 (this is to give some gap)
-        let availableHeight: CGFloat
-        let twentyPercent = UIScreen.main.bounds.size.height * 20 / 100
-        availableHeight = CGFloat(UIScreen.main.bounds.size.height -  keyboardHeight - twentyPercent )
-        if widgetPosition == .fullScreen {
-            if let frame = textView.superview?.superview?.frame {
-                if (frame.size.height < availableHeight) || (newHeight < textView.bounds.height) {
-                    self.textViewHeightConstraint.constant = newHeight
-                    self.delegate?.followupTextViewHeightDidChange()
-                }
-            }
-        }
-        else {
-            if let frame = textView.superview?.superview?.superview?.superview?.superview?.frame {
-                if (frame.size.height < availableHeight) || (newHeight < textView.bounds.height) {
-                    self.textViewHeightConstraint.constant = newHeight
-                }
-            }
-        }
+//        let availableHeight: CGFloat
+//        if #available(iOS 11.0, *) {
+//            availableHeight = CGFloat(UIScreen.main.bounds.size.height - window.safeAreaInsets.top -  keyboardHeight - 20 )
+//        } else {
+//            availableHeight = CGFloat(UIScreen.main.bounds.size.height - keyboardHeight - 20 )
+//        }
+//        if widgetPosition == .fullScreen {
+//            if let frame = textView.superview?.superview?.frame {
+//                if (frame.size.height < availableHeight) || (newHeight < textView.bounds.height) {
+//                    self.textViewHeightConstraint.constant = newHeight
+//                    self.delegate?.followupTextViewHeightDidChange()
+//                }
+//            }
+//        }
+//        else {
+//            if let frame = textView.superview?.superview?.superview?.superview?.superview?.frame {
+//                if (frame.size.height < availableHeight) || (newHeight < textView.bounds.height) {
+//                    self.textViewHeightConstraint.constant = newHeight
+//                }
+//            }
+//        }
        
     }
 }
