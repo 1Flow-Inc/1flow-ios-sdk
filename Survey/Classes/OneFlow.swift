@@ -187,6 +187,10 @@ public final class OneFlow: NSObject {
     }
     
     @objc class public func recordEventName(_ eventName: String, parameters: [String: Any]?) {
+        guard !eventName.isEmpty else {
+            OneFlowLog.writeLog("Empty event logged. returned", .warnings)
+            return
+        }
         var parameterDic : [String : Any]? = nil
         if let updatedParameterDic : [String : Any] = OneFlow.removeUnsupportedKeys(parameters) {
             parameterDic = updatedParameterDic

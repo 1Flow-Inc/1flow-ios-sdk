@@ -170,7 +170,7 @@ class OFEventManager: NSObject, EventManagerProtocol {
         parameters: [String : Any]
     ) {
         eventModificationQueue.async(flags: .barrier) {
-            let uniqueID = UUID().uuidString
+            let uniqueID = OFProjectDetailsController.objectId()
             let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "parameters": parameters as Any, "plt": "i", "_id": uniqueID] as [String : Any]
             self.eventsArray.append(newEventDic)
         }
@@ -181,7 +181,7 @@ class OFEventManager: NSObject, EventManagerProtocol {
         
         /// barrier is used to handle bulk events e.g. log events with loops
         eventModificationQueue.async(flags: .barrier) {
-            let uniqueID = UUID().uuidString
+            let uniqueID = OFProjectDetailsController.objectId()
             if let parameters = parameters {
                 let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "parameters": parameters as Any, "plt": "i", "_id": uniqueID] as [String : Any]
                 self.eventsArray.append(newEventDic)

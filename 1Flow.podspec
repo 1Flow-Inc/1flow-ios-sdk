@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = '1Flow'
-  s.version          = '2023.04.01'
+  s.version          = '2023.04.12'
   s.summary          = '1Flow Framework'
 
 # This description is used to generate tags and improve search results.

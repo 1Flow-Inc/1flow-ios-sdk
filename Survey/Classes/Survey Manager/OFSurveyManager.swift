@@ -343,7 +343,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
         } else {
             kBackgroundColor = UIColor.white
         }
-        let uniqueID = UUID().uuidString
+        let uniqueID = OFProjectDetailsController.objectId()
         
         OneFlow.recordEventName(kEventNameSurveyImpression, parameters: ["survey_id": survey._id])
         OneFlow.shared.eventManager.recordInternalEvent(

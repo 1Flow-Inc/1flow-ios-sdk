@@ -61,7 +61,7 @@ protocol ProjectDetailsManageable {
 final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
 
     static let shared = OFProjectDetailsController()
-    let oneFlowSDKVersion: String = "2023.04.01"
+    let oneFlowSDKVersion: String = "2023.04.12"
     var currentEnviromment: OneFlowEnvironment = .prod
     var currentLogLevel: OneFlowLogLevel = .none
 
@@ -231,4 +231,12 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
         let carrier = networkInfo.subscriberCellularProvider
         return carrier?.carrierName
     }()
+
+    static func objectId() -> String {
+        let time = String(Int(Date().timeIntervalSince1970), radix: 16, uppercase: false)
+        let machine = String(Int.random(in: 100000 ..< 999999))
+        let pid = String(Int.random(in: 1000 ..< 9999))
+        let counter = String(Int.random(in: 100000 ..< 999999))
+        return time + machine + pid + counter
+    }
 }
