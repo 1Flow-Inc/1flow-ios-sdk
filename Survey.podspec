@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Survey'
-  s.version          = '2023.04.12'
+  s.version          = '2023.04.14'
   s.summary          = 'Survey for the app'
 
 # This description is used to generate tags and improve search results.
