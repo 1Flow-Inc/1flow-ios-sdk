@@ -131,6 +131,7 @@ struct SurveyListResponse: Codable {
             var closed_as_finished: Bool? = false
             var sdk_theme: SDKTheme?
             var override_global_throttling: Bool?
+            var trigger_filters: [TriggerFilter]?
             
             struct RetakeSurvey: Codable {
                 var _id: String?
@@ -147,6 +148,37 @@ struct SurveyListResponse: Codable {
                 var widget_position: WidgetPosition?
                 var text_color: String?
             }
+
+            struct TriggerFilter: Codable {
+                var type: String
+                var timingOption: TimingOption
+                var _id: String
+                var field: String
+                var property_filters: PropertyFilters?
+            }
+
+            struct TimingOption: Codable {
+                var type: String? //show_immediately , show_after
+                var value: Int? // seconds
+            }
+
+            struct PropertyFilters: Codable {
+                var operation: String
+                var filters: [Filter]?
+                
+                enum CodingKeys: String, CodingKey {
+                    case operation = "operator"
+                    case filters
+                }
+            }
+
+            struct Filter: Codable {
+                var type: String?
+                var field: String?
+                var data_type: String?
+                var condition: String?
+                var values: [String]?
+            }
         }
     }
 
@@ -156,4 +188,10 @@ struct SurveyListResponse: Codable {
         var activatedBySurveyID: String?
         var throttlingActivatedTime: Int?
     }
+}
+
+struct FetchFlow: Codable {
+    var success: Int
+    var message: String?
+    var result: SurveyListResponse.Survey?
 }

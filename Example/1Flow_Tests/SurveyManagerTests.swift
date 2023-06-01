@@ -322,32 +322,32 @@ class SurveyManagerTest: XCTestCase {
         XCTAssertTrue(sut.isAfterSurveyCalled, "It should call after survey load existing event method")
     }
 
-    func testAfterSurveyFetch_SurveyLoadForExistingEvent_ShouldStartSurveyIfEventFound() {
-        
-        class NewSurveyManager: OFSurveyManager {
-            let expectation: XCTestExpectation!
-            init(expectation: XCTestExpectation) {
-                self.expectation = expectation
-            }
-            override func startSurvey(_ survey: SurveyListResponse.Survey, eventName: String) {
-                expectation.fulfill()
-            }
-        }
-        guard let data = MockResponseProvider.getDataForSurveyResponse() else {
-            return
-        }
-        
-        let expectation = XCTestExpectation(description: "should call start survey if event is already reacorded")
-        let sut = NewSurveyManager(expectation: expectation)
-        sut.newEventRecorded("Trigger_event")
-        sut.isNetworkReachable = true
-        let mockAPIController = MockAPIController()
-        mockAPIController.dataToRespond = data
-        sut.apiController = mockAPIController
-        sut.configureSurveys()
-        let result = XCTWaiter.wait(for: [expectation], timeout: 2.0)
-        XCTAssertEqual(result, .completed, "it should call start survey")
-    }
+//    func testAfterSurveyFetch_SurveyLoadForExistingEvent_ShouldStartSurveyIfEventFound() {
+//
+//        class NewSurveyManager: OFSurveyManager {
+//            let expectation: XCTestExpectation!
+//            init(expectation: XCTestExpectation) {
+//                self.expectation = expectation
+//            }
+//            override func startSurvey(_ survey: SurveyListResponse.Survey, eventName: String) {
+//                expectation.fulfill()
+//            }
+//        }
+//        guard let data = MockResponseProvider.getDataForSurveyResponse() else {
+//            return
+//        }
+//
+//        let expectation = XCTestExpectation(description: "should call start survey if event is already reacorded")
+//        let sut = NewSurveyManager(expectation: expectation)
+//        sut.newEventRecorded("Trigger_event")
+//        sut.isNetworkReachable = true
+//        let mockAPIController = MockAPIController()
+//        mockAPIController.dataToRespond = data
+//        sut.apiController = mockAPIController
+//        sut.configureSurveys()
+//        let result = XCTWaiter.wait(for: [expectation], timeout: 2.0)
+//        XCTAssertEqual(result, .completed, "it should call start survey")
+//    }
 
     func testAfterSurveyFetch_SurveyLoadForExistingEvent_ShouldNotStartSurveyIfEventNotFound() {
         

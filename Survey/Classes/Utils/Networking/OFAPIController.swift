@@ -22,6 +22,7 @@ protocol APIProtocol {
     func addUser(_ parameter: AddUserRequest, completion: @escaping APICompletionBlock)
     func logUser(_ parameter: [String: Any], completion: @escaping APICompletionBlock)
     func addEvents(_ parameter: [String: Any], completion: @escaping APICompletionBlock)
+    func fetchSurvey(_ flowID: String, completion: @escaping APICompletionBlock)
 }
 
 final class OFAPIController: NSObject, APIProtocol {
@@ -72,5 +73,9 @@ final class OFAPIController: NSObject, APIProtocol {
 
     func getAppStoreDetails(_ completion: @escaping APICompletionBlock) {
         urlRequestManager.getAPIWith(EndPoints.appStoreRating, completion: completion)
+    }
+
+    func fetchSurvey(_ flowID: String, completion: @escaping APICompletionBlock) {
+        urlRequestManager.getAPIWith(EndPoints.fetchSurvey(flowID), completion: completion)
     }
 }

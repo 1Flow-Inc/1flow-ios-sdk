@@ -19,6 +19,7 @@ enum EndPoints: EndPointProtocol {
     case submitSurvey
     case logUser
     case appStoreRating
+    case fetchSurvey(String)
     
     var url: String {
         let BaseURL: String = {
@@ -33,6 +34,19 @@ enum EndPoints: EndPointProtocol {
             return BaseURL + "/v3/user"
         case .getSurveys:
             var surveyUrl = BaseURL + "/v3/survey?platform=iOS"
+            if let userID : String = OFProjectDetailsController.shared.analytic_user_id {
+                surveyUrl = surveyUrl + "&user_id=" + userID
+            }
+
+            surveyUrl = surveyUrl + "&min_version=" + OFProjectDetailsController.shared.libraryVersion
+
+            if let langStr = Locale.current.languageCode {
+                surveyUrl = surveyUrl + "&language_code=" + langStr
+                OneFlowLog.writeLog("Language Code: \(langStr)")
+            }
+            return surveyUrl
+        case .fetchSurvey(let surveyID):
+            var surveyUrl = BaseURL + "/v3/survey/\(surveyID)?platform=iOS"
             if let userID : String = OFProjectDetailsController.shared.analytic_user_id {
                 surveyUrl = surveyUrl + "&user_id=" + userID
             }

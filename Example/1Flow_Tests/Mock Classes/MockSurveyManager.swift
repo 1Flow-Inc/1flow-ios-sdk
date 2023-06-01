@@ -41,13 +41,15 @@ class MockSurveyManager: NSObject, SurveyManageable {
         
     }
     
-    func newEventRecorded(_ eventName: String) {
+    func newEventRecorded(_ eventName: String, parameter: [String: Any]?) {
         
     }
     
     func setUserToSubmittedSurveyAsAnnonyous(newUserID: String) {
         
     }
-    
+
+    func startFlow(with flowID: String) {
+    }
     
 }

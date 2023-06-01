@@ -185,7 +185,11 @@ public final class OneFlow: NSObject {
             OneFlowLog.writeLog("Network Observer - Failed", .error)
         }
     }
-    
+
+    @objc class public func start(flowId: String) {
+        shared.eventManager.surveyManager.startFlow(with: flowId)
+    }
+
     @objc class public func recordEventName(_ eventName: String, parameters: [String: Any]?) {
         guard !eventName.isEmpty else {
             OneFlowLog.writeLog("Empty event logged. returned", .warnings)
