@@ -56,6 +56,7 @@ struct SurveyListResponse: Codable {
         var __v: Int?
         var color: String?
         var survey_settings: SurveySettings?
+        var survey_time_interval: SurveySettings.TimingOption?
         
         struct Screen: Codable {
             var title: String?

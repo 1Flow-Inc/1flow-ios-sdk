@@ -699,8 +699,10 @@ const triggerEventFilter=async(surveys,event,isPageUrl,web)=>{
                                 resolve(true)
                             },eventExists.timingOption.value)
                         })])
+                        surveyExists.survey_time_interval=eventExists.timingOption;
                         return surveyExists
                     }else if(valid==true){
+                        surveyExists.survey_time_interval=eventExists.timingOption;
                         return surveyExists;
                     }
                     return null;
@@ -732,154 +734,19 @@ async function oneFlowFilterSurvey(surveys,currentEvent,isPageUrl=null,web=false
       
       if(surveys.length > 0){
         survey =await triggerEventFilter(surveys,currentEvent,isPageUrl,web)
-        
+        console.log(survey,"=====================================TEST");
       }
       if(survey === null){
-        if(isCallBackAvilable){
+        if(isCallBackAvilable()){
             oneFlowCallBack(null);
         }
         return null
       }
-      if(isCallBackAvilable){
+      if(isCallBackAvilable()){
             oneFlowCallBack(survey);
         }
       return survey;
 
-
-      let timezone= userDetails.project_timezone;
-      if(force== true){
-         return survey;
-      }
-      
-      
-      /*==================================SURVEY RESCHEDULING START====================================*/
-      if(survey && survey.survey_settings && survey.survey_settings.frequencyAndScheduling){
-         if(survey.survey_settings.frequencyAndScheduling.start_sending.type == 'date' && survey.survey_settings.frequencyAndScheduling.start_sending.value){
-               let h = survey.survey_settings.frequencyAndScheduling.stop_sending.time.split(":");
-               let hours = survey.survey_settings.frequencyAndScheduling.stop_sending.time.includes("PM") ? 12 + parseInt(h[0]) : h[0];
-               const current_timezone = timeZones.find((zone) => zone.label === timezone);
-               let date_mom_1 = moment(survey.survey_settings.frequencyAndScheduling.stop_sending.value.replace('th', '').replace("nd", "").replace("rd", "")).add(hours, "hours").utcOffset(current_timezone.offset, true).utc();
-               let da = date_mom_1.format('x')
-               let end_date = dateDiffrence(da, timezone);
-               if (end_date.days >= 0 && end_date.hours >= 0 && end_date.minutes >= 0) {
-               return null
-            }
-         }else if (survey.survey_settings.frequencyAndScheduling.stop_sending.type == 'responses' && survey.survey_settings.frequencyAndScheduling.stop_sending.value) {
-
-               let h = survey.survey_settings.frequencyAndScheduling.stop_sending.time.split(":");
-               let hours = survey.survey_settings.frequencyAndScheduling.stop_sending.time.includes("PM") ? 12 + parseInt(h[0]) : h[0]
-               const current_timezone = timeZones.find((zone) => zone.label === timezone);
-               let date_mom_1 = moment(survey.survey_settings.frequencyAndScheduling.stop_sending.value.replace('th', '').replace("nd", "").replace("rd", "")).add(hours, "hours").utcOffset(current_timezone.offset, true).utc();
-               let da = date_mom_1.format('x')
-               let end_date = dateDiffrence(da, timezone);
-               
-               if (end_date.days >= 0 && end_date.hours >= 0 && end_date.minutes >= 0) {
-                 return null;
-               }
-        }else  if (survey.survey_settings.frequencyAndScheduling.stop_sending.type == 'responses' && survey.survey_settings.frequencyAndScheduling.stop_sending.value && survey.survey_response.length && survey.survey_settings.frequencyAndScheduling.stop_sending.value <= survey.survey_response[0].responses) {
-            return null;
-         }
-     }
-
-       /*==================================SURVEY RESCHEDULING END====================================*/
-
-         
-       /*==================================SURVEY AUDIRNCE FILTER START====================================*/
-         if(survey.survey_settings.audience_rules && survey.survey_settings.audience_rules.length > 0 && userDetails && timezone){
-
-          const surveyList=[];
-
-            survey.survey_settings.audience_rules.forEach(async (audience, index) => {
-               surveyList.push(new Promise(async (resolve,reject)=>{
-
-                  let valid=false;
-                  if (audience.event_name === "first-seen") {
-                     
-                          valid = await firstSeenFilter(userDetails, audience.event_value,timezone);
-                          if (!valid) {
-                              resolve(null);
-                          }
-                          resolve(audience);
-
-                  } else if (audience.event_name === "last-seen") {
-                          valid = await lastSeenFilter(userDetails, audience.event_value,timezone);
-                          if (!valid) {
-                                 resolve(null);
-                           }
-                           resolve(audience);
-                  } else if (audience.event_name === "country") {
-                          valid = countryFilter(userDetails, audience.event_value);
-                          if (!valid) {
-                                 resolve(null);
-                           }
-                           resolve(audience);
-                  } else if (audience.event_name === "city") {
-                          valid = cityFilter(userDetails, audience.event_value);
-                          if (!valid) {
-                                 resolve(null);
-                           }
-                           resolve(audience);
-                  } else if (audience.event_name === "os") {
-                          valid = osFilter(userDetails, audience.event_value);
-                          if (!valid) {
-                                 resolve(null);
-                           }
-                           resolve(audience);
-                  } else if (audience.event_name === "browser") {
-                          valid = browserFilter(userDetails, audience.event_value);
-                          if (!valid) {
-                                 resolve(null);
-                           }
-                           resolve(audience);
-                  } else if (audience.event_name === "app-version") {
-                          valid = appVersionFilter(userDetails, audience.event_value);
-                          if (!valid) {
-                                 resolve(null);
-                           }
-                           resolve(audience);
-                  } else if (audience.event_name === "wi-fi") {
-                          valid = wifiFilter(userDetails, audience.event_value);
-                          if (!valid) {
-                                 resolve(null);
-                           }
-                           resolve(audience);
-                  } else if (audience.event_name === "cohort" ) {
-                          valid = await cohortFilter(audience.event_value,cohorts);
-                          if (!valid) {
-                                 resolve(null);
-                           }
-                           resolve(audience);
-                  } else if (audience.event_value.event_cond === "is-unknown" || audience.event_value.event_cond === "has-any-value" || audience.event_value.custom_user_property.length > 0) {
-                          valid = await userCustomPropertyFilter(userDetails, audience.event_value, audience.event_name,timezone);
-                          if (!valid) {
-                                 resolve(null);
-                           }
-                           resolve(audience);
-                  } else {
-                          valid = await eventFilter(timezone, audience.event_value, audience.event_name,eventDetails);
-                         
-                          if (!valid) {
-                                 resolve(null);
-                           }
-                           resolve(audience);
-                  }
-
-               }));
-                 
-              });
-             const list= await Promise.all(surveyList);
-             const NulValueExists=list.filter((l)=>!l);
-              if(NulValueExists.length > 0){
-                return null
-              }
-              return survey
-         }else{
-            return survey
-         }
-       /*==================================SURVEY AUDIENCE FILTER END====================================*/
-       
-      
-      return survey
    }catch(e){
       return e.message;
    }

@@ -149,7 +149,9 @@ class OFSurveyManager: NSObject, SurveyManageable {
                     self.isThrottlingActivated = surveyListResponse.throttlingMobileSDKConfig?.isThrottlingActivated
                     self.globalTime = surveyListResponse.throttlingMobileSDKConfig?.globalTime
                     self.throttlingActivatedTime = surveyListResponse.throttlingMobileSDKConfig?.throttlingActivatedTime
-                    SurveyScriptValidator.shared.setup(with: surveyListResponse.result)
+                    
+                    let filteredSurvey = surveyListResponse.result.filter({self.validateTheSurvey($0)})
+                    SurveyScriptValidator.shared.setup(with: filteredSurvey)
                     self.setupGlobalTimerToDeactivateThrottling()
                     self.checkAfterSurveyLoadForExistingEvents()
                 } catch {
@@ -182,8 +184,8 @@ class OFSurveyManager: NSObject, SurveyManageable {
                     print("Survey validator returns: \(survey as Any)")
                     if self.validateTheSurvey(survey) == true {
                         if
-                            survey.survey_settings?.trigger_filters?.first?.timingOption.type == "show_after",
-                            let delay = survey.survey_settings?.trigger_filters?.first?.timingOption.value {
+                            survey.survey_time_interval?.type == "show_after",
+                            let delay = survey.survey_time_interval?.value {
                             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(delay), execute: {
                                 self.startSurvey(survey, eventName: event.eventName)
                             })
@@ -240,7 +242,9 @@ class OFSurveyManager: NSObject, SurveyManageable {
         if self.surveyWindow != nil {
             return
         }
-        if let _ = self.surveyList {
+        if let allSurveys = self.surveyList {
+            let filters = allSurveys.result.filter({ self.validateTheSurvey($0)})
+            SurveyScriptValidator.shared.setup(with: filters)
             DispatchQueue.main.async {
                 var event = ["name": eventName] as [String : Any]
                 if let param = parameter {
@@ -251,18 +255,14 @@ class OFSurveyManager: NSObject, SurveyManageable {
                         return
                     }
                     print("Survey validator returns: \(survey as Any)")
-                    if self.validateTheSurvey(survey) == true {
-                        if
-                            survey.survey_settings?.trigger_filters?.first?.timingOption.type == "show_after",
-                            let delay = survey.survey_settings?.trigger_filters?.first?.timingOption.value {
-                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(delay), execute: {
-                                self.startSurvey(survey, eventName: eventName)
-                            })
-                        } else {
+                    if
+                        survey.survey_time_interval?.type == "show_after",
+                        let delay = survey.survey_time_interval?.value {
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(delay), execute: {
                             self.startSurvey(survey, eventName: eventName)
-                        }
+                        })
                     } else {
-                        OneFlowLog.writeLog("Survey validation not passed. Looking for next survey", .info)
+                        self.startSurvey(survey, eventName: eventName)
                     }
                 })
             }

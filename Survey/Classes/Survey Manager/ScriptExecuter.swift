@@ -50,7 +50,6 @@ class SurveyScriptValidator {
         print("JAVAscript returns: \(result as Any)")
 
         guard let result = result else {
-//            self.validatorCompletion(nil)
             SurveyScriptValidator.shared.validatorCompletion?(nil)
             return
         }
