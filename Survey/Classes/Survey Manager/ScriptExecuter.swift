@@ -60,14 +60,12 @@ class SurveyScriptValidator {
     func validateSurvey(event: [String: Any], completion:  @escaping ValidatorCompletion) {
         self.validatorCompletion = completion
         let swiftBlock = unsafeBitCast(swiftHandler, to: AnyObject.self)
-        context!.setObject(swiftBlock, forKeyedSubscript: "oneFlowCallBack" as (NSCopying & NSObjectProtocol)?)
-        guard let surveyList = surveyList else {
+        guard let context = context else {
             completion(nil)
             return
         }
-        
-        guard let context = context else {
-            print("JSContext not found.")
+        context.setObject(swiftBlock, forKeyedSubscript: "oneFlowCallBack" as (NSCopying & NSObjectProtocol)?)
+        guard let surveyList = surveyList else {
             completion(nil)
             return
         }

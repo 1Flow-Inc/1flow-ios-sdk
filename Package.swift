@@ -32,7 +32,8 @@ let package = Package(
                 "Survey.podspec"
             ],
             resources: [
-                .process("Resources/OFdone.gif")
+                .process("Resources/OFdone.gif"),
+                .process("Resources/validator-dev.js")
             ]),
         
         

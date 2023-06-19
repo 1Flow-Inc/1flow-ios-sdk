@@ -27,7 +27,7 @@
 		436D0DCD2A2FAB72000B7CFB /* ScriptsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D0DCC2A2FAB72000B7CFB /* ScriptsManager.swift */; };
 		437886E8299817FD009FEF25 /* OFWebContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437886E52994F834009FEF25 /* OFWebContainerView.swift */; };
 		437F08692A20AE0700C4FDC0 /* ScriptExecuter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437F08682A20AE0700C4FDC0 /* ScriptExecuter.swift */; };
-		437F086B2A20B26800C4FDC0 /* validator-dev.js in Resources */ = {isa = PBXBuildFile; fileRef = 437F086A2A20B26800C4FDC0 /* validator-dev.js */; };
+		43863D582A40E99100F2807D /* validator-dev.js in Resources */ = {isa = PBXBuildFile; fileRef = 437F086A2A20B26800C4FDC0 /* validator-dev.js */; };
 		456E187205471A0E4F5664985E58C1F2 /* OFNumberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B862F4EB82AD7324DCA6E87D6CE751E4 /* OFNumberCollectionViewCell.swift */; };
 		59F429E9A2443A8E8C94FD6B05F4B26E /* OneFlowDataLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB801BBB8506FE7B3939B5A8D1BB69A /* OneFlowDataLogic.swift */; };
 		5A184F8666A7A40B450D0B22BBA3771B /* URLRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96122D973B495DA43C5195C9C7C9561E /* URLRequestManager.swift */; };
@@ -705,7 +705,7 @@
 				855F2B3C763DAB211F46869DBFA38764 /* OFFollowupView.xib in Resources */,
 				375373795E4FA75DD1D74ED1B3A939B9 /* OFMCQView.xib in Resources */,
 				1DEC63F44AAA1AA3DA641E73E0E562FF /* OFNumberCollectionViewCell.xib in Resources */,
-				437F086B2A20B26800C4FDC0 /* validator-dev.js in Resources */,
+				43863D582A40E99100F2807D /* validator-dev.js in Resources */,
 				2E4B2552FBF1395C3E29558C2D3C6D63 /* OFOneToTenView.xib in Resources */,
 				B0324976C88B275307929392CBAD3ACB /* OFRatingViewController.xib in Resources */,
 				67B3215CB6FEEE7C93580F6E7D607227 /* OFShortAnswerView.xib in Resources */,
