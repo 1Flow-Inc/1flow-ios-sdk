@@ -237,7 +237,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
         }
         return true
     }
-    
+
     func newEventRecorded(_ eventName: String, parameter: [String: Any]? = nil) {
         if self.surveyWindow != nil {
             return
@@ -357,7 +357,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
         } else {
             kPrimaryTitleColor = UIColor.black
         }
-        
+
         kSecondaryTitleColor = kPrimaryTitleColor.withAlphaComponent(0.8)
         kFooterColor = kPrimaryTitleColor.withAlphaComponent(0.6)
         kOptionBackgroundColor = kPrimaryTitleColor.withAlphaComponent(0.05)
