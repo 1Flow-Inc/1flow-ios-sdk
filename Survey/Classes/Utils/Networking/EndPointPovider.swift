@@ -20,6 +20,7 @@ enum EndPoints: EndPointProtocol {
     case logUser
     case appStoreRating
     case fetchSurvey(String)
+    case scriptUpdate
     
     var url: String {
         let BaseURL: String = {
@@ -69,6 +70,13 @@ enum EndPoints: EndPointProtocol {
                 return ""
             }
             return "http://itunes.apple.com/lookup?bundleId=" + bundleID
+        case .scriptUpdate:
+            if OFProjectDetailsController.shared.currentEnviromment == .dev {
+                return "https://cdn.1flow.app/index-dev.js"
+            } else {
+                return "https://cdn.1flow.app/index.js"
+            }
+            // https://cdn.1flow.app/index-beta.js for beta
         }
     }
 }

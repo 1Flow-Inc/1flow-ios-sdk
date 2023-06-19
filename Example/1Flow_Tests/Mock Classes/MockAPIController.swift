@@ -42,5 +42,8 @@ final class MockAPIController: APIProtocol {
     func fetchSurvey(_ flowID: String, completion: @escaping APICompletionBlock) {
         completion(true, nil, dataToRespond)
     }
-    
+
+    func fetchUpdatedValidationScript(_ completion: @escaping APICompletionBlock) {
+        completion(true, nil, dataToRespond)
+    }
 }

@@ -40,8 +40,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func onButton1(_ sender: Any) {
-//        OneFlow.recordEventName("1", parameters: nil)
-        OneFlow.start(flowId: "f2ee261de5a31ca31cc6c3c1")
+        OneFlow.recordEventName("1", parameters: nil)
     }
     
     @IBAction func onButton2(_ sender: Any) {

@@ -13,10 +13,9 @@ typealias ValidatorCompletion = (_ survey: SurveyListResponse.Survey?) -> Void
 class SurveyScriptValidator {
     var webview: WKWebView?
     var surveyList: [[String: Any]]?
-  
     var validatorCompletion: ValidatorCompletion?
-
     static let shared = SurveyScriptValidator()
+    var scriptManager: ScriptManageable?
 
     func setup(with surveys: [SurveyListResponse.Survey]) {
         let jsonEncoder = JSONEncoder()
@@ -26,23 +25,17 @@ class SurveyScriptValidator {
             self.surveyList = jsonObj
         } catch {
         }
+        if scriptManager == nil {
+            scriptManager = ScriptManager()
+        }
     }
     
     lazy var context: JSContext? = {
         let context = JSContext()
-        guard let
-            commonJSPath = OneFlowBundle.bundleForObject(self).path(forResource: "validator-dev", ofType: "js") else {
-                print("Unable to read resource files.")
-                return nil
+        guard let script = scriptManager?.validationScript() else {
+            return nil
         }
-
-        do {
-            let common = try String(contentsOfFile: commonJSPath, encoding: String.Encoding.utf8)
-            _ = context?.evaluateScript(common)
-        } catch (let error) {
-            print("Error while processing script file: \(error)")
-        }
-
+        _ = context?.evaluateScript(script)
         return context
     }()
     

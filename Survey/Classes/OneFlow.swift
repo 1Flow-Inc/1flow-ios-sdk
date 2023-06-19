@@ -186,7 +186,7 @@ public final class OneFlow: NSObject {
         }
     }
 
-    @objc class public func start(flowId: String) {
+    @objc class public func startFlow(_ flowId: String) {
         shared.eventManager.surveyManager.startFlow(with: flowId)
     }
 

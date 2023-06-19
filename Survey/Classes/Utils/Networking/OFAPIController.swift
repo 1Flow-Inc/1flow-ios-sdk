@@ -23,6 +23,7 @@ protocol APIProtocol {
     func logUser(_ parameter: [String: Any], completion: @escaping APICompletionBlock)
     func addEvents(_ parameter: [String: Any], completion: @escaping APICompletionBlock)
     func fetchSurvey(_ flowID: String, completion: @escaping APICompletionBlock)
+    func fetchUpdatedValidationScript(_ completion: @escaping APICompletionBlock)
 }
 
 final class OFAPIController: NSObject, APIProtocol {
@@ -77,5 +78,9 @@ final class OFAPIController: NSObject, APIProtocol {
 
     func fetchSurvey(_ flowID: String, completion: @escaping APICompletionBlock) {
         urlRequestManager.getAPIWith(EndPoints.fetchSurvey(flowID), completion: completion)
+    }
+
+    func fetchUpdatedValidationScript(_ completion: @escaping APICompletionBlock) {
+        urlRequestManager.getAPIWith(EndPoints.scriptUpdate, completion: completion)
     }
 }
