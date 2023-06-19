@@ -28,13 +28,13 @@ public final class OneFlow: NSObject {
     static var fontConfiguration: SurveyFontConfigurable? = SurveyFontConfiguration()
     var apiController : APIProtocol = OFAPIController()
     var projectDetailsController: ProjectDetailsManageable = OFProjectDetailsController.shared
-    
+
     @objc public static var enableSurveys: Bool = true {
         didSet {
             OneFlow.shared.projectDetailsController.isSuveryEnabled = enableSurveys
         }
     }
-    
+
     @objc public class func configure(_ appKey: String) {
         OneFlowLog.writeLog("1Flow configuration started")
         if OneFlow.shared.projectDetailsController.appKey == nil {
@@ -58,7 +58,6 @@ public final class OneFlow: NSObject {
     }
 
     private func setupOnce() {
-
         let context = AddUserRequest.Context(
             app: AddUserRequest.Context.AppDetails(
                 version: projectDetailsController.appVersion,
