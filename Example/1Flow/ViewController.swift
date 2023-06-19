@@ -26,27 +26,27 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     @IBAction func onRecordEvent_startSurvey(_ sender: Any) {
         OneFlow.recordEventName("4", parameters: nil)
     }
-    
+
     @IBAction func onRecordEvent_withParams(_ sender: Any) {
         OneFlow.recordEventName("5", parameters: nil)
     }
-    
+
     @IBAction func onLogUser(_ sender: Any) {
         OneFlow.recordEventName("6", parameters: nil)
     }
-    
+
     @IBAction func onButton1(_ sender: Any) {
         OneFlow.recordEventName("1", parameters: nil)
     }
-    
+
     @IBAction func onButton2(_ sender: Any) {
         OneFlow.recordEventName("secondEvent", parameters: ["first_name": "rohan", "roll_number": 10])
     }
-    
+
     @IBAction func onButton3(_ sender: Any) {
         OneFlow.recordEventName("3", parameters: nil)
 //        OneFlow.useFont(fontFamily: "Zapfino")
