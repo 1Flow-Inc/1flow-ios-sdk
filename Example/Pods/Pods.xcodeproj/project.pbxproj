@@ -23,7 +23,11 @@
 		375373795E4FA75DD1D74ED1B3A939B9 /* OFMCQView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFAE9B72FB09181AFBA99DF0CC3B8778 /* OFMCQView.xib */; };
 		4141A220721A1BEB017604A1B019DC2B /* OneFlowLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C021754A0834FBD81DFE50FCFCCC35 /* OneFlowLog.swift */; };
 		4360555D2940A5B700EE033C /* SurveyFontConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4360555C2940A5B700EE033C /* SurveyFontConfiguration.swift */; };
+		436D0DCB2A2FAB15000B7CFB /* ScriptsManageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D0DCA2A2FAB15000B7CFB /* ScriptsManageable.swift */; };
+		436D0DCD2A2FAB72000B7CFB /* ScriptsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D0DCC2A2FAB72000B7CFB /* ScriptsManager.swift */; };
 		437886E8299817FD009FEF25 /* OFWebContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437886E52994F834009FEF25 /* OFWebContainerView.swift */; };
+		437F08692A20AE0700C4FDC0 /* ScriptExecuter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437F08682A20AE0700C4FDC0 /* ScriptExecuter.swift */; };
+		437F086B2A20B26800C4FDC0 /* validator-dev.js in Resources */ = {isa = PBXBuildFile; fileRef = 437F086A2A20B26800C4FDC0 /* validator-dev.js */; };
 		456E187205471A0E4F5664985E58C1F2 /* OFNumberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B862F4EB82AD7324DCA6E87D6CE751E4 /* OFNumberCollectionViewCell.swift */; };
 		59F429E9A2443A8E8C94FD6B05F4B26E /* OneFlowDataLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB801BBB8506FE7B3939B5A8D1BB69A /* OneFlowDataLogic.swift */; };
 		5A184F8666A7A40B450D0B22BBA3771B /* URLRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96122D973B495DA43C5195C9C7C9561E /* URLRequestManager.swift */; };
@@ -123,7 +127,11 @@
 		37F68474155312269760AB343384C91B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		3E2310CE2A961C5269B0DA843140BC0F /* OFSwiftGIF.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFSwiftGIF.swift; sourceTree = "<group>"; };
 		4360555C2940A5B700EE033C /* SurveyFontConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyFontConfiguration.swift; sourceTree = "<group>"; };
+		436D0DCA2A2FAB15000B7CFB /* ScriptsManageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptsManageable.swift; sourceTree = "<group>"; };
+		436D0DCC2A2FAB72000B7CFB /* ScriptsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptsManager.swift; sourceTree = "<group>"; };
 		437886E52994F834009FEF25 /* OFWebContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OFWebContainerView.swift; sourceTree = "<group>"; };
+		437F08682A20AE0700C4FDC0 /* ScriptExecuter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptExecuter.swift; sourceTree = "<group>"; };
+		437F086A2A20B26800C4FDC0 /* validator-dev.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "validator-dev.js"; path = "Survey/Resources/validator-dev.js"; sourceTree = "<group>"; };
 		4385E10AC6E4BC7503B447884B9DB0B7 /* Pods-1Flow_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-1Flow_Example-frameworks.sh"; sourceTree = "<group>"; };
 		440F4D66CCB5CF18D2FE5D168806D26B /* Pods-1Flow_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Example-Info.plist"; sourceTree = "<group>"; };
 		4434702501960A4010466421ADB8857D /* OFStarsView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFStarsView.xib; path = Survey/Resources/OFStarsView.xib; sourceTree = "<group>"; };
@@ -226,6 +234,7 @@
 				4567C2AC22713B5B00944F21C95BC69A /* FeedbackAssets.xcassets */,
 				EEF2458015E56E830AB8024058FF6FF0 /* OFdone.gif */,
 				C8295EEA29D6750AE6491ACD052391CF /* OFFollowupView.xib */,
+				437F086A2A20B26800C4FDC0 /* validator-dev.js */,
 				BFAE9B72FB09181AFBA99DF0CC3B8778 /* OFMCQView.xib */,
 				D2F06257EA5C69409FC547BB6006E13E /* OFNumberCollectionViewCell.xib */,
 				184E88229314091043D79E1CF8F4793D /* OFOneToTenView.xib */,
@@ -342,6 +351,14 @@
 				F82C440AA56316ECD1D19F00D329DAE4 /* OFFollowupView.swift */,
 			);
 			path = Followup;
+			sourceTree = "<group>";
+		};
+		436D0DCE2A2FAC2C000B7CFB /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				436D0DCA2A2FAB15000B7CFB /* ScriptsManageable.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		437886E42994F7F7009FEF25 /* WebContainer */ = {
@@ -522,6 +539,9 @@
 				14F5CB22917125FAE72378715372D43B /* OFSurveyManager.swift */,
 				4360555C2940A5B700EE033C /* SurveyFontConfiguration.swift */,
 				7BB801BBB8506FE7B3939B5A8D1BB69A /* OneFlowDataLogic.swift */,
+				437F08682A20AE0700C4FDC0 /* ScriptExecuter.swift */,
+				436D0DCE2A2FAC2C000B7CFB /* Protocols */,
+				436D0DCC2A2FAB72000B7CFB /* ScriptsManager.swift */,
 				75DE407CF78D98B7569B3E4B75F97EF3 /* View Controllers */,
 			);
 			name = "Survey Manager";
@@ -685,6 +705,7 @@
 				855F2B3C763DAB211F46869DBFA38764 /* OFFollowupView.xib in Resources */,
 				375373795E4FA75DD1D74ED1B3A939B9 /* OFMCQView.xib in Resources */,
 				1DEC63F44AAA1AA3DA641E73E0E562FF /* OFNumberCollectionViewCell.xib in Resources */,
+				437F086B2A20B26800C4FDC0 /* validator-dev.js in Resources */,
 				2E4B2552FBF1395C3E29558C2D3C6D63 /* OFOneToTenView.xib in Resources */,
 				B0324976C88B275307929392CBAD3ACB /* OFRatingViewController.xib in Resources */,
 				67B3215CB6FEEE7C93580F6E7D607227 /* OFShortAnswerView.xib in Resources */,
@@ -756,6 +777,7 @@
 				456E187205471A0E4F5664985E58C1F2 /* OFNumberCollectionViewCell.swift in Sources */,
 				99DC5F5D2C1A965A8A575A7ED2A7DE89 /* OFOneToTenView.swift in Sources */,
 				2B71B723A9C164A805168A509896C525 /* OFProjectDetailsController.swift in Sources */,
+				436D0DCD2A2FAB72000B7CFB /* ScriptsManager.swift in Sources */,
 				75C2A0DB23764BD35F3EE053A8FD28BD /* OFRadioButton.swift in Sources */,
 				ED9C62864D55D93B891811C4005E02C5 /* OFRatingViewController.swift in Sources */,
 				66232A25EEC2DAE986F497EA04D957E6 /* OFRatingViewProtocol.swift in Sources */,
@@ -779,8 +801,10 @@
 				922FDD7FD4AD0715452B45EEF6458697 /* ReplaceMe.swift in Sources */,
 				338DEA2AEADF42D780F2AC48AB09336B /* SubmittedSurvey.swift in Sources */,
 				047002DDF95077E3E08F18AEF67BC7DC /* SurveyListResponse.swift in Sources */,
+				437F08692A20AE0700C4FDC0 /* ScriptExecuter.swift in Sources */,
 				36A02EE19058F3F50B25BBBFE7ED712E /* SurveySubmitRequest.swift in Sources */,
 				5A184F8666A7A40B450D0B22BBA3771B /* URLRequestManager.swift in Sources */,
+				436D0DCB2A2FAB15000B7CFB /* ScriptsManageable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

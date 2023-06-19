@@ -201,10 +201,10 @@ class OFEventManager: NSObject, EventManagerProtocol {
                 /// if Survey is enabled, then pass this event to survey manager to check if survey available or not
                 if OFProjectDetailsController.shared.isSuveryEnabled == true {
                     if let surveyManagerObj = self.surveyManager {
-                        surveyManagerObj.newEventRecorded(name)
+                        surveyManagerObj.newEventRecorded(name, parameter: parameters)
                     } else {
                         self.surveyManager = OFSurveyManager()
-                        self.surveyManager.newEventRecorded(name)
+                        self.surveyManager.newEventRecorded(name, parameter: parameters)
                     }
                 }
             }

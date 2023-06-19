@@ -19,6 +19,8 @@ enum EndPoints: EndPointProtocol {
     case submitSurvey
     case logUser
     case appStoreRating
+    case fetchSurvey(String)
+    case scriptUpdate
     
     var url: String {
         let BaseURL: String = {
@@ -44,6 +46,19 @@ enum EndPoints: EndPointProtocol {
                 OneFlowLog.writeLog("Language Code: \(langStr)")
             }
             return surveyUrl
+        case .fetchSurvey(let surveyID):
+            var surveyUrl = BaseURL + "/v3/survey/\(surveyID)?platform=iOS"
+            if let userID : String = OFProjectDetailsController.shared.analytic_user_id {
+                surveyUrl = surveyUrl + "&user_id=" + userID
+            }
+
+            surveyUrl = surveyUrl + "&min_version=" + OFProjectDetailsController.shared.libraryVersion
+
+            if let langStr = Locale.current.languageCode {
+                surveyUrl = surveyUrl + "&language_code=" + langStr
+                OneFlowLog.writeLog("Language Code: \(langStr)")
+            }
+            return surveyUrl
         case .addEvent:
             return BaseURL + "/v3/track"
         case .submitSurvey:
@@ -55,6 +70,13 @@ enum EndPoints: EndPointProtocol {
                 return ""
             }
             return "http://itunes.apple.com/lookup?bundleId=" + bundleID
+        case .scriptUpdate:
+            if OFProjectDetailsController.shared.currentEnviromment == .dev {
+                return "https://cdn.1flow.app/index-dev.js"
+            } else {
+                return "https://cdn.1flow.app/index.js"
+            }
+            // https://cdn.1flow.app/index-beta.js for beta
         }
     }
 }

@@ -10,6 +10,7 @@
 import Foundation
 
 final class MockAPIController: APIProtocol {
+
     var isAddUserCalled = false
     var dataToRespond: Data?
     
@@ -37,6 +38,12 @@ final class MockAPIController: APIProtocol {
     func addEvents(_ parameter: [String : Any], completion: @escaping APICompletionBlock) {
         
     }
-    
-    
+
+    func fetchSurvey(_ flowID: String, completion: @escaping APICompletionBlock) {
+        completion(true, nil, dataToRespond)
+    }
+
+    func fetchUpdatedValidationScript(_ completion: @escaping APICompletionBlock) {
+        completion(true, nil, dataToRespond)
+    }
 }

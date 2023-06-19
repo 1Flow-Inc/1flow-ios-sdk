@@ -17,6 +17,7 @@ import UIKit
 struct EventStore {
     let eventName: String
     let timeInterval: Int
+    let parameters: [String: Any]?
 }
 
 public let SurveyFinishNotification = Notification.Name("survey_finished")
@@ -29,8 +30,9 @@ protocol SurveyManageable {
     func networkStatusChanged(_ isReachable: Bool)
     func cleanUpSurveyArray()
     func configureSurveys()
-    func newEventRecorded(_ eventName: String)
+    func newEventRecorded(_ eventName: String, parameter: [String: Any]?)
     func setUserToSubmittedSurveyAsAnnonyous(newUserID: String)
+    func startFlow(with flowID: String)
 }
 
 class OFSurveyManager: NSObject, SurveyManageable {
@@ -45,6 +47,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
     var activatedBySurveyID: String?
     var throttlingActivatedTime: Int?
     var deactivateItem: DispatchWorkItem?
+//    var surveyValidator: SurveyScriptValidator?
     
     var pendingSurveySubmission: [String: SurveySubmitRequest]? {
         set {
@@ -86,6 +89,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
             }
             
         }
+        
     }
 
     func cleanUpSurveyArray() {
@@ -145,6 +149,9 @@ class OFSurveyManager: NSObject, SurveyManageable {
                     self.isThrottlingActivated = surveyListResponse.throttlingMobileSDKConfig?.isThrottlingActivated
                     self.globalTime = surveyListResponse.throttlingMobileSDKConfig?.globalTime
                     self.throttlingActivatedTime = surveyListResponse.throttlingMobileSDKConfig?.throttlingActivatedTime
+                    
+                    let filteredSurvey = surveyListResponse.result.filter({self.validateTheSurvey($0)})
+                    SurveyScriptValidator.shared.setup(with: filteredSurvey)
                     self.setupGlobalTimerToDeactivateThrottling()
                     self.checkAfterSurveyLoadForExistingEvents()
                 } catch {
@@ -158,24 +165,37 @@ class OFSurveyManager: NSObject, SurveyManageable {
     }
 
     func checkAfterSurveyLoadForExistingEvents() {
+        let semaphore = DispatchSemaphore(value: 1)
+
         if let eventsArray = self.temporaryEventArray {
             for event in eventsArray {
-                if let triggeredSurvey = surveyList?.result.first(where: { survey in
-                    if let surveyEventName = survey.trigger_event_name {
-                        let eventNames = surveyEventName.components(separatedBy: ",")
-                        if eventNames.contains(event.eventName) {
-                            return true
-                        }
-                    }
-                    return false
-                }){
-                    if self.validateTheSurvey(triggeredSurvey) == true {
-                        self.startSurvey(triggeredSurvey, eventName: event.eventName)
-                        break
-                    } else {
-                        OneFlowLog.writeLog("Survey already submitted. Do nothing.")
-                    }
+                semaphore.wait()
+                var previousEvent = ["name": event.eventName] as [String : Any]
+                if let param = event.parameters {
+                    previousEvent["parameters"] = param
                 }
+                SurveyScriptValidator.shared.validateSurvey(event: previousEvent, completion: { survey in
+                    defer {
+                        semaphore.signal()
+                    }
+                    guard let survey = survey else {
+                        return
+                    }
+                    print("Survey validator returns: \(survey as Any)")
+                    if self.validateTheSurvey(survey) == true {
+                        if
+                            survey.survey_time_interval?.type == "show_after",
+                            let delay = survey.survey_time_interval?.value {
+                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(delay), execute: {
+                                self.startSurvey(survey, eventName: event.eventName)
+                            })
+                        } else {
+                            self.startSurvey(survey, eventName: event.eventName)
+                        }
+                    } else {
+                        OneFlowLog.writeLog("Survey validation not passed. Looking for next survey", .info)
+                    }
+                })
             }
             self.temporaryEventArray = nil
         }
@@ -218,34 +238,40 @@ class OFSurveyManager: NSObject, SurveyManageable {
         return true
     }
 
-    func newEventRecorded(_ eventName: String) {
+    func newEventRecorded(_ eventName: String, parameter: [String: Any]? = nil) {
         if self.surveyWindow != nil {
             return
         }
-        if let surveyList = self.surveyList {
-            let triggerredSruvey = surveyList.result.filter({ survey in
-                if let surveyEventName = survey.trigger_event_name {
-                    let eventNames = surveyEventName.components(separatedBy: ",")
-                    if eventNames.contains(eventName) {
-                        return true
+        if let allSurveys = self.surveyList {
+            let filters = allSurveys.result.filter({ self.validateTheSurvey($0)})
+            SurveyScriptValidator.shared.setup(with: filters)
+            DispatchQueue.main.async {
+                var event = ["name": eventName] as [String : Any]
+                if let param = parameter {
+                    event["parameters"] = param
+                }
+                SurveyScriptValidator.shared.validateSurvey(event: event, completion: { survey in
+                    guard let survey = survey else {
+                        return
                     }
-                }
-                return false
-            })
-            for survey in triggerredSruvey {
-                if self.validateTheSurvey(survey) == true {
-                    self.startSurvey(survey, eventName: eventName)
-                    break
-                } else {
-                    OneFlowLog.writeLog("Survey validation not passed. Looking for next survey", .info)
-                }
+                    print("Survey validator returns: \(survey as Any)")
+                    if
+                        survey.survey_time_interval?.type == "show_after",
+                        let delay = survey.survey_time_interval?.value {
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(delay), execute: {
+                            self.startSurvey(survey, eventName: eventName)
+                        })
+                    } else {
+                        self.startSurvey(survey, eventName: eventName)
+                    }
+                })
             }
         } else {
             OneFlowLog.writeLog("Survey not loaded yet", .info)
             if temporaryEventArray == nil {
                 self.temporaryEventArray = [EventStore]()
             }
-            let eventObj = EventStore(eventName: eventName, timeInterval: Int(Date().timeIntervalSince1970))
+            let eventObj = EventStore(eventName: eventName, timeInterval: Int(Date().timeIntervalSince1970), parameters: parameter)
             self.temporaryEventArray?.append(eventObj)
         }
     }
@@ -307,6 +333,9 @@ class OFSurveyManager: NSObject, SurveyManageable {
     }
 
     func startSurvey(_ survey: SurveyListResponse.Survey, eventName: String) {
+        if self.surveyWindow != nil {
+            return
+        }
         if validateSurveyThrottling(survey: survey) == false {
             OneFlowLog.writeLog("Survey Throttling validation not passed", .info)
             return
@@ -537,6 +566,29 @@ class OFSurveyManager: NSObject, SurveyManageable {
                 }
             } else {
                 OneFlowLog.writeLog("Error - Submit survey: \(error?.localizedDescription ?? "NA")", .error)
+            }
+        }
+    }
+
+    func startFlow(with flowID: String) {
+        apiController.fetchSurvey(flowID) { [weak self] isSuccess, error, data in
+            guard let self = self else {
+                return
+            }
+            if isSuccess == true, let data = data {
+                do {
+                    let flow = try JSONDecoder().decode(FetchFlow.self, from: data)
+                    guard let surveyToTrigger = flow.result else {
+                        return
+                    }
+                    self.startSurvey(surveyToTrigger, eventName: kEventNameManualTrigger)
+                    
+                } catch {
+                    OneFlowLog.writeLog("\(#function) error: \(error)", .error)
+                }
+                
+            } else {
+                OneFlowLog.writeLog("\(#function) \(error?.localizedDescription ?? "NA")", .error)
             }
         }
     }

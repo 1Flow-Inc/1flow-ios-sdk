@@ -39,6 +39,7 @@ let kEventNameSessionStart = "session_start"
 let kEventNameInAppPurchase = "in_app_purchase"
 let kEventNameSurveyImpression = "survey_impression"
 let kEventNameFlowClosed = "$flow_closed"
+let kEventNameManualTrigger = "triggered_manually"
 
 struct InternalEvent {
     static let flowStarted = "flow_started"
