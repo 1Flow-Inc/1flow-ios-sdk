@@ -23,14 +23,14 @@ class ScriptManager: ScriptManageable {
     func validationScript() -> String? {
         guard let
                 commonJSPath = self.getScriptURL() else {
-                print("Unable to read resource files.")
-                return nil
+            OneFlowLog.writeLog("Unable to read resource files.", .warnings)
+            return nil
         }
         do {
             let scriptString = try String(contentsOf: commonJSPath, encoding: .utf8)
             return scriptString
         } catch (let error) {
-            print("Error while processing script file: \(error)")
+            OneFlowLog.writeLog("Error while processing script file: \(error)", .error)
             return nil
         }
     }
@@ -59,7 +59,7 @@ class ScriptManager: ScriptManageable {
                 try fileManager.copyItem(atPath: bundlePath, toPath: fileURL.path)
                 return fileURL
             } catch {
-                print("Error copying file: \(error.localizedDescription)")
+                OneFlowLog.writeLog("Error copying file: \(error.localizedDescription)", .error)
                 return nil
             }
         }
@@ -93,12 +93,13 @@ class ScriptManager: ScriptManageable {
                 do {
                     try fileManager.removeItem(at: fileURL)
                 } catch {
-                    print("Error while deleting file:", error)
+                    OneFlowLog.writeLog("Error while deleting file: \(error.localizedDescription)", .error)
                 }
             }
 
             try? data.write(to: fileURL)
             UserDefaults.standard.setValue(Date().timeIntervalSince1970, forKey: "OFScriptUpdateTime")
+            SurveyScriptValidator.shared.refreshContext()
         }
         
     }
