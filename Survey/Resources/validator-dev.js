@@ -586,9 +586,9 @@ const  filterRules=async(filters,event,operator,isPageRule=false)=>{
                     resolve(res)
                 }else{
                     if(event.parameters && Object.keys(event.parameters || {}).length > 0){
-                        res=await filterProperty(filter.values,filter.condition, (event.parameters[filter.field] === undefined) ? null : event.parameters[filter.field])
+                        res=await filterProperty(filter.values,filter.condition.replaceAll(" ","-"), (event.parameters[filter.field] === undefined) ? null : event.parameters[filter.field])
                     }else if(isPageRule){
-                        filter.values.forEach((pu)=> removeHttpElements(pu))
+                        filter.values=filter.values.map((pu)=> removeHttpElements(pu));
                         res=await filterProperty(filter.values,filter.condition.replaceAll(" ","-"), getCurrentPageValueAsPerCondition(event,filter.field));
                     }
                     resolve(res)
@@ -634,9 +634,9 @@ const getCurrentPageValueAsPerCondition=(values,cond)=>{
         case 'path':
             return values.pathName
         case 'search':
-            return values.search
+            return values.search.slice(1);
         case 'url':
-            return values.fullPath
+            return (values.pathName =='/')? values.fullPath.slice(0, -1)  : values.fullPath
     }
 }
 /*--------------------------------------------------------------------------SURVEY TRIGGER EVENT FILTER ----------------------------------------- */
@@ -668,7 +668,7 @@ const triggerEventFilter=async(surveys,event,isPageUrl,web)=>{
                             const v=await Promise.all([new Promise((resolve)=>{
                                 setTimeout(()=>{
                                     resolve(true);
-                                },pageRules[j].timingOption.value);
+                                },pageRules[j].timingOption.value * 1000);
                                 })])
                           
                             return pageRulesSurveys[i];
@@ -697,7 +697,7 @@ const triggerEventFilter=async(surveys,event,isPageUrl,web)=>{
                         const v=await Promise.all([new Promise((resolve)=>{
                             setTimeout(()=>{
                                 resolve(true)
-                            },eventExists.timingOption.value)
+                            },eventExists.timingOption.value * 1000)
                         })])
                         surveyExists.survey_time_interval=eventExists.timingOption;
                         return surveyExists
@@ -734,7 +734,6 @@ async function oneFlowFilterSurvey(surveys,currentEvent,isPageUrl=null,web=false
       
       if(surveys.length > 0){
         survey =await triggerEventFilter(surveys,currentEvent,isPageUrl,web)
-        console.log(survey,"=====================================TEST");
       }
       if(survey === null){
         if(isCallBackAvilable()){

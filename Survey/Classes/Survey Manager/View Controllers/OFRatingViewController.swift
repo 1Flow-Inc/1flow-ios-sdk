@@ -397,8 +397,7 @@ class OFRatingViewController: UIViewController {
                     completion(self.surveyResult, self.isSurveyFullyAnswered)
                 }
             }
-        }
-        else {
+        } else {
             OneFlowLog.writeLog("Data Logic : No need to show next question as rating or open url action is performed")
         }
     }
@@ -416,12 +415,10 @@ class OFRatingViewController: UIViewController {
                         self.performOpenUrlAction(actionUrl)
                         return
                     }
-                }
-                else if actionToPerform == "rating" {
+                } else if actionToPerform == "rating" {
                     self.performRatingAction()
                     return
-                }
-                else if actionToPerform == "skipTo" {
+                } else if actionToPerform == "skipTo" {
                     if let nextQuestionIndex : Int = nextIndex {
                         nextSurveyIndex = nextQuestionIndex
                     }

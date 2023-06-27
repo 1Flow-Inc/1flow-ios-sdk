@@ -189,7 +189,7 @@ public final class OneFlow: NSObject {
         shared.eventManager.surveyManager.startFlow(with: flowId)
     }
 
-    @objc class public func recordEventName(_ eventName: String, parameters: [String: Any]?) {
+    @objc class public func recordEventName(_ eventName: String, parameters: [String: Any]? = nil) {
         guard !eventName.isEmpty else {
             OneFlowLog.writeLog("Empty event logged. returned", .warnings)
             return
@@ -239,7 +239,15 @@ public final class OneFlow: NSObject {
             }
         }
     }
-    
+
+    @objc class public func shouldPrintLog(_ shouldShow: Bool) {
+        if shouldShow {
+            OFProjectDetailsController.shared.currentLogLevel = .verbose
+        } else {
+            OFProjectDetailsController.shared.currentLogLevel = .none
+        }
+    }
+
     @objc class private func getSerialisedString(_ value : Any) -> Any? {
         if let valueDate = value as? Date {
             let interval = Int(valueDate.timeIntervalSince1970)

@@ -181,7 +181,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
                     guard let survey = survey else {
                         return
                     }
-                    print("Survey validator returns: \(survey as Any)")
+                    OneFlowLog.writeLog("Survey validator returns: \(survey as Any)", .info)
                     if self.validateTheSurvey(survey) == true {
                         if
                             survey.survey_time_interval?.type == "show_after",
@@ -254,7 +254,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
                     guard let survey = survey else {
                         return
                     }
-                    print("Survey validator returns: \(survey as Any)")
+                    OneFlowLog.writeLog("Survey validator returns: \(survey as Any)", .info)
                     if
                         survey.survey_time_interval?.type == "show_after",
                         let delay = survey.survey_time_interval?.value {

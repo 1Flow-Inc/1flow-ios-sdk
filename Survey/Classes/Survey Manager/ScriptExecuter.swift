@@ -38,9 +38,18 @@ class SurveyScriptValidator {
         _ = context?.evaluateScript(script)
         return context
     }()
-    
+
+    func refreshContext() {
+        self.context = nil
+        let context = JSContext()
+        guard let script = scriptManager?.validationScript() else {
+            return
+        }
+        _ = context?.evaluateScript(script)
+        self.context = context
+    }
+
     let swiftHandler: @convention(block) ([String : Any]?) -> Void = {(result) in
-        print("JAVAscript returns: \(result as Any)")
 
         guard let result = result else {
             SurveyScriptValidator.shared.validatorCompletion?(nil)
@@ -53,7 +62,7 @@ class SurveyScriptValidator {
             SurveyScriptValidator.shared.validatorCompletion?(survey)
             
         } catch {
-            print(error)
+            OneFlowLog.writeLog(error.localizedDescription, .error)
         }
     }
 

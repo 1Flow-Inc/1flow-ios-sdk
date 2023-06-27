@@ -56,8 +56,7 @@ class OneFlowDataLogic {
                                     if let screenID : String = dataLogic.action {
                                         nextIndex = self.getNextQuestionIndex(screenID: screenID, allSurveys: allSurveys, currentIndex: currentIndex)
                                     }
-                                }
-                                else if type == "open-url" {
+                                } else if type == "open-url" {
                                     if let actionUrl : String = dataLogic.action {
                                         urlString = actionUrl
                                     }
@@ -111,18 +110,19 @@ class OneFlowDataLogic {
         var nextQuestionIndex = currentIndex + 1
         if screenID == "the-end" {
             nextQuestionIndex = allSurveys.count - 1
-        }
-        else {
+            // if last screen is not end-screen or thank_you then return next index. so it will close the survey
+            if !(allSurveys[nextQuestionIndex].input?.input_type == "end-screen" || allSurveys[nextQuestionIndex].input?.input_type == "thank_you") {
+                return allSurveys.count
+            }
+        } else {
             if let screenIndex = allSurveys.firstIndex(where: {$0._id == screenID}) {
                 OneFlowLog.writeLog("Data Logic : Next Index is \(screenIndex)")
                 if screenIndex > currentIndex && screenIndex < allSurveys.count {
                     nextQuestionIndex = screenIndex
-                }
-                else {
+                } else {
                     OneFlowLog.writeLog("Data Logic : Ignore index as index is either out of bound or survey question already shown")
                 }
             }
-            
         }
         return nextQuestionIndex
     }
