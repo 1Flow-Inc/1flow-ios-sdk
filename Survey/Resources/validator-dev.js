@@ -645,68 +645,98 @@ const triggerEventFilter=async(surveys,event,isPageUrl,web)=>{
     try{
 
         if(isPageUrl !== null){
-            const currentPageProperties=getDefaultPageValue();
-            const pageRulesSurveys=surveys.filter((survey)=>{
-                return survey.survey_settings.trigger_filters.find(({field,type})=>field == isPageUrl && type=="page")
-            })
+            const currentPageProperties = getDefaultPageValue();
+            const pageRulesSurveys = surveys.filter((survey)=>{
+                return survey.survey_settings.trigger_filters.find(({field,type})=>field == isPageUrl && type=="page");
+            });
             
             if(pageRulesSurveys.length > 0){
                 let i=0;
                 let j=0;
-                let valid=false
-                  for(i=0;i<pageRulesSurveys.length;i++){
+                let valid=false;
+                for(i=0;i<pageRulesSurveys.length;i++){
                     const pageRules=pageRulesSurveys[i].survey_settings.trigger_filters.filter(({field,type})=> field == isPageUrl && type=="page");
                     for(j=0;j<pageRules.length;j++){
-                         valid=await filterRules(pageRules[j].property_filters.filters,currentPageProperties,pageRules[j].property_filters.operator,true)
-                          if(valid){
+                        valid= await filterRules(pageRules[j].property_filters.filters,currentPageProperties,pageRules[j].property_filters.operator,true);
+                        if(valid){
                             break;
-                          }
+                        }
                     }
                     if(valid){
                        
-                        if(valid === true && pageRules[j].timingOption.type == 'show_after' && web== true){
-                            const v=await Promise.all([new Promise((resolve)=>{
+                        if(valid === true && pageRules[j].timingOption.type == "show_after" && web== true){
+                            await Promise.all([new Promise((resolve)=>{
                                 setTimeout(()=>{
                                     resolve(true);
                                 },pageRules[j].timingOption.value * 1000);
-                                })])
+                            })]);
                           
                             return pageRulesSurveys[i];
                         }else if(valid==true){
-                            return pageRulesSurveys[i];;
+                            return pageRulesSurveys[i];
                         }
 
                     }
-                  }
+                }
                   
             }
             return null;
         }else{
-            const surveyExists=surveys.find((survey)=>{
-                return survey.survey_settings.trigger_filters.find(({field,type})=>field == event.name && type=="event")
-            })
+            const surveysExists = surveys.filter((survey)=>{
+                return survey.survey_settings.trigger_filters.find(({field,type})=>field == event.name && type=="event");
+            });
             
-            if(surveyExists){
-                const filters=surveyExists.survey_settings.trigger_filters;
-                const eventExists=filters.find(({field,type})=>field == event.name && type=="event");
+            if(surveysExists.length > 0){
+                try {
+                    const surveys = [];
+                    surveysExists.forEach(async (surveyExists) => {
+                        // We will always resolved the survey as we need to always return the value
+                        surveys.push(new Promise(async (resolveSurvey, rejectSurvey) => {
+                            const filters=surveyExists.survey_settings.trigger_filters;
+                            
+                            const eventsExists=filters.filter(({field,type})=>field == event.name && type=="event");
             
-                if(eventExists){
-                    const valid=await filterRules(eventExists.property_filters.filters,event,eventExists.property_filters.operator)
-                   
-                    if(valid === true && eventExists.timingOption.type == 'show_after' && web == true){
-                        const v=await Promise.all([new Promise((resolve)=>{
-                            setTimeout(()=>{
-                                resolve(true)
-                            },eventExists.timingOption.value * 1000)
-                        })])
-                        surveyExists.survey_time_interval=eventExists.timingOption;
-                        return surveyExists
-                    }else if(valid==true){
-                        surveyExists.survey_time_interval=eventExists.timingOption;
-                        return surveyExists;
+                            if(eventsExists?.length > 0) {
+                                let survey = null;
+                                for(const eventExists of eventsExists) {
+                                    const valid= await filterRules(eventExists.property_filters.filters,event,eventExists.property_filters.operator);
+                                    // Only for JS SDK
+                                    if(valid === true && eventExists.timingOption.type == "show_after" && web == true){
+                                        await Promise.all([new Promise((resolve)=>{
+                                            setTimeout(()=>{
+                                                resolve(true);
+                                            },eventExists.timingOption.value * 1000);
+                                        })]);
+                                        surveyExists.survey_time_interval=eventExists.timingOption;
+                                        survey = surveyExists;
+                                        break;
+                                    }else if(valid==true){
+                                        surveyExists.survey_time_interval=eventExists.timingOption;
+                                        survey = surveyExists;
+                                        break;
+                                    }
+                                }
+
+                                return resolveSurvey(survey);
+
+                            }else {
+                                return resolveSurvey(null);
+                            }
+                        }));
+                    });
+                    const surveyResult = await Promise.all(surveys);
+                    const filteredSurvey = surveyResult.filter(v => v !== null);
+                    if(filteredSurvey.length > 0) {
+                        return filteredSurvey[0];
                     }
                     return null;
+                }catch (e) {
+                    console.error(e);
+                    return null;
                 }
+
+            }else {
+                return null;
             }
         }
         
@@ -715,8 +745,7 @@ const triggerEventFilter=async(surveys,event,isPageUrl,web)=>{
         console.log("TRIGGER ERROR:-",e.message);
         return null;
     }
-}
-
+};
 
 /*--------------------------------------------------------------------------SURVEY TRIGGER EVENT FILTER END----------------------------------------- */
 

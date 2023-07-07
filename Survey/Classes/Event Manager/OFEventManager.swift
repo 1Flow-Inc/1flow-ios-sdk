@@ -74,7 +74,8 @@ class OFEventManager: NSObject, EventManagerProtocol {
     }
 
     @objc func applicationWillEnterForeground() {
-        self.recordEvent(kEventNameSessionStart, parameters: nil)
+        let params = ["library_version": projectDetailsController.libraryVersion, "app_version": getAppVersion()]
+        self.recordEvent(kEventNameSessionStart, parameters: params)
     }
     
     func networkStatusChanged(_ isReachable: Bool) {
@@ -112,7 +113,8 @@ class OFEventManager: NSObject, EventManagerProtocol {
             UserDefaults.standard.removeObject(forKey: "FBPendingEventsList")
             self.sendEventsToServer()
         }
-        self.recordEvent(kEventNameSessionStart, parameters: nil)
+        let params = ["library_version": projectDetailsController.libraryVersion, "app_version": getAppVersion()]
+        self.recordEvent(kEventNameSessionStart, parameters: params)
         self.startUploadTimer()
         self.setupDefaultEventsObservers()
         self.sendEventsToServer()

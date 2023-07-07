@@ -1151,6 +1151,7 @@ extension OFRatingViewController: OFRatingViewProtocol {
         }
 
         if allScreens?.count == 1 {
+            isSurveyFullyAnswered = true
             OneFlowLog.writeLog("only welcome screen. turning completed true", .verbose)
         }
         self.presentNextScreen("")

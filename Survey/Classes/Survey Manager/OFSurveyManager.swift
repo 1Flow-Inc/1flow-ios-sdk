@@ -452,11 +452,8 @@ class OFSurveyManager: NSObject, SurveyManageable {
                         self.pendingSurveySubmission![survey._id] = surveyResponseNew
                     }
                     self.uploadPendingSurveyIfAvailable()
-                    if isCompleted {
-                        callBackParameter["status"] = "finished"
-                    } else {
-                        callBackParameter["status"] = "closed"
-                    }
+                    callBackParameter["status"] = isCompleted ? "finished" : "closed"
+
                     for res in surveyResponse {
                         var innerDic = [String: Any]()
                         innerDic["screen_id"] = res.screen_id
@@ -512,7 +509,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
                         self.submittedSurveyDetails?.append(submittedSurvey)
                         self.saveSubmittedSurvey()
                     }
-                    callBackParameter["status"] = "skipped"
+                    callBackParameter["status"] = isCompleted ? "finished" : "skipped"
                 }
                 NotificationCenter.default.post(name: SurveyFinishNotification, object: nil, userInfo: callBackParameter)
             }
