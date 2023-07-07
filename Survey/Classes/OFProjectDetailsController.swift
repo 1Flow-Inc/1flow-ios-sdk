@@ -61,7 +61,7 @@ protocol ProjectDetailsManageable {
 final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
 
     static let shared = OFProjectDetailsController()
-    let oneFlowSDKVersion: String = "2023.06.27"
+    let oneFlowSDKVersion: String = "2023.07.07"
     var currentEnviromment: OneFlowEnvironment = .prod
     var currentLogLevel: OneFlowLogLevel = .none
 
