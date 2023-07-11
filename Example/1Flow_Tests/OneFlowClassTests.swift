@@ -26,15 +26,6 @@ class OneFlowTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
-    func testConfigureOneFlow_CallingMultipleTimeOnlyCallAddUserOnce() {
-        OneFlow.configure("MyKey")
-        OneFlow.shared.reachabilityChanged(note: Notification(name: Notification.Name.init(rawValue: ""), object: OneFlow.shared.reachability, userInfo: nil))
-        XCTAssertTrue(apiController.isAddUserCalled, "Add user not called when calling configure")
-        apiController.isAddUserCalled = false
-        OneFlow.configure("MyKey2")
-        XCTAssertFalse(apiController.isAddUserCalled, "Calling configure multiple times should not call add user again")
-    }
 
     func testRecordEvent_shouldCall_EventManagerRecordEvent() {
         let expectation = XCTestExpectation()

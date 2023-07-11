@@ -15,12 +15,18 @@
 import Foundation
 import UIKit
 
+/// get call back when SDK configuration failed and succeeded
+@objc public protocol OneFlowObserver {
+    func oneFlowSetupDidFinish()
+    func oneFlowSetupDidFail()
+}
+
 public final class OneFlow: NSObject {
     static let shared = OneFlow()
     private var networkTimer: Timer?
     var eventManager: EventManagerProtocol = OFEventManager()
     private var isSetupRunning: Bool = false
-    static var retryCount = 0
+    private var retryCount: Int = 0
     var identifyCallPending = false
     private override init() {
     }
@@ -28,6 +34,9 @@ public final class OneFlow: NSObject {
     static var fontConfiguration: SurveyFontConfigurable? = SurveyFontConfiguration()
     var apiController : APIProtocol = OFAPIController()
     var projectDetailsController: ProjectDetailsManageable = OFProjectDetailsController.shared
+    @objc static public var observer: OneFlowObserver?
+    /// determine whether SDK configuration completed or not.
+    @objc static public var isSetupCompleted: Bool = false
 
     @objc public static var enableSurveys: Bool = true {
         didSet {
@@ -38,6 +47,7 @@ public final class OneFlow: NSObject {
     @objc public class func configure(_ appKey: String) {
         OneFlowLog.writeLog("1Flow configuration started")
         if OneFlow.shared.projectDetailsController.appKey == nil {
+            shared.retryCount = 0
             shared.setupReachability()
             shared.projectDetailsController.appKey = appKey
             shared.projectDetailsController.setLoglevel(.info)
@@ -58,6 +68,10 @@ public final class OneFlow: NSObject {
     }
 
     private func setupOnce() {
+        if OneFlow.shared.projectDetailsController.appKey == nil {
+            OneFlowLog.writeLog("Project key not available")
+            return
+        }
         let context = AddUserRequest.Context(
             app: AddUserRequest.Context.AppDetails(
                 version: projectDetailsController.appVersion,
@@ -92,11 +106,12 @@ public final class OneFlow: NSObject {
         OneFlowLog.writeLog("Adding user")
         self.isSetupRunning = true
         self.apiController.addUser(addUserRequest, completion: { isSuccess, error, data in
+            OneFlowLog.writeLog("AddUser returned. Project Key: \(OneFlow.shared.projectDetailsController.appKey as Any)")
             if isSuccess == true, let data = data {
                 do {
                     let addUserResponse = try JSONDecoder().decode(AddUserResponse.self, from: data)
                     if addUserResponse.success == 200, let userID = addUserResponse.result?.analytic_user_id {
-                        
+
                         OneFlowLog.writeLog("Add user - Success")
                         OneFlow.shared.projectDetailsController.analytic_user_id = userID
                         if OneFlow.shared.identifyCallPending {
@@ -114,19 +129,43 @@ public final class OneFlow: NSObject {
                             OneFlow.shared.eventManager.isNetworkReachable = true
                             OneFlow.shared.eventManager.configure()
                         }
+                        OneFlow.isSetupCompleted = true
+                        OneFlow.observer?.oneFlowSetupDidFinish()
                     } else {
+                        self.retryCount += 1
+                        if self.retryCount <= 1 {
+                            self.setupOnce()
+                            return
+                        }
                         OneFlowLog.writeLog("Add user - Failed", .error)
+                        OneFlow.isSetupCompleted = false
+                        OneFlow.shared.projectDetailsController.appKey = nil
+                        OneFlow.observer?.oneFlowSetupDidFail()
                     }
                 } catch {
-                    OneFlowLog.writeLog("Add user - Failed", .error)
-                    OneFlowLog.writeLog(error.localizedDescription)
+                    self.retryCount += 1
+                    if self.retryCount <= 1 {
+                        self.setupOnce()
+                        return
+                    }
+                    OneFlowLog.writeLog("Add user - Failed: \(error.localizedDescription)", .error)
+                    OneFlow.isSetupCompleted = false
+                    OneFlow.shared.projectDetailsController.appKey = nil
+                    OneFlow.observer?.oneFlowSetupDidFail()
                 }
             } else {
+                self.retryCount += 1
+                if self.retryCount <= 1 {
+                    self.setupOnce()
+                    return
+                }
                 OneFlowLog.writeLog("Add user - Failed", .error)
+                OneFlow.isSetupCompleted = false
+                OneFlow.shared.projectDetailsController.appKey = nil
+                OneFlow.observer?.oneFlowSetupDidFail()
             }
             self.isSetupRunning = false
         })
-        
     }
 
     @objc func reachabilityChanged(note: Notification) {
@@ -135,13 +174,11 @@ public final class OneFlow: NSObject {
         case .unavailable:
             OneFlowLog.writeLog("Network: Unreachable")
             OneFlow.shared.projectDetailsController.isWifiConnection = false
-            
             if networkTimer != nil, networkTimer?.isValid == true {
                 networkTimer?.invalidate()
                 networkTimer = nil
             }
             networkTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(networkNotAvailable), userInfo: nil, repeats: false)
-            break
         default:
             OneFlowLog.writeLog("Network: Reachable")
             if reachability.connection.description.lowercased() == "wifi" {
@@ -155,10 +192,12 @@ public final class OneFlow: NSObject {
                 networkTimer = nil
             }
             networkTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(networkAvailable), userInfo: nil, repeats: false)
-            
-            break
         }
-        self.setupOnce()
+        if OFProjectDetailsController.shared.analytic_user_id == nil {
+            if OneFlow.shared.isSetupRunning == false, self.retryCount <= 1 {
+                OneFlow.shared.setupOnce()
+            }
+        }
     }
     
     @objc private func networkNotAvailable() {
@@ -167,8 +206,8 @@ public final class OneFlow: NSObject {
     
     @objc private func networkAvailable() {
         if OFProjectDetailsController.shared.analytic_user_id == nil {
-            if isSetupRunning == false {
-                self.setupOnce()
+            if isSetupRunning == false, self.retryCount <= 1 {
+                OneFlow.shared.setupOnce()
             }
         }
         self.eventManager.networkStatusChanged(true)
@@ -186,7 +225,11 @@ public final class OneFlow: NSObject {
     }
 
     @objc class public func startFlow(_ flowId: String) {
-        shared.eventManager.surveyManager.startFlow(with: flowId)
+        guard let surveyManager = shared.eventManager.surveyManager else {
+            OneFlowLog.writeLog("Survey Manager not ready yet.", .error)
+            return
+        }
+        surveyManager.startFlow(with: flowId)
     }
 
     @objc class public func recordEventName(_ eventName: String, parameters: [String: Any]? = nil) {
