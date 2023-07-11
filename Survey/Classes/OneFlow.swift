@@ -34,9 +34,9 @@ public final class OneFlow: NSObject {
     static var fontConfiguration: SurveyFontConfigurable? = SurveyFontConfiguration()
     var apiController : APIProtocol = OFAPIController()
     var projectDetailsController: ProjectDetailsManageable = OFProjectDetailsController.shared
-    static public var observer: OneFlowObserver?
+    @objc static public var observer: OneFlowObserver?
     /// determine whether SDK configuration completed or not.
-    static public var isSetupCompleted: Bool = false
+    @objc static public var isSetupCompleted: Bool = false
 
     @objc public static var enableSurveys: Bool = true {
         didSet {
