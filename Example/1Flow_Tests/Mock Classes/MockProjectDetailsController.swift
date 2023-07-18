@@ -17,7 +17,7 @@ class MockProjectDetailsController: ProjectDetailsManageable {
     
     var modelName: String? = "NA"
     
-    var libraryVersion: String = "2023.07.11"
+    var libraryVersion: String = "2023.07.18"
     
     var osVersion: String = "NA"
     
