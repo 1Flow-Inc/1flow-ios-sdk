@@ -46,21 +46,21 @@ public final class OneFlow: NSObject {
 
     @objc public class func configure(_ appKey: String) {
         OneFlowLog.writeLog("1Flow configuration started")
-        if OneFlow.shared.projectDetailsController.appKey == nil {
-            shared.retryCount = 0
-            shared.setupReachability()
-            shared.projectDetailsController.appKey = appKey
-            shared.projectDetailsController.setLoglevel(.info)
-            DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 3, execute: {
-                if OFProjectDetailsController.shared.analytic_user_id == nil {
-                    if shared.isSetupRunning == false {
-                        shared.setupOnce()
-                    }
-                }
-            })
-        } else {
-            OneFlowLog.writeLog("Error: 1Flow already setup.", .info)
+        if let previousKey = OneFlow.shared.projectDetailsController.appKey, previousKey != appKey {
+            OneFlowLog.writeLog("OneFlow is already setup with different project key.", .info)
+            return
         }
+        shared.retryCount = 0
+        shared.setupReachability()
+        shared.projectDetailsController.appKey = appKey
+        shared.projectDetailsController.setLoglevel(.info)
+        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 3, execute: {
+            if OFProjectDetailsController.shared.analytic_user_id == nil {
+                if shared.isSetupRunning == false {
+                    shared.setupOnce()
+                }
+            }
+        })
     }
 
     @objc public class func useFont(fontFamily: String?) {
@@ -139,7 +139,6 @@ public final class OneFlow: NSObject {
                         }
                         OneFlowLog.writeLog("Add user - Failed", .error)
                         OneFlow.isSetupCompleted = false
-                        OneFlow.shared.projectDetailsController.appKey = nil
                         OneFlow.observer?.oneFlowSetupDidFail()
                     }
                 } catch {
@@ -150,7 +149,6 @@ public final class OneFlow: NSObject {
                     }
                     OneFlowLog.writeLog("Add user - Failed: \(error.localizedDescription)", .error)
                     OneFlow.isSetupCompleted = false
-                    OneFlow.shared.projectDetailsController.appKey = nil
                     OneFlow.observer?.oneFlowSetupDidFail()
                 }
             } else {
@@ -161,7 +159,6 @@ public final class OneFlow: NSObject {
                 }
                 OneFlowLog.writeLog("Add user - Failed", .error)
                 OneFlow.isSetupCompleted = false
-                OneFlow.shared.projectDetailsController.appKey = nil
                 OneFlow.observer?.oneFlowSetupDidFail()
             }
             self.isSetupRunning = false
@@ -246,7 +243,7 @@ public final class OneFlow: NSObject {
         }
     }
     
-    @objc class public func logUser(_ userID: String, userDetails: [String: Any]?) {
+    @objc class public func logUser(_ userID: String, userDetails: [String: Any]? = nil) {
 
         let userID = userID.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         if userID.isEmpty {
