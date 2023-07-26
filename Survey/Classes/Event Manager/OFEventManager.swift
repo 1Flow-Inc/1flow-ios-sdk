@@ -241,7 +241,7 @@ class OFEventManager: NSObject, EventManagerProtocol {
             let uploadedEvents = eventsCount
             let finalParameters = ["events": self.eventsArray, "user_id": userId] as [String : Any]
             isEventSentInProgress = true
-            OFAPIController().addEvents(finalParameters) { [weak self] isSuccess, error, data in
+            OFAPIController.shared.addEvents(finalParameters) { [weak self] isSuccess, error, data in
                 if isSuccess == true, let data = data {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {

@@ -27,6 +27,12 @@ protocol APIProtocol {
 }
 
 final class OFAPIController: NSObject, APIProtocol {
+    static let shared = OFAPIController()
+
+    private override init() {
+        super.init()
+    }
+
     var urlRequestManager: URLRequestManagerProtocol = URLRequestManager()
 
     //MARK: - Surveys

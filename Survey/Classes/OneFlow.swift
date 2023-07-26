@@ -32,7 +32,7 @@ public final class OneFlow: NSObject {
     }
     let reachability = try! OFReachability(hostname: "www.apple.com")
     static var fontConfiguration: SurveyFontConfigurable? = SurveyFontConfiguration()
-    var apiController : APIProtocol = OFAPIController()
+    var apiController : APIProtocol = OFAPIController.shared
     var projectDetailsController: ProjectDetailsManageable = OFProjectDetailsController.shared
     @objc static public var observer: OneFlowObserver?
     /// determine whether SDK configuration completed or not.
@@ -106,7 +106,6 @@ public final class OneFlow: NSObject {
         OneFlowLog.writeLog("Adding user")
         self.isSetupRunning = true
         self.apiController.addUser(addUserRequest, completion: { isSuccess, error, data in
-            OneFlowLog.writeLog("AddUser returned. Project Key: \(OneFlow.shared.projectDetailsController.appKey as Any)")
             if isSuccess == true, let data = data {
                 do {
                     let addUserResponse = try JSONDecoder().decode(AddUserResponse.self, from: data)

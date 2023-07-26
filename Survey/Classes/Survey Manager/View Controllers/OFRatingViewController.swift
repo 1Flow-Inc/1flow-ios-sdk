@@ -498,7 +498,7 @@ class OFRatingViewController: UIViewController {
 
     private func openAppStoreRateMeUrl(){
         
-        OFAPIController().getAppStoreDetails { [weak self] isSuccess, error, data in
+        OFAPIController.shared.getAppStoreDetails { [weak self] isSuccess, error, data in
             guard self != nil else {
                 return
             }

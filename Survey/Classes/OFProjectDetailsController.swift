@@ -61,7 +61,7 @@ protocol ProjectDetailsManageable {
 final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
 
     static let shared = OFProjectDetailsController()
-    let oneFlowSDKVersion: String = "2023.07.18"
+    let oneFlowSDKVersion: String = "2023.07.26"
     var currentEnviromment: OneFlowEnvironment = .prod
     var currentLogLevel: OneFlowLogLevel = .none
 
@@ -141,7 +141,7 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
             finalParameter["parameters"] =  details
         }
         OneFlowLog.writeLog("Calling loguser")
-        OFAPIController().logUser(finalParameter) { isSuccess, error, data in
+        OFAPIController.shared.logUser(finalParameter) { isSuccess, error, data in
             if isSuccess == true, let data = data {
                 do {
                     let loggedUser = try JSONDecoder().decode(LogUserResponse.self, from: data)
