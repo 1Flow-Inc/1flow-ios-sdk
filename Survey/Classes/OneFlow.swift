@@ -165,7 +165,9 @@ public final class OneFlow: NSObject {
     }
 
     @objc func reachabilityChanged(note: Notification) {
-        let reachability = note.object as! OFReachability
+        guard let reachability = note.object as? OFReachability else {
+            return
+        }
         switch reachability.connection {
         case .unavailable:
             OneFlowLog.writeLog("Network: Unreachable")

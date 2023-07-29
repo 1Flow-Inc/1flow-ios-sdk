@@ -121,7 +121,10 @@ class OFStarsView: UIView {
                     return false
                 }
             }) {
-                self.onSelectButton(temp as! UIButton)
+                guard let senderButton = temp as? UIButton else {
+                    return
+                }
+                self.onSelectButton(senderButton)
             }
             
         }

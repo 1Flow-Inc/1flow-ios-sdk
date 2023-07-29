@@ -43,10 +43,8 @@ final class OFScreenTrackingController: NSObject {
     }
     
     func setupObserversFromViewCotnroller(_ viewController: UIViewController) {
-        if viewController.isKind(of: UINavigationController.self) {
-            let navigationController = viewController as! UINavigationController
+        if viewController.isKind(of: UINavigationController.self), let navigationController = viewController as? UINavigationController {
             self.startObserverForNavigationController(navigationController)
-            
         } else if viewController.isKind(of: UITabBarController.self) {
             //tab bar controller
         } else {
