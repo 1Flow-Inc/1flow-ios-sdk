@@ -36,7 +36,7 @@ protocol SurveyManageable {
 }
 
 class OFSurveyManager: NSObject, SurveyManageable {
-    var apiController: APIProtocol = OFAPIController()
+    var apiController: APIProtocol = OFAPIController.shared
     var surveyList: SurveyListResponse?
     var surveyWindow: UIWindow?
     var isNetworkReachable = false
@@ -47,7 +47,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
     var activatedBySurveyID: String?
     var throttlingActivatedTime: Int?
     var deactivateItem: DispatchWorkItem?
-//    var surveyValidator: SurveyScriptValidator?
+    let myGroup = DispatchGroup()
     
     var pendingSurveySubmission: [String: SurveySubmitRequest]? {
         set {
@@ -94,7 +94,6 @@ class OFSurveyManager: NSObject, SurveyManageable {
 
     func cleanUpSurveyArray() {
         self.surveyList = nil
-        self.apiController = OFAPIController()
     }
 
     func setUserToSubmittedSurveyAsAnnonyous(newUserID: String) {
@@ -165,18 +164,16 @@ class OFSurveyManager: NSObject, SurveyManageable {
     }
 
     func checkAfterSurveyLoadForExistingEvents() {
-        let semaphore = DispatchSemaphore(value: 1)
-
         if let eventsArray = self.temporaryEventArray {
             for event in eventsArray {
-                semaphore.wait()
+                myGroup.enter()
                 var previousEvent = ["name": event.eventName] as [String : Any]
                 if let param = event.parameters {
                     previousEvent["parameters"] = param
                 }
                 SurveyScriptValidator.shared.validateSurvey(event: previousEvent, completion: { survey in
                     defer {
-                        semaphore.signal()
+                        self.myGroup.leave()
                     }
                     guard let survey = survey else {
                         return
@@ -196,11 +193,11 @@ class OFSurveyManager: NSObject, SurveyManageable {
                         OneFlowLog.writeLog("Survey validation not passed. Looking for next survey", .info)
                     }
                 })
+                self.myGroup.wait()
             }
             self.temporaryEventArray = nil
         }
     }
-    
 
     func validateTheSurvey(_ survey: SurveyListResponse.Survey) -> Bool {
         if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id && $0.submittedByUserID == projectDetailsController.currentLoggedUserID }) {

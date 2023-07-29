@@ -10,7 +10,7 @@ import UIKit
 
 class ScriptManager: ScriptManageable {
 
-    var apiController: APIProtocol = OFAPIController()
+    var apiController: APIProtocol = OFAPIController.shared
     
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(applicationMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)

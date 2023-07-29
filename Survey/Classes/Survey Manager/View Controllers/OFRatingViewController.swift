@@ -498,7 +498,7 @@ class OFRatingViewController: UIViewController {
 
     private func openAppStoreRateMeUrl(){
         
-        OFAPIController().getAppStoreDetails { [weak self] isSuccess, error, data in
+        OFAPIController.shared.getAppStoreDetails { [weak self] isSuccess, error, data in
             guard self != nil else {
                 return
             }
@@ -507,7 +507,9 @@ class OFRatingViewController: UIViewController {
                     let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String : Any]
                     if let results : NSArray =  json!["results"] as? NSArray {
                         if results.count > 0 {
-                            let result : NSDictionary = results.firstObject as! NSDictionary
+                            guard let result : NSDictionary = results.firstObject as? NSDictionary else {
+                                return
+                            }
                             if let trackId = result["trackId"]{
                                 let ratingUrl = "https://itunes.apple.com/app/id\(trackId)?action=write-review" // (Option 2) Open App Review Page
                                 OneFlowLog.writeLog("Data Logic : App store rating Url : \(ratingUrl)")
