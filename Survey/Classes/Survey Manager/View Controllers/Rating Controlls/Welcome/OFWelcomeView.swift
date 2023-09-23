@@ -18,15 +18,14 @@ import UIKit
 class OFWelcomeView: UIView {
 
     @IBOutlet weak var btnContinue: UIButton!
-    weak var delegate: OFRatingViewProtocol?
+    weak var delegate: OFRatingViewDelegate?
     var imageView: UIImageView?
-    
     var continueTitle: String = "" {
         didSet {
             self.btnContinue.setTitle(continueTitle, for: .normal)
         }
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         btnContinue.layer.cornerRadius = 5.0
@@ -35,7 +34,7 @@ class OFWelcomeView: UIView {
         btnContinue.isUserInteractionEnabled = true
         btnContinue.titleLabel?.font = OneFlow.fontConfiguration?.submitButtonFont
     }
-    
+
     @IBAction func onContinueTapped(_ sender: Any) {
         self.delegate?.onWelcomeNextTapped()
     }

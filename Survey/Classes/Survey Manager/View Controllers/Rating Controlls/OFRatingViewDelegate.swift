@@ -14,13 +14,13 @@
 
 import Foundation
 
-protocol OFRatingViewProtocol: AnyObject {
+protocol OFRatingViewDelegate: AnyObject {
     func oneToTenViewChangeSelection(_ selectedIndex: Int?)
     func starsViewChangeSelection(_ selectedIndex: Int?)
-    func mcqViewChangeSelection(_ selectedOptionID: String,_ otherTextAnswer : String?)
+    func mcqViewChangeSelection(_ selectedOptionID: String, otherTextAnswer: String?)
     func followupViewEnterTextWith(_ text: String?)
     func shortAnswerViewEnterTextWith(_ text: String?)
-    func checkBoxViewDidFinishPicking(_ selectedOptions: [String],_ otherTextAnswer: String?)
+    func checkBoxViewDidFinishPicking(_ selectedOptions: [String], otherTextAnswer: String?)
     func onThankyouAnimationComplete()
     func followupTextViewHeightDidChange()
     func onWelcomeNextTapped()

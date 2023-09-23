@@ -15,13 +15,13 @@
 import UIKit
 
 class OFDraggableView: UIView {
-    
+
     override func layoutSubviews() {
-        super.layoutSubviews()        
+        super.layoutSubviews()
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         self.addGestureRecognizer(tap)
     }
-    
+
     @objc func dismissKeyboard() {
         self.endEditing(true)
     }

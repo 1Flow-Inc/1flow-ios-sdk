@@ -1,9 +1,16 @@
+// Copyright 2021 1Flow, Inc.
 //
-//  ScriptExecuter.swift
-//  1Flow
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//  Created by Rohan Moradiya on 26/05/23.
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 import WebKit
 import JavaScriptCore
@@ -16,6 +23,7 @@ class SurveyScriptValidator {
     var validatorCompletion: ValidatorCompletion?
     static let shared = SurveyScriptValidator()
     var scriptManager: ScriptManageable?
+    var managedValue: JSManagedValue?
 
     func setup(with surveys: [SurveyListResponse.Survey]) {
         let jsonEncoder = JSONEncoder()
@@ -29,7 +37,7 @@ class SurveyScriptValidator {
             scriptManager = ScriptManager()
         }
     }
-    
+
     lazy var context: JSContext? = {
         let context = JSContext()
         guard let script = scriptManager?.validationScript() else {
@@ -49,24 +57,23 @@ class SurveyScriptValidator {
         self.context = context
     }
 
-    let swiftHandler: @convention(block) ([String : Any]?) -> Void = {(result) in
+    let swiftHandler: @convention(block) (JSValue?) -> Void = {(result) in
 
-        guard let result = result else {
+        guard let dictionary = result?.toDictionary() else {
             SurveyScriptValidator.shared.validatorCompletion?(nil)
             return
         }
         do {
-            let json = try JSONSerialization.data(withJSONObject: result, options: .prettyPrinted)
+            let json = try JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)
             let decoder = JSONDecoder()
             let survey = try decoder.decode(SurveyListResponse.Survey.self, from: json)
             SurveyScriptValidator.shared.validatorCompletion?(survey)
-            
         } catch {
             OneFlowLog.writeLog(error.localizedDescription, .error)
         }
     }
 
-    func validateSurvey(event: [String: Any], completion:  @escaping ValidatorCompletion) {
+    func validateSurvey(event: [String: Any], completion: @escaping ValidatorCompletion) {
         self.validatorCompletion = completion
         let swiftBlock = unsafeBitCast(swiftHandler, to: AnyObject.self)
         guard let context = context else {

@@ -16,7 +16,7 @@ import Foundation
 import UIKit
 
 extension UIColor {
-    
+
     class func colorFromHex(_ hex: String) -> UIColor {
         if hex.count == 8 {
             let color = UIColor(hexaRGBA: hex)
@@ -26,7 +26,7 @@ extension UIColor {
             return color ?? kBrandColor
         }
     }
-    
+
     convenience init?(hexaRGB: String, alpha: CGFloat = 1) {
         var chars = Array(hexaRGB.hasPrefix("#") ? hexaRGB.dropFirst() : hexaRGB[...])
         switch chars.count {
@@ -44,7 +44,7 @@ extension UIColor {
         var chars = Array(hexaRGBA.hasPrefix("#") ? hexaRGBA.dropFirst() : hexaRGBA[...])
         switch chars.count {
         case 3: chars = chars.flatMap { [$0, $0] }; fallthrough
-        case 6: chars.append(contentsOf: ["F","F"])
+        case 6: chars.append(contentsOf: ["F", "F"])
         case 8: break
         default: return nil
         }
@@ -58,7 +58,7 @@ extension UIColor {
         var chars = Array(hexaARGB.hasPrefix("#") ? hexaARGB.dropFirst() : hexaARGB[...])
         switch chars.count {
         case 3: chars = chars.flatMap { [$0, $0] }; fallthrough
-        case 6: chars.append(contentsOf: ["F","F"])
+        case 6: chars.append(contentsOf: ["F", "F"])
         case 8: break
         default: return nil
         }

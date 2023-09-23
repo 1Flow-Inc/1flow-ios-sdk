@@ -20,11 +20,15 @@ class OFStarsView: UIView {
     @IBOutlet weak var stackView1: UIStackView!
     @IBOutlet weak var ratingText: UILabel!
 
-    weak var delegate: OFRatingViewProtocol?
-    
-    private var ratingTextArray = ["Very dissatisfied","Somewhat dissatisfied","Not dissatisfied nor satisfied","Somewhat satisfied","Very satisfied"]
-    
-    var ratingDic = ["":""] {
+    weak var delegate: OFRatingViewDelegate?
+    private var ratingTextArray = [
+        "Very dissatisfied",
+        "Somewhat dissatisfied",
+        "Not dissatisfied nor satisfied",
+        "Somewhat satisfied",
+        "Very satisfied"
+    ]
+    var ratingDic = ["": ""] {
         didSet {
             if let defaultText = ratingDic["0"] {
                 self.ratingText.text = defaultText
@@ -52,7 +56,7 @@ class OFStarsView: UIView {
             self.delegate?.starsViewChangeSelection(selectedButton?.tag ?? nil)
         }
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(checkGestureAction(_:)))
@@ -61,18 +65,18 @@ class OFStarsView: UIView {
         self.ratingText.textColor = kFooterColor
         self.ratingText.font = OneFlow.fontConfiguration?.openTextCharCountFont
     }
-    
+
     func setupImages() {
-        let starImage = UIImage.init(named: "unSelectedStar", in: OneFlowBundle.bundleForObject(self), compatibleWith: nil)
-        let filledStarImage = UIImage.init(named: "selectedStar", in: OneFlowBundle.bundleForObject(self), compatibleWith: nil)
+        let emptyImage = UIImage(named: "unSelectedStar", in: OneFlowBundle.bundleForObject(self), compatibleWith: nil)
+        let filledImage = UIImage(named: "selectedStar", in: OneFlowBundle.bundleForObject(self), compatibleWith: nil)
         for view in self.stackView1.arrangedSubviews {
             if let btn = view as? UIButton {
-                btn.setImage(starImage, for: .normal)
-                btn.setImage(filledStarImage, for: .selected)
+                btn.setImage(emptyImage, for: .normal)
+                btn.setImage(filledImage, for: .selected)
             }
         }
     }
-    
+
     @IBAction func onSelectButton(_ sender: UIButton) {
         self.isUserInteractionEnabled = false
         let index = sender.tag
@@ -90,7 +94,7 @@ class OFStarsView: UIView {
         }
         self.selectedButton = sender
     }
-    
+
     @objc func checkGestureAction(_ sender: UIPanGestureRecognizer) {
         if sender.state == .changed {
             let location = sender.location(in: self.stackView1)
@@ -126,7 +130,6 @@ class OFStarsView: UIView {
                 }
                 self.onSelectButton(senderButton)
             }
-            
         }
     }
 }

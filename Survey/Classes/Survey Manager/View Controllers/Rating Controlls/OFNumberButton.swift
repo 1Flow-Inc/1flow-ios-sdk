@@ -16,7 +16,6 @@ import UIKit
 @objc(OBJCOFNumberButton)
 class OFNumberButton: UIButton {
 
-    
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     var isEmoji = false
@@ -25,21 +24,22 @@ class OFNumberButton: UIButton {
         self.setTitleColor(UIColor.white, for: .selected)
         self.setTitleColor(kPrimaryTitleColor, for: .normal)
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setTitleColor(UIColor.white, for: .selected)
         self.setTitleColor(kPrimaryTitleColor, for: .normal)
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
+
     override var isHighlighted: Bool {
         didSet {
             if self.isSelected == false {
-                self.layer.backgroundColor = isHighlighted ? kBrandHightlightColor.cgColor : kOptionBackgroundColor.cgColor
+                self.layer.backgroundColor = isHighlighted ?
+                kBrandHightlightColor.cgColor : kOptionBackgroundColor.cgColor
             }
         }
     }
@@ -49,21 +49,16 @@ class OFNumberButton: UIButton {
             self.layer.cornerRadius = rect.width/2
             if isSelected == true {
                 self.layer.backgroundColor = kBrandColor.cgColor
-                
             } else {
                 self.layer.backgroundColor =  UIColor.clear.cgColor
             }
-        }
-        else {
+        } else {
             self.layer.cornerRadius = 5.0
             if isSelected == true {
                 self.layer.backgroundColor = kBrandColor.cgColor
-                
             } else {
                 self.layer.backgroundColor =  kOptionBackgroundColor.cgColor
             }
         }
-        
-        
     }
 }

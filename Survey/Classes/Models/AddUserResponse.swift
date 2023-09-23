@@ -15,11 +15,17 @@
 import Foundation
 
 struct AddUserResponse: Codable {
-    
+
     let success: Int?
     let result: User?
+
     struct User: Codable {
-        var analytic_user_id: String?
-        var system_id: String?
+        var analyticsUserID: String?
+        var systemID: String?
+
+        private enum CodingKeys: String, CodingKey {
+            case analyticsUserID = "analytic_user_id"
+            case systemID = "system_id"
+        }
     }
 }

@@ -16,13 +16,16 @@ import Foundation
 import UIKit
 
 protocol OFUIViewLoading {}
-extension UIView : OFUIViewLoading {}
+extension UIView: OFUIViewLoading {}
 
-extension OFUIViewLoading where Self : UIView {
+extension OFUIViewLoading where Self: UIView {
 
   static func loadFromNib() -> Self {
-    let nibName = "\(self)".split{$0 == "."}.map(String.init).last!
+    let nibName = "\(self)".split { $0 == "."}.map(String.init).last!
     let nib = UINib(nibName: nibName, bundle: OneFlowBundle.bundleForObject(self))
-    return nib.instantiate(withOwner: self, options: nil).first as! Self
+      guard let view = nib.instantiate(withOwner: self, options: nil).first as? Self else {
+          fatalError("view of type \(Self.self) not found in \(nib)")
+      }
+    return view
   }
 }

@@ -48,27 +48,27 @@ class OFSurveyManager: NSObject, SurveyManageable {
     var throttlingActivatedTime: Int?
     var deactivateItem: DispatchWorkItem?
     let myGroup = DispatchGroup()
-    
+
     var pendingSurveySubmission: [String: SurveySubmitRequest]? {
-        set {
-            if let value = newValue, value.count > 0 {
-                UserDefaults.standard.set(try? PropertyListEncoder().encode(value), forKey:"pendingSurveySubmission")
-            } else {
-                UserDefaults.standard.removeObject(forKey: "pendingSurveySubmission")
-            }
-        }
-        
         get {
-            if let data = UserDefaults.standard.value(forKey:"pendingSurveySubmission") as? Data {
+            if let data = UserDefaults.standard.value(forKey: "pendingSurveySubmission") as? Data {
                 let pendingSurvey = try? PropertyListDecoder().decode([String: SurveySubmitRequest].self, from: data)
                 return pendingSurvey
             }
             return nil
         }
+
+        set {
+            if let value = newValue, value.count > 0 {
+                UserDefaults.standard.set(try? PropertyListEncoder().encode(value), forKey: "pendingSurveySubmission")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "pendingSurveySubmission")
+            }
+        }
     }
     var submittedSurveyDetails: [SubmittedSurvey]?
     var temporaryEventArray: [EventStore]?
-    
+
     func saveSubmittedSurvey() {
         do {
             let data = try JSONEncoder().encode(submittedSurveyDetails)
@@ -77,7 +77,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
             OneFlowLog.writeLog("[Error]: Unable to save submitted survey: \(error.localizedDescription)", .error)
         }
     }
-    
+
     override init() {
         super.init()
         OneFlowLog.writeLog("OFSurveyManager: Started")
@@ -87,9 +87,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
             } catch {
                 OneFlowLog.writeLog("[Error]: Decoding Submitted Survey details: \(error.localizedDescription)", .error)
             }
-            
         }
-        
     }
 
     func cleanUpSurveyArray() {
@@ -104,7 +102,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
             self.saveSubmittedSurvey()
         }
     }
-    
+
     func configureSurveys() {
         if self.surveyList == nil && self.isNetworkReachable == true {
             self.fetchAllSurvey()
@@ -113,12 +111,12 @@ class OFSurveyManager: NSObject, SurveyManageable {
             self.uploadPendingSurveyIfAvailable()
         }
     }
-    
+
     func networkStatusChanged(_ isReachable: Bool) {
         self.isNetworkReachable = isReachable
         self.configureSurveys()
     }
-    
+
     func uploadPendingSurveyIfAvailable() {
         if let pendigSurveys = self.pendingSurveySubmission, pendigSurveys.count > 0 {
             pendigSurveys.forEach { (key: String, value: SurveySubmitRequest) in
@@ -148,7 +146,6 @@ class OFSurveyManager: NSObject, SurveyManageable {
                     self.isThrottlingActivated = surveyListResponse.throttlingMobileSDKConfig?.isThrottlingActivated
                     self.globalTime = surveyListResponse.throttlingMobileSDKConfig?.globalTime
                     self.throttlingActivatedTime = surveyListResponse.throttlingMobileSDKConfig?.throttlingActivatedTime
-                    
                     let filteredSurvey = surveyListResponse.result.filter({self.validateTheSurvey($0)})
                     SurveyScriptValidator.shared.setup(with: filteredSurvey)
                     self.setupGlobalTimerToDeactivateThrottling()
@@ -156,7 +153,6 @@ class OFSurveyManager: NSObject, SurveyManageable {
                 } catch {
                     OneFlowLog.writeLog("\(#function) error: \(error)", .error)
                 }
-                
             } else {
                 OneFlowLog.writeLog("\(#function) \(error?.localizedDescription ?? "NA")", .error)
             }
@@ -167,11 +163,14 @@ class OFSurveyManager: NSObject, SurveyManageable {
         if let eventsArray = self.temporaryEventArray {
             for event in eventsArray {
                 myGroup.enter()
-                var previousEvent = ["name": event.eventName] as [String : Any]
+                var previousEvent = ["name": event.eventName] as [String: Any]
                 if let param = event.parameters {
                     previousEvent["parameters"] = param
                 }
-                SurveyScriptValidator.shared.validateSurvey(event: previousEvent, completion: { survey in
+                SurveyScriptValidator.shared.validateSurvey(event: previousEvent, completion: { [weak self] survey in
+                    guard let self = self else {
+                        return
+                    }
                     defer {
                         self.myGroup.leave()
                     }
@@ -181,8 +180,8 @@ class OFSurveyManager: NSObject, SurveyManageable {
                     OneFlowLog.writeLog("Survey validator returns: \(survey as Any)", .info)
                     if self.validateTheSurvey(survey) == true {
                         if
-                            survey.survey_time_interval?.type == "show_after",
-                            let delay = survey.survey_time_interval?.value {
+                            survey.surveyTimeInterval?.type == "show_after",
+                            let delay = survey.surveyTimeInterval?.value {
                             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(delay), execute: {
                                 self.startSurvey(survey, eventName: event.eventName)
                             })
@@ -200,23 +199,26 @@ class OFSurveyManager: NSObject, SurveyManageable {
     }
 
     func validateTheSurvey(_ survey: SurveyListResponse.Survey) -> Bool {
-        if let submittedList = self.submittedSurveyDetails, let lastSubmission = submittedList.last(where: { $0.surveyID == survey._id && $0.submittedByUserID == projectDetailsController.currentLoggedUserID }) {
-
-            if survey.survey_settings?.resurvey_option == false {
+        if
+            let submittedList = self.submittedSurveyDetails,
+            let lastSubmission = submittedList.last(
+                where: { $0.surveyID == survey.identifier
+                    && $0.submittedByUserID == projectDetailsController.currentLoggedUserID }
+            ) {
+            if survey.surveySettings?.resurveyOption == false {
                 OneFlowLog.writeLog("\(#function)Resurvey option is false", .info)
                 return false
             }
-
-            if let settings = survey.survey_settings?.retake_survey, let value = settings.retake_input_value, let unit = settings.retake_select_value {
-
+            if
+                let settings = survey.surveySettings?.retakeSurvey,
+                let value = settings.retakeInputValue,
+                let unit = settings.retakeSelectValue {
                 var totalInterval = 0
                 switch unit {
                 case "minutes":
                     totalInterval = value * 60
-                    break
                 case "hours":
                     totalInterval = value * 60 * 60
-                    break
                 case "days":
                     totalInterval = value * 60 * 60 * 24
                 default:
@@ -228,7 +230,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
                     return false
                 }
             } else {
-                OneFlowLog.writeLog("\(#function) retake_survey, retake_input_value or retake_select_value not specified", .info)
+                OneFlowLog.writeLog("retake_select_value not specified", .info)
                 return false
             }
         }
@@ -243,18 +245,21 @@ class OFSurveyManager: NSObject, SurveyManageable {
             let filters = allSurveys.result.filter({ self.validateTheSurvey($0)})
             SurveyScriptValidator.shared.setup(with: filters)
             DispatchQueue.main.async {
-                var event = ["name": eventName] as [String : Any]
+                var event = ["name": eventName] as [String: Any]
                 if let param = parameter {
                     event["parameters"] = param
                 }
-                SurveyScriptValidator.shared.validateSurvey(event: event, completion: { survey in
+                SurveyScriptValidator.shared.validateSurvey(event: event, completion: { [weak self] survey in
+                    guard let self = self else {
+                        return
+                    }
                     guard let survey = survey else {
                         return
                     }
                     OneFlowLog.writeLog("Survey validator returns: \(survey as Any)", .info)
                     if
-                        survey.survey_time_interval?.type == "show_after",
-                        let delay = survey.survey_time_interval?.value {
+                        survey.surveyTimeInterval?.type == "show_after",
+                        let delay = survey.surveyTimeInterval?.value {
                         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(delay), execute: {
                             self.startSurvey(survey, eventName: eventName)
                         })
@@ -268,25 +273,32 @@ class OFSurveyManager: NSObject, SurveyManageable {
             if temporaryEventArray == nil {
                 self.temporaryEventArray = [EventStore]()
             }
-            let eventObj = EventStore(eventName: eventName, timeInterval: Int(Date().timeIntervalSince1970), parameters: parameter)
+            let eventObj = EventStore(
+                eventName: eventName,
+                timeInterval: Int(Date().timeIntervalSince1970),
+                parameters: parameter
+            )
             self.temporaryEventArray?.append(eventObj)
         }
     }
 
     func validateSurveyThrottling(survey: SurveyListResponse.Survey) -> Bool {
         OneFlowLog.writeLog("Validating Survey Throttling", .info)
-        if survey.survey_settings?.override_global_throttling == true {
+        if survey.surveySettings?.overrideGlobalThrottling == true {
             return true
         } else if isThrottlingActivated == true {
             guard let activatedBySurveyID = activatedBySurveyID else {
-                // if somehow backend return activated true but not return activatedBySurveyID then return true. otherwise it will never show the survey.
+                // if somehow backend return activated true but not return activatedBySurveyID
+                // then return true. otherwise it will never show the survey.
                 return true
             }
-            if activatedBySurveyID == survey._id {
-                guard let lastSubmitted = submittedSurveyDetails?.last, let throttlingActivatedTime = throttlingActivatedTime else {
+            if activatedBySurveyID == survey.identifier {
+                guard
+                    let lastSubmitted = submittedSurveyDetails?.last,
+                    let throttlingActivatedTime = throttlingActivatedTime else {
                     return true
                 }
-                if lastSubmitted.surveyID == survey._id {
+                if lastSubmitted.surveyID == survey.identifier {
                     if lastSubmitted.submissionTime < throttlingActivatedTime {
                         return true
                     } else {
@@ -339,16 +351,15 @@ class OFSurveyManager: NSObject, SurveyManageable {
         }
         OneFlowLog.writeLog("Survey Throttling validation passed", .info)
         isThrottlingActivated = true
-        activatedBySurveyID = survey._id
+        activatedBySurveyID = survey.identifier
         throttlingActivatedTime = Int(Date().timeIntervalSince1970)
         setupGlobalTimerToDeactivateThrottling()
-        
-        if let colorHex = survey.style?.primary_color {
+        if let colorHex = survey.style?.primaryColor {
             let themeColor = UIColor.colorFromHex(colorHex)
             kBrandColor = themeColor
         }
 
-        if let colorHex = survey.survey_settings?.sdk_theme?.text_color {
+        if let colorHex = survey.surveySettings?.sdkTheme?.textColor {
             let color = UIColor.colorFromHex(colorHex)
             kPrimaryTitleColor = color
         } else {
@@ -364,21 +375,20 @@ class OFSurveyManager: NSObject, SurveyManageable {
         kCloseButtonColor = kPrimaryTitleColor.withAlphaComponent(0.6)
         kSubmitButtonColorDisable = kBrandColor.withAlphaComponent(0.5)
 
-        if let backgroundColor = survey.survey_settings?.sdk_theme?.background_color {
+        if let backgroundColor = survey.surveySettings?.sdkTheme?.backgroundColor {
             kBackgroundColor = UIColor.colorFromHex(backgroundColor)
         } else {
             kBackgroundColor = UIColor.white
         }
         let uniqueID = OFProjectDetailsController.objectId()
-        
-        OneFlow.recordEventName(kEventNameSurveyImpression, parameters: ["survey_id": survey._id])
+        OneFlow.recordEventName(kEventNameSurveyImpression, parameters: ["survey_id": survey.identifier])
         OneFlow.shared.eventManager.recordInternalEvent(
             name: InternalEvent.flowStarted,
-            parameters: [InternalKey.flowId : survey._id]
+            parameters: [InternalKey.flowId: survey.identifier]
         )
         guard let screens = survey.screens else { return }
+
         DispatchQueue.main.async {
-            
             if #available(iOS 13.0, *) {
                 if let currentWindowScene = UIApplication.shared.connectedScenes.first as?  UIWindowScene {
                    self.surveyWindow = UIWindow(windowScene: currentWindowScene)
@@ -395,25 +405,25 @@ class OFSurveyManager: NSObject, SurveyManageable {
                 // Fallback on earlier versions
                 self.surveyWindow = UIWindow(frame: UIScreen.main.bounds)
             }
-           
             if self.surveyWindow == nil {
                 return
             }
             self.surveyWindow?.isHidden = false
             self.surveyWindow?.windowLevel = .normal
-            
-            let controller = OFRatingViewController(nibName: "OFRatingViewController", bundle: OneFlowBundle.bundleForObject(self))
-            controller.shouldRemoveWatermark = survey.survey_settings?.sdk_theme?.remove_watermark ?? false
-            controller.shouldShowCloseButton = survey.survey_settings?.sdk_theme?.close_button ?? true
-            controller.shouldShowDarkOverlay = survey.survey_settings?.sdk_theme?.dark_overlay ?? true
-            controller.shouldShowProgressBar = survey.survey_settings?.sdk_theme?.progress_bar ?? true
-
+            let controller = OFRatingViewController(
+                nibName: "OFRatingViewController",
+                bundle: OneFlowBundle.bundleForObject(self)
+            )
+            controller.shouldRemoveWatermark = survey.surveySettings?.sdkTheme?.removeWatermark ?? false
+            controller.shouldShowCloseButton = survey.surveySettings?.sdkTheme?.closeButton ?? true
+            controller.shouldShowDarkOverlay = survey.surveySettings?.sdkTheme?.darkOverlay ?? true
+            controller.shouldShowProgressBar = survey.surveySettings?.sdkTheme?.progressBar ?? true
             controller.modalPresentationStyle = .overFullScreen
             controller.view.backgroundColor = UIColor.clear
             controller.allScreens = screens
-            controller.surveyID = survey._id
+            controller.surveyID = survey.identifier
             controller.surveyName = survey.name
-            if let widgetPosition = survey.survey_settings?.sdk_theme?.widget_position {
+            if let widgetPosition = survey.surveySettings?.sdkTheme?.widgetPosition {
                 controller.widgetPosition = widgetPosition
                 controller.setupWidgetPosition()
 
@@ -421,11 +431,10 @@ class OFSurveyManager: NSObject, SurveyManageable {
             self.surveyWindow?.rootViewController = controller
             let startDate = Date()
             var callBackParameter = [String: Any]()
-            callBackParameter["survey_id"] = survey._id
+            callBackParameter["survey_id"] = survey.identifier
             callBackParameter["survey_name"] = survey.name
             callBackParameter["trigger_event_name"] = eventName
             callBackParameter["status"] = "NA"
-            
             controller.completionBlock = { [weak self] surveyResponse, isCompleted in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
@@ -437,122 +446,145 @@ class OFSurveyManager: NSObject, SurveyManageable {
                     if self.submittedSurveyDetails == nil {
                         self.submittedSurveyDetails = [SubmittedSurvey]()
                     }
-                    let submittedSurvey = SubmittedSurvey(surveyID: survey._id, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: self.projectDetailsController.currentLoggedUserID)
+                    let submittedSurvey = SubmittedSurvey(
+                        surveyID: survey.identifier,
+                        submissionTime: Int(Date().timeIntervalSince1970),
+                        submittedByUserID: self.projectDetailsController.currentLoggedUserID
+                    )
                     self.submittedSurveyDetails?.append(submittedSurvey)
                     self.saveSubmittedSurvey()
                     let interval = Int(Date().timeIntervalSince(startDate))
-                    let surveyResponseNew = SurveySubmitRequest(analytic_user_id: self.projectDetailsController.analytic_user_id, survey_id: survey._id, os: "iOS", answers: surveyResponse, trigger_event: eventName, tot_duration: interval, _id: uniqueID)
+                    let surveyResponseNew = SurveySubmitRequest(
+                        analyticUserID: self.projectDetailsController.analyticUserID,
+                        surveyID: survey.identifier,
+                        answers: surveyResponse,
+                        triggerEvent: eventName,
+                        totDuration: interval,
+                        identifier: uniqueID
+                    )
 
                     if self.pendingSurveySubmission == nil {
-                        self.pendingSurveySubmission = [survey._id : surveyResponseNew]
+                        self.pendingSurveySubmission = [survey.identifier: surveyResponseNew]
                     } else {
-                        self.pendingSurveySubmission![survey._id] = surveyResponseNew
+                        self.pendingSurveySubmission![survey.identifier] = surveyResponseNew
                     }
                     self.uploadPendingSurveyIfAvailable()
                     callBackParameter["status"] = isCompleted ? "finished" : "closed"
 
                     for res in surveyResponse {
                         var innerDic = [String: Any]()
-                        innerDic["screen_id"] = res.screen_id
-                        if let screen = screens.first(where: { $0._id == res.screen_id }) {
+                        innerDic["screen_id"] = res.screenID
+                        if let screen = screens.first(where: { $0.identifier == res.screenID }) {
                             innerDic["question_title"] = screen.title
-                            innerDic["question_type"] = screen.input?.input_type
-                            var question_ans = [[String: String]]()
-                            
-                            if screen.input?.input_type == "checkbox" {
-                                if let givenAnswer = res.answer_index?.components(separatedBy: ",") {
+                            innerDic["question_type"] = screen.input?.inputType
+                            var questionAns = [[String: String]]()
+                            if screen.input?.inputType == "checkbox" {
+                                if let givenAnswer = res.answerIndex?.components(separatedBy: ",") {
                                     for answerID in givenAnswer {
                                         var newDic = [String: String]()
-                                        if screen.input?.other_option_id == answerID {
-                                            if let otherOption = res.answer_value {
+                                        if screen.input?.otherOptionID == answerID {
+                                            if let otherOption = res.answerValue {
                                                 newDic["other_value"] = otherOption
                                             }
                                         }
-                                        if let selectedTitle = screen.input?.choices?.first(where: { $0._id == answerID })?.title {
+                                        if let selectedTitle = screen.input?.choices?.first(
+                                            where: { $0.identifier == answerID }
+                                        )?.title {
                                             newDic["answer_value"] = selectedTitle
                                         }
-                                        question_ans.append(newDic)
+                                        questionAns.append(newDic)
                                     }
                                 }
-                            } else if screen.input?.input_type == "mcq" {
+                            } else if screen.input?.inputType == "mcq" {
                                 var newDic = [String: String]()
-                                if let otherOption = res.answer_value {
+                                if let otherOption = res.answerValue {
                                     newDic["other_value"] = otherOption
                                 }
-                                if let a_value = res.answer_index {
-                                    if let selectedTitle = screen.input?.choices?.first(where: { $0._id == a_value })?.title {
+                                if let answerValue = res.answerIndex {
+                                    if let selectedTitle = screen.input?.choices?.first(
+                                        where: { $0.identifier == answerValue }
+                                    )?.title {
                                         newDic["answer_value"] = selectedTitle
                                     }
                                 }
-                                question_ans.append(newDic)
+                                questionAns.append(newDic)
                             } else {
-                                if let a_value = res.answer_value {
-                                    let newDic = ["answer_value": a_value]
-                                    question_ans.append(newDic)
+                                if let answerValue = res.answerValue {
+                                    let newDic = ["answer_value": answerValue]
+                                    questionAns.append(newDic)
                                 }
                             }
-                            innerDic["question_ans"] = question_ans
+                            innerDic["question_ans"] = questionAns
                         }
                         callBackResponse.append(innerDic)
                     }
                     callBackParameter["screens"] = callBackResponse
                 } else {
-                    OneFlow.recordEventName(kEventNameFlowClosed, parameters: ["survey_id": survey._id])
-                    if survey.survey_settings?.closed_as_finished == true || isCompleted {
+                    OneFlow.recordEventName(kEventNameFlowClosed, parameters: ["survey_id": survey.identifier])
+                    if survey.surveySettings?.closedAsFinished == true || isCompleted {
                         if self.submittedSurveyDetails == nil {
                             self.submittedSurveyDetails = [SubmittedSurvey]()
                         }
-                        let submittedSurvey = SubmittedSurvey(surveyID: survey._id, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: self.projectDetailsController.currentLoggedUserID)
+                        let submittedSurvey = SubmittedSurvey(
+                            surveyID: survey.identifier,
+                            submissionTime: Int(Date().timeIntervalSince1970),
+                            submittedByUserID: self.projectDetailsController.currentLoggedUserID
+                        )
                         self.submittedSurveyDetails?.append(submittedSurvey)
                         self.saveSubmittedSurvey()
                     }
                     callBackParameter["status"] = isCompleted ? "finished" : "skipped"
                 }
-                NotificationCenter.default.post(name: SurveyFinishNotification, object: nil, userInfo: callBackParameter)
+                NotificationCenter.default.post(
+                    name: SurveyFinishNotification,
+                    object: nil,
+                    userInfo: callBackParameter
+                )
             }
-            
             controller.recordEmptyTextCompletionBlock = { [weak self] in
                 guard let self = self else { return }
                 if self.submittedSurveyDetails == nil {
                     self.submittedSurveyDetails = [SubmittedSurvey]()
                 }
-                let submittedSurvey = SubmittedSurvey(surveyID: survey._id, submissionTime: Int(Date().timeIntervalSince1970), submittedByUserID: self.projectDetailsController.currentLoggedUserID)
+                let submittedSurvey = SubmittedSurvey(
+                    surveyID: survey.identifier,
+                    submissionTime: Int(Date().timeIntervalSince1970),
+                    submittedByUserID: self.projectDetailsController.currentLoggedUserID
+                )
                 self.submittedSurveyDetails?.append(submittedSurvey)
                 self.saveSubmittedSurvey()
             }
             self.surveyWindow?.makeKeyAndVisible()
         }
     }
-    
-    private func submitTheSurveyToServer(_ surveyID: String, surveyResponse:SurveySubmitRequest) {
-        
+
+    private func submitTheSurveyToServer(_ surveyID: String, surveyResponse: SurveySubmitRequest) {
         OneFlowLog.writeLog("submitSurveyToServer called")
-        
         if self.isNetworkReachable == false {
             OneFlowLog.writeLog("Network not reachable. Returned", .info)
             return
         }
-        
         var surveyResponseTemp = surveyResponse
-        if surveyResponseTemp.analytic_user_id == nil {
+        if surveyResponseTemp.analyticUserID == nil {
             OneFlowLog.writeLog("Survey did not have user", .info)
-            guard let userID = projectDetailsController.analytic_user_id else {
+            guard let userID = projectDetailsController.analyticUserID else {
                 OneFlowLog.writeLog("user yet not initialised", .info)
                 return
             }
-            surveyResponseTemp.analytic_user_id = userID
+            surveyResponseTemp.analyticUserID = userID
         }
-        
         OneFlowLog.writeLog("Calling API to submit survey")
         apiController.submitSurveyResponse(surveyResponseTemp) { [weak self] isSuccess, error, data in
-            
             guard let self = self else {
                 return
             }
             if isSuccess == true, let data = data {
                 self.pendingSurveySubmission?.removeValue(forKey: surveyID)
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
+                    if let json = try JSONSerialization.jsonObject(
+                        with: data,
+                        options: JSONSerialization.ReadingOptions.fragmentsAllowed
+                    ) as? [String: Any] {
                         OneFlowLog.writeLog(json)
                     }
                 } catch {
@@ -576,11 +608,9 @@ class OFSurveyManager: NSObject, SurveyManageable {
                         return
                     }
                     self.startSurvey(surveyToTrigger, eventName: kEventNameManualTrigger)
-                    
                 } catch {
                     OneFlowLog.writeLog("\(#function) error: \(error)", .error)
                 }
-                
             } else {
                 OneFlowLog.writeLog("\(#function) \(error?.localizedDescription ?? "NA")", .error)
             }

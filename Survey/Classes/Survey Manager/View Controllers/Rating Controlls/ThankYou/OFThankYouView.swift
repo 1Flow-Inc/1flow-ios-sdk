@@ -20,29 +20,31 @@ class OFThankYouView: UIView {
     @IBOutlet weak var animationView: UIView!
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var lblDescription: UILabel!
-    weak var delegate: OFRatingViewProtocol?
+    weak var delegate: OFRatingViewDelegate?
     var imageView: UIImageView?
-    
     var thankyouTitle: String = "Thank you" {
         didSet {
             self.lblTitle.text = thankyouTitle
         }
     }
-    
     var thankyouDescription: String = "" {
         didSet {
             self.lblDescription.text = thankyouDescription
         }
     }
+    lazy var waterMarkURL = "https://1flow.app/?utm_source=1flow-ios-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow"
 
     deinit {
         imageView?.animationImages = nil
     }
-    lazy var waterMarkURL = "https://1flow.app/?utm_source=1flow-ios-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow"
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        guard let imageView = UIImageView.fromGif(frame: animationView.bounds, resourceName: "OFdone", bundle: OneFlowBundle.bundleForObject(self)) else { return }
+        guard let imageView = UIImageView.fromGif(
+            frame: animationView.bounds,
+            resourceName: "OFdone",
+            bundle: OneFlowBundle.bundleForObject(self)
+        ) else { return }
         animationView.addSubview(imageView)
         imageView.animationDuration = 1.0
         imageView.animationRepeatCount = 1
@@ -60,13 +62,13 @@ class OFThankYouView: UIView {
             CATransaction.commit()
         }
     }
-    
+
     @IBAction func onClickWatermark(_ sender: Any) {
         guard let url = URL(string: waterMarkURL) else {
             return
         }
         if UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [ : ], completionHandler: nil)
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
 }

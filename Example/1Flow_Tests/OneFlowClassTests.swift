@@ -1,10 +1,16 @@
+// Copyright 2021 1Flow, Inc.
 //
-//  OneFlowClassTests.swift
-//  1Flow_Tests
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//  Created by Rohan Moradiya on 30/04/22.
-//  Copyright © 2022 CocoaPods. All rights reserved.
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 import XCTest
 @testable import _1Flow
@@ -81,7 +87,7 @@ class OneFlowTests: XCTestCase {
         let eventManager = MockEventManager(expectation)
         OneFlow.shared.eventManager = eventManager
         let mockProjectDetails = MockProjectDetailsController()
-        mockProjectDetails.analytic_user_id = "abc"
+        mockProjectDetails.analyticUserID = "abc"
         OneFlow.shared.projectDetailsController = mockProjectDetails
         OneFlow.logUser("user_id", userDetails: nil)
         self.wait(for: [expectation], timeout: 1.0)
@@ -91,7 +97,7 @@ class OneFlowTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Should upload pending survey")
         let surveyManager = MockSurveyManager(expectation)
         let mockProjectDetails = MockProjectDetailsController()
-        mockProjectDetails.analytic_user_id = "abc"
+        mockProjectDetails.analyticUserID = "abc"
         OneFlow.shared.eventManager = OFEventManager()
         OneFlow.shared.projectDetailsController = mockProjectDetails
         OneFlow.shared.eventManager.projectDetailsController = mockProjectDetails

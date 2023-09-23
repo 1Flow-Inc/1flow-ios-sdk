@@ -35,11 +35,11 @@ final class OFAPIController: NSObject, APIProtocol {
 
     var urlRequestManager: URLRequestManagerProtocol = URLRequestManager()
 
-    //MARK: - Surveys
+    // MARK: - Surveys
     func getAllSurveys(_ completion: @escaping APICompletionBlock) {
         urlRequestManager.getAPIWith(EndPoints.getSurveys, completion: completion)
     }
-    
+
     func submitSurveyResponse(_ response: SurveySubmitRequest, completion: @escaping APICompletionBlock) {
         do {
             let jsonData = try JSONEncoder().encode(response)
@@ -48,8 +48,8 @@ final class OFAPIController: NSObject, APIProtocol {
             fatalError(error.localizedDescription)
         }
     }
-    
-    //MARK: - User
+
+    // MARK: - User
     func addUser(_ parameter: AddUserRequest, completion: @escaping APICompletionBlock) {
         do {
             let jsonData = try JSONEncoder().encode(parameter)
@@ -67,8 +67,8 @@ final class OFAPIController: NSObject, APIProtocol {
             fatalError(error.localizedDescription)
         }
     }
-    
-    //MARK: - Analytics
+
+    // MARK: - Analytics
     func addEvents(_ parameter: [String: Any], completion: @escaping APICompletionBlock) {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: parameter, options: .prettyPrinted)

@@ -33,16 +33,15 @@ protocol OFInAppPurchaseEventsDelegate: AnyObject {
 }
 
 final class OFInAppPurchaseEventsController: NSObject {
-    
+
     var eventArray = [OFIAPEvent]()
     weak var delegate: OFInAppPurchaseEventsDelegate?
-    
+    let observer = PaymentQueueObserver()
+
     override init() {
         super.init()
     }
-    
-    let observer = PaymentQueueObserver()
-    
+
     func startObserver() {
         OneFlowLog.writeLog("IAPObserver: Start")
         observer.onPurchaseCompletion = {[weak self] eventArray in
@@ -53,22 +52,27 @@ final class OFInAppPurchaseEventsController: NSObject {
                 self.eventArray.append(event)
                 identifires.append(event.productID)
             }
-            
+
             let productIDs = Set(identifires)
-            let productsRequest:SKProductsRequest = SKProductsRequest(productIdentifiers: productIDs)
+            let productsRequest: SKProductsRequest = SKProductsRequest(productIdentifiers: productIDs)
             productsRequest.delegate = self
             productsRequest.start()
         }
         SKPaymentQueue.default().add(observer)
     }
-    
+
     func recordInApppurchaseEvent(event: OFIAPEvent) {
         OneFlowLog.writeLog("IAPObserver: Record New event")
         self.delegate?.newIAPEventRecorded(event)
         self.eventArray.removeAll(where: { $0.productID == event.productID })
     }
-    
-    func foundPriceFor(_ productID: String, price: Double, numberOfUnit: Int?, unit: Int?, localCurrencyPrice: String?) {
+
+    func foundPriceFor(_ productID: String,
+                       price: Double,
+                       numberOfUnit: Int?,
+                       unit: Int?,
+                       localCurrencyPrice: String?
+    ) {
         if var first = self.eventArray.first(where: { $0.productID == productID }) {
             first.price = price
             first.localCurrencyPrice = localCurrencyPrice
@@ -79,16 +83,12 @@ final class OFInAppPurchaseEventsController: NSObject {
                 switch unit {
                 case 0:
                     first.subscriptionUnit = "day"
-                    break
                 case 1:
                     first.subscriptionUnit = "week"
-                    break
                 case 2:
                     first.subscriptionUnit = "month"
-                    break
                 case 3:
                     first.subscriptionUnit = "year"
-                    break
                 default:
                     break
                 }
@@ -96,11 +96,11 @@ final class OFInAppPurchaseEventsController: NSObject {
             self.recordInApppurchaseEvent(event: first)
         }
     }
-    
+
     deinit {
         SKPaymentQueue.default().remove(observer)
     }
-    
+
     private func priceStringForProduct(item: SKProduct) -> String? {
         let price = item.price
         if price == NSDecimalNumber(decimal: 0.00) {
@@ -117,49 +117,67 @@ final class OFInAppPurchaseEventsController: NSObject {
 extension OFInAppPurchaseEventsController: SKProductsRequestDelegate {
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         response.products.forEach { (product) in
-            
             let localPrice = self.priceStringForProduct(item: product)
-            
             if #available(iOS 11.2, *) {
                 if let subscriptionInfo = product.subscriptionPeriod {
-                    self.foundPriceFor(product.productIdentifier, price: Double(truncating: product.price), numberOfUnit: subscriptionInfo.numberOfUnits, unit: subscriptionInfo.unit.hashValue, localCurrencyPrice: localPrice)
+                    self.foundPriceFor(
+                        product.productIdentifier,
+                        price: Double(truncating: product.price),
+                        numberOfUnit: subscriptionInfo.numberOfUnits,
+                        unit: subscriptionInfo.unit.hashValue,
+                        localCurrencyPrice: localPrice
+                    )
                 } else {
-                    self.foundPriceFor(product.productIdentifier, price: Double(truncating: product.price), numberOfUnit: nil, unit: nil, localCurrencyPrice: localPrice)
+                    self.foundPriceFor(
+                        product.productIdentifier,
+                        price: Double(truncating: product.price),
+                        numberOfUnit: nil,
+                        unit: nil,
+                        localCurrencyPrice: localPrice
+                    )
                 }
             } else {
                 // Fallback on earlier versions
-                self.foundPriceFor(product.productIdentifier, price: Double(truncating: product.price), numberOfUnit: nil, unit: nil, localCurrencyPrice: localPrice)
+                self.foundPriceFor(
+                    product.productIdentifier,
+                    price: Double(truncating: product.price),
+                    numberOfUnit: nil,
+                    unit: nil,
+                    localCurrencyPrice: localPrice
+                )
             }
         }
     }
 }
 
 class PaymentQueueObserver: NSObject, SKPaymentTransactionObserver {
-    
+
     var onPurchaseCompletion: PaymentObserverComletion?
-    
+
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         OneFlowLog.writeLog("IAPObserver: updatedTransactions")
-        
+
         var eventArray = [OFIAPEvent]()
         for transaction in transactions {
-            
             switch transaction.transactionState {
             case .purchased:
                 OneFlowLog.writeLog("IAPObserver: purchased")
-                let event = OFIAPEvent(productID: transaction.payment.productIdentifier, quantity: transaction.payment.quantity, price: nil, transactionIdentifier: transaction.transactionIdentifier, transactionDate: transaction.transactionDate)
+                let event = OFIAPEvent(
+                    productID: transaction.payment.productIdentifier,
+                    quantity: transaction.payment.quantity,
+                    price: nil,
+                    transactionIdentifier: transaction.transactionIdentifier,
+                    transactionDate: transaction.transactionDate
+                )
                 eventArray.append(event)
-                break
             case .failed:
                 OneFlowLog.writeLog("IAPObserver: Failed")
-                break
             case .restored:
                 OneFlowLog.writeLog("IAPObserver: restored")
             default:
-                break;
+                break
             }
         }
-        
         if eventArray.count > 0 {
             onPurchaseCompletion!(eventArray)
         }

@@ -1,10 +1,16 @@
+// Copyright 2021 1Flow, Inc.
 //
-//  SurveyManagerTests.swift
-//  1Flow_Tests
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//  Created by Rohan Moradiya on 14/06/22.
-//  Copyright © 2022 CocoaPods. All rights reserved.
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 import XCTest
 @testable import _1Flow
@@ -49,7 +55,7 @@ class SurveyManagerTest: XCTestCase {
             guard var surveyToValidate = surveyListResponse.result.first else {
                 return
             }
-            surveyToValidate.survey_settings?.resurvey_option = false
+            surveyToValidate.surveySettings?.resurveyOption = false
             let surveyManager = OFSurveyManager()
             surveyManager.submittedSurveyDetails = submittedSurveyDetails
             let projectDetails = MockProjectDetailsController()
@@ -78,9 +84,9 @@ class SurveyManagerTest: XCTestCase {
             guard var surveyToValidate = surveyListResponse.result.first else {
                 return
             }
-            surveyToValidate.survey_settings?.resurvey_option = true
-            surveyToValidate.survey_settings?.retake_survey?.retake_input_value = 2
-            surveyToValidate.survey_settings?.retake_survey?.retake_select_value = "minutes"
+            surveyToValidate.surveySettings?.resurveyOption = true
+            surveyToValidate.surveySettings?.retakeSurvey?.retakeInputValue = 2
+            surveyToValidate.surveySettings?.retakeSurvey?.retakeSelectValue = "minutes"
             
             let timeIntervalBefore2Mins = Int(Date().timeIntervalSince1970) - 121
             var firstSubmiited = submittedSurveyDetails.first!
@@ -114,9 +120,9 @@ class SurveyManagerTest: XCTestCase {
             guard var surveyToValidate = surveyListResponse.result.first else {
                 return
             }
-            surveyToValidate.survey_settings?.resurvey_option = true
-            surveyToValidate.survey_settings?.retake_survey?.retake_input_value = 2
-            surveyToValidate.survey_settings?.retake_survey?.retake_select_value = "minutes"
+            surveyToValidate.surveySettings?.resurveyOption = true
+            surveyToValidate.surveySettings?.retakeSurvey?.retakeInputValue = 2
+            surveyToValidate.surveySettings?.retakeSurvey?.retakeSelectValue = "minutes"
             
             let timeIntervalBefore2Mins = Int(Date().timeIntervalSince1970) - 115
             var firstSubmiited = submittedSurveyDetails.first!
@@ -150,9 +156,9 @@ class SurveyManagerTest: XCTestCase {
             guard var surveyToValidate = surveyListResponse.result.first else {
                 return
             }
-            surveyToValidate.survey_settings?.resurvey_option = true
-            surveyToValidate.survey_settings?.retake_survey?.retake_input_value = 2
-            surveyToValidate.survey_settings?.retake_survey?.retake_select_value = "hours"
+            surveyToValidate.surveySettings?.resurveyOption = true
+            surveyToValidate.surveySettings?.retakeSurvey?.retakeInputValue = 2
+            surveyToValidate.surveySettings?.retakeSurvey?.retakeSelectValue = "hours"
             
             let timeIntervalBefore2Hours = Int(Date().timeIntervalSince1970) - 7201
             var firstSubmiited = submittedSurveyDetails.first!
@@ -186,9 +192,9 @@ class SurveyManagerTest: XCTestCase {
             guard var surveyToValidate = surveyListResponse.result.first else {
                 return
             }
-            surveyToValidate.survey_settings?.resurvey_option = true
-            surveyToValidate.survey_settings?.retake_survey?.retake_input_value = 2
-            surveyToValidate.survey_settings?.retake_survey?.retake_select_value = "hours"
+            surveyToValidate.surveySettings?.resurveyOption = true
+            surveyToValidate.surveySettings?.retakeSurvey?.retakeInputValue = 2
+            surveyToValidate.surveySettings?.retakeSurvey?.retakeSelectValue = "hours"
             
             let timeIntervalBefore2Hours = Int(Date().timeIntervalSince1970) - 7195
             var firstSubmiited = submittedSurveyDetails.first!
@@ -222,9 +228,9 @@ class SurveyManagerTest: XCTestCase {
             guard var surveyToValidate = surveyListResponse.result.first else {
                 return
             }
-            surveyToValidate.survey_settings?.resurvey_option = true
-            surveyToValidate.survey_settings?.retake_survey?.retake_input_value = 2
-            surveyToValidate.survey_settings?.retake_survey?.retake_select_value = "days"
+            surveyToValidate.surveySettings?.resurveyOption = true
+            surveyToValidate.surveySettings?.retakeSurvey?.retakeInputValue = 2
+            surveyToValidate.surveySettings?.retakeSurvey?.retakeSelectValue = "days"
             
             let timeIntervalBefore2Days = Int(Date().timeIntervalSince1970) - 172801
             var firstSubmiited = submittedSurveyDetails.first!
@@ -258,9 +264,9 @@ class SurveyManagerTest: XCTestCase {
             guard var surveyToValidate = surveyListResponse.result.first else {
                 return
             }
-            surveyToValidate.survey_settings?.resurvey_option = true
-            surveyToValidate.survey_settings?.retake_survey?.retake_input_value = 2
-            surveyToValidate.survey_settings?.retake_survey?.retake_select_value = "days"
+            surveyToValidate.surveySettings?.resurveyOption = true
+            surveyToValidate.surveySettings?.retakeSurvey?.retakeInputValue = 2
+            surveyToValidate.surveySettings?.retakeSurvey?.retakeSelectValue = "days"
             
             let timeIntervalBefore2Days = Int(Date().timeIntervalSince1970) - 172775
             var firstSubmiited = submittedSurveyDetails.first!

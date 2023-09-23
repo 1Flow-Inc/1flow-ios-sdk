@@ -15,16 +15,24 @@
 import Foundation
 
 struct AddUserRequest: Codable {
-    var user_id: String
+    var userID: String
     var context: Context
+
+    private enum CodingKeys: String, CodingKey {
+        case userID = "user_id", context
+    }
 
     struct Context: Codable {
         var app: AppDetails
         var device: DeviceDetails
         var library: LibraryDetails
         var network: NetworkDetails
-        var os: OSDetails
+        var operatingSystem: OSDetails
         var screen: ScreenDetails
+
+        private enum CodingKeys: String, CodingKey {
+            case app, device, library, network, operatingSystem = "os", screen
+        }
 
         struct AppDetails: Codable {
             var version: String

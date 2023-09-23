@@ -20,15 +20,13 @@ enum OneFlowLogLevel: String {
     case warnings
     case info
     case verbose
-    
 }
 
-class OneFlowLog {  
-    
-    class func writeLog(_ logString: Any,_ logLevel: OneFlowLogLevel = .verbose ) {
+class OneFlowLog {
+
+    class func writeLog(_ logString: Any, _ logLevel: OneFlowLogLevel = .verbose ) {
         if OFProjectDetailsController.shared.currentLogLevel != .none {
             print(logString)
         }
-        
     }
 }
