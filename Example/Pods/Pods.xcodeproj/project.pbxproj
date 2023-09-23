@@ -7,198 +7,215 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		034A967C04D92AFFF9ABB962BC1A840E /* OneFlowBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF038F07E36B4F3ECEE3C06736C3F6FE /* OneFlowBundle.swift */; };
-		047002DDF95077E3E08F18AEF67BC7DC /* SurveyListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E697ED299698C494AD166BFF0228AF0 /* SurveyListResponse.swift */; };
-		0BFC3F5485EEFC70311CC7D8E259EF69 /* OFAPIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C5F6F19435DBB246F43EF82A2D1A3C /* OFAPIController.swift */; };
-		19FE4D0FF4B514DD91329D72CF185F3A /* OFWelcomeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0703172AA04EA778120728CC58311238 /* OFWelcomeView.xib */; };
-		1DEC63F44AAA1AA3DA641E73E0E562FF /* OFNumberCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2F06257EA5C69409FC547BB6006E13E /* OFNumberCollectionViewCell.xib */; };
-		22AE3B640E199D9CFC88E15079692CA1 /* OFdone.gif in Resources */ = {isa = PBXBuildFile; fileRef = EEF2458015E56E830AB8024058FF6FF0 /* OFdone.gif */; };
-		29DCD8316C21579EEF20C7FA928677FF /* EndPointPovider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C88D8DBB2F7AF41560B7CD7511C72E2 /* EndPointPovider.swift */; };
-		2AEA123E4697C94686F62BADE1079AB6 /* OFShortAnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7431EB067FE52086563A420C290023 /* OFShortAnswerView.swift */; };
-		2B71B723A9C164A805168A509896C525 /* OFProjectDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF2BC77415485944007BB70E378E8C9 /* OFProjectDetailsController.swift */; };
-		2C7F99D762FC34FD30D52E11AC399980 /* OFNumberButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05CCE3E21BE18DE56161CABE3A175FE /* OFNumberButton.swift */; };
-		2E4B2552FBF1395C3E29558C2D3C6D63 /* OFOneToTenView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 184E88229314091043D79E1CF8F4793D /* OFOneToTenView.xib */; };
-		338DEA2AEADF42D780F2AC48AB09336B /* SubmittedSurvey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E56B6110B3849365329DD299EEB033 /* SubmittedSurvey.swift */; };
-		36A02EE19058F3F50B25BBBFE7ED712E /* SurveySubmitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D1BD7691CE8673540C37023D14F8F4 /* SurveySubmitRequest.swift */; };
-		375373795E4FA75DD1D74ED1B3A939B9 /* OFMCQView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFAE9B72FB09181AFBA99DF0CC3B8778 /* OFMCQView.xib */; };
-		4141A220721A1BEB017604A1B019DC2B /* OneFlowLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C021754A0834FBD81DFE50FCFCCC35 /* OneFlowLog.swift */; };
-		4360555D2940A5B700EE033C /* SurveyFontConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4360555C2940A5B700EE033C /* SurveyFontConfiguration.swift */; };
-		436D0DCB2A2FAB15000B7CFB /* ScriptsManageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D0DCA2A2FAB15000B7CFB /* ScriptsManageable.swift */; };
-		436D0DCD2A2FAB72000B7CFB /* ScriptsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D0DCC2A2FAB72000B7CFB /* ScriptsManager.swift */; };
-		437886E8299817FD009FEF25 /* OFWebContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437886E52994F834009FEF25 /* OFWebContainerView.swift */; };
-		437F08692A20AE0700C4FDC0 /* ScriptExecuter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437F08682A20AE0700C4FDC0 /* ScriptExecuter.swift */; };
-		43863D582A40E99100F2807D /* validator-dev.js in Resources */ = {isa = PBXBuildFile; fileRef = 437F086A2A20B26800C4FDC0 /* validator-dev.js */; };
-		456E187205471A0E4F5664985E58C1F2 /* OFNumberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B862F4EB82AD7324DCA6E87D6CE751E4 /* OFNumberCollectionViewCell.swift */; };
-		59F429E9A2443A8E8C94FD6B05F4B26E /* OneFlowDataLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB801BBB8506FE7B3939B5A8D1BB69A /* OneFlowDataLogic.swift */; };
-		5A184F8666A7A40B450D0B22BBA3771B /* URLRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96122D973B495DA43C5195C9C7C9561E /* URLRequestManager.swift */; };
-		5F652AD31B6AEC3DC7BE7E22B7D6A9C7 /* CreateSessionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEB428562F616BFAEB03454D11B3E91 /* CreateSessionRequest.swift */; };
-		66232A25EEC2DAE986F497EA04D957E6 /* OFRatingViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6697BA4BD440ACDE4686AA279AE74B /* OFRatingViewProtocol.swift */; };
-		67B3215CB6FEEE7C93580F6E7D607227 /* OFShortAnswerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73ED9EFE82409BCF09B2261D4314548D /* OFShortAnswerView.xib */; };
-		6B4AF6229C504FB2CC0DE0975DE296C8 /* OFSurveyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F5CB22917125FAE72378715372D43B /* OFSurveyManager.swift */; };
-		6EF3E4A3B22F86BB151234A19BA6383C /* AddUserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E3CA9C8EBE715D6C0D6DAA90493432 /* AddUserResponse.swift */; };
-		6FC8142C18EDBA841801B1C755CE7AB4 /* OFScreenTrackingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D5A6C056DC420B522AD44BEF47BB01 /* OFScreenTrackingController.swift */; };
-		73F3B67A8AF328ACBD8583C40A0F3470 /* LogUserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C85FE273629D7A28E32B59DB5C9814 /* LogUserResponse.swift */; };
-		75C2A0DB23764BD35F3EE053A8FD28BD /* OFRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C097991B7B076921884567BC8A5ECD75 /* OFRadioButton.swift */; };
+		016433316C87C2255DA513C1FDA76A99 /* LogUserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F60E31628CBB024929C82A5053342E /* LogUserResponse.swift */; };
+		063953D85A817801A5A38FA57E97C1A3 /* OFSwiftGIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F3E3F3C49296FF8696DAB6F5A2DB22 /* OFSwiftGIF.swift */; };
+		143ACDF64682E5AC70001BB777ACC704 /* OFFollowupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0357146A0FCDA17EFE52FA0FD3F5AD7 /* OFFollowupView.swift */; };
+		156F98279F44E783F6F7D184D56D87B8 /* OFStarsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8331CC5B7C0A662C7B00910219FDB941 /* OFStarsView.swift */; };
+		16ED942048C5BC0E6DA035E877A222E5 /* AddUserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19433E4F0A4450FEC2644A39835F948 /* AddUserResponse.swift */; };
+		1CB23F07DBEB4E2389186A8E11FF4A4D /* OFShortAnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367A2D4524025973A88C1FFFC256922F /* OFShortAnswerView.swift */; };
+		22A7F10352B382FC608B59C96C807FEC /* OneFlowDataLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DFCFC5F9C5D3132C8C9455B3F9D326 /* OneFlowDataLogic.swift */; };
+		240D41ED8BF986524D0537950F597A57 /* ScriptExecuter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F4400523CB6B20CC75776EF20DBE68 /* ScriptExecuter.swift */; };
+		241290668EBFE3D7D679A482CDEED3A3 /* OFdone.gif in Resources */ = {isa = PBXBuildFile; fileRef = 2AE3B426A8C02009936E48C7043402E4 /* OFdone.gif */; };
+		278C1518C1B774DB9FDAEE09B915BA98 /* OFViewLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75D03F0D3DB82F4096DCD694F3E6ADC /* OFViewLoading.swift */; };
+		27E02E818CEB7504ECDDFF65D6122138 /* OFThankYouView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7965A28A5BB9C8B56873EDEA7D8B6DE /* OFThankYouView.xib */; };
+		296EABCDA52FCC86351ADB2B63BA3580 /* OFRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3424F61DF7F4F461732D1921CD8DDB5 /* OFRadioButton.swift */; };
+		2D8668B6B61C77AD798E16A6C7B48C2E /* OFShortAnswerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2210FAD186B56A6A8DD1F88995A63FC0 /* OFShortAnswerView.xib */; };
+		31796DE13B2356C2FB0D01E41BA81DCE /* OneFlowExtension-UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CAE9F4230BDCDC6C4DCB5869627300 /* OneFlowExtension-UIImage.swift */; };
+		44A4581613949BFB194C9A6FA23569D3 /* OFStarsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 364DCF0AF9D6D9C322D9669A364CEEA1 /* OFStarsView.xib */; };
+		44B7324E314125E4C9AA6E223D28EEEF /* OFWebContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3D41DBABCD6755EA8A7F6085C64531 /* OFWebContainerView.swift */; };
+		44DD1A652EA66CC137B4A36B38356D8C /* OFFollowupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9291F01C8039A8E886946A0431552A23 /* OFFollowupView.xib */; };
+		4D06CB48F332D28CD6302E60096FD86E /* OFAPIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304576D64EB9A6A543BA93BECB8AB3AC /* OFAPIController.swift */; };
+		4FEC50EC2E97E0EC30D42DCC4D55657A /* OFNumberButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB909875D9010BBA0D174908D4D4053E /* OFNumberButton.swift */; };
+		50C98A8767ADE152745E475B161A1FDD /* FeedbackAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2E8EC328D793E09447486E849AAC3194 /* FeedbackAssets.xcassets */; };
+		527BFCFB654253F76A0DBDF3FDE4937A /* OFOneToTenView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B16289662E4D005302AB49895E325D1 /* OFOneToTenView.xib */; };
+		56FE7277968E958A976C448F399AD0A7 /* ReplaceMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBA637C0314CEFA369F8A44E07ADE47 /* ReplaceMe.swift */; };
+		574380CCD792D7232E729F7B68FEFCC5 /* AddUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88262E5B115589598A982624FAD3E082 /* AddUserRequest.swift */; };
+		580914DAE2D1CA05D977758825C37F83 /* ScriptsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B440A24666BE5D4B63328CC7494360F /* ScriptsManager.swift */; };
+		5B3509AF5769E58C2DD786593ACD1964 /* OFOneToTenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D68800C8A8984B6C637E46BB2D31B86 /* OFOneToTenView.swift */; };
+		637C2D2D1F68759FB11AA8DE646A3D4C /* 1Flow-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCC75E0B186E4FB1AC4AFD99781956B /* 1Flow-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		64F2B624F3CE5A09A06453E5A63E4BF4 /* OFEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD74D88A3B0E46CD01B10BBC1AB881AB /* OFEventManager.swift */; };
+		6F1890A4AB045A92B98B71312838F07A /* OFDraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89583D84B9CD2C97930790E4A4E42BB /* OFDraggableView.swift */; };
+		71A6A6E7CD7028083897A05D5FD23319 /* OFRatingViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC3B395A93F21B3941289A1E46F6FD90 /* OFRatingViewDelegate.swift */; };
+		772F7FF41B05C8CDD6F4C3B191E542E1 /* CreateSessionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF20735FE9B17E790A51A9C7115F54E /* CreateSessionRequest.swift */; };
 		79E1E656F91409F445EFC87C8BEFC3B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		7A3AE033F0A57985AE57523345DF0DBB /* OFDraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866BCF929B569C7AF783776E0FF6A400 /* OFDraggableView.swift */; };
-		7B1ADFAC4228FAE8E23CFBE864C77F45 /* OFSwiftGIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E2310CE2A961C5269B0DA843140BC0F /* OFSwiftGIF.swift */; };
-		7B9D4C9B1A2E545190906B3C3F2A3CFE /* OFReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1264B0949BC0F510FB90DE62892E2241 /* OFReachability.swift */; };
+		79FDF493205D1340C85DEC36CE3E9BDC /* OFRatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EDE9EB43F49A04550BD3F9227575B5 /* OFRatingViewController.swift */; };
 		7C1A88EE9F810183C5850912C7935119 /* Pods-1Flow_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1C7B01C82D9FD4B5698CE204588A64 /* Pods-1Flow_Tests-dummy.m */; };
-		8130EADBAFAE8CD00A4601770494D30D /* FeedbackAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4567C2AC22713B5B00944F21C95BC69A /* FeedbackAssets.xcassets */; };
-		8349B68B1BA11C05487DFD91805381C3 /* OFMCQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCD5151EFCC8B02EC76AA5A5536C12E /* OFMCQView.swift */; };
-		838909CAC0BFBF6378D2AF5C59662370 /* SurveySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528DEFCB4735A3F217174EEA89E94E89 /* SurveySDK.bundle */; };
-		83C89CF3C99567775BAC14E9A4AA42EA /* OFStarsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4434702501960A4010466421ADB8857D /* OFStarsView.xib */; };
-		855F2B3C763DAB211F46869DBFA38764 /* OFFollowupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C8295EEA29D6750AE6491ACD052391CF /* OFFollowupView.xib */; };
+		7FF21963D69A02E9AA906BD33900AB4A /* OneFlowConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFDEE6AC10D6D0E14A1E8610AD11FB3 /* OneFlowConstant.swift */; };
+		85F2F4939470A5D7C5DC98A5AC1C2459 /* OFMCQView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 049DCDF7D0D8693FB80C4B55FC442184 /* OFMCQView.xib */; };
 		86CBF890731B30C6496D5702A28461B9 /* Pods-1Flow_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 168D06B35F03AF5FFB0AC5A4EFC489CC /* Pods-1Flow_Example-dummy.m */; };
-		922FDD7FD4AD0715452B45EEF6458697 /* ReplaceMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D056D3DABC21F2A7763198FF1C927D /* ReplaceMe.swift */; };
-		99DC5F5D2C1A965A8A575A7ED2A7DE89 /* OFOneToTenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050A1E19C87F114E4D14647E6C195655 /* OFOneToTenView.swift */; };
-		9E7290F9EDBDFB7D479C77B2DC5A4B71 /* OFThankYouView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8EE46796330ABC3392F5BD2D67603EF8 /* OFThankYouView.xib */; };
-		A55BB091BA1E9357A7FEEDE9304C425C /* OneFlowExtension-UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD705168C96100DF80D4D11E9E6B44F /* OneFlowExtension-UIColor.swift */; };
+		8DAA8F8C997931994D1D9C445CE9FD58 /* OFNumberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F075A2EA33DE05EA31DFDF87498BDC /* OFNumberCollectionViewCell.swift */; };
+		9428E723900012CA8C2B84D801EB36CF /* OneFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABACD415C0859ABF47DDBB50E6C37293 /* OneFlow.swift */; };
+		965AC6DDD982C4F2EC6F49FE5CAE7334 /* OneFlowLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC98EE265B183699AFCF51394CF73727 /* OneFlowLog.swift */; };
+		9B6B47D3C3430057FE3FDE06206FB955 /* URLRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9775C3EAA54B4096086E9C574112A7F3 /* URLRequestManager.swift */; };
+		9C9B36FB8C6F49360033ACF67D263D0C /* OneFlowBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C549CDF6DB36D56C00F60A33BB6E510 /* OneFlowBundle.swift */; };
+		A0A6E2A10481115AFB6EB5FD3040497E /* ScriptsManageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACF1F514AF7BCCD6E8E409C0541ACA6 /* ScriptsManageable.swift */; };
 		A6FDF45EDB2EDF6D91C7331C8AB6BFCC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
 		A7131483251AC33AEF3CFFDDF35EC2A2 /* Pods-1Flow_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C1C0454B5071424DF2A70A1BFF6333B6 /* Pods-1Flow_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		AD553E24E889FCFA5E8D1A64CB8A3E6D /* AddUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B034F4D04CF7C47DE118FD72C67594 /* AddUserRequest.swift */; };
-		AEFE64BA21276FDC40A07B9FCAC7F43C /* OFStarsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BE54D21AB54923A3EAF71B55BD32C6 /* OFStarsView.swift */; };
-		B0324976C88B275307929392CBAD3ACB /* OFRatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23A1D24B413A46A5AEC33292CE40FE39 /* OFRatingViewController.xib */; };
+		B0A06339EC6D1D94666DE1FC738A29BA /* OneFlowExtension-UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEBB39FC3EC161C231DC328BF02ECA /* OneFlowExtension-UIColor.swift */; };
+		B0DDEFAE87CE521B097868AE69BE148D /* OFProjectDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E775BC35DAF46CDFAA1B08DB3088D7 /* OFProjectDetailsController.swift */; };
+		B1A9AB7453D50DE4485907FDDA1BCF6D /* SurveyFontConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0525DFCC461EA07BD3AF69E757F64DE7 /* SurveyFontConfiguration.swift */; };
+		B4CF7712AC7E2E4023414FD563C7AF45 /* OFNumberCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BD70037DC64C0A1F47CFEF69C6637D8 /* OFNumberCollectionViewCell.xib */; };
 		B5E103651FD9F0C55709775FB7C34377 /* Pods-1Flow_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F35EC6B4DDED62564A00C76D5C9CE995 /* Pods-1Flow_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BED791AC47AD95BD4EDC50702DE467CC /* OFViewLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = E062047567E938CCEDAA172D752348EF /* OFViewLoading.swift */; };
-		C3B1C559C4BC92C3248402E272AF940C /* OFWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC0AAFD6C7AF5977A59349BB0B9846B /* OFWelcomeView.swift */; };
-		C42D4450F4950CDD44A54AE940A2EF3C /* OFRoundedConrnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFD92A986067B84E1EC0CED905C1422 /* OFRoundedConrnerView.swift */; };
-		C539160CBBEA1F03B7E019FF5E6580F2 /* OFThankYouView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49451910C05864670203C5E333DA1CF2 /* OFThankYouView.swift */; };
-		CA27C9C21B3EF4D7B1A86B7663360E2C /* OFEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1968FA3EFDB1BFAC7B5950066A1FFA2B /* OFEventManager.swift */; };
-		CDF5B121E8412199D11D6E512B135C2C /* OFInAppPurchaseEventsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5897AFC739FF869E71A96D91EFA4082B /* OFInAppPurchaseEventsController.swift */; };
-		D668A4810F494149DD35C42AA344F280 /* 1Flow-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 72DFAE62EAB8FEEF3911C421F5F649D6 /* 1Flow-dummy.m */; };
-		DE99853CABCED7DFC423C734C8425D70 /* 1Flow-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FC59B9ED806A1E8E88A4AEEBFCAEC8C0 /* 1Flow-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DF54078572F472241285F89E0D31CC19 /* OFFollowupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82C440AA56316ECD1D19F00D329DAE4 /* OFFollowupView.swift */; };
-		E336981F8DAA1AB4915B473313665A1F /* OneFlowConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E232D51DD9FDB2650B8FA084C25EC0 /* OneFlowConstant.swift */; };
-		E382405C6478FEDE0D8492A48EA0806C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		E5C81FED49D68BBAEE4FED6078AC5E96 /* OneFlowExtension-UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C430A03EA1BBFAEDEA223C774912AD3F /* OneFlowExtension-UIImage.swift */; };
-		ECB234D07A44A75C60688C6DB53B9FC2 /* OneFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD885911014EE1587F392FB11FE985D0 /* OneFlow.swift */; };
-		ED9C62864D55D93B891811C4005E02C5 /* OFRatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A914D55A98E97E0D7AEA35A171771262 /* OFRatingViewController.swift */; };
+		BCF95F838CC11ED36F349BAEF5D1C6EF /* OFSurveyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9014E23DAF552F91E82D7469FDA83DF1 /* OFSurveyManager.swift */; };
+		C2B0985C977AC6C56E6032F48939CF80 /* OFMCQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B69109DCB5A55B26169B7C4C7FF6321 /* OFMCQView.swift */; };
+		C3612EDBD6713138D31AA97A401EF7DC /* OFRoundedConrnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FB87E31FAE7B55FCACD9D8B81AE5BA /* OFRoundedConrnerView.swift */; };
+		C74AEAFE2459BAA5A1A158EE02642BDC /* OFReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D380F9B1327F321EAF91059FE65D4F1C /* OFReachability.swift */; };
+		C8ACE385C96F70F6D064440E63622792 /* OFScreenTrackingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6657A0A80A780C22CC049B2F7ED09265 /* OFScreenTrackingController.swift */; };
+		CAB16785168BA55CD5AC3195EA3B7DE5 /* OFThankYouView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942ECBA3EB502B6309288A074B4D40EB /* OFThankYouView.swift */; };
+		CE448D5BB613B2EC02F532ED94848B6D /* EndPointPovider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4FE69CAD803C85F450F59A0A285560 /* EndPointPovider.swift */; };
+		D0363570612C40BFC61C2FE3F18CD143 /* OFRatingViewController+OFRatingViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C8C1086DD6DB03A1ED40541413B1BE /* OFRatingViewController+OFRatingViewDelegate.swift */; };
+		D3EECB5FB2CB9739ECE77E1E70FF176C /* OFRatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E44CD64EA4054D24B000C94D33EA29B /* OFRatingViewController.xib */; };
+		D531C9098389A029E3A1B0FB256CEB57 /* SurveySubmitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B31C3FDCC9DD95F6CAA243807B8EE /* SurveySubmitRequest.swift */; };
+		DB16E4C8DE37E99D6BE7B0E206C78AEA /* OFWelcomeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75BF31466B22D0A58D2479070E4CA863 /* OFWelcomeView.xib */; };
+		E3AEED3E56463E8791B7A2F71544D8A0 /* SubmittedSurvey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D30FF96CABC002BE21759A1475EB6B /* SubmittedSurvey.swift */; };
+		E54F881652912818BF2BB0258C10E9DC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		E8A07D1C1D30DF559C39E277F409C719 /* OFInAppPurchaseEventsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9B88AD7B31E76FD1ADF710A5FFC80B /* OFInAppPurchaseEventsController.swift */; };
+		E8FAD560A404D916548C78DCDAED0602 /* SurveyListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188EFC2F53F766587485E034BC33C2FD /* SurveyListResponse.swift */; };
+		E98174B5739A05605054784C46CFE00B /* 1Flow-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0464EE79C7C25712D5B2685917AA2AEA /* 1Flow-dummy.m */; };
+		EC0C45007F8DA6551AF120FD0AB24819 /* 1Flow-SurveySDK in Resources */ = {isa = PBXBuildFile; fileRef = 528DEFCB4735A3F217174EEA89E94E89 /* 1Flow-SurveySDK */; };
+		F5B71BDB0201B9EE08EAA7AD90FDD73B /* OFWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F45751C6879778D6FE1E6B4A9B0A99F /* OFWelcomeView.swift */; };
+		F6908314E0103FD4D7F7AF4034F74951 /* validator-dev.js in Resources */ = {isa = PBXBuildFile; fileRef = 2AC1BED0587BF9003EF05F788C5C7E65 /* validator-dev.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		5F86D91640D268891EF59AC2E6E97BBC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 37DC2BD35530AAFFCBFCF00785D455F7;
-			remoteInfo = "Pods-1Flow_Example";
-		};
-		775286D30F588B9A4523DD6B79534083 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 15ECB5A08AF26C41C1FFF13630AE92F3;
-			remoteInfo = "1Flow-SurveySDK";
-		};
-		FA91B8818D1DFD0BFEFF29815D010652 /* PBXContainerItemProxy */ = {
+		3AD031DD79A8FB53F6A4A00ED4B42FF5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = BA3171932CBE96702763AB78AB528D8D;
 			remoteInfo = 1Flow;
 		};
+		66AB05DBC654DC8D43E900101D269C71 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 37DC2BD35530AAFFCBFCF00785D455F7;
+			remoteInfo = "Pods-1Flow_Example";
+		};
+		D661277A93605C30C33A5FE05B7EAEAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 15ECB5A08AF26C41C1FFF13630AE92F3;
+			remoteInfo = "1Flow-SurveySDK";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00D1BD7691CE8673540C37023D14F8F4 /* SurveySubmitRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SurveySubmitRequest.swift; sourceTree = "<group>"; };
-		03E232D51DD9FDB2650B8FA084C25EC0 /* OneFlowConstant.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OneFlowConstant.swift; sourceTree = "<group>"; };
-		03E3CA9C8EBE715D6C0D6DAA90493432 /* AddUserResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddUserResponse.swift; sourceTree = "<group>"; };
-		04BE54D21AB54923A3EAF71B55BD32C6 /* OFStarsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFStarsView.swift; sourceTree = "<group>"; };
-		050A1E19C87F114E4D14647E6C195655 /* OFOneToTenView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFOneToTenView.swift; sourceTree = "<group>"; };
-		0703172AA04EA778120728CC58311238 /* OFWelcomeView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFWelcomeView.xib; path = Survey/Resources/OFWelcomeView.xib; sourceTree = "<group>"; };
-		0CD705168C96100DF80D4D11E9E6B44F /* OneFlowExtension-UIColor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "OneFlowExtension-UIColor.swift"; sourceTree = "<group>"; };
-		0FC0AAFD6C7AF5977A59349BB0B9846B /* OFWelcomeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFWelcomeView.swift; sourceTree = "<group>"; };
-		1264B0949BC0F510FB90DE62892E2241 /* OFReachability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFReachability.swift; sourceTree = "<group>"; };
+		0464EE79C7C25712D5B2685917AA2AEA /* 1Flow-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "1Flow-dummy.m"; sourceTree = "<group>"; };
+		049DCDF7D0D8693FB80C4B55FC442184 /* OFMCQView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFMCQView.xib; path = Survey/Resources/OFMCQView.xib; sourceTree = "<group>"; };
+		0525DFCC461EA07BD3AF69E757F64DE7 /* SurveyFontConfiguration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SurveyFontConfiguration.swift; sourceTree = "<group>"; };
+		0C549CDF6DB36D56C00F60A33BB6E510 /* OneFlowBundle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OneFlowBundle.swift; sourceTree = "<group>"; };
+		0E9B88AD7B31E76FD1ADF710A5FFC80B /* OFInAppPurchaseEventsController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFInAppPurchaseEventsController.swift; sourceTree = "<group>"; };
 		129F5B23C9DB6DF1374F687B58A680CD /* Pods-1Flow_Tests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-1Flow_Tests"; path = Pods_1Flow_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		13EDE9EB43F49A04550BD3F9227575B5 /* OFRatingViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFRatingViewController.swift; sourceTree = "<group>"; };
 		14BA1AE24E90E8E4C860A975E0D29D5D /* Pods-1Flow_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-1Flow_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		14F5CB22917125FAE72378715372D43B /* OFSurveyManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFSurveyManager.swift; sourceTree = "<group>"; };
+		15F60E31628CBB024929C82A5053342E /* LogUserResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LogUserResponse.swift; sourceTree = "<group>"; };
 		168D06B35F03AF5FFB0AC5A4EFC489CC /* Pods-1Flow_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-1Flow_Example-dummy.m"; sourceTree = "<group>"; };
-		181963C626FB67DA016AF739E61F7C22 /* 1Flow.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = 1Flow.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		1836E7D7FB991ACE2317672E9D36D603 /* 1Flow-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "1Flow-Info.plist"; sourceTree = "<group>"; };
-		184E88229314091043D79E1CF8F4793D /* OFOneToTenView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFOneToTenView.xib; path = Survey/Resources/OFOneToTenView.xib; sourceTree = "<group>"; };
-		1968FA3EFDB1BFAC7B5950066A1FFA2B /* OFEventManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFEventManager.swift; sourceTree = "<group>"; };
-		23A1D24B413A46A5AEC33292CE40FE39 /* OFRatingViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFRatingViewController.xib; path = Survey/Resources/OFRatingViewController.xib; sourceTree = "<group>"; };
-		2C88D8DBB2F7AF41560B7CD7511C72E2 /* EndPointPovider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EndPointPovider.swift; sourceTree = "<group>"; };
-		2CFD92A986067B84E1EC0CED905C1422 /* OFRoundedConrnerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFRoundedConrnerView.swift; sourceTree = "<group>"; };
-		2E697ED299698C494AD166BFF0228AF0 /* SurveyListResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SurveyListResponse.swift; sourceTree = "<group>"; };
-		34B034F4D04CF7C47DE118FD72C67594 /* AddUserRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddUserRequest.swift; sourceTree = "<group>"; };
+		188EFC2F53F766587485E034BC33C2FD /* SurveyListResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SurveyListResponse.swift; sourceTree = "<group>"; };
+		2210FAD186B56A6A8DD1F88995A63FC0 /* OFShortAnswerView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFShortAnswerView.xib; path = Survey/Resources/OFShortAnswerView.xib; sourceTree = "<group>"; };
+		28DFCFC5F9C5D3132C8C9455B3F9D326 /* OneFlowDataLogic.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OneFlowDataLogic.swift; sourceTree = "<group>"; };
+		28F075A2EA33DE05EA31DFDF87498BDC /* OFNumberCollectionViewCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFNumberCollectionViewCell.swift; sourceTree = "<group>"; };
+		290B31C3FDCC9DD95F6CAA243807B8EE /* SurveySubmitRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SurveySubmitRequest.swift; sourceTree = "<group>"; };
+		2AC1BED0587BF9003EF05F788C5C7E65 /* validator-dev.js */ = {isa = PBXFileReference; includeInIndex = 1; name = "validator-dev.js"; path = "Survey/Resources/validator-dev.js"; sourceTree = "<group>"; };
+		2AE3B426A8C02009936E48C7043402E4 /* OFdone.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; name = OFdone.gif; path = Survey/Resources/OFdone.gif; sourceTree = "<group>"; };
+		2B16289662E4D005302AB49895E325D1 /* OFOneToTenView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFOneToTenView.xib; path = Survey/Resources/OFOneToTenView.xib; sourceTree = "<group>"; };
+		2DC62E07F3AE679FAF52BE785B12CFD9 /* 1Flow.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = 1Flow.debug.xcconfig; sourceTree = "<group>"; };
+		2E3D41DBABCD6755EA8A7F6085C64531 /* OFWebContainerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFWebContainerView.swift; sourceTree = "<group>"; };
+		2E44CD64EA4054D24B000C94D33EA29B /* OFRatingViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFRatingViewController.xib; path = Survey/Resources/OFRatingViewController.xib; sourceTree = "<group>"; };
+		2E8EC328D793E09447486E849AAC3194 /* FeedbackAssets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = FeedbackAssets.xcassets; path = Survey/Resources/FeedbackAssets.xcassets; sourceTree = "<group>"; };
+		304576D64EB9A6A543BA93BECB8AB3AC /* OFAPIController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFAPIController.swift; sourceTree = "<group>"; };
 		35D6960850779D98FF229412FED4CDD0 /* Pods-1Flow_Example */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-1Flow_Example"; path = Pods_1Flow_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		37F68474155312269760AB343384C91B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		3E2310CE2A961C5269B0DA843140BC0F /* OFSwiftGIF.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFSwiftGIF.swift; sourceTree = "<group>"; };
-		4360555C2940A5B700EE033C /* SurveyFontConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyFontConfiguration.swift; sourceTree = "<group>"; };
-		436D0DCA2A2FAB15000B7CFB /* ScriptsManageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptsManageable.swift; sourceTree = "<group>"; };
-		436D0DCC2A2FAB72000B7CFB /* ScriptsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptsManager.swift; sourceTree = "<group>"; };
-		437886E52994F834009FEF25 /* OFWebContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OFWebContainerView.swift; sourceTree = "<group>"; };
-		437F08682A20AE0700C4FDC0 /* ScriptExecuter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptExecuter.swift; sourceTree = "<group>"; };
-		437F086A2A20B26800C4FDC0 /* validator-dev.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "validator-dev.js"; path = "Survey/Resources/validator-dev.js"; sourceTree = "<group>"; };
+		364DCF0AF9D6D9C322D9669A364CEEA1 /* OFStarsView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFStarsView.xib; path = Survey/Resources/OFStarsView.xib; sourceTree = "<group>"; };
+		367A2D4524025973A88C1FFFC256922F /* OFShortAnswerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFShortAnswerView.swift; sourceTree = "<group>"; };
+		3CCC75E0B186E4FB1AC4AFD99781956B /* 1Flow-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "1Flow-umbrella.h"; sourceTree = "<group>"; };
+		3F45751C6879778D6FE1E6B4A9B0A99F /* OFWelcomeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFWelcomeView.swift; sourceTree = "<group>"; };
 		4385E10AC6E4BC7503B447884B9DB0B7 /* Pods-1Flow_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-1Flow_Example-frameworks.sh"; sourceTree = "<group>"; };
 		440F4D66CCB5CF18D2FE5D168806D26B /* Pods-1Flow_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Example-Info.plist"; sourceTree = "<group>"; };
-		4434702501960A4010466421ADB8857D /* OFStarsView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFStarsView.xib; path = Survey/Resources/OFStarsView.xib; sourceTree = "<group>"; };
-		4567C2AC22713B5B00944F21C95BC69A /* FeedbackAssets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = FeedbackAssets.xcassets; path = Survey/Resources/FeedbackAssets.xcassets; sourceTree = "<group>"; };
-		49451910C05864670203C5E333DA1CF2 /* OFThankYouView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFThankYouView.swift; sourceTree = "<group>"; };
+		4A157D984D6159B317C6A42939AA2370 /* 1Flow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = 1Flow.release.xcconfig; sourceTree = "<group>"; };
+		4BD70037DC64C0A1F47CFEF69C6637D8 /* OFNumberCollectionViewCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFNumberCollectionViewCell.xib; path = Survey/Resources/OFNumberCollectionViewCell.xib; sourceTree = "<group>"; };
 		4D4DC93E32C3FCF2C2F13B5E1C1369E3 /* Pods-1Flow_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Example-acknowledgements.plist"; sourceTree = "<group>"; };
-		4E24F685B9D5080DED7C1E60041F54EA /* 1Flow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = 1Flow.release.xcconfig; sourceTree = "<group>"; };
-		528DEFCB4735A3F217174EEA89E94E89 /* SurveySDK.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SurveySDK.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		5897AFC739FF869E71A96D91EFA4082B /* OFInAppPurchaseEventsController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFInAppPurchaseEventsController.swift; sourceTree = "<group>"; };
+		528DEFCB4735A3F217174EEA89E94E89 /* 1Flow-SurveySDK */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "1Flow-SurveySDK"; path = SurveySDK.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		5891BAF299B391CFDFD60E8E103B6FB3 /* ResourceBundle-SurveySDK-1Flow-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-SurveySDK-1Flow-Info.plist"; sourceTree = "<group>"; };
 		5BB7D439D18A5611B7C398C52CE2AE23 /* Pods-1Flow_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-1Flow_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		6AF2BC77415485944007BB70E378E8C9 /* OFProjectDetailsController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OFProjectDetailsController.swift; path = Survey/Classes/OFProjectDetailsController.swift; sourceTree = "<group>"; };
+		61E775BC35DAF46CDFAA1B08DB3088D7 /* OFProjectDetailsController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OFProjectDetailsController.swift; path = Survey/Classes/OFProjectDetailsController.swift; sourceTree = "<group>"; };
+		6657A0A80A780C22CC049B2F7ED09265 /* OFScreenTrackingController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFScreenTrackingController.swift; sourceTree = "<group>"; };
+		6B69109DCB5A55B26169B7C4C7FF6321 /* OFMCQView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFMCQView.swift; sourceTree = "<group>"; };
 		6D4CA2AED13FC2C95BD54E89EFEE7E97 /* Pods-1Flow_Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Tests-Info.plist"; sourceTree = "<group>"; };
 		6EB492524404670ED946722955E31631 /* Pods-1Flow_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-1Flow_Example.modulemap"; sourceTree = "<group>"; };
-		71D5A6C056DC420B522AD44BEF47BB01 /* OFScreenTrackingController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFScreenTrackingController.swift; sourceTree = "<group>"; };
-		72DFAE62EAB8FEEF3911C421F5F649D6 /* 1Flow-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "1Flow-dummy.m"; sourceTree = "<group>"; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		73C5F6F19435DBB246F43EF82A2D1A3C /* OFAPIController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFAPIController.swift; sourceTree = "<group>"; };
-		73ED9EFE82409BCF09B2261D4314548D /* OFShortAnswerView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFShortAnswerView.xib; path = Survey/Resources/OFShortAnswerView.xib; sourceTree = "<group>"; };
-		75AD5CEEC8B3EB759020B85F576ADA1B /* 1Flow.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = 1Flow.modulemap; sourceTree = "<group>"; };
-		7BB801BBB8506FE7B3939B5A8D1BB69A /* OneFlowDataLogic.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OneFlowDataLogic.swift; sourceTree = "<group>"; };
+		73CAE9F4230BDCDC6C4DCB5869627300 /* OneFlowExtension-UIImage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "OneFlowExtension-UIImage.swift"; sourceTree = "<group>"; };
+		75BF31466B22D0A58D2479070E4CA863 /* OFWelcomeView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFWelcomeView.xib; path = Survey/Resources/OFWelcomeView.xib; sourceTree = "<group>"; };
+		7987C7291E7C8240015E9F38A386B940 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		7CBA637C0314CEFA369F8A44E07ADE47 /* ReplaceMe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReplaceMe.swift; path = 1Flow/Classes/ReplaceMe.swift; sourceTree = "<group>"; };
+		7FCEBB39FC3EC161C231DC328BF02ECA /* OneFlowExtension-UIColor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "OneFlowExtension-UIColor.swift"; sourceTree = "<group>"; };
+		8331CC5B7C0A662C7B00910219FDB941 /* OFStarsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFStarsView.swift; sourceTree = "<group>"; };
 		83B487511F268AB784276A02EC056B61 /* Pods-1Flow_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-1Flow_Tests.modulemap"; sourceTree = "<group>"; };
-		866BCF929B569C7AF783776E0FF6A400 /* OFDraggableView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFDraggableView.swift; sourceTree = "<group>"; };
 		86E41BF52A611B3BF3B60152413A58A0 /* Pods-1Flow_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-1Flow_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		8EE46796330ABC3392F5BD2D67603EF8 /* OFThankYouView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFThankYouView.xib; path = Survey/Resources/OFThankYouView.xib; sourceTree = "<group>"; };
-		90D056D3DABC21F2A7763198FF1C927D /* ReplaceMe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReplaceMe.swift; path = 1Flow/Classes/ReplaceMe.swift; sourceTree = "<group>"; };
-		96122D973B495DA43C5195C9C7C9561E /* URLRequestManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = URLRequestManager.swift; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A6C021754A0834FBD81DFE50FCFCCC35 /* OneFlowLog.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OneFlowLog.swift; sourceTree = "<group>"; };
-		A914D55A98E97E0D7AEA35A171771262 /* OFRatingViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFRatingViewController.swift; sourceTree = "<group>"; };
-		AA4DE2449A551BB3DFAC479690E021D6 /* ResourceBundle-SurveySDK-1Flow-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-SurveySDK-1Flow-Info.plist"; sourceTree = "<group>"; };
-		ACEB428562F616BFAEB03454D11B3E91 /* CreateSessionRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateSessionRequest.swift; sourceTree = "<group>"; };
-		B10E7B02FD332652AF323223C3216E18 /* 1Flow-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "1Flow-prefix.pch"; sourceTree = "<group>"; };
-		B1C85FE273629D7A28E32B59DB5C9814 /* LogUserResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LogUserResponse.swift; sourceTree = "<group>"; };
+		87F4400523CB6B20CC75776EF20DBE68 /* ScriptExecuter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScriptExecuter.swift; sourceTree = "<group>"; };
+		88262E5B115589598A982624FAD3E082 /* AddUserRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddUserRequest.swift; sourceTree = "<group>"; };
+		8D68800C8A8984B6C637E46BB2D31B86 /* OFOneToTenView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFOneToTenView.swift; sourceTree = "<group>"; };
+		8EF85528B3D4E76F54459A1C873BEE4E /* 1Flow-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "1Flow-prefix.pch"; sourceTree = "<group>"; };
+		9014E23DAF552F91E82D7469FDA83DF1 /* OFSurveyManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFSurveyManager.swift; sourceTree = "<group>"; };
+		90D30FF96CABC002BE21759A1475EB6B /* SubmittedSurvey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubmittedSurvey.swift; sourceTree = "<group>"; };
+		9291F01C8039A8E886946A0431552A23 /* OFFollowupView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFFollowupView.xib; path = Survey/Resources/OFFollowupView.xib; sourceTree = "<group>"; };
+		942ECBA3EB502B6309288A074B4D40EB /* OFThankYouView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFThankYouView.swift; sourceTree = "<group>"; };
+		9775C3EAA54B4096086E9C574112A7F3 /* URLRequestManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = URLRequestManager.swift; sourceTree = "<group>"; };
+		9B440A24666BE5D4B63328CC7494360F /* ScriptsManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScriptsManager.swift; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A89583D84B9CD2C97930790E4A4E42BB /* OFDraggableView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFDraggableView.swift; sourceTree = "<group>"; };
+		AACF1F514AF7BCCD6E8E409C0541ACA6 /* ScriptsManageable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScriptsManageable.swift; sourceTree = "<group>"; };
+		ABACD415C0859ABF47DDBB50E6C37293 /* OneFlow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OneFlow.swift; path = Survey/Classes/OneFlow.swift; sourceTree = "<group>"; };
+		AC3B395A93F21B3941289A1E46F6FD90 /* OFRatingViewDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFRatingViewDelegate.swift; sourceTree = "<group>"; };
+		AD74D88A3B0E46CD01B10BBC1AB881AB /* OFEventManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFEventManager.swift; sourceTree = "<group>"; };
 		B5E4A12646DB7C20F7EB5F4BFA28DD27 /* Pods-1Flow_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-1Flow_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
-		B862F4EB82AD7324DCA6E87D6CE751E4 /* OFNumberCollectionViewCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFNumberCollectionViewCell.swift; sourceTree = "<group>"; };
-		BDCD5151EFCC8B02EC76AA5A5536C12E /* OFMCQView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFMCQView.swift; sourceTree = "<group>"; };
-		BF038F07E36B4F3ECEE3C06736C3F6FE /* OneFlowBundle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OneFlowBundle.swift; sourceTree = "<group>"; };
-		BFAE9B72FB09181AFBA99DF0CC3B8778 /* OFMCQView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFMCQView.xib; path = Survey/Resources/OFMCQView.xib; sourceTree = "<group>"; };
-		C097991B7B076921884567BC8A5ECD75 /* OFRadioButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFRadioButton.swift; sourceTree = "<group>"; };
+		C0357146A0FCDA17EFE52FA0FD3F5AD7 /* OFFollowupView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFFollowupView.swift; sourceTree = "<group>"; };
 		C1C0454B5071424DF2A70A1BFF6333B6 /* Pods-1Flow_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-1Flow_Tests-umbrella.h"; sourceTree = "<group>"; };
 		C338782D475B125A1A54AF497461ED74 /* Pods-1Flow_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		C430A03EA1BBFAEDEA223C774912AD3F /* OneFlowExtension-UIImage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "OneFlowExtension-UIImage.swift"; sourceTree = "<group>"; };
-		C76E8BEDDFFD9626322B32069777AB63 /* 1Flow.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = 1Flow.debug.xcconfig; sourceTree = "<group>"; };
-		C8295EEA29D6750AE6491ACD052391CF /* OFFollowupView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFFollowupView.xib; path = Survey/Resources/OFFollowupView.xib; sourceTree = "<group>"; };
+		C7965A28A5BB9C8B56873EDEA7D8B6DE /* OFThankYouView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFThankYouView.xib; path = Survey/Resources/OFThankYouView.xib; sourceTree = "<group>"; };
+		C85A504F04C7142CA0D1337A7FDB9260 /* 1Flow.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = 1Flow.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		C96ED6E9CE00FF0940B69D355D6A94C9 /* Pods-1Flow_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-1Flow_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		CA6697BA4BD440ACDE4686AA279AE74B /* OFRatingViewProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFRatingViewProtocol.swift; sourceTree = "<group>"; };
-		D2F06257EA5C69409FC547BB6006E13E /* OFNumberCollectionViewCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFNumberCollectionViewCell.xib; path = Survey/Resources/OFNumberCollectionViewCell.xib; sourceTree = "<group>"; };
-		D3E56B6110B3849365329DD299EEB033 /* SubmittedSurvey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubmittedSurvey.swift; sourceTree = "<group>"; };
-		DD885911014EE1587F392FB11FE985D0 /* OneFlow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OneFlow.swift; path = Survey/Classes/OneFlow.swift; sourceTree = "<group>"; };
-		DF7431EB067FE52086563A420C290023 /* OFShortAnswerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFShortAnswerView.swift; sourceTree = "<group>"; };
-		E062047567E938CCEDAA172D752348EF /* OFViewLoading.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFViewLoading.swift; sourceTree = "<group>"; };
+		CB909875D9010BBA0D174908D4D4053E /* OFNumberButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFNumberButton.swift; sourceTree = "<group>"; };
+		CEFDEE6AC10D6D0E14A1E8610AD11FB3 /* OneFlowConstant.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OneFlowConstant.swift; sourceTree = "<group>"; };
+		D19433E4F0A4450FEC2644A39835F948 /* AddUserResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddUserResponse.swift; sourceTree = "<group>"; };
+		D3424F61DF7F4F461732D1921CD8DDB5 /* OFRadioButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFRadioButton.swift; sourceTree = "<group>"; };
+		D380F9B1327F321EAF91059FE65D4F1C /* OFReachability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFReachability.swift; sourceTree = "<group>"; };
+		D70E600D073D57AE9C7FBD93EBDB21EC /* 1Flow-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "1Flow-Info.plist"; sourceTree = "<group>"; };
+		DF4FE69CAD803C85F450F59A0A285560 /* EndPointPovider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EndPointPovider.swift; sourceTree = "<group>"; };
 		E262A6333816A67FC1DC3F18ADFD3B2E /* 1Flow */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = 1Flow; path = _1Flow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EEF2458015E56E830AB8024058FF6FF0 /* OFdone.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; name = OFdone.gif; path = Survey/Resources/OFdone.gif; sourceTree = "<group>"; };
-		F05CCE3E21BE18DE56161CABE3A175FE /* OFNumberButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFNumberButton.swift; sourceTree = "<group>"; };
+		E75D03F0D3DB82F4096DCD694F3E6ADC /* OFViewLoading.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFViewLoading.swift; sourceTree = "<group>"; };
+		E9FB87E31FAE7B55FCACD9D8B81AE5BA /* OFRoundedConrnerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFRoundedConrnerView.swift; sourceTree = "<group>"; };
+		F0F541AC1C616857B76EBA5505731EC3 /* 1Flow.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = 1Flow.modulemap; sourceTree = "<group>"; };
+		F1C8C1086DD6DB03A1ED40541413B1BE /* OFRatingViewController+OFRatingViewDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "OFRatingViewController+OFRatingViewDelegate.swift"; sourceTree = "<group>"; };
 		F35EC6B4DDED62564A00C76D5C9CE995 /* Pods-1Flow_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-1Flow_Example-umbrella.h"; sourceTree = "<group>"; };
 		F3A88FD989D3AFD302CD28F9C7F9FE51 /* Pods-1Flow_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-1Flow_Example.release.xcconfig"; sourceTree = "<group>"; };
-		F82C440AA56316ECD1D19F00D329DAE4 /* OFFollowupView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFFollowupView.swift; sourceTree = "<group>"; };
+		F3F3E3F3C49296FF8696DAB6F5A2DB22 /* OFSwiftGIF.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFSwiftGIF.swift; sourceTree = "<group>"; };
 		FB1C7B01C82D9FD4B5698CE204588A64 /* Pods-1Flow_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-1Flow_Tests-dummy.m"; sourceTree = "<group>"; };
-		FC59B9ED806A1E8E88A4AEEBFCAEC8C0 /* 1Flow-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "1Flow-umbrella.h"; sourceTree = "<group>"; };
+		FC98EE265B183699AFCF51394CF73727 /* OneFlowLog.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OneFlowLog.swift; sourceTree = "<group>"; };
+		FCF20735FE9B17E790A51A9C7115F54E /* CreateSessionRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateSessionRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		03D6759A50F2745D86922E08A0706C5B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		15CA5A741A4C5F6558236974ADF0B9B3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				79E1E656F91409F445EFC87C8BEFC3B8 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4F3FD0A056194FB5B8FCE9A7882B0EA5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E54F881652912818BF2BB0258C10E9DC /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,56 +227,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6D2951E00AC35432B133266836D0BEAA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E382405C6478FEDE0D8492A48EA0806C /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D6A76FE3C0572545898014972D533E3D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		03344DA93CCF9A93E4FA5F72894359E2 /* Survey */ = {
+		06B9DE87AB262BB8D9391FFEC9D180D5 /* 1Flow */ = {
 			isa = PBXGroup;
 			children = (
-				4567C2AC22713B5B00944F21C95BC69A /* FeedbackAssets.xcassets */,
-				EEF2458015E56E830AB8024058FF6FF0 /* OFdone.gif */,
-				C8295EEA29D6750AE6491ACD052391CF /* OFFollowupView.xib */,
-				437F086A2A20B26800C4FDC0 /* validator-dev.js */,
-				BFAE9B72FB09181AFBA99DF0CC3B8778 /* OFMCQView.xib */,
-				D2F06257EA5C69409FC547BB6006E13E /* OFNumberCollectionViewCell.xib */,
-				184E88229314091043D79E1CF8F4793D /* OFOneToTenView.xib */,
-				6AF2BC77415485944007BB70E378E8C9 /* OFProjectDetailsController.swift */,
-				23A1D24B413A46A5AEC33292CE40FE39 /* OFRatingViewController.xib */,
-				73ED9EFE82409BCF09B2261D4314548D /* OFShortAnswerView.xib */,
-				4434702501960A4010466421ADB8857D /* OFStarsView.xib */,
-				8EE46796330ABC3392F5BD2D67603EF8 /* OFThankYouView.xib */,
-				0703172AA04EA778120728CC58311238 /* OFWelcomeView.xib */,
-				DD885911014EE1587F392FB11FE985D0 /* OneFlow.swift */,
-				9E4B967275F8CF2D345F2FB20C1A5912 /* Event Manager */,
-				AF20D5CF106E7C8D406801ED1D31E96D /* Models */,
-				F62B24EF0C1F882DAB09995EBF07A312 /* Survey Manager */,
-				D97B963E0516648EA515D78D0032383B /* Utils */,
+				7CBA637C0314CEFA369F8A44E07ADE47 /* ReplaceMe.swift */,
+				14C3EF259E3A5D77494E4A6AB1C34004 /* Pod */,
+				F9DF6C503A34B3E5818D03B5ED518E0C /* Support Files */,
+				70C2C28C7F2F71BE193B9548629F5E18 /* Survey */,
 			);
-			name = Survey;
-			sourceTree = "<group>";
-		};
-		0FE0EF56E1BB38A965958364744E9232 /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				181963C626FB67DA016AF739E61F7C22 /* 1Flow.podspec */,
-				37F68474155312269760AB343384C91B /* LICENSE */,
-			);
-			name = Pod;
+			name = 1Flow;
+			path = ../..;
 			sourceTree = "<group>";
 		};
 		10E5A9D2B4948F49E58E95BE92A2BC36 /* Pods-1Flow_Example */ = {
@@ -279,50 +259,33 @@
 			path = "Target Support Files/Pods-1Flow_Example";
 			sourceTree = "<group>";
 		};
-		1D05185E9556B8AF0FD8875F22E15443 /* OneToTen */ = {
+		12079E2221F88AA4DB9D086738C6D9A4 /* WebContainer */ = {
 			isa = PBXGroup;
 			children = (
-				B862F4EB82AD7324DCA6E87D6CE751E4 /* OFNumberCollectionViewCell.swift */,
-				050A1E19C87F114E4D14647E6C195655 /* OFOneToTenView.swift */,
+				2E3D41DBABCD6755EA8A7F6085C64531 /* OFWebContainerView.swift */,
 			);
-			path = OneToTen;
+			name = WebContainer;
+			path = WebContainer;
 			sourceTree = "<group>";
 		};
-		27E645DF12628CF17A7AFBD5F066BE33 /* Rating Controlls */ = {
+		14C3EF259E3A5D77494E4A6AB1C34004 /* Pod */ = {
 			isa = PBXGroup;
 			children = (
-				866BCF929B569C7AF783776E0FF6A400 /* OFDraggableView.swift */,
-				F05CCE3E21BE18DE56161CABE3A175FE /* OFNumberButton.swift */,
-				C097991B7B076921884567BC8A5ECD75 /* OFRadioButton.swift */,
-				CA6697BA4BD440ACDE4686AA279AE74B /* OFRatingViewProtocol.swift */,
-				2CFD92A986067B84E1EC0CED905C1422 /* OFRoundedConrnerView.swift */,
-				E062047567E938CCEDAA172D752348EF /* OFViewLoading.swift */,
-				437886E42994F7F7009FEF25 /* WebContainer */,
-				3BB988F4161E3CF3D609D6373BF90679 /* Followup */,
-				6356E024297D4CA3738B445176ADCBAB /* MCQ */,
-				1D05185E9556B8AF0FD8875F22E15443 /* OneToTen */,
-				7CF81F010CA3760A0A91A857D18AC20E /* ShortAnswer */,
-				D80B2EC5257EEF8846C0AFD5E83203EA /* Stars */,
-				59B0DE5E73FB9ADA1E97D1E1760D9700 /* ThankYou */,
-				D4DAE3B7F4811349EB3CD75B992DA104 /* Welcome */,
+				C85A504F04C7142CA0D1337A7FDB9260 /* 1Flow.podspec */,
+				7987C7291E7C8240015E9F38A386B940 /* LICENSE */,
 			);
-			path = "Rating Controlls";
+			name = Pod;
 			sourceTree = "<group>";
 		};
-		29793EBBA4C832105369321686BEDD2D /* Support Files */ = {
+		23D775DD385FBA7C6F3E6AB36E42AA56 /* Event Manager */ = {
 			isa = PBXGroup;
 			children = (
-				75AD5CEEC8B3EB759020B85F576ADA1B /* 1Flow.modulemap */,
-				72DFAE62EAB8FEEF3911C421F5F649D6 /* 1Flow-dummy.m */,
-				1836E7D7FB991ACE2317672E9D36D603 /* 1Flow-Info.plist */,
-				B10E7B02FD332652AF323223C3216E18 /* 1Flow-prefix.pch */,
-				FC59B9ED806A1E8E88A4AEEBFCAEC8C0 /* 1Flow-umbrella.h */,
-				C76E8BEDDFFD9626322B32069777AB63 /* 1Flow.debug.xcconfig */,
-				4E24F685B9D5080DED7C1E60041F54EA /* 1Flow.release.xcconfig */,
-				AA4DE2449A551BB3DFAC479690E021D6 /* ResourceBundle-SurveySDK-1Flow-Info.plist */,
+				AD74D88A3B0E46CD01B10BBC1AB881AB /* OFEventManager.swift */,
+				0E9B88AD7B31E76FD1ADF710A5FFC80B /* OFInAppPurchaseEventsController.swift */,
+				6657A0A80A780C22CC049B2F7ED09265 /* OFScreenTrackingController.swift */,
 			);
-			name = "Support Files";
-			path = "Example/Pods/Target Support Files/1Flow";
+			name = "Event Manager";
+			path = "Survey/Classes/Event Manager";
 			sourceTree = "<group>";
 		};
 		3279401F4327A8FEBF97B24AB6186F80 /* Targets Support Files */ = {
@@ -334,39 +297,33 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
+		3293D6ABBA86101C1A4697FC1F098376 /* Followup */ = {
+			isa = PBXGroup;
+			children = (
+				C0357146A0FCDA17EFE52FA0FD3F5AD7 /* OFFollowupView.swift */,
+			);
+			name = Followup;
+			path = Followup;
+			sourceTree = "<group>";
+		};
+		32E758425E35A7ED3C2CB3F5FFF81AFA /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				AACF1F514AF7BCCD6E8E409C0541ACA6 /* ScriptsManageable.swift */,
+			);
+			name = Protocols;
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		3A3A250317F94BC0EC537648C6834B63 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				E262A6333816A67FC1DC3F18ADFD3B2E /* 1Flow */,
-				528DEFCB4735A3F217174EEA89E94E89 /* SurveySDK.bundle */,
+				528DEFCB4735A3F217174EEA89E94E89 /* 1Flow-SurveySDK */,
 				35D6960850779D98FF229412FED4CDD0 /* Pods-1Flow_Example */,
 				129F5B23C9DB6DF1374F687B58A680CD /* Pods-1Flow_Tests */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		3BB988F4161E3CF3D609D6373BF90679 /* Followup */ = {
-			isa = PBXGroup;
-			children = (
-				F82C440AA56316ECD1D19F00D329DAE4 /* OFFollowupView.swift */,
-			);
-			path = Followup;
-			sourceTree = "<group>";
-		};
-		436D0DCE2A2FAC2C000B7CFB /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				436D0DCA2A2FAB15000B7CFB /* ScriptsManageable.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
-		437886E42994F7F7009FEF25 /* WebContainer */ = {
-			isa = PBXGroup;
-			children = (
-				437886E52994F834009FEF25 /* OFWebContainerView.swift */,
-			);
-			path = WebContainer;
 			sourceTree = "<group>";
 		};
 		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
@@ -377,48 +334,84 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		59B0DE5E73FB9ADA1E97D1E1760D9700 /* ThankYou */ = {
+		5D07636E17A069D19EDECE7C694A3D7B /* MCQ */ = {
 			isa = PBXGroup;
 			children = (
-				3E2310CE2A961C5269B0DA843140BC0F /* OFSwiftGIF.swift */,
-				49451910C05864670203C5E333DA1CF2 /* OFThankYouView.swift */,
+				6B69109DCB5A55B26169B7C4C7FF6321 /* OFMCQView.swift */,
 			);
-			path = ThankYou;
-			sourceTree = "<group>";
-		};
-		5D98D19AF4D799B2B563632DAC43DB82 /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-				2C88D8DBB2F7AF41560B7CD7511C72E2 /* EndPointPovider.swift */,
-				73C5F6F19435DBB246F43EF82A2D1A3C /* OFAPIController.swift */,
-				96122D973B495DA43C5195C9C7C9561E /* URLRequestManager.swift */,
-			);
-			path = Networking;
-			sourceTree = "<group>";
-		};
-		6356E024297D4CA3738B445176ADCBAB /* MCQ */ = {
-			isa = PBXGroup;
-			children = (
-				BDCD5151EFCC8B02EC76AA5A5536C12E /* OFMCQView.swift */,
-			);
+			name = MCQ;
 			path = MCQ;
 			sourceTree = "<group>";
 		};
-		75DE407CF78D98B7569B3E4B75F97EF3 /* View Controllers */ = {
+		5EDF151E03E2CB67820B30FAD7D1B029 /* Rating Controlls */ = {
 			isa = PBXGroup;
 			children = (
-				A914D55A98E97E0D7AEA35A171771262 /* OFRatingViewController.swift */,
-				27E645DF12628CF17A7AFBD5F066BE33 /* Rating Controlls */,
+				A89583D84B9CD2C97930790E4A4E42BB /* OFDraggableView.swift */,
+				CB909875D9010BBA0D174908D4D4053E /* OFNumberButton.swift */,
+				D3424F61DF7F4F461732D1921CD8DDB5 /* OFRadioButton.swift */,
+				AC3B395A93F21B3941289A1E46F6FD90 /* OFRatingViewDelegate.swift */,
+				E9FB87E31FAE7B55FCACD9D8B81AE5BA /* OFRoundedConrnerView.swift */,
+				E75D03F0D3DB82F4096DCD694F3E6ADC /* OFViewLoading.swift */,
+				3293D6ABBA86101C1A4697FC1F098376 /* Followup */,
+				5D07636E17A069D19EDECE7C694A3D7B /* MCQ */,
+				C2C7F42E0CB9273CD34C2A33AB56AB45 /* OneToTen */,
+				CE3019AF0697E951CCFC52753B91578F /* ShortAnswer */,
+				74E493A31DA1DDA73A7F8859672B19CC /* Stars */,
+				934E53858616FC2B4175AAAE055794AF /* ThankYou */,
+				12079E2221F88AA4DB9D086738C6D9A4 /* WebContainer */,
+				E1085C771841D55E3CBB38B8014F57D4 /* Welcome */,
 			);
-			path = "View Controllers";
+			name = "Rating Controlls";
+			path = "Rating Controlls";
 			sourceTree = "<group>";
 		};
-		7CF81F010CA3760A0A91A857D18AC20E /* ShortAnswer */ = {
+		70C2C28C7F2F71BE193B9548629F5E18 /* Survey */ = {
 			isa = PBXGroup;
 			children = (
-				DF7431EB067FE52086563A420C290023 /* OFShortAnswerView.swift */,
+				2E8EC328D793E09447486E849AAC3194 /* FeedbackAssets.xcassets */,
+				2AE3B426A8C02009936E48C7043402E4 /* OFdone.gif */,
+				9291F01C8039A8E886946A0431552A23 /* OFFollowupView.xib */,
+				049DCDF7D0D8693FB80C4B55FC442184 /* OFMCQView.xib */,
+				4BD70037DC64C0A1F47CFEF69C6637D8 /* OFNumberCollectionViewCell.xib */,
+				2B16289662E4D005302AB49895E325D1 /* OFOneToTenView.xib */,
+				61E775BC35DAF46CDFAA1B08DB3088D7 /* OFProjectDetailsController.swift */,
+				2E44CD64EA4054D24B000C94D33EA29B /* OFRatingViewController.xib */,
+				2210FAD186B56A6A8DD1F88995A63FC0 /* OFShortAnswerView.xib */,
+				364DCF0AF9D6D9C322D9669A364CEEA1 /* OFStarsView.xib */,
+				C7965A28A5BB9C8B56873EDEA7D8B6DE /* OFThankYouView.xib */,
+				75BF31466B22D0A58D2479070E4CA863 /* OFWelcomeView.xib */,
+				ABACD415C0859ABF47DDBB50E6C37293 /* OneFlow.swift */,
+				2AC1BED0587BF9003EF05F788C5C7E65 /* validator-dev.js */,
+				23D775DD385FBA7C6F3E6AB36E42AA56 /* Event Manager */,
+				C42E9FB1054C0FD32F21828B90C11196 /* Models */,
+				E4078AF717C4EDBEBE1D5819944BF115 /* Survey Manager */,
+				87AA9A8BB0A237354838574617C9D908 /* Utils */,
 			);
-			path = ShortAnswer;
+			name = Survey;
+			sourceTree = "<group>";
+		};
+		74E493A31DA1DDA73A7F8859672B19CC /* Stars */ = {
+			isa = PBXGroup;
+			children = (
+				8331CC5B7C0A662C7B00910219FDB941 /* OFStarsView.swift */,
+			);
+			name = Stars;
+			path = Stars;
+			sourceTree = "<group>";
+		};
+		87AA9A8BB0A237354838574617C9D908 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				D380F9B1327F321EAF91059FE65D4F1C /* OFReachability.swift */,
+				0C549CDF6DB36D56C00F60A33BB6E510 /* OneFlowBundle.swift */,
+				CEFDEE6AC10D6D0E14A1E8610AD11FB3 /* OneFlowConstant.swift */,
+				7FCEBB39FC3EC161C231DC328BF02ECA /* OneFlowExtension-UIColor.swift */,
+				73CAE9F4230BDCDC6C4DCB5869627300 /* OneFlowExtension-UIImage.swift */,
+				FC98EE265B183699AFCF51394CF73727 /* OneFlowLog.swift */,
+				CB56816A63B62C256383C04BEE3DCC94 /* Networking */,
+			);
+			name = Utils;
+			path = Survey/Classes/Utils;
 			sourceTree = "<group>";
 		};
 		8B464FED05CAD071C3D20CF8E30AA70D /* Pods-1Flow_Tests */ = {
@@ -437,27 +430,47 @@
 			path = "Target Support Files/Pods-1Flow_Tests";
 			sourceTree = "<group>";
 		};
-		9E4B967275F8CF2D345F2FB20C1A5912 /* Event Manager */ = {
+		934E53858616FC2B4175AAAE055794AF /* ThankYou */ = {
 			isa = PBXGroup;
 			children = (
-				1968FA3EFDB1BFAC7B5950066A1FFA2B /* OFEventManager.swift */,
-				5897AFC739FF869E71A96D91EFA4082B /* OFInAppPurchaseEventsController.swift */,
-				71D5A6C056DC420B522AD44BEF47BB01 /* OFScreenTrackingController.swift */,
+				F3F3E3F3C49296FF8696DAB6F5A2DB22 /* OFSwiftGIF.swift */,
+				942ECBA3EB502B6309288A074B4D40EB /* OFThankYouView.swift */,
 			);
-			name = "Event Manager";
-			path = "Survey/Classes/Event Manager";
+			name = ThankYou;
+			path = ThankYou;
 			sourceTree = "<group>";
 		};
-		AF20D5CF106E7C8D406801ED1D31E96D /* Models */ = {
+		C2B580113E3D54068E930137D0BFFA6F /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				34B034F4D04CF7C47DE118FD72C67594 /* AddUserRequest.swift */,
-				03E3CA9C8EBE715D6C0D6DAA90493432 /* AddUserResponse.swift */,
-				ACEB428562F616BFAEB03454D11B3E91 /* CreateSessionRequest.swift */,
-				B1C85FE273629D7A28E32B59DB5C9814 /* LogUserResponse.swift */,
-				D3E56B6110B3849365329DD299EEB033 /* SubmittedSurvey.swift */,
-				2E697ED299698C494AD166BFF0228AF0 /* SurveyListResponse.swift */,
-				00D1BD7691CE8673540C37023D14F8F4 /* SurveySubmitRequest.swift */,
+				13EDE9EB43F49A04550BD3F9227575B5 /* OFRatingViewController.swift */,
+				F1C8C1086DD6DB03A1ED40541413B1BE /* OFRatingViewController+OFRatingViewDelegate.swift */,
+				5EDF151E03E2CB67820B30FAD7D1B029 /* Rating Controlls */,
+			);
+			name = "View Controllers";
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		C2C7F42E0CB9273CD34C2A33AB56AB45 /* OneToTen */ = {
+			isa = PBXGroup;
+			children = (
+				28F075A2EA33DE05EA31DFDF87498BDC /* OFNumberCollectionViewCell.swift */,
+				8D68800C8A8984B6C637E46BB2D31B86 /* OFOneToTenView.swift */,
+			);
+			name = OneToTen;
+			path = OneToTen;
+			sourceTree = "<group>";
+		};
+		C42E9FB1054C0FD32F21828B90C11196 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				88262E5B115589598A982624FAD3E082 /* AddUserRequest.swift */,
+				D19433E4F0A4450FEC2644A39835F948 /* AddUserResponse.swift */,
+				FCF20735FE9B17E790A51A9C7115F54E /* CreateSessionRequest.swift */,
+				15F60E31628CBB024929C82A5053342E /* LogUserResponse.swift */,
+				90D30FF96CABC002BE21759A1475EB6B /* SubmittedSurvey.swift */,
+				188EFC2F53F766587485E034BC33C2FD /* SurveyListResponse.swift */,
+				290B31C3FDCC9DD95F6CAA243807B8EE /* SurveySubmitRequest.swift */,
 			);
 			name = Models;
 			path = Survey/Classes/Models;
@@ -466,9 +479,29 @@
 		C6D64FF2A2ED7F460B4378FCC1A2E4C0 /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DC1BF9523ECE568BB7A467800BCF40DF /* 1Flow */,
+				06B9DE87AB262BB8D9391FFEC9D180D5 /* 1Flow */,
 			);
 			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		CB56816A63B62C256383C04BEE3DCC94 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				DF4FE69CAD803C85F450F59A0A285560 /* EndPointPovider.swift */,
+				304576D64EB9A6A543BA93BECB8AB3AC /* OFAPIController.swift */,
+				9775C3EAA54B4096086E9C574112A7F3 /* URLRequestManager.swift */,
+			);
+			name = Networking;
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		CE3019AF0697E951CCFC52753B91578F /* ShortAnswer */ = {
+			isa = PBXGroup;
+			children = (
+				367A2D4524025973A88C1FFFC256922F /* OFShortAnswerView.swift */,
+			);
+			name = ShortAnswer;
+			path = ShortAnswer;
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
@@ -490,62 +523,44 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		D4DAE3B7F4811349EB3CD75B992DA104 /* Welcome */ = {
+		E1085C771841D55E3CBB38B8014F57D4 /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
-				0FC0AAFD6C7AF5977A59349BB0B9846B /* OFWelcomeView.swift */,
+				3F45751C6879778D6FE1E6B4A9B0A99F /* OFWelcomeView.swift */,
 			);
+			name = Welcome;
 			path = Welcome;
 			sourceTree = "<group>";
 		};
-		D80B2EC5257EEF8846C0AFD5E83203EA /* Stars */ = {
+		E4078AF717C4EDBEBE1D5819944BF115 /* Survey Manager */ = {
 			isa = PBXGroup;
 			children = (
-				04BE54D21AB54923A3EAF71B55BD32C6 /* OFStarsView.swift */,
-			);
-			path = Stars;
-			sourceTree = "<group>";
-		};
-		D97B963E0516648EA515D78D0032383B /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				1264B0949BC0F510FB90DE62892E2241 /* OFReachability.swift */,
-				BF038F07E36B4F3ECEE3C06736C3F6FE /* OneFlowBundle.swift */,
-				03E232D51DD9FDB2650B8FA084C25EC0 /* OneFlowConstant.swift */,
-				0CD705168C96100DF80D4D11E9E6B44F /* OneFlowExtension-UIColor.swift */,
-				C430A03EA1BBFAEDEA223C774912AD3F /* OneFlowExtension-UIImage.swift */,
-				A6C021754A0834FBD81DFE50FCFCCC35 /* OneFlowLog.swift */,
-				5D98D19AF4D799B2B563632DAC43DB82 /* Networking */,
-			);
-			name = Utils;
-			path = Survey/Classes/Utils;
-			sourceTree = "<group>";
-		};
-		DC1BF9523ECE568BB7A467800BCF40DF /* 1Flow */ = {
-			isa = PBXGroup;
-			children = (
-				90D056D3DABC21F2A7763198FF1C927D /* ReplaceMe.swift */,
-				0FE0EF56E1BB38A965958364744E9232 /* Pod */,
-				29793EBBA4C832105369321686BEDD2D /* Support Files */,
-				03344DA93CCF9A93E4FA5F72894359E2 /* Survey */,
-			);
-			name = 1Flow;
-			path = ../..;
-			sourceTree = "<group>";
-		};
-		F62B24EF0C1F882DAB09995EBF07A312 /* Survey Manager */ = {
-			isa = PBXGroup;
-			children = (
-				14F5CB22917125FAE72378715372D43B /* OFSurveyManager.swift */,
-				4360555C2940A5B700EE033C /* SurveyFontConfiguration.swift */,
-				7BB801BBB8506FE7B3939B5A8D1BB69A /* OneFlowDataLogic.swift */,
-				437F08682A20AE0700C4FDC0 /* ScriptExecuter.swift */,
-				436D0DCE2A2FAC2C000B7CFB /* Protocols */,
-				436D0DCC2A2FAB72000B7CFB /* ScriptsManager.swift */,
-				75DE407CF78D98B7569B3E4B75F97EF3 /* View Controllers */,
+				9014E23DAF552F91E82D7469FDA83DF1 /* OFSurveyManager.swift */,
+				28DFCFC5F9C5D3132C8C9455B3F9D326 /* OneFlowDataLogic.swift */,
+				87F4400523CB6B20CC75776EF20DBE68 /* ScriptExecuter.swift */,
+				9B440A24666BE5D4B63328CC7494360F /* ScriptsManager.swift */,
+				0525DFCC461EA07BD3AF69E757F64DE7 /* SurveyFontConfiguration.swift */,
+				32E758425E35A7ED3C2CB3F5FFF81AFA /* Protocols */,
+				C2B580113E3D54068E930137D0BFFA6F /* View Controllers */,
 			);
 			name = "Survey Manager";
 			path = "Survey/Classes/Survey Manager";
+			sourceTree = "<group>";
+		};
+		F9DF6C503A34B3E5818D03B5ED518E0C /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				F0F541AC1C616857B76EBA5505731EC3 /* 1Flow.modulemap */,
+				0464EE79C7C25712D5B2685917AA2AEA /* 1Flow-dummy.m */,
+				D70E600D073D57AE9C7FBD93EBDB21EC /* 1Flow-Info.plist */,
+				8EF85528B3D4E76F54459A1C873BEE4E /* 1Flow-prefix.pch */,
+				3CCC75E0B186E4FB1AC4AFD99781956B /* 1Flow-umbrella.h */,
+				2DC62E07F3AE679FAF52BE785B12CFD9 /* 1Flow.debug.xcconfig */,
+				4A157D984D6159B317C6A42939AA2370 /* 1Flow.release.xcconfig */,
+				5891BAF299B391CFDFD60E8E103B6FB3 /* ResourceBundle-SurveySDK-1Flow-Info.plist */,
+			);
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/1Flow";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -567,11 +582,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B31CF4F34CD6DC7AC7828534E265DFA4 /* Headers */ = {
+		9988D17641736086E697414F59434538 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE99853CABCED7DFC423C734C8425D70 /* 1Flow-umbrella.h in Headers */,
+				637C2D2D1F68759FB11AA8DE646A3D4C /* 1Flow-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,11 +595,11 @@
 /* Begin PBXNativeTarget section */
 		15ECB5A08AF26C41C1FFF13630AE92F3 /* 1Flow-SurveySDK */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 119554F0AB569F19BE7F996568FA7731 /* Build configuration list for PBXNativeTarget "1Flow-SurveySDK" */;
+			buildConfigurationList = 109BCE8EF1C3D4BDD3B490E544D474C9 /* Build configuration list for PBXNativeTarget "1Flow-SurveySDK" */;
 			buildPhases = (
-				560B59C81E7559BEE42133D893AD4565 /* Sources */,
-				D6A76FE3C0572545898014972D533E3D /* Frameworks */,
-				394798E0983E57A3BA4B56439CE62508 /* Resources */,
+				DEA3C88BC5AF7A2FB64009643FF255BE /* Sources */,
+				03D6759A50F2745D86922E08A0706C5B /* Frameworks */,
+				CE9A7792364DEC9E33C07011C8AEDFBE /* Resources */,
 			);
 			buildRules = (
 			);
@@ -592,7 +607,7 @@
 			);
 			name = "1Flow-SurveySDK";
 			productName = SurveySDK;
-			productReference = 528DEFCB4735A3F217174EEA89E94E89 /* SurveySDK.bundle */;
+			productReference = 528DEFCB4735A3F217174EEA89E94E89 /* 1Flow-SurveySDK */;
 			productType = "com.apple.product-type.bundle";
 		};
 		37DC2BD35530AAFFCBFCF00785D455F7 /* Pods-1Flow_Example */ = {
@@ -607,7 +622,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				B15BC30AC8B736415A65F18A4B3C4C45 /* PBXTargetDependency */,
+				604CAFDB966634FF54DDD7AB0EB242EE /* PBXTargetDependency */,
 			);
 			name = "Pods-1Flow_Example";
 			productName = Pods_1Flow_Example;
@@ -626,7 +641,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				C58EE01316EA1EE9A2A6C411D60A3203 /* PBXTargetDependency */,
+				FA2FBAF28454E00B2D9AE87781EACAA7 /* PBXTargetDependency */,
 			);
 			name = "Pods-1Flow_Tests";
 			productName = Pods_1Flow_Tests;
@@ -635,17 +650,17 @@
 		};
 		BA3171932CBE96702763AB78AB528D8D /* 1Flow */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 222496D524F825F7E9020965BC3761E5 /* Build configuration list for PBXNativeTarget "1Flow" */;
+			buildConfigurationList = B6EB674F73076E79D0456E70F636F346 /* Build configuration list for PBXNativeTarget "1Flow" */;
 			buildPhases = (
-				B31CF4F34CD6DC7AC7828534E265DFA4 /* Headers */,
-				92502EC2FEE1E4AC8F7AF44793E161E5 /* Sources */,
-				6D2951E00AC35432B133266836D0BEAA /* Frameworks */,
-				1E7375E660FF2AA39770FDB07BE9A3C5 /* Resources */,
+				9988D17641736086E697414F59434538 /* Headers */,
+				EDFE5F036504CD3F59D75A8D4003C062 /* Sources */,
+				4F3FD0A056194FB5B8FCE9A7882B0EA5 /* Frameworks */,
+				29D7B6459EB5D9DA7DE14E5A6E9990E3 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				00B075382C14485DE3D0D30DCDBD8AFB /* PBXTargetDependency */,
+				9CCF2F94F1A05644AAA8E722A764E7E2 /* PBXTargetDependency */,
 			);
 			name = 1Flow;
 			productName = _1Flow;
@@ -660,11 +675,6 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1240;
-				TargetAttributes = {
-					15ECB5A08AF26C41C1FFF13630AE92F3 = {
-						LastSwiftMigration = 1320;
-					};
-				};
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -688,30 +698,11 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		1E7375E660FF2AA39770FDB07BE9A3C5 /* Resources */ = {
+		29D7B6459EB5D9DA7DE14E5A6E9990E3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				838909CAC0BFBF6378D2AF5C59662370 /* SurveySDK.bundle in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		394798E0983E57A3BA4B56439CE62508 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8130EADBAFAE8CD00A4601770494D30D /* FeedbackAssets.xcassets in Resources */,
-				22AE3B640E199D9CFC88E15079692CA1 /* OFdone.gif in Resources */,
-				855F2B3C763DAB211F46869DBFA38764 /* OFFollowupView.xib in Resources */,
-				375373795E4FA75DD1D74ED1B3A939B9 /* OFMCQView.xib in Resources */,
-				1DEC63F44AAA1AA3DA641E73E0E562FF /* OFNumberCollectionViewCell.xib in Resources */,
-				43863D582A40E99100F2807D /* validator-dev.js in Resources */,
-				2E4B2552FBF1395C3E29558C2D3C6D63 /* OFOneToTenView.xib in Resources */,
-				B0324976C88B275307929392CBAD3ACB /* OFRatingViewController.xib in Resources */,
-				67B3215CB6FEEE7C93580F6E7D607227 /* OFShortAnswerView.xib in Resources */,
-				83C89CF3C99567775BAC14E9A4AA42EA /* OFStarsView.xib in Resources */,
-				9E7290F9EDBDFB7D479C77B2DC5A4B71 /* OFThankYouView.xib in Resources */,
-				19FE4D0FF4B514DD91329D72CF185F3A /* OFWelcomeView.xib in Resources */,
+				EC0C45007F8DA6551AF120FD0AB24819 /* 1Flow-SurveySDK in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -719,6 +710,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE9A7792364DEC9E33C07011C8AEDFBE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50C98A8767ADE152745E475B161A1FDD /* FeedbackAssets.xcassets in Resources */,
+				241290668EBFE3D7D679A482CDEED3A3 /* OFdone.gif in Resources */,
+				44DD1A652EA66CC137B4A36B38356D8C /* OFFollowupView.xib in Resources */,
+				85F2F4939470A5D7C5DC98A5AC1C2459 /* OFMCQView.xib in Resources */,
+				B4CF7712AC7E2E4023414FD563C7AF45 /* OFNumberCollectionViewCell.xib in Resources */,
+				527BFCFB654253F76A0DBDF3FDE4937A /* OFOneToTenView.xib in Resources */,
+				D3EECB5FB2CB9739ECE77E1E70FF176C /* OFRatingViewController.xib in Resources */,
+				2D8668B6B61C77AD798E16A6C7B48C2E /* OFShortAnswerView.xib in Resources */,
+				44A4581613949BFB194C9A6FA23569D3 /* OFStarsView.xib in Resources */,
+				27E02E818CEB7504ECDDFF65D6122138 /* OFThankYouView.xib in Resources */,
+				DB16E4C8DE37E99D6BE7B0E206C78AEA /* OFWelcomeView.xib in Resources */,
+				F6908314E0103FD4D7F7AF4034F74951 /* validator-dev.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -732,13 +742,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		560B59C81E7559BEE42133D893AD4565 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		82A9E435B40BB49B503C869159DB97D7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -755,83 +758,108 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		92502EC2FEE1E4AC8F7AF44793E161E5 /* Sources */ = {
+		DEA3C88BC5AF7A2FB64009643FF255BE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4360555D2940A5B700EE033C /* SurveyFontConfiguration.swift in Sources */,
-				D668A4810F494149DD35C42AA344F280 /* 1Flow-dummy.m in Sources */,
-				AD553E24E889FCFA5E8D1A64CB8A3E6D /* AddUserRequest.swift in Sources */,
-				6EF3E4A3B22F86BB151234A19BA6383C /* AddUserResponse.swift in Sources */,
-				5F652AD31B6AEC3DC7BE7E22B7D6A9C7 /* CreateSessionRequest.swift in Sources */,
-				29DCD8316C21579EEF20C7FA928677FF /* EndPointPovider.swift in Sources */,
-				73F3B67A8AF328ACBD8583C40A0F3470 /* LogUserResponse.swift in Sources */,
-				0BFC3F5485EEFC70311CC7D8E259EF69 /* OFAPIController.swift in Sources */,
-				7A3AE033F0A57985AE57523345DF0DBB /* OFDraggableView.swift in Sources */,
-				CA27C9C21B3EF4D7B1A86B7663360E2C /* OFEventManager.swift in Sources */,
-				437886E8299817FD009FEF25 /* OFWebContainerView.swift in Sources */,
-				DF54078572F472241285F89E0D31CC19 /* OFFollowupView.swift in Sources */,
-				CDF5B121E8412199D11D6E512B135C2C /* OFInAppPurchaseEventsController.swift in Sources */,
-				8349B68B1BA11C05487DFD91805381C3 /* OFMCQView.swift in Sources */,
-				2C7F99D762FC34FD30D52E11AC399980 /* OFNumberButton.swift in Sources */,
-				456E187205471A0E4F5664985E58C1F2 /* OFNumberCollectionViewCell.swift in Sources */,
-				99DC5F5D2C1A965A8A575A7ED2A7DE89 /* OFOneToTenView.swift in Sources */,
-				2B71B723A9C164A805168A509896C525 /* OFProjectDetailsController.swift in Sources */,
-				436D0DCD2A2FAB72000B7CFB /* ScriptsManager.swift in Sources */,
-				75C2A0DB23764BD35F3EE053A8FD28BD /* OFRadioButton.swift in Sources */,
-				ED9C62864D55D93B891811C4005E02C5 /* OFRatingViewController.swift in Sources */,
-				66232A25EEC2DAE986F497EA04D957E6 /* OFRatingViewProtocol.swift in Sources */,
-				7B9D4C9B1A2E545190906B3C3F2A3CFE /* OFReachability.swift in Sources */,
-				C42D4450F4950CDD44A54AE940A2EF3C /* OFRoundedConrnerView.swift in Sources */,
-				6FC8142C18EDBA841801B1C755CE7AB4 /* OFScreenTrackingController.swift in Sources */,
-				2AEA123E4697C94686F62BADE1079AB6 /* OFShortAnswerView.swift in Sources */,
-				AEFE64BA21276FDC40A07B9FCAC7F43C /* OFStarsView.swift in Sources */,
-				6B4AF6229C504FB2CC0DE0975DE296C8 /* OFSurveyManager.swift in Sources */,
-				7B1ADFAC4228FAE8E23CFBE864C77F45 /* OFSwiftGIF.swift in Sources */,
-				C539160CBBEA1F03B7E019FF5E6580F2 /* OFThankYouView.swift in Sources */,
-				BED791AC47AD95BD4EDC50702DE467CC /* OFViewLoading.swift in Sources */,
-				C3B1C559C4BC92C3248402E272AF940C /* OFWelcomeView.swift in Sources */,
-				ECB234D07A44A75C60688C6DB53B9FC2 /* OneFlow.swift in Sources */,
-				034A967C04D92AFFF9ABB962BC1A840E /* OneFlowBundle.swift in Sources */,
-				E336981F8DAA1AB4915B473313665A1F /* OneFlowConstant.swift in Sources */,
-				59F429E9A2443A8E8C94FD6B05F4B26E /* OneFlowDataLogic.swift in Sources */,
-				A55BB091BA1E9357A7FEEDE9304C425C /* OneFlowExtension-UIColor.swift in Sources */,
-				E5C81FED49D68BBAEE4FED6078AC5E96 /* OneFlowExtension-UIImage.swift in Sources */,
-				4141A220721A1BEB017604A1B019DC2B /* OneFlowLog.swift in Sources */,
-				922FDD7FD4AD0715452B45EEF6458697 /* ReplaceMe.swift in Sources */,
-				338DEA2AEADF42D780F2AC48AB09336B /* SubmittedSurvey.swift in Sources */,
-				047002DDF95077E3E08F18AEF67BC7DC /* SurveyListResponse.swift in Sources */,
-				437F08692A20AE0700C4FDC0 /* ScriptExecuter.swift in Sources */,
-				36A02EE19058F3F50B25BBBFE7ED712E /* SurveySubmitRequest.swift in Sources */,
-				5A184F8666A7A40B450D0B22BBA3771B /* URLRequestManager.swift in Sources */,
-				436D0DCB2A2FAB15000B7CFB /* ScriptsManageable.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDFE5F036504CD3F59D75A8D4003C062 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E98174B5739A05605054784C46CFE00B /* 1Flow-dummy.m in Sources */,
+				574380CCD792D7232E729F7B68FEFCC5 /* AddUserRequest.swift in Sources */,
+				16ED942048C5BC0E6DA035E877A222E5 /* AddUserResponse.swift in Sources */,
+				772F7FF41B05C8CDD6F4C3B191E542E1 /* CreateSessionRequest.swift in Sources */,
+				CE448D5BB613B2EC02F532ED94848B6D /* EndPointPovider.swift in Sources */,
+				016433316C87C2255DA513C1FDA76A99 /* LogUserResponse.swift in Sources */,
+				4D06CB48F332D28CD6302E60096FD86E /* OFAPIController.swift in Sources */,
+				6F1890A4AB045A92B98B71312838F07A /* OFDraggableView.swift in Sources */,
+				64F2B624F3CE5A09A06453E5A63E4BF4 /* OFEventManager.swift in Sources */,
+				143ACDF64682E5AC70001BB777ACC704 /* OFFollowupView.swift in Sources */,
+				E8A07D1C1D30DF559C39E277F409C719 /* OFInAppPurchaseEventsController.swift in Sources */,
+				C2B0985C977AC6C56E6032F48939CF80 /* OFMCQView.swift in Sources */,
+				4FEC50EC2E97E0EC30D42DCC4D55657A /* OFNumberButton.swift in Sources */,
+				8DAA8F8C997931994D1D9C445CE9FD58 /* OFNumberCollectionViewCell.swift in Sources */,
+				5B3509AF5769E58C2DD786593ACD1964 /* OFOneToTenView.swift in Sources */,
+				B0DDEFAE87CE521B097868AE69BE148D /* OFProjectDetailsController.swift in Sources */,
+				296EABCDA52FCC86351ADB2B63BA3580 /* OFRadioButton.swift in Sources */,
+				79FDF493205D1340C85DEC36CE3E9BDC /* OFRatingViewController.swift in Sources */,
+				D0363570612C40BFC61C2FE3F18CD143 /* OFRatingViewController+OFRatingViewDelegate.swift in Sources */,
+				71A6A6E7CD7028083897A05D5FD23319 /* OFRatingViewDelegate.swift in Sources */,
+				C74AEAFE2459BAA5A1A158EE02642BDC /* OFReachability.swift in Sources */,
+				C3612EDBD6713138D31AA97A401EF7DC /* OFRoundedConrnerView.swift in Sources */,
+				C8ACE385C96F70F6D064440E63622792 /* OFScreenTrackingController.swift in Sources */,
+				1CB23F07DBEB4E2389186A8E11FF4A4D /* OFShortAnswerView.swift in Sources */,
+				156F98279F44E783F6F7D184D56D87B8 /* OFStarsView.swift in Sources */,
+				BCF95F838CC11ED36F349BAEF5D1C6EF /* OFSurveyManager.swift in Sources */,
+				063953D85A817801A5A38FA57E97C1A3 /* OFSwiftGIF.swift in Sources */,
+				CAB16785168BA55CD5AC3195EA3B7DE5 /* OFThankYouView.swift in Sources */,
+				278C1518C1B774DB9FDAEE09B915BA98 /* OFViewLoading.swift in Sources */,
+				44B7324E314125E4C9AA6E223D28EEEF /* OFWebContainerView.swift in Sources */,
+				F5B71BDB0201B9EE08EAA7AD90FDD73B /* OFWelcomeView.swift in Sources */,
+				9428E723900012CA8C2B84D801EB36CF /* OneFlow.swift in Sources */,
+				9C9B36FB8C6F49360033ACF67D263D0C /* OneFlowBundle.swift in Sources */,
+				7FF21963D69A02E9AA906BD33900AB4A /* OneFlowConstant.swift in Sources */,
+				22A7F10352B382FC608B59C96C807FEC /* OneFlowDataLogic.swift in Sources */,
+				B0A06339EC6D1D94666DE1FC738A29BA /* OneFlowExtension-UIColor.swift in Sources */,
+				31796DE13B2356C2FB0D01E41BA81DCE /* OneFlowExtension-UIImage.swift in Sources */,
+				965AC6DDD982C4F2EC6F49FE5CAE7334 /* OneFlowLog.swift in Sources */,
+				56FE7277968E958A976C448F399AD0A7 /* ReplaceMe.swift in Sources */,
+				240D41ED8BF986524D0537950F597A57 /* ScriptExecuter.swift in Sources */,
+				A0A6E2A10481115AFB6EB5FD3040497E /* ScriptsManageable.swift in Sources */,
+				580914DAE2D1CA05D977758825C37F83 /* ScriptsManager.swift in Sources */,
+				E3AEED3E56463E8791B7A2F71544D8A0 /* SubmittedSurvey.swift in Sources */,
+				B1A9AB7453D50DE4485907FDDA1BCF6D /* SurveyFontConfiguration.swift in Sources */,
+				E8FAD560A404D916548C78DCDAED0602 /* SurveyListResponse.swift in Sources */,
+				D531C9098389A029E3A1B0FB256CEB57 /* SurveySubmitRequest.swift in Sources */,
+				9B6B47D3C3430057FE3FDE06206FB955 /* URLRequestManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		00B075382C14485DE3D0D30DCDBD8AFB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "1Flow-SurveySDK";
-			target = 15ECB5A08AF26C41C1FFF13630AE92F3 /* 1Flow-SurveySDK */;
-			targetProxy = 775286D30F588B9A4523DD6B79534083 /* PBXContainerItemProxy */;
-		};
-		B15BC30AC8B736415A65F18A4B3C4C45 /* PBXTargetDependency */ = {
+		604CAFDB966634FF54DDD7AB0EB242EE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = 1Flow;
 			target = BA3171932CBE96702763AB78AB528D8D /* 1Flow */;
-			targetProxy = FA91B8818D1DFD0BFEFF29815D010652 /* PBXContainerItemProxy */;
+			targetProxy = 3AD031DD79A8FB53F6A4A00ED4B42FF5 /* PBXContainerItemProxy */;
 		};
-		C58EE01316EA1EE9A2A6C411D60A3203 /* PBXTargetDependency */ = {
+		9CCF2F94F1A05644AAA8E722A764E7E2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "1Flow-SurveySDK";
+			target = 15ECB5A08AF26C41C1FFF13630AE92F3 /* 1Flow-SurveySDK */;
+			targetProxy = D661277A93605C30C33A5FE05B7EAEAD /* PBXContainerItemProxy */;
+		};
+		FA2FBAF28454E00B2D9AE87781EACAA7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-1Flow_Example";
 			target = 37DC2BD35530AAFFCBFCF00785D455F7 /* Pods-1Flow_Example */;
-			targetProxy = 5F86D91640D268891EF59AC2E6E97BBC /* PBXContainerItemProxy */;
+			targetProxy = 66AB05DBC654DC8D43E900101D269C71 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		22FE180A09821EDEE4B3E5549104A9B1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4A157D984D6159B317C6A42939AA2370 /* 1Flow.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/1Flow";
+				IBSC_MODULE = _1Flow;
+				INFOPLIST_FILE = "Target Support Files/1Flow/ResourceBundle-SurveySDK-1Flow-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_NAME = SurveySDK;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
 		561278EE35F0CB8FACEF394BB4568777 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5BB7D439D18A5611B7C398C52CE2AE23 /* Pods-1Flow_Tests.debug.xcconfig */;
@@ -900,44 +928,37 @@
 			};
 			name = Debug;
 		};
-		60C52F0007E8FF47242D073C997B692F /* Debug */ = {
+		6D7ED5200ACDA0E9C13192BFAE898CEF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C76E8BEDDFFD9626322B32069777AB63 /* 1Flow.debug.xcconfig */;
+			baseConfigurationReference = 2DC62E07F3AE679FAF52BE785B12CFD9 /* 1Flow.debug.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/1Flow";
-				IBSC_MODULE = _1Flow;
-				INFOPLIST_FILE = "Target Support Files/1Flow/ResourceBundle-SurveySDK-1Flow-Info.plist";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/1Flow/1Flow-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/1Flow/1Flow-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = SurveySDK;
+				MODULEMAP_FILE = "Target Support Files/1Flow/1Flow.modulemap";
+				PRODUCT_MODULE_NAME = _1Flow;
+				PRODUCT_NAME = _1Flow;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
-		};
-		6CF6FFB9AA553BE9D51A6BB39D791489 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E24F685B9D5080DED7C1E60041F54EA /* 1Flow.release.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/1Flow";
-				IBSC_MODULE = _1Flow;
-				INFOPLIST_FILE = "Target Support Files/1Flow/ResourceBundle-SurveySDK-1Flow-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = SurveySDK;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
 		};
 		903A0004D3E6651EFD5D2E16214D101B /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -994,9 +1015,43 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		998FC307A53EF80BA1C7E883DF1A83EC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4A157D984D6159B317C6A42939AA2370 /* 1Flow.release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/1Flow/1Flow-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/1Flow/1Flow-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/1Flow/1Flow.modulemap";
+				PRODUCT_MODULE_NAME = _1Flow;
+				PRODUCT_NAME = _1Flow;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -1028,39 +1083,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		AFC2F8F62E81DE0C1CA287B90F289CD3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E24F685B9D5080DED7C1E60041F54EA /* 1Flow.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/1Flow/1Flow-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/1Flow/1Flow-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/1Flow/1Flow.modulemap";
-				PRODUCT_MODULE_NAME = _1Flow;
-				PRODUCT_NAME = _1Flow;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1134,6 +1156,23 @@
 			};
 			name = Debug;
 		};
+		C4FA2D99CBC12B18D2931FB23A4BBEAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2DC62E07F3AE679FAF52BE785B12CFD9 /* 1Flow.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/1Flow";
+				IBSC_MODULE = _1Flow;
+				INFOPLIST_FILE = "Target Support Files/1Flow/ResourceBundle-SurveySDK-1Flow-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_NAME = SurveySDK;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
 		D15B47EDD24EFEB18BA63C9353E09F4C /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F3A88FD989D3AFD302CD28F9C7F9FE51 /* Pods-1Flow_Example.release.xcconfig */;
@@ -1169,55 +1208,14 @@
 			};
 			name = Release;
 		};
-		E330C9B50851BCBC798A22331CAAE27A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C76E8BEDDFFD9626322B32069777AB63 /* 1Flow.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/1Flow/1Flow-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/1Flow/1Flow-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/1Flow/1Flow.modulemap";
-				PRODUCT_MODULE_NAME = _1Flow;
-				PRODUCT_NAME = _1Flow;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		119554F0AB569F19BE7F996568FA7731 /* Build configuration list for PBXNativeTarget "1Flow-SurveySDK" */ = {
+		109BCE8EF1C3D4BDD3B490E544D474C9 /* Build configuration list for PBXNativeTarget "1Flow-SurveySDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				60C52F0007E8FF47242D073C997B692F /* Debug */,
-				6CF6FFB9AA553BE9D51A6BB39D791489 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		222496D524F825F7E9020965BC3761E5 /* Build configuration list for PBXNativeTarget "1Flow" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E330C9B50851BCBC798A22331CAAE27A /* Debug */,
-				AFC2F8F62E81DE0C1CA287B90F289CD3 /* Release */,
+				C4FA2D99CBC12B18D2931FB23A4BBEAF /* Debug */,
+				22FE180A09821EDEE4B3E5549104A9B1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1245,6 +1243,15 @@
 			buildConfigurations = (
 				561278EE35F0CB8FACEF394BB4568777 /* Debug */,
 				9FAFCCCC7F69EBAC45A029286124814E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B6EB674F73076E79D0456E70F636F346 /* Build configuration list for PBXNativeTarget "1Flow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6D7ED5200ACDA0E9C13192BFAE898CEF /* Debug */,
+				998FC307A53EF80BA1C7E883DF1A83EC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

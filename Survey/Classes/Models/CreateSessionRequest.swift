@@ -15,25 +15,49 @@
 import Foundation
 
 struct CreateSessionRequest: Codable {
-    var analytic_user_id: String
-    var system_id: String
+
+    var analyticsUserID: String
+    var systemID: String
     var device: DeviceDetails?
     var connectivity: Connectivity?
-    var app_version: String?
-    var app_build_number: String?
-    var library_version: String?
+    var appVersion: String?
+    var appBuildNumber: String?
+    var libraryVersion: String?
     var mode = OFProjectDetailsController.shared.currentEnviromment.rawValue
-    
-    struct DeviceDetails:Codable {
-        var os: String
-        var unique_id: String
-        var device_id: String
+
+    private enum CodingKeys: String, CodingKey {
+        case analyticsUserID = "analytic_user_id"
+        case systemID = "system_id"
+        case device
+        case connectivity
+        case appVersion = "app_version"
+        case appBuildNumber = "app_build_number"
+        case libraryVersion = "library_version"
+        case mode
+    }
+
+    struct DeviceDetails: Codable {
+        var operatingSystem: String
+        var uniqueID: String
+        var deviceID: String
         var carrier: String?
         var manufacturer: String = "apple"
         var model: String?
-        var os_ver: String?
-        var screen_width: Int?
-        var screen_height: Int?
+        var osVersion: String?
+        var screenWidth: Int?
+        var screenHeight: Int?
+
+        private enum CodingKeys: String, CodingKey {
+            case operatingSystem = "os"
+            case uniqueID = "unique_id"
+            case deviceID = "device_id"
+            case carrier
+            case manufacturer
+            case model
+            case osVersion = "os_ver"
+            case screenWidth = "screen_width"
+            case screenHeight = "screen_height"
+        }
     }
 
     struct Connectivity: Codable {

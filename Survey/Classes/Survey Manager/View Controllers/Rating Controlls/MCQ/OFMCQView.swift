@@ -19,32 +19,30 @@ class OFMCQView: UIView {
 
     @IBOutlet weak var stackView1: UIStackView!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-
-    weak var delegate: OFRatingViewProtocol?
+    weak var delegate: OFRatingViewDelegate?
     @IBOutlet weak var btnFinish: UIButton!
-    var currentType:  OFRadioButton.OFRadioButtonType = OFRadioButton.OFRadioButtonType.radioButton
+    var currentType: OFRadioButton.OFRadioButtonType = OFRadioButton.OFRadioButtonType.radioButton
     var allOptions: [Codable]?
     var otherOptionID = ""
-
     let textFieldViewTag = 1001
     let enterButtonTag = 1002
-
     var otherOptionTF: UITextField!
     var otherOptionAnswer = ""
     var parentWidth: CGFloat = 0.0
-
     var selectedButton: UIButton? {
         didSet {
             if self.currentType == .radioButton, self.selectedButton != nil {
                 if let selectedBtn = self.selectedButton {
                     let selectedOption = self.allOptions![selectedBtn.tag]
-                    if let option : SurveyListResponse.Survey.Screen.Input.Choice = selectedOption as? SurveyListResponse.Survey.Screen.Input.Choice, let optionID : String  = option._id {
-                        if optionID == self.otherOptionID  {
+                    if
+                        let option = selectedOption as? SurveyListResponse.Survey.Screen.Input.Choice,
+                        let optionID = option.identifier {
+                        if optionID == self.otherOptionID {
                             if !otherOptionAnswer.isEmpty {
-                            self.delegate?.mcqViewChangeSelection(optionID, otherOptionAnswer)
+                                self.delegate?.mcqViewChangeSelection(optionID, otherTextAnswer: otherOptionAnswer)
                             }
                         } else {
-                           self.delegate?.mcqViewChangeSelection(optionID, nil)
+                            self.delegate?.mcqViewChangeSelection(optionID, otherTextAnswer: nil)
                         }
                     }
                 }
@@ -52,13 +50,18 @@ class OFMCQView: UIView {
         }
     }
 
-    var submitButtonTitle : String = "Submit Feedback" {
+    var submitButtonTitle: String = "Submit Feedback" {
         didSet {
             btnFinish.setTitle(self.submitButtonTitle, for: .normal)
         }
     }
-   
-    func setupViewWithOptions(_ options: [Codable], type: OFRadioButton.OFRadioButtonType, parentViewWidth: CGFloat, _ otherOptionIdentifier : String?) {
+
+    func setupViewWithOptions(_
+                              options: [Codable],
+                              type: OFRadioButton.OFRadioButtonType,
+                              parentViewWidth: CGFloat,
+                              _ otherOptionIdentifier: String?
+    ) {
         self.currentType = type
         self.allOptions = options
         parentWidth = parentViewWidth
@@ -73,29 +76,29 @@ class OFMCQView: UIView {
             btnFinish.isHidden = true
             bottomConstraint.constant = 25.0
         }
-        
-        if let otherOptionId : String = otherOptionIdentifier {
+
+        if let otherOptionId = otherOptionIdentifier {
             self.otherOptionID = otherOptionId
         }
-        
+
         while let first = stackView1.arrangedSubviews.first {
             stackView1.removeArrangedSubview(first)
                 first.removeFromSuperview()
         }
-        
-        for i in 0..<options.count {
-            let currentOption = options[i]
-           
-            if let option : SurveyListResponse.Survey.Screen.Input.Choice = currentOption as? SurveyListResponse.Survey.Screen.Input.Choice, let optionString : String  = option.title {
-              
+
+        for index in 0..<options.count {
+            let currentOption = options[index]
+
+            if
+                let option = currentOption as? SurveyListResponse.Survey.Screen.Input.Choice,
+                let optionString = option.title {
+
                 let button = OFRadioButton(frame: CGRect(x: 0, y: 0, width: parentViewWidth, height: 43), type: type)
                 button.titleLabel?.font = OneFlow.fontConfiguration?.checkboxButtonFont
                 button.titleLabel?.lineBreakMode = .byWordWrapping
-                
                 button.setTitle(optionString, for: .normal)
-                button.tag = i
+                button.tag = index
                 button.addTarget(self, action: #selector(onSelectButton(_:)), for: .touchUpInside)
-                
                 self.stackView1.addArrangedSubview(button)
                 let height = self.labelSize(for: optionString, maxWidth: (parentViewWidth))
                 button.translatesAutoresizingMaskIntoConstraints = false
@@ -103,15 +106,22 @@ class OFMCQView: UIView {
             }
         }
     }
-    
-    func addTextFieldToView(_ button : UIButton) {
-        let otherOptionView = UIView.init(frame: CGRect(x: 2, y: 2, width: button.frame.size.width - 4 , height: button.frame.size.height-4))
+
+    func addTextFieldToView(_ button: UIButton) {
+        let otherOptionView = UIView(
+            frame: CGRect(x: 2, y: 2, width: button.frame.size.width - 4, height: button.frame.size.height-4)
+        )
         otherOptionView.backgroundColor = .white
         otherOptionView.tag = textFieldViewTag
         otherOptionView.layer.cornerRadius = 5.0
-
-        
-        let otherOptionTextField =  UITextField(frame: CGRect(x: 25, y: 0, width: otherOptionView.frame.size.width - 60 , height: otherOptionView.frame.size.height))
+        let otherOptionTextField =  UITextField(
+            frame: CGRect(
+                x: 25,
+                y: 0,
+                width: otherOptionView.frame.size.width - 60,
+                height: otherOptionView.frame.size.height
+            )
+        )
         otherOptionTextField.placeholder = "Type your answer"
         otherOptionTextField.font = OneFlow.fontConfiguration?.openTextFont
         otherOptionTextField.borderStyle = UITextField.BorderStyle.none
@@ -120,31 +130,28 @@ class OFMCQView: UIView {
         otherOptionTextField.delegate = self
         otherOptionTextField.text = otherOptionAnswer
         otherOptionTF = otherOptionTextField
-        
         let enterButton = UIButton(frame: CGRect(x: otherOptionView.frame.size.width - 60, y: 5, width: 50, height: 28))
         enterButton.backgroundColor = kBrandColor
         enterButton.setTitle("Enter", for: .normal)
         enterButton.addTarget(self, action: #selector(enterButtonTapped), for: .touchUpInside)
         enterButton.titleLabel?.font = OneFlow.fontConfiguration?.checkboxEnterButtonFont
-        if let enterIcon : UIImage = UIImage.init(named: "Enter", in: OneFlowBundle.bundleForObject(self), compatibleWith: nil) {
+        if let enterIcon = UIImage(named: "Enter", in: OneFlowBundle.bundleForObject(self), compatibleWith: nil) {
             enterButton.setImage(enterIcon, for: .normal)
         }
         enterButton.semanticContentAttribute = .forceRightToLeft
         enterButton.tag = enterButtonTag
-        
         otherOptionView.addSubview(otherOptionTextField)
         otherOptionView.addSubview(enterButton)
         enterButton.layer.cornerRadius = 2.0
         button.addSubview(otherOptionView)
-        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             otherOptionTextField.becomeFirstResponder()
         }
     }
-    
+
     @objc func enterButtonTapped(sender: UIButton!) {
-        if let _ = otherOptionTF {
-            otherOptionAnswer = otherOptionTF.text!
+        if let inputText = otherOptionTF.text {
+            otherOptionAnswer = inputText
             if otherOptionAnswer.isEmpty {
                 if let optionButton = sender.superview?.superview as? UIButton {
                     onSelectButton(optionButton)
@@ -167,21 +174,23 @@ class OFMCQView: UIView {
             }
         }
     }
-    
-    func addTextFieldIfRequired(_ sender: UIButton){
+
+    func addTextFieldIfRequired(_ sender: UIButton) {
         if self.checkIfOptionNeedsTextAnswer(sender) {
             sender.setTitle("", for: .normal)
             self.setHeightForButton(sender)
             self.addTextFieldToView(sender)
         }
     }
-    
-    func setUnselectedButtonTitle(_ sender: UIButton){
+
+    func setUnselectedButtonTitle(_ sender: UIButton) {
         if sender.tag < self.allOptions!.count {
             let selectedOption = self.allOptions![sender.tag]
-            if let option : SurveyListResponse.Survey.Screen.Input.Choice = selectedOption as? SurveyListResponse.Survey.Screen.Input.Choice, let optionName : String  = option.title, let optionID : String  = option._id  {
-                if optionID == self.otherOptionID  {
-                   // otherOptionAnswer = ""
+            if
+                let option = selectedOption as? SurveyListResponse.Survey.Screen.Input.Choice,
+                let optionName = option.title,
+                let optionID = option.identifier  {
+                if optionID == self.otherOptionID {
                     sender.setTitle(optionName, for: .normal)
                     self.setHeightForButton(sender)
                     if let otherOptionView = sender.viewWithTag(textFieldViewTag) {
@@ -191,36 +200,36 @@ class OFMCQView: UIView {
             }
         }
     }
-    
-    func checkIfOptionNeedsTextAnswer(_ sender: UIButton) -> Bool{
+
+    func checkIfOptionNeedsTextAnswer(_ sender: UIButton) -> Bool {
         if sender.tag < self.allOptions!.count {
             let selectedOption = self.allOptions![sender.tag]
-            if let option : SurveyListResponse.Survey.Screen.Input.Choice = selectedOption as? SurveyListResponse.Survey.Screen.Input.Choice, let optionID : String  = option._id {
-                if optionID == self.otherOptionID  {
+            if
+                let option = selectedOption as? SurveyListResponse.Survey.Screen.Input.Choice,
+                    let optionID = option.identifier {
+                if optionID == self.otherOptionID {
                     return true
                 }
             }
         }
         return false
     }
-    
-    func setHeightForButton(_ button : UIButton ) {
+
+    func setHeightForButton(_ button: UIButton ) {
         if var buttonTitle = button.title(for: .normal) {
             if buttonTitle.isEmpty {
                 buttonTitle = "Dummy Text"
             }
             let newHeight = self.labelSize(for: buttonTitle, maxWidth: (parentWidth - 54))
             button.constraints.forEach { (constraint) in
-                 if constraint.firstAttribute == .height
-                 {
+                 if constraint.firstAttribute == .height {
                      constraint.constant = newHeight + 24
                  }
              }
         }
     }
-    
+
     func labelSize(for text: String, maxWidth: CGFloat) -> CGFloat {
-        
         let label =  UILabel(frame: CGRect(x: 0, y: 0, width: maxWidth, height: .greatestFiniteMagnitude))
         label.numberOfLines = 0
         label.text = text
@@ -228,7 +237,7 @@ class OFMCQView: UIView {
         label.sizeToFit()
         return label.frame.height
     }
-    
+
     func setupFinishButton() {
         if self.currentType == .checkBox {
             var isAnySelected = false
@@ -256,7 +265,7 @@ class OFMCQView: UIView {
             }
         }
     }
-    
+
     @IBAction func onFinishTaped(_ sender: UIButton) {
         var selectedOptionIDs = [String]()
         var isOtherOptionSelected = false
@@ -265,24 +274,26 @@ class OFMCQView: UIView {
             if let btn = view as? UIButton {
                 if btn.isSelected == true {
                     let selectedOption = self.allOptions![btn.tag]
-                    if let option : SurveyListResponse.Survey.Screen.Input.Choice = selectedOption as? SurveyListResponse.Survey.Screen.Input.Choice, let optionID : String  = option._id {
-                        if optionID == self.otherOptionID  {
+                    if
+                        let option = selectedOption as? SurveyListResponse.Survey.Screen.Input.Choice,
+                            let optionID = option.identifier {
+                        if optionID == self.otherOptionID {
                             if !otherOptionAnswer.isEmpty {
                                 isOtherOptionSelected = true
                                 selectedOptionIDs.append(optionID)
                             }
-                        }
-                        else {
+                        } else {
                             selectedOptionIDs.append(optionID)
                         }
                     }
                 }
             }
         }
-        self.delegate?.checkBoxViewDidFinishPicking(selectedOptionIDs,  isOtherOptionSelected ? otherOptionAnswer : nil)
-        
+        self.delegate?.checkBoxViewDidFinishPicking(
+            selectedOptionIDs,
+            otherTextAnswer: isOtherOptionSelected ? otherOptionAnswer : nil
+        )
     }
-    
 
     @IBAction func onSelectButton(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
@@ -301,21 +312,18 @@ class OFMCQView: UIView {
         }
         if sender.isSelected {
             self.addTextFieldIfRequired(sender)
-        }
-        else {
+        } else {
             self.setUnselectedButtonTitle(sender)
         }
-        
     }
 }
 
-extension OFMCQView : UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {   //delegate method
+extension OFMCQView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        if let enterButton : UIButton = textField.superview?.viewWithTag(self.enterButtonTag) as? UIButton {
+        if let enterButton = textField.superview?.viewWithTag(self.enterButtonTag) as? UIButton {
             self.enterButtonTapped(sender: enterButton)
         }
         return true
     }
 }
-

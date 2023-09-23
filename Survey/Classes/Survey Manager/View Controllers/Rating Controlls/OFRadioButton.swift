@@ -19,7 +19,21 @@ class OFRadioButton: UIButton {
         case radioButton
         case checkBox
     }
-    
+
+    override var isSelected: Bool {
+        didSet {
+            self.setupButtonStyle()
+        }
+    }
+
+    private var radioButtonType: OFRadioButtonType = .radioButton
+
+    override var isHighlighted: Bool {
+        didSet {
+            self.setupButtonStyle()
+        }
+    }
+
     init(frame: CGRect, type: OFRadioButtonType) {
         super.init(frame: frame)
         self.radioButtonType = type
@@ -34,62 +48,42 @@ class OFRadioButton: UIButton {
         self.setupButtonStyle()
 
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         self.titleEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 12)
 
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private var radioButtonType: OFRadioButtonType = .radioButton
-    
-    override var isHighlighted: Bool {
-        didSet {
-            self.setupButtonStyle()
-        }
-    }
-    
+
     func setupButtonStyle() {
         self.layer.borderWidth = 0
 
         if self.radioButtonType == .radioButton {
             if self.isHighlighted == true {
-                
             } else if self.isSelected == true {
                 self.layer.backgroundColor = kBrandColor.cgColor
                 self.setTitleColor(UIColor.white, for: .normal)
-
             } else {
                 self.layer.backgroundColor = kOptionBackgroundColor.cgColor
                 self.setTitleColor(kPrimaryTitleColor, for: .normal)
-
             }
-        }
-        else {
+        } else {
             if self.isHighlighted == true {
                 self.layer.backgroundColor = kOptionBackgroundColorHightlighted.cgColor
                 self.setTitleColor(kPrimaryTitleColor, for: .normal)
-                
             } else if self.isSelected == true {
                 self.layer.borderWidth = CGFloat(2.0)
                 self.layer.borderColor = kBrandColor.cgColor
                 self.layer.backgroundColor = kOptionBackgroundColorHightlighted.cgColor
                 self.setTitleColor(kPrimaryTitleColor, for: .normal)
-
             } else {
                 self.layer.backgroundColor = kOptionBackgroundColor.cgColor
                 self.setTitleColor(kPrimaryTitleColor, for: .normal)
             }
-        }
-    }
-
-    override var isSelected: Bool {
-        didSet {
-            self.setupButtonStyle()
         }
     }
 }

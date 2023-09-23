@@ -19,15 +19,13 @@ import UIKit
 enum OneFlowEnvironment: String {
     case dev
     case prod
-    
+
     var rawValue: String {
-        get {
-            switch self {
-            case .dev:
-                return "dev"
-            case .prod:
-                return "prod"
-            }
+        switch self {
+        case .dev:
+            return "dev"
+        case .prod:
+            return "prod"
         }
     }
 }
@@ -38,11 +36,11 @@ protocol ProjectDetailsManageable {
     var appKey: String! { get set }
     var isSuveryEnabled: Bool { get set }
     var systemID: String! { get set }
-    var analytic_user_id: String? { get set }
+    var analyticUserID: String? { get set }
     var currentLoggedUserID: String? { get set }
     var newUserID: String? { get set }
     var newUserData: [String: Any]? { get set }
-    var logUserRetryCount : Int { get set }
+    var logUserRetryCount: Int { get set }
     var appVersion: String { get }
     var buildVersion: String { get }
     var modelName: String? { get }
@@ -52,8 +50,8 @@ protocol ProjectDetailsManageable {
     var screenHeight: Int { get }
     var isWifiConnection: Bool { get set }
     var careerName: String? { get }
-    
-    func setLoglevel(_ newLogLevel : OneFlowLogLevel)
+
+    func setLoglevel(_ newLogLevel: OneFlowLogLevel)
     func logNewUserDetails(_ completion: @escaping (Bool) -> Void)
     func getLocalisedLanguageName() -> String
 }
@@ -61,7 +59,7 @@ protocol ProjectDetailsManageable {
 final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
 
     static let shared = OFProjectDetailsController()
-    let oneFlowSDKVersion: String = "2023.07.29"
+    let oneFlowSDKVersion: String = "2023.09.23"
     var currentEnviromment: OneFlowEnvironment = .prod
     var currentLogLevel: OneFlowLogLevel = .none
 
@@ -92,8 +90,8 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
         }
     }
 
-    var analytic_user_id: String?
-    
+    var analyticUserID: String?
+
     var currentLoggedUserID: String? {
         get {
             return UserDefaults.standard.value(forKey: "FBCurrentLoggedUser") as? String
@@ -107,28 +105,27 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
             }
         }
     }
-    
+
     var isWifiConnection: Bool = true
     var logUserRetryCount = 0
-    
     var newUserID: String?
     var newUserData: [String: Any]?
-    
-    func setLoglevel(_ newLogLevel : OneFlowLogLevel) {
+
+    func setLoglevel(_ newLogLevel: OneFlowLogLevel) {
         currentLogLevel = newLogLevel
     }
-    
+
     private func resetUserData() {
         UserDefaults.standard.removeObject(forKey: "analytic_user_id")
         UserDefaults.standard.removeObject(forKey: "uniqIDString")
     }
-    
+
     private override init() {
         super.init()
     }
-    
+
     func logNewUserDetails(_ completion: @escaping (Bool) -> Void) {
-        guard let analyticsID = self.analytic_user_id, let newUserID = self.newUserID else {
+        guard let analyticsID = self.analyticUserID, let newUserID = self.newUserID else {
             OneFlowLog.writeLog("Log user returned", .info)
             completion(false)
             return
@@ -145,9 +142,9 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
             if isSuccess == true, let data = data {
                 do {
                     let loggedUser = try JSONDecoder().decode(LogUserResponse.self, from: data)
-                    if loggedUser.success == 200, let user_id = loggedUser.result?.analytic_user_id {
+                    if loggedUser.success == 200, let userID = loggedUser.result?.analyticUserID {
                         self.currentLoggedUserID = newUserID
-                        self.analytic_user_id = user_id
+                        self.analyticUserID = userID
                         self.systemID = newUserID
                         self.newUserID = nil
                         self.newUserData = nil
@@ -165,10 +162,10 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
             }
         }
     }
-    
+
     func handleLogUserFailure(_ completion: @escaping (Bool) -> Void) {
         if self.logUserRetryCount < 3 {
-            self.logUserRetryCount = self.logUserRetryCount + 1
+            self.logUserRetryCount += 1
             DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 30) {
                 self.logNewUserDetails(completion)
             }
@@ -176,7 +173,7 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
             completion(false)
         }
     }
-    
+
     func getLocalisedLanguageName() -> String {
         if let preferredLanguage = Locale.preferredLanguages.first {
             let usLocale = Locale(identifier: "en-US")
@@ -190,12 +187,16 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
     }
 
     lazy var appVersion: String = {
-        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
+        guard let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
+            return "NA"
+        }
         return appVersion
     }()
 
     lazy var buildVersion: String = {
-        let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as! String
+        guard let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String else {
+            return "NA"
+        }
         return buildNumber
     }()
 
@@ -203,8 +204,8 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
         var systemInfo = utsname()
         uname(&systemInfo)
         let modelCode = withUnsafePointer(to: &systemInfo.machine) {
-            $0.withMemoryRebound(to: CChar.self, capacity: 1) {
-                ptr in String.init(validatingUTF8: ptr)
+            $0.withMemoryRebound(to: CChar.self, capacity: 1) { ptr in
+                String.init(validatingUTF8: ptr)
             }
         }
         return modelCode

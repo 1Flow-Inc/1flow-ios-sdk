@@ -19,7 +19,7 @@ class OFShortAnswerView: UIView {
 
     @IBOutlet weak var btnFinish: UIButton!
     @IBOutlet weak var textField: UITextField!
-    weak var delegate: OFRatingViewProtocol?
+    weak var delegate: OFRatingViewDelegate?
 
     var minCharsAllowed = 5 {
         didSet {
@@ -35,10 +35,13 @@ class OFShortAnswerView: UIView {
     var placeHolderText = "Write here..." {
         didSet {
             if !placeHolderText.isEmpty {
-                //self.textField.placeholder = placeHolderText
                 self.textField.attributedPlaceholder = NSAttributedString(
                     string: placeHolderText,
-                    attributes: [NSAttributedString.Key.foregroundColor: kPlaceholderColor, NSAttributedString.Key.font: OneFlow.fontConfiguration?.textFieldFont ?? UIFont.systemFont(ofSize: 14)]
+                    attributes: [
+                        NSAttributedString.Key.foregroundColor: kPlaceholderColor,
+                        NSAttributedString.Key.font: OneFlow.fontConfiguration?.textFieldFont
+                        ?? UIFont.systemFont(ofSize: 14)
+                    ]
                 )
             }
         }
@@ -56,7 +59,7 @@ class OFShortAnswerView: UIView {
             }
         }
     }
-    var submitButtonTitle : String = "Submit Feedback" {
+    var submitButtonTitle: String = "Submit Feedback" {
         didSet {
             btnFinish.setTitle(self.submitButtonTitle, for: .normal)
         }
@@ -74,9 +77,8 @@ class OFShortAnswerView: UIView {
         textField.addTarget(self, action: #selector(OFShortAnswerView.textFieldDidChange(_:)),
                                       for: .editingChanged)
         textField.font = OneFlow.fontConfiguration?.textFieldFont
-       
     }
-    
+
     private func setupTextFieldAppreance() {
         textField.textColor = kPrimaryTitleColor
         textField.backgroundColor = UIColor.clear
@@ -84,11 +86,11 @@ class OFShortAnswerView: UIView {
         textField.layer.borderColor = kBorderColor.cgColor
         textField.layer.cornerRadius = 2.0
     }
-    
+
     @objc func textFieldDidChange(_ textField: UITextField) {
         self.enteredText = textField.text
     }
-    
+
     @IBAction func onFinished(_ sender: UIButton) {
         if let text = self.textField.text, text.count >= minCharsAllowed {
             self.isUserInteractionEnabled = false
@@ -96,7 +98,6 @@ class OFShortAnswerView: UIView {
         }
     }
 }
-
 
 extension OFShortAnswerView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

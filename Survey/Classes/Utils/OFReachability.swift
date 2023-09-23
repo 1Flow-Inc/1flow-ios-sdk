@@ -1,4 +1,3 @@
-
 /*
 Copyright (c) 2014, Ashley Mills
 All rights reserved.
@@ -46,8 +45,8 @@ extension Notification.Name {
 
 class OFReachability {
 
-    public typealias NetworkReachable = (OFReachability) -> ()
-    public typealias NetworkUnreachable = (OFReachability) -> ()
+    public typealias NetworkReachable = (OFReachability) -> Void
+    public typealias NetworkUnreachable = (OFReachability) -> Void
 
     @available(*, unavailable, renamed: "Connection")
     public enum NetworkStatus: CustomStringConvertible {
@@ -70,7 +69,7 @@ class OFReachability {
             case .unavailable: return "No Connection"
             }
         }
-        
+
         @available(*, deprecated, renamed: "unavailable")
         public static let none: Connection = .unavailable
     }
@@ -101,7 +100,7 @@ class OFReachability {
         if flags == nil {
             try? setReachabilityFlags()
         }
-        
+
         switch flags?.connection {
         case .unavailable?, nil: return .unavailable
         case .cellular?: return allowsCellularConnection ? .cellular : .unavailable
@@ -134,7 +133,11 @@ class OFReachability {
                          notificationQueue: DispatchQueue? = .main) {
         self.allowsCellularConnection = true
         self.reachabilityRef = reachabilityRef
-        self.reachabilitySerialQueue = DispatchQueue(label: "uk.co.ashleymills.reachability", qos: queueQoS, target: targetQueue)
+        self.reachabilitySerialQueue = DispatchQueue(
+            label: "uk.co.ashleymills.reachability",
+            qos: queueQoS,
+            target: targetQueue
+        )
         self.notificationQueue = notificationQueue
     }
 
@@ -145,7 +148,12 @@ class OFReachability {
         guard let ref = SCNetworkReachabilityCreateWithName(nil, hostname) else {
             throw OFReachabilityError.failedToCreateWithHostname(hostname, SCError())
         }
-        self.init(reachabilityRef: ref, queueQoS: queueQoS, targetQueue: targetQueue, notificationQueue: notificationQueue)
+        self.init(
+            reachabilityRef: ref,
+            queueQoS: queueQoS,
+            targetQueue: targetQueue,
+            notificationQueue: notificationQueue
+        )
     }
 
     public convenience init(queueQoS: DispatchQoS = .default,
@@ -159,7 +167,12 @@ class OFReachability {
             throw OFReachabilityError.failedToCreateWithAddress(zeroAddress, SCError())
         }
 
-        self.init(reachabilityRef: ref, queueQoS: queueQoS, targetQueue: targetQueue, notificationQueue: notificationQueue)
+        self.init(
+            reachabilityRef: ref,
+            queueQoS: queueQoS,
+            targetQueue: targetQueue,
+            notificationQueue: notificationQueue
+        )
     }
 
     deinit {
@@ -173,7 +186,7 @@ extension OFReachability {
     func startNotifier() throws {
         guard !notifierRunning else { return }
 
-        let callback: SCNetworkReachabilityCallBack = { (reachability, flags, info) in
+        let callback: SCNetworkReachabilityCallBack = { (_, flags, info) in
             guard let info = info else { return }
 
             // `weakifiedReachability` is guaranteed to exist by virtue of our
@@ -186,11 +199,11 @@ extension OFReachability {
         }
 
         let weakifiedReachability = ReachabilityWeakifier(reachability: self)
-        let opaqueWeakifiedReachability = Unmanaged<ReachabilityWeakifier>.passUnretained(weakifiedReachability).toOpaque()
+        let opaqueReachability = Unmanaged<ReachabilityWeakifier>.passUnretained(weakifiedReachability).toOpaque()
 
         var context = SCNetworkReachabilityContext(
             version: 0,
-            info: UnsafeMutableRawPointer(opaqueWeakifiedReachability),
+            info: UnsafeMutableRawPointer(opaqueReachability),
             retain: { (info: UnsafeRawPointer) -> UnsafeRawPointer in
                 let unmanagedWeakifiedReachability = Unmanaged<ReachabilityWeakifier>.fromOpaque(info)
                 _ = unmanagedWeakifiedReachability.retain()
@@ -262,16 +275,18 @@ fileprivate extension OFReachability {
                 self.stopNotifier()
                 throw OFReachabilityError.unableToGetFlags(SCError())
             }
-            
             self.flags = flags
         }
     }
-    
 
     func notifyReachabilityChanged() {
         let notify = { [weak self] in
             guard let self = self else { return }
-            self.connection != .unavailable ? self.whenReachable?(self) : self.whenUnreachable?(self)
+            if self.connection != .unavailable {
+                self.whenReachable?(self)
+            } else {
+                self.whenUnreachable?(self)
+            }
             self.notificationCenter.post(name: .OFreachabilityChanged, object: self)
         }
 
@@ -350,17 +365,25 @@ fileprivate extension SCNetworkReachabilityFlags {
     }
 
     var description: String {
-        let W = isOnWWANFlagSet ? "W" : "-"
-        let R = isReachableFlagSet ? "R" : "-"
-        let c = isConnectionRequiredFlagSet ? "c" : "-"
-        let t = isTransientConnectionFlagSet ? "t" : "-"
-        let i = isInterventionRequiredFlagSet ? "i" : "-"
-        let C = isConnectionOnTrafficFlagSet ? "C" : "-"
-        let D = isConnectionOnDemandFlagSet ? "D" : "-"
-        let l = isLocalAddressFlagSet ? "l" : "-"
-        let d = isDirectFlagSet ? "d" : "-"
+        let wanFlag = isOnWWANFlagSet ? "W" : "-"
+        let reachableFlag = isReachableFlagSet ? "R" : "-"
+        let connectionRequiredFlag = isConnectionRequiredFlagSet ? "c" : "-"
+        let transientConnectionFlag = isTransientConnectionFlagSet ? "t" : "-"
+        let interventionRequiredFlag = isInterventionRequiredFlagSet ? "i" : "-"
+        let connectionOnTrafficFlag = isConnectionOnTrafficFlagSet ? "C" : "-"
+        let connectionOnDemandFlag = isConnectionOnDemandFlagSet ? "D" : "-"
+        let localAddressFlag = isLocalAddressFlagSet ? "l" : "-"
+        let directFlag = isDirectFlagSet ? "d" : "-"
 
-        return "\(W)\(R) \(c)\(t)\(i)\(C)\(D)\(l)\(d)"
+        return wanFlag
+        + reachableFlag
+        + connectionRequiredFlag
+        + transientConnectionFlag
+        + interventionRequiredFlag
+        + connectionOnTrafficFlag
+        + connectionOnDemandFlag
+        + localAddressFlag
+        + directFlag
     }
 }
 

@@ -1,11 +1,17 @@
+// Copyright 2021 1Flow, Inc.
 //
-//  EndPointPovider.swift
-//  1Flow
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//  Created by Rohan Moradiya on 30/04/22.
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-//https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/SDK-Credentials/incoming_webhook/Oneflow-dev-sdk-v3-credentials
 import Foundation
 
 protocol EndPointProtocol {
@@ -21,9 +27,9 @@ enum EndPoints: EndPointProtocol {
     case appStoreRating
     case fetchSurvey(String)
     case scriptUpdate
-    
+
     var url: String {
-        let BaseURL: String = {
+        let baseURL: String = {
                 if OFProjectDetailsController.shared.currentEnviromment == .dev {
                     return "https://dev-sdk.1flow.app/api/2021-06-15"
                 } else {
@@ -32,10 +38,10 @@ enum EndPoints: EndPointProtocol {
         }()
         switch self {
         case .addUser:
-            return BaseURL + "/v3/user"
+            return baseURL + "/v3/user"
         case .getSurveys:
-            var surveyUrl = BaseURL + "/v3/survey?platform=iOS"
-            if let userID : String = OFProjectDetailsController.shared.analytic_user_id {
+            var surveyUrl = baseURL + "/v3/survey?platform=iOS"
+            if let userID = OFProjectDetailsController.shared.analyticUserID {
                 surveyUrl = surveyUrl + "&user_id=" + userID
             }
 
@@ -47,8 +53,8 @@ enum EndPoints: EndPointProtocol {
             }
             return surveyUrl
         case .fetchSurvey(let surveyID):
-            var surveyUrl = BaseURL + "/v3/survey/\(surveyID)?platform=iOS"
-            if let userID : String = OFProjectDetailsController.shared.analytic_user_id {
+            var surveyUrl = baseURL + "/v3/survey/\(surveyID)?platform=iOS"
+            if let userID = OFProjectDetailsController.shared.analyticUserID {
                 surveyUrl = surveyUrl + "&user_id=" + userID
             }
 
@@ -60,11 +66,11 @@ enum EndPoints: EndPointProtocol {
             }
             return surveyUrl
         case .addEvent:
-            return BaseURL + "/v3/track"
+            return baseURL + "/v3/track"
         case .submitSurvey:
-            return BaseURL + "/v3/response"
+            return baseURL + "/v3/response"
         case .logUser:
-            return BaseURL + "/v3/identify"
+            return baseURL + "/v3/identify"
         case .appStoreRating:
             guard let bundleID = Bundle.main.bundleIdentifier else {
                 return ""
@@ -72,11 +78,10 @@ enum EndPoints: EndPointProtocol {
             return "http://itunes.apple.com/lookup?bundleId=" + bundleID
         case .scriptUpdate:
             if OFProjectDetailsController.shared.currentEnviromment == .dev {
-                return "https://cdn.1flow.app/index-dev.js"
+                return "https://cdn-development.1flow.ai/js-sdk/filter.js"
             } else {
                 return "https://cdn.1flow.app/index.js"
             }
-            // https://cdn.1flow.app/index-beta.js for beta
         }
     }
 }

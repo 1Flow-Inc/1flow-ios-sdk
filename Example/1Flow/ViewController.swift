@@ -40,11 +40,11 @@ class ViewController: UIViewController {
     }
 
     @IBAction func onButton1(_ sender: Any) {
-        OneFlow.recordEventName("1", parameters: nil)
+        OneFlow.recordEventName("button1", parameters: nil)
     }
 
     @IBAction func onButton2(_ sender: Any) {
-        OneFlow.recordEventName("secondEvent", parameters: ["first_name": "rohan", "roll_number": 10])
+        OneFlow.recordEventName("secondEvent", parameters: ["first_name": "john", "roll_number": 10])
     }
 
     @IBAction func onButton3(_ sender: Any) {

@@ -17,9 +17,14 @@ import Foundation
 struct LogUserResponse: Codable {
     let success: Int?
     let result: LogResult?
-    
+
     struct LogResult: Codable {
-        let analytic_user_id: String?
-        let session_id: String?
+        let analyticUserID: String?
+        let sessionID: String?
+
+        enum CodingKeys: String, CodingKey {
+            case analyticUserID = "analytic_user_id"
+            case sessionID = "session_id"
+        }
     }
 }

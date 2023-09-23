@@ -27,7 +27,7 @@ protocol EventManagerProtocol {
 }
 
 class OFEventManager: NSObject, EventManagerProtocol {
-    
+
     var surveyManager: SurveyManageable!
     private let inAppController = OFInAppPurchaseEventsController()
     private var eventsArray = [[String: Any]]()
@@ -43,30 +43,30 @@ class OFEventManager: NSObject, EventManagerProtocol {
         super.init()
         OneFlowLog.writeLog("Event manager init")
     }
-    
+
     func configure() {
         OneFlowLog.writeLog("Event Manager configure")
         self.startEventManager()
         self.setupSurveyManager()
     }
-    
+
     func finishPendingEvents() {
-        if projectDetailsController.analytic_user_id != nil {
+        if projectDetailsController.analyticUserID != nil {
             sendEventsToServer()
             if let surveyManagerObj = self.surveyManager {
                 surveyManagerObj.uploadPendingSurveyIfAvailable()
             }
         }
     }
-    
+
     @objc func applicationBecomeActive() {
-        if projectDetailsController.analytic_user_id != nil && self.isNetworkReachable == true {
+        if projectDetailsController.analyticUserID != nil && self.isNetworkReachable == true {
             self.startUploadTimer()
         }
     }
-    
+
     @objc func applicationMovedToBackground() {
-        if projectDetailsController.analytic_user_id != nil, self.isNetworkReachable == true {
+        if projectDetailsController.analyticUserID != nil, self.isNetworkReachable == true {
             self.sendEventsToServer()
         }
         self.uploadTimer?.invalidate()
@@ -77,14 +77,14 @@ class OFEventManager: NSObject, EventManagerProtocol {
         let params = ["library_version": projectDetailsController.libraryVersion, "app_version": getAppVersion()]
         self.recordEvent(kEventNameSessionStart, parameters: params)
     }
-    
+
     func networkStatusChanged(_ isReachable: Bool) {
         self.isNetworkReachable = isReachable
         if let surveyManagerObj = self.surveyManager {
             surveyManagerObj.networkStatusChanged(isReachable)
         }
         if isReachable == true {
-            if projectDetailsController.analytic_user_id != nil {
+            if projectDetailsController.analyticUserID != nil {
                 self.startUploadTimer()
             }
         } else {
@@ -92,7 +92,7 @@ class OFEventManager: NSObject, EventManagerProtocol {
             self.uploadTimer = nil
         }
     }
-    
+
     func setupSurveyManager() {
         if self.surveyManager == nil {
             self.surveyManager = OFSurveyManager()
@@ -102,7 +102,7 @@ class OFEventManager: NSObject, EventManagerProtocol {
         self.surveyManager.isNetworkReachable = true
         self.surveyManager.configureSurveys()
     }
-    
+
     private func startEventManager() {
         let previousLoggedEvents = self.eventsArray
         if let eventsArray = UserDefaults.standard.value(forKey: "FBPendingEventsList") as? [[String: Any]] {
@@ -119,43 +119,60 @@ class OFEventManager: NSObject, EventManagerProtocol {
         self.setupDefaultEventsObservers()
         self.sendEventsToServer()
     }
-    
-    private func setupDefaultEventsObservers() {
-        
-        DispatchQueue.main.async { [self] in
-            NotificationCenter.default.addObserver(self, selector: #selector(applicationMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
 
-            NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-            
-            NotificationCenter.default.addObserver(self, selector: #selector(applicationBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+    private func setupDefaultEventsObservers() {
+
+        DispatchQueue.main.async { [self] in
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(applicationMovedToBackground),
+                name: UIApplication.willResignActiveNotification,
+                object: nil
+            )
+
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(applicationWillEnterForeground),
+                name: UIApplication.willEnterForegroundNotification,
+                object: nil
+            )
+
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(applicationBecomeActive),
+                name: UIApplication.didBecomeActiveNotification,
+                object: nil
+            )
         }
-        
+
         let appVersion = self.getAppVersion()
-        
-        //App Launch first time
+
+        // App Launch first time
         let temp = UserDefaults.standard.bool(forKey: "FBIsAppOpened")
         if temp == false {
-            self.recordEvent(kEventNameFirstAppOpen, parameters: ["app_version" : appVersion])
+            self.recordEvent(kEventNameFirstAppOpen, parameters: ["app_version": appVersion])
             UserDefaults.standard.set(true, forKey: "FBIsAppOpened")
         }
-        
-        //App updated
+
+        // App updated
         if let previousVersion = UserDefaults.standard.value(forKey: "FBPreviousAppVersion") as? String {
             if previousVersion != appVersion {
-                self.recordEvent(kEventNameAppUpdate, parameters: ["app_version_current" : appVersion, "app_version_previous": previousVersion])
+                self.recordEvent(
+                    kEventNameAppUpdate,
+                    parameters: [
+                        "app_version_current": appVersion,
+                        "app_version_previous": previousVersion
+                    ]
+                )
                 UserDefaults.standard.set(appVersion, forKey: "FBPreviousAppVersion")
             }
         }
-        
-        //In App Purchase
+
+        // In App Purchase
         self.inAppController.delegate = self
         self.inAppController.startObserver()
-        
-        //Screen Tracking
-//        self.screenTrackingController.startTacking()
-        
     }
-    
+
     private func startUploadTimer() {
         OneFlowLog.writeLog("OFEventManager: Timer start")
         DispatchQueue.main.async { [self] in
@@ -163,41 +180,70 @@ class OFEventManager: NSObject, EventManagerProtocol {
                 self.uploadTimer?.invalidate()
                 self.uploadTimer = nil
             }
-            self.uploadTimer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(sendEventsToServer), userInfo: nil, repeats: true)
+            self.uploadTimer = Timer.scheduledTimer(
+                timeInterval: 60,
+                target: self,
+                selector: #selector(sendEventsToServer),
+                userInfo: nil,
+                repeats: true
+            )
         }
     }
 
     func recordInternalEvent(
         name: String,
-        parameters: [String : Any]
+        parameters: [String: Any]
     ) {
         eventModificationQueue.async(flags: .barrier) {
             let uniqueID = OFProjectDetailsController.objectId()
-            let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "parameters": parameters as Any, "plt": "i", "_id": uniqueID] as [String : Any]
+            let newEventDic = [
+                "name": name,
+                "time": Int(Date().timeIntervalSince1970),
+                "parameters": parameters as Any,
+                "plt": "i",
+                "_id": uniqueID
+            ] as [String: Any]
             self.eventsArray.append(newEventDic)
         }
     }
 
     func recordEvent(_ name: String, parameters: [String: Any]?) {
         OneFlowLog.writeLog("OFEventManager: Record Event- name:\(name), parameters: \(parameters as Any)")
-        
+
         /// barrier is used to handle bulk events e.g. log events with loops
         eventModificationQueue.async(flags: .barrier) {
             let uniqueID = OFProjectDetailsController.objectId()
             if let parameters = parameters {
-                let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "parameters": parameters as Any, "plt": "i", "_id": uniqueID] as [String : Any]
+                let newEventDic = [
+                    "name": name,
+                    "time": Int(Date().timeIntervalSince1970),
+                    "parameters": parameters as Any,
+                    "plt": "i",
+                    "_id": uniqueID
+                ] as [String: Any]
                 self.eventsArray.append(newEventDic)
             } else {
-                let newEventDic = ["name": name, "time": Int(Date().timeIntervalSince1970), "plt": "i", "_id": uniqueID] as [String : Any]
+                let newEventDic = [
+                    "name": name,
+                    "time": Int(Date().timeIntervalSince1970),
+                    "plt": "i",
+                    "_id": uniqueID
+                ] as [String: Any]
                 self.eventsArray.append(newEventDic)
             }
-            
+
             /// event SaveTimer is used to handle multiple simulteneuos calls of this methods
             DispatchQueue.main.async { [self] in
                 if let timer = eventSaveTimer, timer.isValid {
                     timer.invalidate()
                 }
-                self.eventSaveTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(saveEventArray), userInfo: nil, repeats: false)
+                self.eventSaveTimer = Timer.scheduledTimer(
+                    timeInterval: 2.0,
+                    target: self,
+                    selector: #selector(saveEventArray),
+                    userInfo: nil,
+                    repeats: false
+                )
             }
             if name != kEventNameSurveyImpression {
                 /// if Survey is enabled, then pass this event to survey manager to check if survey available or not
@@ -216,19 +262,19 @@ class OFEventManager: NSObject, EventManagerProtocol {
             self.sendEventsToServer()
         }
     }
-    
+
     @objc func saveEventArray() {
         OneFlowLog.writeLog("OFEventManager: Save Events")
         UserDefaults.standard.setValue(self.eventsArray, forKey: "FBPendingEventsList")
     }
-    
+
     @objc func sendEventsToServer() {
         if isEventSentInProgress {
             OneFlowLog.writeLog("Event sending already in progress", .info)
             return
         }
         OneFlowLog.writeLog("OFEventManager: sendEventsToServer")
-        guard let userId = projectDetailsController.analytic_user_id else {
+        guard let userId = projectDetailsController.analyticUserID else {
             OneFlowLog.writeLog("OFEventManager: User is not created", .info)
             return
         }
@@ -239,12 +285,15 @@ class OFEventManager: NSObject, EventManagerProtocol {
         if eventsCount > 0 {
             OneFlowLog.writeLog("OFEventManager: Sending events to server: \(self.eventsArray.count)")
             let uploadedEvents = eventsCount
-            let finalParameters = ["events": self.eventsArray, "user_id": userId] as [String : Any]
+            let finalParameters = ["events": self.eventsArray, "user_id": userId] as [String: Any]
             isEventSentInProgress = true
             OFAPIController.shared.addEvents(finalParameters) { [weak self] isSuccess, error, data in
                 if isSuccess == true, let data = data {
                     do {
-                        if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
+                        if let json = try JSONSerialization.jsonObject(
+                            with: data,
+                            options: JSONSerialization.ReadingOptions.fragmentsAllowed
+                        ) as? [String: Any] {
                             OneFlowLog.writeLog("OFEventManager: sendEventsToServer - Success")
                             OneFlowLog.writeLog("OFEventManager: Response: \(json)")
                             if let status = json["success"] as? Int, status == 200 {
@@ -253,7 +302,7 @@ class OFEventManager: NSObject, EventManagerProtocol {
                                     let totalCount = self.eventsArray.count
                                     if (totalCount - uploadedEvents) > 0 {
                                         self.eventsArray = self.eventsArray.suffix(totalCount - uploadedEvents)
-                                    } else { //if (totalCount - uploadedEvents) == 0 {
+                                    } else {
                                         self.eventsArray.removeAll()
                                     }
                                     self.saveEventArray()
@@ -272,23 +321,27 @@ class OFEventManager: NSObject, EventManagerProtocol {
             OneFlowLog.writeLog("EventManger: No Events to send")
         }
     }
-    
+
     private func getAppVersion() -> String {
-        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
+        guard let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
+            return "NA"
+        }
         return appVersion
     }
-    
+
     private func getAppBuildNumber() -> String {
-        let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as! String
+        guard let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String else {
+            return "NA"
+        }
         return buildNumber
     }
-    
+
     private func machineName() -> String? {
         var systemInfo = utsname()
         uname(&systemInfo)
         let modelCode = withUnsafePointer(to: &systemInfo.machine) {
-            $0.withMemoryRebound(to: CChar.self, capacity: 1) {
-                ptr in String.init(validatingUTF8: ptr)
+            $0.withMemoryRebound(to: CChar.self, capacity: 1) { ptr in
+                String.init(validatingUTF8: ptr)
             }
         }
         return modelCode
@@ -303,6 +356,5 @@ extension OFEventManager: OFInAppPurchaseEventsDelegate {
         } catch {
             OneFlowLog.writeLog("\(#function): \(error)", .error)
         }
-        
     }
 }

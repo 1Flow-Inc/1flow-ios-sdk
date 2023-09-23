@@ -15,7 +15,6 @@
 import Foundation
 import UIKit
 
-
 var kBrandColor = UIColor(red: 0.36, green: 0.37, blue: 0.93, alpha: 1.0)
 var kBrandHightlightColor = kBrandColor.withAlphaComponent(0.21)
 var kPrimaryTitleColor = UIColor.black

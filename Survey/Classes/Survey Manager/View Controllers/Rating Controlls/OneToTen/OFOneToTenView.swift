@@ -42,7 +42,7 @@ class OFOneToTenView: UIView {
             }
         }
     }
-    weak var delegate: OFRatingViewProtocol?
+    weak var delegate: OFRatingViewDelegate?
     @IBOutlet weak var lblMinValue: UILabel!
     @IBOutlet weak var lblMaxValue: UILabel!
     var ratingMaxText: String? {
@@ -52,7 +52,7 @@ class OFOneToTenView: UIView {
             }
         }
     }
-    
+
     var ratingMinText: String? {
         didSet {
             if ratingMinText != nil {
@@ -60,7 +60,7 @@ class OFOneToTenView: UIView {
             }
         }
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         let nib = UINib(nibName: "OFNumberCollectionViewCell", bundle: OneFlowBundle.bundleForObject(self))
@@ -73,7 +73,7 @@ class OFOneToTenView: UIView {
         self.lblMaxValue.font = OneFlow.fontConfiguration?.openTextCharCountFont
         self.lblMinValue.font = OneFlow.fontConfiguration?.openTextCharCountFont
     }
-    
+
     var selectedButton: UIButton? {
         didSet {
             self.delegate?.oneToTenViewChangeSelection(selectedButton?.tag ?? nil)
@@ -100,9 +100,16 @@ extension OFOneToTenView: UICollectionViewDelegate, UICollectionViewDataSource, 
             return maxValue - minValue + 1
         }
     }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "OFNumberCollectionViewCell", for: indexPath) as! OFNumberCollectionViewCell
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "OFNumberCollectionViewCell",
+            for: indexPath) as? OFNumberCollectionViewCell else {
+            return UICollectionViewCell()
+        }
         cell.btnNumber.addTarget(self, action: #selector(onSelectButton(_:)), for: .touchUpInside)
         let titleNumber = self.minValue + indexPath.item
         cell.btnNumber.tag = titleNumber
@@ -120,7 +127,7 @@ extension OFOneToTenView: UICollectionViewDelegate, UICollectionViewDataSource, 
             cell.btnNumber.titleLabel?.font = OneFlow.fontConfiguration?.numberFont
             cell.btnNumber.setTitle("\(titleNumber)", for: .normal)
         }
-        
+
         if indexPath.item == 0 {
             cell.leftBorder.isHidden = true
         } else {
@@ -128,21 +135,24 @@ extension OFOneToTenView: UICollectionViewDelegate, UICollectionViewDataSource, 
         }
         return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumInteritemSpacingForSectionAt section: Int
+    ) -> CGFloat {
         if self.isForEmoji {
             return 0
         }
         let numberOfItems: CGFloat = CGFloat(maxValue - minValue) + 1
-        if numberOfItems > 5 {
-            return 6.0
-        }
-        else{
-            return 10.5
-        }
+        return numberOfItems > 5 ? 6.0 : 10.5
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
         if self.isForEmoji {
             var itemWidth = collectionView.bounds.width / CGFloat(emojiArray?.count ?? 1)
             if itemWidth > 55 {
@@ -153,17 +163,14 @@ extension OFOneToTenView: UICollectionViewDelegate, UICollectionViewDataSource, 
             let numberOfItems: CGFloat = CGFloat(maxValue - minValue) + 1
             var itemWidth = collectionView.bounds.width / numberOfItems
             if numberOfItems > 5 {
-                itemWidth = itemWidth - 6
-            }
-            else{
-                itemWidth = itemWidth - 10.5
-
+                itemWidth -= 6
+            } else {
+                itemWidth -= 10.5
             }
             if itemWidth > 55 {
                 itemWidth = 55
             }
             return CGSize(width: itemWidth, height: 48)
         }
-        
     }
 }

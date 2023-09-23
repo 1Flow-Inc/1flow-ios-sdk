@@ -14,7 +14,7 @@
 
 import Foundation
 
-enum WidgetPosition : String, Codable {
+enum WidgetPosition: String, Codable {
     case topLeft = "top-left"
     case topCenter = "top-center"
     case topRight = "top-right"
@@ -34,139 +34,265 @@ struct SurveyListResponse: Codable {
     var message: String?
     var result: [Survey]
     var throttlingMobileSDKConfig: ThrottlingConfiguration?
-    
+
     struct Survey: Codable {
         var name: String
         var description: String?
-        var num_responses: String?
-        var end_date: String?
+        var numResponses: String?
+        var endDate: String?
         var live: Bool?
         var platforms: [String]?
         var screens: [Screen]?
         var deleted: Bool?
-        var deleted_on: String?
-        var schema_version: Int?
-        var _id: String
-        var project_id: String?
+        var deletedOn: String?
+        var schemaVersion: Int?
+        var identifier: String
+        var projectID: String?
         var style: Style?
-        var trigger_event_name: String?
-        var start_date: Int?
-        var created_on: Int?
-        var updated_on: Int?
-        var __v: Int?
+        var triggerEventName: String?
+        var startDate: Int?
+        var createdOn: Int?
+        var updatedOn: Int?
+        var version: Int?
         var color: String?
-        var survey_settings: SurveySettings?
-        var survey_time_interval: SurveySettings.TimingOption?
-        
+        var surveySettings: SurveySettings?
+        var surveyTimeInterval: SurveySettings.TimingOption?
+
+        enum CodingKeys: String, CodingKey {
+            case name
+            case description
+            case numResponses = "num_responses"
+            case endDate = "end_date"
+            case live
+            case platforms
+            case screens
+            case deleted
+            case deletedOn = "deleted_on"
+            case schemaVersion = "schema_version"
+            case identifier = "_id"
+            case projectID = "project_id"
+            case style
+            case triggerEventName = "trigger_event_name"
+            case startDate = "start_date"
+            case createdOn = "created_on"
+            case updatedOn = "updated_on"
+            case version = "__v"
+            case color
+            case surveySettings = "survey_settings"
+            case surveyTimeInterval = "survey_time_interval"
+        }
+
         struct Screen: Codable {
             var title: String?
             var input: Input?
             var message: String?
-            var _id: String
+            var identifier: String
             var buttons: [FBButton]?
-            var rules : Rule?
-            var media_embed_html: String?
-            
+            var rules: Rule?
+            var mediaEmbedHtml: String?
+
+            enum CodingKeys: String, CodingKey {
+                case title
+                case input
+                case message
+                case identifier = "_id"
+                case buttons
+                case rules
+                case mediaEmbedHtml = "media_embed_html"
+            }
+
             struct Input: Codable {
-                var _id: String
-                var input_type: String
-                var min_val: Int?
-                var max_val: Int?
+                var identifier: String
+                var inputType: String
+                var minVal: Int?
+                var maxVal: Int?
                 var choices: [Choice]?
-                var min_chars: Int?
-                var max_chars: Int?
+                var minChars: Int?
+                var maxChars: Int?
                 var emoji: Bool?
-                var star_fill_color: String?
+                var starFillColor: String?
                 var stars: Bool?
-                var placeholder_text: String?
-                var rating_max_text: String?
-                var rating_min_text: String?
-                var other_option_id: String?
-                var rating_text: [String:String]?
+                var placeholderText: String?
+                var ratingMaxText: String?
+                var ratingMinText: String?
+                var otherOptionID: String?
+                var ratingText: [String: String]?
+
+                enum CodingKeys: String, CodingKey {
+                    case identifier = "_id"
+                    case inputType = "input_type"
+                    case minVal = "min_val"
+                    case maxVal = "max_val"
+                    case choices
+                    case minChars = "min_chars"
+                    case maxChars = "max_chars"
+                    case emoji
+                    case starFillColor = "star_fill_color"
+                    case stars
+                    case placeholderText = "placeholder_text"
+                    case ratingMaxText = "rating_max_text"
+                    case ratingMinText = "rating_min_text"
+                    case otherOptionID = "other_option_id"
+                    case ratingText = "rating_text"
+                }
 
                 struct Choice: Codable {
-                    var _id: String?
+                    var identifier: String?
                     var title: String?
+
+                    enum CodingKeys: String, CodingKey {
+                        case identifier = "_id"
+                        case title
+                    }
                 }
             }
-            struct Rule : Codable {
-                var userProperty : String
-                var dataLogic : [DataLogic]?
-                var dismiss_behavior : DismissBehaviour?
-                struct DataLogic : Codable {
-                    var condition : String?
-                    var values : String?
-                    var type : String?
-                    var action : String?
+
+            struct Rule: Codable {
+                var userProperty: String
+                var dataLogic: [DataLogic]?
+                var dismissBehavior: DismissBehaviour?
+
+                enum CodingKeys: String, CodingKey {
+                    case userProperty
+                    case dataLogic
+                    case dismissBehavior = "dismiss_behavior"
                 }
-                struct DismissBehaviour : Codable {
-                    var fades_away : Bool?
-                    var delay_in_seconds : Int?
+
+                struct DataLogic: Codable {
+                    var condition: String?
+                    var values: String?
+                    var type: String?
+                    var action: String?
+                }
+
+                struct DismissBehaviour: Codable {
+                    var fadesAway: Bool?
+                    var delayInSeconds: Int?
+
+                    enum CodingKeys: String, CodingKey {
+                        case fadesAway = "fades_away"
+                        case delayInSeconds = "delay_in_seconds"
+                    }
                 }
             }
-           
+
             struct FBButton: Codable {
-                var _id: String
-                var button_type: String
+                var identifier: String
+                var buttonType: String
                 var action: String?
                 var title: String
+
+                enum CodingKeys: String, CodingKey {
+                    case identifier = "_id"
+                    case buttonType = "button_type"
+                    case action
+                    case title
+                }
             }
         }
-        
+
         struct Style: Codable {
-            var display_mode: String?
+            var displayMode: String?
             var font: String?
-            var _id: String?
-            var primary_color: String?
-            var corner_radius: Int?
-            var change_trigger: Bool?
-            var color_opacity: Int?
-            var previous_change_color: Bool?
+            var identifier: String?
+            var primaryColor: String?
+            var cornerRadius: Int?
+            var changeTrigger: Bool?
+            var colorOpacity: Int?
+            var previousChangeColor: Bool?
+
+            enum CodingKeys: String, CodingKey {
+                case displayMode = "display_mode"
+                case font
+                case identifier = "_id"
+                case primaryColor = "primary_color"
+                case cornerRadius = "corner_radius"
+                case changeTrigger = "change_trigger"
+                case colorOpacity = "color_opacity"
+                case previousChangeColor = "previous_change_color"
+            }
         }
-        
+
         struct SurveySettings: Codable {
-            var _id: String?
-            var resurvey_option: Bool?
-            var retake_survey: RetakeSurvey?
-            var show_watermark: Bool?
-            var closed_as_finished: Bool? = false
-            var sdk_theme: SDKTheme?
-            var override_global_throttling: Bool?
-            var trigger_filters: [TriggerFilter]?
-            
+            var identifier: String?
+            var resurveyOption: Bool?
+            var retakeSurvey: RetakeSurvey?
+            var showWatermark: Bool?
+            var closedAsFinished: Bool? = false
+            var sdkTheme: SDKTheme?
+            var overrideGlobalThrottling: Bool?
+            var triggerFilters: [TriggerFilter]?
+
+            enum CodingKeys: String, CodingKey {
+                case identifier = "_id"
+                case resurveyOption = "resurvey_option"
+                case retakeSurvey = "retake_survey"
+                case showWatermark = "show_watermark"
+                case closedAsFinished = "closed_as_finished"
+                case sdkTheme = "sdk_theme"
+                case overrideGlobalThrottling = "override_global_throttling"
+                case triggerFilters = "trigger_filters"
+            }
+
             struct RetakeSurvey: Codable {
-                var _id: String?
-                var retake_input_value: Int?
-                var retake_select_value: String?
+                var identifier: String?
+                var retakeInputValue: Int?
+                var retakeSelectValue: String?
+
+                enum CodingKeys: String, CodingKey {
+                    case identifier = "_id"
+                    case retakeInputValue = "retake_input_value"
+                    case retakeSelectValue = "retake_select_value"
+                }
             }
 
             struct SDKTheme: Codable {
-                var background_color: String?
-                var remove_watermark: Bool?
-                var dark_overlay: Bool?
-                var close_button: Bool?
-                var progress_bar: Bool?
-                var widget_position: WidgetPosition?
-                var text_color: String?
+                var backgroundColor: String?
+                var removeWatermark: Bool?
+                var darkOverlay: Bool?
+                var closeButton: Bool?
+                var progressBar: Bool?
+                var widgetPosition: WidgetPosition?
+                var textColor: String?
+
+                enum CodingKeys: String, CodingKey {
+                    case backgroundColor = "background_color"
+                    case removeWatermark = "remove_watermark"
+                    case darkOverlay = "dark_overlay"
+                    case closeButton = "close_button"
+                    case progressBar = "progress_bar"
+                    case widgetPosition = "widget_position"
+                    case textColor = "text_color"
+                }
             }
 
             struct TriggerFilter: Codable {
                 var type: String
                 var timingOption: TimingOption
-                var _id: String
+                var identifier: String
                 var field: String
-                var property_filters: PropertyFilters?
+                var propertyFilters: PropertyFilters?
+
+                enum CodingKeys: String, CodingKey {
+                    case type
+                    case timingOption
+                    case identifier = "_id"
+                    case field
+                    case propertyFilters = "property_filters"
+                }
             }
 
             struct TimingOption: Codable {
-                var type: String? //show_immediately , show_after
-                var value: Int? // seconds
+                // show_immediately, show_after
+                var type: String?
+                // seconds
+                var value: Int?
             }
 
             struct PropertyFilters: Codable {
                 var operation: String
                 var filters: [Filter]?
-                
+
                 enum CodingKeys: String, CodingKey {
                     case operation = "operator"
                     case filters
@@ -176,14 +302,14 @@ struct SurveyListResponse: Codable {
             struct Filter: Codable {
                 var type: String?
                 var field: String?
-                var data_type: String?
+                var dataType: String?
                 var condition: String?
                 var values: [Any]?
-                
+
                 enum CodingKeys: String, CodingKey {
                     case type
                     case field
-                    case data_type
+                    case dataType = "data_type"
                     case condition
                     case values
                 }
@@ -192,9 +318,8 @@ struct SurveyListResponse: Codable {
                     var container = encoder.container(keyedBy: CodingKeys.self)
                     try container.encode(type, forKey: .type)
                     try container.encode(field, forKey: .field)
-                    try container.encode(data_type, forKey: .data_type)
+                    try container.encode(dataType, forKey: .dataType)
                     try container.encode(condition, forKey: .condition)
-                    
                     if let stringArray = values as? [String] {
                         try container.encode(stringArray, forKey: .values)
                     } else if let boolArray = values as? [Bool] {
@@ -202,20 +327,21 @@ struct SurveyListResponse: Codable {
                     } else if let numberArray = values as? [Double] {
                         try container.encode(numberArray, forKey: .values)
                     } else {
-                        throw EncodingError.invalidValue(values as Any,
-                                                         EncodingError.Context(codingPath: [CodingKeys.values],
-                                                                               debugDescription: "Invalid data type in arrayKey"))
+                        throw EncodingError.invalidValue(
+                            values as Any,
+                            EncodingError.Context(codingPath: [CodingKeys.values],
+                                                  debugDescription: "Invalid data type in arrayKey"
+                                                 )
+                        )
                     }
                 }
 
                 init(from decoder: Decoder) throws {
                     let container = try decoder.container(keyedBy: CodingKeys.self)
-                    
                     type = try? container.decodeIfPresent(String.self, forKey: .type)
                     field = try? container.decodeIfPresent(String.self, forKey: .field)
-                    data_type = try? container.decodeIfPresent(String.self, forKey: .data_type)
+                    dataType = try? container.decodeIfPresent(String.self, forKey: .dataType)
                     condition = try? container.decodeIfPresent(String.self, forKey: .condition)
-                    
                     if let stringArray = try? container.decode([String].self, forKey: .values) {
                         values = stringArray
                     } else if let boolArray = try? container.decode([Bool].self, forKey: .values) {
@@ -223,9 +349,11 @@ struct SurveyListResponse: Codable {
                     } else if let numberArray = try? container.decode([Double].self, forKey: .values) {
                         values = numberArray
                     } else {
-                        throw DecodingError.dataCorruptedError(forKey: .values,
-                                                               in: container,
-                                                               debugDescription: "Invalid data type in arrayKey")
+                        throw DecodingError.dataCorruptedError(
+                            forKey: .values,
+                            in: container,
+                            debugDescription: "Invalid data type in arrayKey"
+                        )
                     }
                 }
             }

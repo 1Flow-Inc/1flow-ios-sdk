@@ -15,18 +15,35 @@
 import Foundation
 
 struct SurveySubmitRequest: Codable {
-    var analytic_user_id: String?
-    var survey_id: String
-    var os: String = "iOS"
+    var analyticUserID: String?
+    var surveyID: String
+    let operatingSystem: String = "iOS"
     var answers: [Answer]?
-    var session_id: String?
-    var trigger_event: String?
-    var tot_duration: Int
-    var _id: String?
-    
+    var sessionID: String?
+    var triggerEvent: String?
+    var totDuration: Int
+    var identifier: String?
+
+    enum CodingKeys: String, CodingKey {
+        case analyticUserID = "analytic_user_id"
+        case surveyID = "survey_id"
+        case operatingSystem = "os"
+        case answers
+        case sessionID = "session_id"
+        case triggerEvent = "trigger_event"
+        case totDuration = "tot_duration"
+        case identifier = "_id"
+    }
+
     struct Answer: Codable {
-        var screen_id: String
-        var answer_value: String?
-        var answer_index: String?
+        var screenID: String
+        var answerValue: String?
+        var answerIndex: String?
+
+        enum CodingKeys: String, CodingKey {
+            case screenID = "screen_id"
+            case answerValue = "answer_value"
+            case answerIndex = "answer_index"
+        }
     }
 }

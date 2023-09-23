@@ -1,9 +1,16 @@
+// Copyright 2021 1Flow, Inc.
 //
-//  URLRequestManager.swift
-//  1Flow
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//  Created by Rohan Moradiya on 30/04/22.
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 import Foundation
 
@@ -21,7 +28,7 @@ class URLRequestManager: URLRequestManagerProtocol {
             request.addValue(appKey, forHTTPHeaderField: "one_flow_key")
         }
         OneFlowLog.writeLog("API Call: \(endPoint.url)")
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: request) { data, _, error in
             if let error = error {
                 OneFlowLog.writeLog("API Call: \(endPoint.url) - Failed: \(error.localizedDescription)", .error)
                 completion(false, error, nil)
@@ -33,10 +40,9 @@ class URLRequestManager: URLRequestManagerProtocol {
                 }
             }
             completion(true, nil, data)
-            
         }.resume()
     }
-    
+
     func postAPIWith(_ endPoint: EndPoints, parameters: Data, completion: @escaping APICompletionBlock) {
         var request = URLRequest(url: URL(string: endPoint.url)!)
         request.httpMethod = "POST"
@@ -48,7 +54,7 @@ class URLRequestManager: URLRequestManagerProtocol {
 
         OneFlowLog.writeLog("API Call: \(endPoint.url)")
 
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: request) { data, _, error in
             if let error = error {
                 OneFlowLog.writeLog("API Call: \(endPoint.url) - Failed: \(error.localizedDescription)", .error)
                 completion(false, error, nil)
@@ -56,7 +62,10 @@ class URLRequestManager: URLRequestManagerProtocol {
             }
             do {
                 if let data = data {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [String : Any] {
+                    if let json = try JSONSerialization.jsonObject(
+                        with: data,
+                        options: JSONSerialization.ReadingOptions.fragmentsAllowed
+                    ) as? [String: Any] {
                         OneFlowLog.writeLog(json, .verbose)
                     }
                 }
@@ -64,7 +73,6 @@ class URLRequestManager: URLRequestManagerProtocol {
                 OneFlowLog.writeLog("API Call: \(endPoint.url) - Deconding Error \(error.localizedDescription)", .error)
             }
             completion(true, nil, data)
-            
         }.resume()
     }
 }
