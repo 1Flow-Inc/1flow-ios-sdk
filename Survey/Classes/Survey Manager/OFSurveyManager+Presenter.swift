@@ -13,6 +13,8 @@
 // limitations under the License.
 
 import Foundation
+import UIKit
+
 extension OFSurveyManager {
 
     func updateThemeColor(from survey: SurveyListResponse.Survey) {
