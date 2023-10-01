@@ -1,6 +1,6 @@
 {
   "name": "1Flow",
-  "version": "2023.07.29",
+  "version": "2023.09.23",
   "summary": "1Flow Framework",
   "description": "OneFlow Framework for analytics and survey",
   "homepage": "https://github.com/1Flow-Inc/1Flow",
@@ -11,7 +11,7 @@
   "authors": "1Flow Inc.",
   "source": {
     "git": "https://github.com/1Flow-Inc/1Flow.git",
-    "tag": "2023.07.29"
+    "tag": "2023.09.23"
   },
   "platforms": {
     "ios": "10.0"

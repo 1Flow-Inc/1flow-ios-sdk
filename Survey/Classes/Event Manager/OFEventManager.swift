@@ -74,7 +74,11 @@ class OFEventManager: NSObject, EventManagerProtocol {
     }
 
     @objc func applicationWillEnterForeground() {
-        let params = ["library_version": projectDetailsController.libraryVersion, "app_version": getAppVersion()]
+        let params = [
+            "library_version": projectDetailsController.libraryVersion,
+            "app_version": getAppVersion(),
+            "platform": "iOS"
+        ]
         self.recordEvent(kEventNameSessionStart, parameters: params)
     }
 
@@ -113,7 +117,11 @@ class OFEventManager: NSObject, EventManagerProtocol {
             UserDefaults.standard.removeObject(forKey: "FBPendingEventsList")
             self.sendEventsToServer()
         }
-        let params = ["library_version": projectDetailsController.libraryVersion, "app_version": getAppVersion()]
+        let params = [
+            "library_version": projectDetailsController.libraryVersion,
+            "app_version": getAppVersion(),
+            "platform": "iOS"
+        ]
         self.recordEvent(kEventNameSessionStart, parameters: params)
         self.startUploadTimer()
         self.setupDefaultEventsObservers()
