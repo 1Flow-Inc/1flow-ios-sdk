@@ -21,6 +21,8 @@ protocol URLRequestManagerProtocol {
 
 class URLRequestManager: URLRequestManagerProtocol {
 
+    static let shared = URLRequestManager()
+
     func getAPIWith(_ endPoint: EndPoints, completion: @escaping APICompletionBlock) {
         var request = URLRequest(url: URL(string: endPoint.url)!)
         request.httpMethod = "GET"
@@ -28,7 +30,10 @@ class URLRequestManager: URLRequestManagerProtocol {
             request.addValue(appKey, forHTTPHeaderField: "one_flow_key")
         }
         OneFlowLog.writeLog("API Call: \(endPoint.url)")
-        URLSession.shared.dataTask(with: request) { data, _, error in
+        URLSession.shared.dataTask(with: request) {[weak self] data, _, error in
+            guard let self = self else {
+                return
+            }
             if let error = error {
                 OneFlowLog.writeLog("API Call: \(endPoint.url) - Failed: \(error.localizedDescription)", .error)
                 completion(false, error, nil)
