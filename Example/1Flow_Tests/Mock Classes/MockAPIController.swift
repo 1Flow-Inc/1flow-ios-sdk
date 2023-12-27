@@ -53,4 +53,12 @@ final class MockAPIController: APIProtocol {
     func fetchUpdatedValidationScript(_ completion: @escaping APICompletionBlock) {
         completion(true, nil, dataToRespond)
     }
+
+    func getAnnouncements(_ completion: @escaping _1Flow.APICompletionBlock) {
+        completion(true, nil, dataToRespond)
+    }
+
+    func getAnnouncementsDetails(_ ids: String, completion: @escaping APICompletionBlock) {
+        completion(true, nil, dataToRespond)
+    }
 }

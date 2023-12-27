@@ -17,6 +17,7 @@ import XCTest
 @testable import _1Flow
 
 class MockSurveyManager: NSObject, SurveyManageable {
+    
     var isNetworkReachable: Bool = true
     var surveyExpectation: XCTestExpectation?
     var projectDetailsController: ProjectDetailsManageable! = MockProjectDetailsController()
@@ -46,7 +47,10 @@ class MockSurveyManager: NSObject, SurveyManageable {
     func configureSurveys() {
         
     }
-    
+
+    func refreshAnnouncements() {
+    }
+
     func newEventRecorded(_ eventName: String, parameter: [String: Any]?) {
         
     }

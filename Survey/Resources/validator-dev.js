@@ -35,475 +35,6 @@ const dateDiffrence = (timestamp, user_zone) => {
 }
 
 
- /*==================FIRST SEEN START==================*/
- function firstSeenFilter (user_details, filter,timezone)  {
-            
-
-   let user_date = moment(user_details.created_at);
-   const current_timezone = oneflowTimezones.find((zone) => zone.label === timezone);
-   user_date.set({hour: 0,minute: 0, second: 0, millisecond: 0 }).utcOffset(current_timezone.offset, true).utc()
-   let dat = user_date.format('x')
-   let data = dateDiffrence(dat, timezone);
-
-   if (filter.relation === "relative") {
-       let timestarmp = new Date().valueOf();
-       let diff = timestarmp - dat
-       data.days = diff / 86400000
-
-       switch (filter.time_period) {
-           case "more-than":
-               return data.days > filter.days;
-           case "after":
-               return (data.days > filter.days);
-           case "exactly":
-               return (Math.floor(data.days) == filter.days);
-           case "less-than":
-               return (data.days < filter.days);
-       }
-   }
-
-   if (filter.relation == "absolute") {
-       try {
-           const current_timezone = oneflowTimezones.find((zone) => zone.label === timezone);
-           var date_mom = moment(filter.date.replace('th', '').replace("st", "").replace("nd", ""));
-           date_mom.set({
-               hour: 0,
-               minute: 0,
-               second: 0,
-               millisecond: 0
-           }).utcOffset(current_timezone.offset, true).utc()
-           let da = date_mom.format('x')
-           let {days, hours,minutes} = dateDiffrence(da, timezone);
-           switch (true) {
-               case ["more-than"].includes(filter.time_period):
-                   return (data.days < days);
-               case ["after"].includes(filter.time_period):
-                   return (data.days < days);
-               case ["exactly", "on"].includes(filter.time_period):
-                   return (data.days == days);
-               case ["less-than", "before"].includes(filter.time_period):
-                   if (days == data.days && hours < 0) {
-                       return true
-                   }
-                   return data.days > days;
-             }
-       } catch (e) {
-           console.error("FIRST SEEN FILTER ERROR:-",e.message);
-           return true;
-       }
-   }
-
-}
-/*==================FIRST SEEN END==================*/
-
-/*==================LAST SEEN START==================*/
-const lastSeenFilter = async (session_details, filter,timezone) => {
-            
-   let user_date = moment(session_details.updated_at);
-   const current_timezone = oneflowTimezones.find((zone) => zone.label === timezone);
-   user_date.set({
-       hour: 0,
-       minute: 0,
-       second: 0,
-       millisecond: 0
-   }).utcOffset(current_timezone.offset, true).utc()
-   let dat = user_date.format('x')
-   let data = dateDiffrence(dat, timezone);
-
-
-   if (filter.relation === "relative") {
-       let timestarmp = new Date().valueOf();
-       let diff = timestarmp - dat
-       data.days = diff / 86400000
-       switch (filter.time_period) {
-           case "more-than":
-               return (data.days > filter.days);
-           case "after":
-               return (data.days > filter.days);
-           case "exactly":
-               return (Math.floor(data.days) == filter.days);
-           case "less-than":
-               return (data.days < filter.days);
-       }
-   }
-   if (filter.relation == "absolute") {
-       const current_timezone = oneflowTimezones.find((zone) => zone.label === timezone);
-
-       var date_mom = moment_zero(filter.date.replace('th', '').replace("st", "").replace("nd", ""));
-       date_mom.set({
-           hour: 0,
-           minute: 0,
-           second: 0,
-           millisecond: 0
-       }).utcOffset(current_timezone.offset, true).utc()
-       let da = date_mom.format('x')
-       let {
-           days,
-           minutes,
-           hours
-       } = dateDiffrence(da, timezone);
-
-       switch (true) {
-           case ["more-than"].includes(filter.time_period):
-               return (data.days < days);
-           case ["after"].includes(filter.time_period):
-               return (data.days < days);
-           case ["exactly", "on"].includes(filter.time_period):
-               return (data.days == days);
-           case ["less-than", "before"].includes(filter.time_period):
-               if (days == data.days && hours < 0) {
-                   return true
-               }
-               return data.days > days;
-       }
-   }
-
-}
-/*==================LAST SEEN END==================*/
-
-
-  /*==================COUNTRY FILTER START==================*/
-  const countryFilter = async (UserDetails, filter) => {
-   switch (filter.event_cond) {
-       case "is":
-           return filter.country.includes(UserDetails.context.location.country);
-       case "is-not":
-           return !filter.country.includes(UserDetails.context.location.country);
-       case "is-none-of":
-           return !filter.country.includes(UserDetails.context.location.country);
-       case "is-one-of":
-           return filter.country.includes(UserDetails.context.location.country);
-
-   }
-}
-/*==================COUNTRY FILTER END==================*/
-
-
- /*==================OS FILTER START==================*/
- const osFilter = (UserDetails, filter) => {
-   switch (filter.event_cond) {
-       case "is":
-           return filter.os.includes(UserDetails.context.os.name);
-       case "is-not":
-           return !filter.os.includes(UserDetails.context.os.name);
-       case "is-none-of":
-           return !filter.os.includes(UserDetails.context.os.name);
-       case "is-one-of":
-           return filter.os.includes(UserDetails.context.os.name);
-
-   }
-}
-/*==================OS FILTER END==================*/
-
-/*==================BROWSER FILTER START==================*/
-const browserFilter = (UserDetails, filter) => {
-   switch (filter.event_cond) {
-       case "is":
-           return filter.browser.includes(UserDetails.context.device.model);
-       case "is-not":
-           return !filter.browser.includes(UserDetails.context.device.model);
-       case "is-none-of":
-           return !filter.browser.includes(UserDetails.context.device.model);
-       case "is-one-of":
-           return filter.browser.includes(UserDetails.context.device.model);
-
-   }
-}
-/*==================BROWSER FILTER END==================*/
-
-/*==================APP VERSION FILTER START==================*/
-const appVersionFilter = (UserDetails, filter) => {
-   switch (filter.event_cond) {
-       case "is":
-           return filter.app_version.includes(UserDetails.context.app.version);
-       case "is-not":
-           return !filter.app_version.includes(UserDetails.context.app.version);
-       case "is-none-of":
-           return !filter.app_version.includes(UserDetails.context.app.version);
-       case "is-one-of":
-           return filter.app_version.includes(UserDetails.context.app.version);
-
-   }
-}
-/*==================APP VERSION FILTER END==================*/
-
-/*==================WIFI VERSION FILTER START==================*/
-const wifiFilter = (UserDetails, filter) => {
-   let connectivity = (UserDetails.context.network.wifi) ? "true" : "false";
-   switch (filter.event_cond) {
-       case "is":
-           return filter.wifi.includes(connectivity);
-       case "is-not":
-           return !filter.wifi.includes(connectivity);
-       case "is-none-of":
-           return !filter.wifi.includes(connectivity);
-       case "is-one-of":
-           return filter.wifi.includes(connectivity);
-
-   }
-}
- /*==================WIFI FILTER END==================*/
-
-/*==================COHORT FILTER START==================*/
-const cohortFilter = async (filter,cohort) => {
-   if (filter.cohort && filter.cohort.length > 0) {
-       const existsCohorts = cohort.find(({name})=>name == filter.cohort[0]);
-       switch (filter.event_cond) {
-           case "is-in":
-               return (existsCohorts) ? true : false;
-           case "is-not-in":
-               return (!existsCohorts) ? true : false;
-       }
-   } else {
-       return false;
-   }
-
-}
-/*==================COHORT FILTER END==================*/
-
-    /*==================CUSTOM USER PROPERTY FILTER START==================*/
-    const userCustomPropertyFilter = async (user_details, filter, property_name,timezone) => {
-            
-      let value = (user_details.traits && Object.keys(user_details.traits || {}).length > 0 && user_details.traits[property_name] !== undefined && filter.event_cond !=="is-unknown") ? user_details.traits[property_name] : null;
-      let current_timezone = null;
-      
-
-      let traitsDate = null;
-      let propertyDate = null;
-  
-      if (["is-equal-to", "is-not-equal-to", "is-at-least", "is-at-most", "is-less-than", "is-more-than"].includes(filter.event_cond)) {
-          filter.custom_user_property[0]=+filter.custom_user_property[0];
-          if (isNaN(value) || value == null) {
-              return false
-          }
-          value=+value
-      }else if (['after', 'on', 'before'].includes(filter.event_cond)) {
-          if (!value) {
-              return false;
-          }
-          let user_date = moment(filter.custom_user_property[0]);
-          if ( timezone) {
-              current_timezone = oneflowTimezones.find((zone) => zone.label === timezone);
-              user_date.utcOffset(current_timezone.offset, true).utc();
-          }
-          user_date = user_date.format('x')
-          propertyDate = dateDiffrence(user_date, timezone);
-
-          traitsDate = moment(value).utcOffset(current_timezone.offset, true).utc().format("x");
-          traitsDate = dateDiffrence(traitsDate, timezone);
-
-      }
-     switch (filter.event_cond) {
-          case "is":
-              return filter.custom_user_property.includes(value);
-          case "is-not":
-              return !filter.custom_user_property.includes(value);
-          case "is-none-of":
-              return !filter.custom_user_property.includes(value);
-          case "is-one-of":
-              return filter.custom_user_property.includes(value);
-          case "starts-with":
-              val = (value) ? value.substring(0, filter.custom_user_property[0].length) : value;
-              return val === filter.custom_user_property[0] ? true : false
-          case "ends-with":
-              val = (value) ? value.substring(value.length - filter.custom_user_property[0].length) : value;
-              return val === filter.custom_user_property[0] ? true : false
-          case "contains":
-              return (value) ? value.includes(filter.custom_user_property[0]) : false;
-          case "does-not-contain":{
-              let state = false;
-              if(value) {
-                  if(!value.includes(filter.custom_user_property[0])) state = true;
-              }
-              return state
-          }
-          case "is-equal-to":
-              return filter.custom_user_property[0] === value;
-          case "is-not-equal-to":
-              return filter.custom_user_property[0] !== value;
-          case "is-at-least":
-              if(filter.custom_user_property[0] <= -1)
-                  return filter.custom_user_property[0] >= value
-              return filter.custom_user_property[0] <= value;
-          case "is-at-most":
-               if(filter.custom_user_property[0] <= -1)
-                  return filter.custom_user_property[0] <= value
-              return filter.custom_user_property[0] >= value;
-          case "is-less-than":
-               if(filter.custom_user_property[0] <= -1)
-                  return filter.custom_user_property[0] < value
-              return filter.custom_user_property[0] > value;
-          case "is-more-than":
-               if(filter.custom_user_property[0] <= -1)
-                  return filter.custom_user_property[0] > value
-              return filter.custom_user_property[0] < value;
-          case "after":
-              if (propertyDate.days == traitsDate.days && (propertyDate.hours > 0 || propertyDate.minutes > 0)) {
-                  return true
-              }
-              return propertyDate.days > traitsDate.days;
-          case "on":
-              return propertyDate.days == traitsDate.days;
-          case "before":
-              if (propertyDate.days == traitsDate.days && (propertyDate.hours < traitsDate.hours || propertyDate.minutes < traitsDate.minutes)) {
-                  return true
-              }
-              return propertyDate.days < traitsDate.days;
-          case "is-unknown": {
-              return user_details?.traits === undefined || user_details?.traits?.[property_name] === undefined;
-          }
-          case "has-any-value": {
-              return user_details?.traits && user_details?.traits?.[property_name];
-          }
-      }
-
-  }
-  /*==================CUSTOM USER PROPERTY FILTER END==================*/
-
-
-    /*==================EVENT FILTER START==================*/
-    const eventFilter = async (timezone, filter, property_name,event) => {
-
-
-    
-      const event_data =event.filter(({event})=>event == property_name);
-      
-      const event_count = {event_count:event_data.length}
-      if (filter.event_cond == "count") {
-          switch (filter.event_action) {
-              case "is-equal-to":
-                  return filter.event_value == event_count.event_count;
-              case "is-not-equal-to":
-                  return filter.event_value != event_count.event_count;
-              case "is-at-least":
-                  return filter.event_value <= event_count.event_count;
-              case "is-at-most":
-                  return filter.event_value >= event_count.event_count;
-              case "is-less-then":
-                  return filter.event_value > event_count.event_count;
-              case "is-more-than":
-                  return filter.event_value < event_count.event_count;
-          }
-
-      } else if (filter.event_cond == "first-occured") {
-
-          if (filter.relation == "relative" && event_count.event_count > 0) {
-              let event_date = moment(parseInt(event_data[0].timestamp));
-              const current_timezone = oneflowTimezones.find((zone) => zone.label === timezone);
-              event_date.set({ hour: 0,minute: 0,second: 0, millisecond: 0 }).utcOffset(current_timezone.offset, true).utc()
-              let dat = event_date.format('x')
-              let timestarmp = new Date().valueOf();
-              let diff = timestarmp - dat
-              let days = diff / 86400000;
-
-              switch (filter.event_action) {
-                  case "more-than":
-                      return days > filter.event_value;
-                  case "exactly":
-                      return Math.floor(days) == filter.event_value;
-                  case "less-than":
-                      return days < filter.event_value;
-              }
-          } else {
-              if (!event_count.event_count) {
-                  if (filter.event_action === "is-unknown") {
-                      return true
-                  }
-                  return false
-              }
-              const current_timezone = oneflowTimezones.find((zone) => zone.label === timezone);
-              let event_date = moment(parseInt(event_data[0].timestamp));
-              event_date.set({ hour: 0, minute: 0,second: 0, millisecond: 0}).utcOffset(current_timezone.offset, true).utc()
-              let dat = event_date.format('x')
-              event_date = dateDiffrence(dat, timezone)
-
-              var date_mom = moment(filter.event_value.replace("th", "").replace("st", "").replace("rd", ""));
-              date_mom.set({ hour: 0, minute: 0,second: 0, millisecond: 0}).utcOffset(current_timezone.offset, true).utc()
-              let da = date_mom.format('x')
-
-              let {days, hours,  minutes  } = dateDiffrence(da, timezone);
-
-
-              switch (true) {
-                  case ["after"].includes(filter.event_action):
-                      return event_date.days < days
-                  case ["is-more-than"].includes(filter.event_action):
-                      return event_date.days < days
-                  case ["is-less-than", "before"].includes(filter.event_action):
-                      if (days == event_date.days && hours < 0) {
-                          return true
-                      }
-                      return event_date.days > days
-                  case ["is-exactly", "on"].includes(filter.event_action):
-                      return days == event_date.days;
-                  case ["is-unknown"].includes(filter.event_action):
-                      return true;
-                  case ["has-any-value"].includes(filter.event_action):
-                      return (days === event_date.days); //event have any value but it was submit on the same condition date
-              }
-          }
-
-      } else if (filter.event_cond == "last-occured") {
-          if (filter.relation == "relative" && event_count.event_count > 0) {
-              const current_timezone = oneflowTimezones.find((zone) => zone.label === timezone);
-              let event_date = moment(parseInt(event_data[event_data.length - 1].timestamp));
-              event_date.set({ hour: 0,minute: 0,second: 0,millisecond: 0 }).utcOffset(current_timezone.offset, true).utc()
-              let dat = event_date.format('x')
-
-              let timestarmp = new Date().valueOf();
-              let diff = timestarmp - dat;
-              let days = diff / 86400000;
-              switch (filter.event_action) {
-                  case "more-than":
-                      return days > filter.event_value;
-                  case "exactly":
-                      return Math.floor(days) == filter.event_value;
-                  case "less-than":
-                      return days < filter.event_value;
-              }
-          } else {
-              if (!event_count.event_count) {
-                  if (filter.event_action === "is-unknown") {
-                      return true;
-                  }
-                  return false;
-              }
-              const current_timezone = oneflowTimezones.find((zone) => zone.label === timezone);
-       
-              let event_date = moment(parseInt(event_data[event_data.length - 1].timestamp));
-              event_date.set({ hour: 0, minute: 0,second: 0, millisecond: 0}).utcOffset(current_timezone.offset, true).utc();
-              let dat = event_date.format('x');
-              event_date = dateDiffrence(dat, timezone);
-              let date_mom = moment(filter.event_value.replace("th", "").replace("st", "").replace("rd", ""));
-              date_mom.set({ hour: 0,minute: 0,second: 0, millisecond: 0}).utcOffset(current_timezone.offset, true).utc()
-              let da = date_mom.format('x');
-              let {  days, hours,  minutes } = dateDiffrence(da, timezone);
-
-              switch (true) {
-                  case ["after"].includes(filter.event_action):
-                      return event_date.days < days
-                  case ["is-more-than"].includes(filter.event_action):
-                      return event_date.days < days
-                  case ["is-less-than", "before"].includes(filter.event_action):
-                      if (days == event_date.days && hours < 0) {
-                          return true
-                      }
-                      return event_date.days > days
-                  case ["is-exactly", "on"].includes(filter.event_action):
-                      return days == event_date.days;
-                  case ["is-unknown"].includes(filter.event_action):
-                      return true;
-                  case ["has-any-value"].includes(filter.event_action):
-                      return (days === event_date.days); //event have any value but it was submit on the same condition date
-              }
-          }
-      } else {
-          return false;
-      }
-  }
-  /*==================EVENT FILTER END==================*/
-
-
 /*======================================PARSE FILTER DATA ACCORDING TO DATA TYPE======================*/
 const  parseFilterRules=async(filters)=>{
     try{
@@ -516,7 +47,7 @@ const  parseFilterRules=async(filters)=>{
                     resolve(filter)
                 }else{
                     if(filter.data_type === 'boolean'){
-                        filter.values=filter.values.map((v)=> v === 'true' ? true : false);
+                        filter.values=filter.values.map((v)=> (v === 'true' || v === true) ? true : false);
                     }
                     resolve(filter)
                 }
@@ -808,6 +339,129 @@ async function oneFlowFilterSurvey(surveys,currentEvent,isPageUrl=null,web=false
    }
 }
 
+const triggerAnnouncementFilter = async(announcements, event, isPageUrl,web=true) => {
+    try{
+        if (isPageUrl !== null) {
+            const currentPageProperties = getDefaultPageValue();
+            const pageRulesAnnouncments = announcements.filter(announcement => {
+                return announcement.in_app.timing.rule?.filters?.find(({ field, type })=> field === isPageUrl && type === "page");
+            });
+            
+            if (pageRulesAnnouncments.length > 0) {
+                let i = 0;
+                let j = 0;
+                let valid = false;
+                for (i = 0; i < pageRulesAnnouncments.length; i++) {
+                    const pageRules = pageRulesAnnouncments[i].in_app.timing.rule?.filters?.filter(({field,type})=> field === isPageUrl && type === "page");
+                    for (j = 0; j < pageRules.length; j++) {
+                        valid = await filterRules(pageRules[j].property_filters.filters,currentPageProperties,pageRules[j].property_filters.operator,true);
+                        if (valid) {
+                            break;
+                        }
+                    }
+                    if (valid) {
+                        if (valid === true && pageRules[j].timingOption.type == "show_after" && web){
+                            await new Promise(resolve => {
+                                setTimeout(resolve, pageRules[j].timingOption.value * 1000);
+                            });
+                          
+                            return pageRulesAnnouncments[i];
+                        } else if (valid === true) {
+                            return pageRulesAnnouncments[i];
+                        }
+                    }
+                }
+            }
+            return null;
+        } else {
+            const announcementExists = announcements.filter((announcement)=>{
+                return announcement.in_app.timing.rule?.filters?.find(({field,type})=>field == event.name && type=="event");
+            });
+            if (announcementExists.length > 0) {
+                try {
+                    const announcements = [];
+                    announcementExists.forEach(async (announcementExist) => {
+                        // We will always resolved the survey as we need to always return the value
+                        announcements.push(new Promise(async (resolveSurvey, rejectSurvey) => {
+                            const filters = announcementExist.in_app.timing.rule?.filters ?? [];
+                            
+                            const eventsExists=filters.filter(({field,type})=>field == event.name && type=="event");
+                        
+                            if (eventsExists?.length > 0) {
+                                let announcementExist = null;
+                              
+                                for (const eventExists of eventsExists) {
+                                    let valid = false;
+                                    const filter = await parseFilterRules(eventExists.property_filters.filters);
+                                    
+                                    // Only for JS SDK
+                                    if (filter.length) {
+                                        valid = await filterRules(filter, event, eventExists.property_filters.operator);
+                                    } else {
+                                        valid = true;
+                                    }
+                                    
+                                    if (valid === true && eventExists.timingOption.type === "show_after" && web) {
+                                        await new Promise(resolve => {
+                                            setTimeout(resolve, eventExists.timingOption.value * 1000);
+                                        });
+
+                                        announcementExists.survey_time_interval = eventExists.timingOption;
+                                        announcementExist = announcementExists;
+                                        break;
+                                    } else if (valid === true) {
+                                        announcementExists.survey_time_interval = eventExists.timingOption;
+                                        announcementExist = announcementExists;
+                                        break;
+                                    }
+                                }
+
+                                return resolveSurvey(announcementExist);
+                            } else {
+                                return resolveSurvey(null);
+                            }
+                        }));
+                    });
+                    const announcementResult = await Promise.all(announcements);
+                    const filteredSurvey = announcementResult.filter(v => v !== null);
+                    if(filteredSurvey.length > 0) {
+                        return filteredSurvey[0];
+                    }
+                    return null;
+                } catch (e) {
+                    console.error(e);
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        }
+        
+    } catch(e) {
+        console.log("TRIGGER ERROR:-",e);
+        return null;
+    }
+}
+
+function isAnnouncementCallBackAvilable(){ return typeof oneFlowAnnouncementCallBack == 'function' }
+    
+async function oneflowAnnouncementFilter(announcements,currentEvent,isPageUrl=null){
+    try{
+        let announcement = null;
+        if (announcements.length > 0) {
+            console.time('announcement');
+            announcement = await triggerAnnouncementFilter(announcements, currentEvent, isPageUrl, false);
+            console.timeEnd('announcement');
+            if(isAnnouncementCallBackAvilable()){
+                oneFlowAnnouncementCallBack(announcement);
+            }
+        }
+        return announcement;
+
+    }catch(e){
+        console.log("ANNOUNCEMENT FILTER ERROR:-",e.message);
+    }
+}
 
 
 /*-------------------------------------------------------------------------SMART AUDIENCE FILTER START END--------------------------------------------*/
