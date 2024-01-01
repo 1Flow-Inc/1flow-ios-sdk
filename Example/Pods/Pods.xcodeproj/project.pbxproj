@@ -20,6 +20,7 @@
 		3797DFB2E8C1452922D5E21E761A8A87 /* OneFlowDataLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8375C2350850CEC978D45256A90443BD /* OneFlowDataLogic.swift */; };
 		3AA2CEB5D65D1DE5FD8B062565AE52CE /* validator-dev.js in Resources */ = {isa = PBXBuildFile; fileRef = 37776403EF1258C61358F430F400C5F7 /* validator-dev.js */; };
 		4140C6DA16B4985E44457F0E14A05415 /* OFRatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43B07C21604FEF656990912B6D43D5F7 /* OFRatingViewController.xib */; };
+		439072CC2B42771900D85595 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 439072CB2B42771900D85595 /* PrivacyInfo.xcprivacy */; };
 		4558A4D7C7D03AD1B80A54749F71DD51 /* OneFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B46F002710D355BA5BF5B5111C8854 /* OneFlow.swift */; };
 		49E837D6C4FFFF53E9A3322D40AB3DD7 /* OFScreenTrackingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4753A3636119B6C294E3F40B7DDDD55 /* OFScreenTrackingController.swift */; };
 		4A76035E0E987158E60113E1382D7CEE /* OFStarsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89ECE15F8D6BC7D188746B4DE57151B0 /* OFStarsView.xib */; };
@@ -124,11 +125,12 @@
 		2CA9653DF85532185440439776159915 /* OFSwiftGIF.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFSwiftGIF.swift; sourceTree = "<group>"; };
 		2DC62E07F3AE679FAF52BE785B12CFD9 /* 1Flow.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = 1Flow.debug.xcconfig; sourceTree = "<group>"; };
 		35D6960850779D98FF229412FED4CDD0 /* Pods-1Flow_Example */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-1Flow_Example"; path = Pods_1Flow_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		37776403EF1258C61358F430F400C5F7 /* validator-dev.js */ = {isa = PBXFileReference; includeInIndex = 1; name = "validator-dev.js"; path = "Survey/Resources/validator-dev.js"; sourceTree = "<group>"; };
+		37776403EF1258C61358F430F400C5F7 /* validator-dev.js */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.javascript; name = "validator-dev.js"; path = "Survey/Resources/validator-dev.js"; sourceTree = "<group>"; };
 		3A67C30E43EC8CB22716D6A4E8296B9B /* OFProjectDetailsController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OFProjectDetailsController.swift; path = Survey/Classes/OFProjectDetailsController.swift; sourceTree = "<group>"; };
 		3CCC75E0B186E4FB1AC4AFD99781956B /* 1Flow-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "1Flow-umbrella.h"; sourceTree = "<group>"; };
 		40B92122F2F6F4F11BD04361E19113D1 /* OFOneToTenView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFOneToTenView.swift; sourceTree = "<group>"; };
 		4385E10AC6E4BC7503B447884B9DB0B7 /* Pods-1Flow_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-1Flow_Example-frameworks.sh"; sourceTree = "<group>"; };
+		439072CB2B42771900D85595 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Survey/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		43B07C21604FEF656990912B6D43D5F7 /* OFRatingViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFRatingViewController.xib; path = Survey/Resources/OFRatingViewController.xib; sourceTree = "<group>"; };
 		440F4D66CCB5CF18D2FE5D168806D26B /* Pods-1Flow_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Example-Info.plist"; sourceTree = "<group>"; };
 		4A157D984D6159B317C6A42939AA2370 /* 1Flow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = 1Flow.release.xcconfig; sourceTree = "<group>"; };
@@ -153,7 +155,7 @@
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		750FBFA9D1BC5E9D197CF0F922CC168D /* OFMCQView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFMCQView.swift; sourceTree = "<group>"; };
 		77C93380EE1088BBEAF785B7B1FF9B27 /* OFWebContainerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFWebContainerView.swift; sourceTree = "<group>"; };
-		7987C7291E7C8240015E9F38A386B940 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		7987C7291E7C8240015E9F38A386B940 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		7C1DB373993825A5B16B783A9D4D83A7 /* OFThankYouView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFThankYouView.swift; sourceTree = "<group>"; };
 		7CBA637C0314CEFA369F8A44E07ADE47 /* ReplaceMe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReplaceMe.swift; path = 1Flow/Classes/ReplaceMe.swift; sourceTree = "<group>"; };
 		81AD8058BBAD641AA965A398E3D26B09 /* OFNumberCollectionViewCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFNumberCollectionViewCell.xib; path = Survey/Resources/OFNumberCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -170,7 +172,7 @@
 		8EF85528B3D4E76F54459A1C873BEE4E /* 1Flow-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "1Flow-prefix.pch"; sourceTree = "<group>"; };
 		90530D64891F5316CBA9146D6CA30140 /* OFdone.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; name = OFdone.gif; path = Survey/Resources/OFdone.gif; sourceTree = "<group>"; };
 		980926337F030427951F046486118D14 /* OFSurveyManager+Presenter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "OFSurveyManager+Presenter.swift"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9E86AEA2D16E0E252F740B5BD1D20DEB /* ScriptsManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScriptsManager.swift; sourceTree = "<group>"; };
 		9EB12B83B8ED9E9D43482138BC8788F9 /* OFReachability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFReachability.swift; sourceTree = "<group>"; };
 		A0252B367D082FD4065F54DCF9DA25DC /* CreateSessionRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateSessionRequest.swift; sourceTree = "<group>"; };
@@ -184,7 +186,7 @@
 		C338782D475B125A1A54AF497461ED74 /* Pods-1Flow_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		C4753A3636119B6C294E3F40B7DDDD55 /* OFScreenTrackingController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFScreenTrackingController.swift; sourceTree = "<group>"; };
 		C58979C19517AD2B6390E003FA0E526C /* OFRatingViewController+DataLogic.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "OFRatingViewController+DataLogic.swift"; sourceTree = "<group>"; };
-		C85A504F04C7142CA0D1337A7FDB9260 /* 1Flow.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = 1Flow.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		C85A504F04C7142CA0D1337A7FDB9260 /* 1Flow.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = 1Flow.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		C96ED6E9CE00FF0940B69D355D6A94C9 /* Pods-1Flow_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-1Flow_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		D42EEDDB2F46310F0F4E4E459D3B6DB2 /* OFSurveyManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFSurveyManager.swift; sourceTree = "<group>"; };
 		D70E600D073D57AE9C7FBD93EBDB21EC /* 1Flow-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "1Flow-Info.plist"; sourceTree = "<group>"; };
@@ -245,7 +247,6 @@
 			children = (
 				280C114AD4B928BD815F891806D82B0C /* OFShortAnswerView.swift */,
 			);
-			name = ShortAnswer;
 			path = ShortAnswer;
 			sourceTree = "<group>";
 		};
@@ -266,7 +267,6 @@
 			children = (
 				F62C2F5F5AD405ECF19933A0067B8B4A /* OFFollowupView.swift */,
 			);
-			name = Followup;
 			path = Followup;
 			sourceTree = "<group>";
 		};
@@ -301,7 +301,6 @@
 			children = (
 				EB92360BFBE3DE95A338C15AD49E4015 /* OFWelcomeView.swift */,
 			);
-			name = Welcome;
 			path = Welcome;
 			sourceTree = "<group>";
 		};
@@ -312,7 +311,6 @@
 				00DC00047F37979BF05FF95EC3687C7B /* OFAPIController.swift */,
 				62AC2D3BD38D8BF16560987FCE7CD00C /* URLRequestManager.swift */,
 			);
-			name = Networking;
 			path = Networking;
 			sourceTree = "<group>";
 		};
@@ -321,7 +319,6 @@
 			children = (
 				77C93380EE1088BBEAF785B7B1FF9B27 /* OFWebContainerView.swift */,
 			);
-			name = WebContainer;
 			path = WebContainer;
 			sourceTree = "<group>";
 		};
@@ -339,7 +336,6 @@
 			children = (
 				750FBFA9D1BC5E9D197CF0F922CC168D /* OFMCQView.swift */,
 			);
-			name = MCQ;
 			path = MCQ;
 			sourceTree = "<group>";
 		};
@@ -372,7 +368,6 @@
 				1ABE5FCF54EA6FFF9D141FD6BC577B7C /* WebContainer */,
 				14F1A9B0371A91E2407A90676678A84E /* Welcome */,
 			);
-			name = "Rating Controlls";
 			path = "Rating Controlls";
 			sourceTree = "<group>";
 		};
@@ -427,7 +422,6 @@
 				0F6B73A348375DA20F3BC8E256BC52D4 /* OFRatingViewController+WidgetPosition.swift */,
 				4D844BDAB7F85D9BBF25681FA32064E4 /* Rating Controlls */,
 			);
-			name = "View Controllers";
 			path = "View Controllers";
 			sourceTree = "<group>";
 		};
@@ -451,7 +445,6 @@
 			children = (
 				8B36C93AF38AD31F31358C1CA7DBC699 /* OFStarsView.swift */,
 			);
-			name = Stars;
 			path = Stars;
 			sourceTree = "<group>";
 		};
@@ -461,7 +454,6 @@
 				6DC49D40D64413B82EA72983A7163664 /* OFNumberCollectionViewCell.swift */,
 				40B92122F2F6F4F11BD04361E19113D1 /* OFOneToTenView.swift */,
 			);
-			name = OneToTen;
 			path = OneToTen;
 			sourceTree = "<group>";
 		};
@@ -470,7 +462,6 @@
 			children = (
 				5E35A2F5E81169FB14F75EA1D17C3A89 /* ScriptsManageable.swift */,
 			);
-			name = Protocols;
 			path = Protocols;
 			sourceTree = "<group>";
 		};
@@ -518,7 +509,6 @@
 				2CA9653DF85532185440439776159915 /* OFSwiftGIF.swift */,
 				7C1DB373993825A5B16B783A9D4D83A7 /* OFThankYouView.swift */,
 			);
-			name = ThankYou;
 			path = ThankYou;
 			sourceTree = "<group>";
 		};
@@ -527,6 +517,7 @@
 			children = (
 				0E838FD0639AAC920E0E9C06F118B975 /* FeedbackAssets.xcassets */,
 				90530D64891F5316CBA9146D6CA30140 /* OFdone.gif */,
+				439072CB2B42771900D85595 /* PrivacyInfo.xcprivacy */,
 				C18D2FCAC8DC2297A3048BC7BCCFBB79 /* OFFollowupView.xib */,
 				29C4E3A67BFFF3624FDB0428044468D2 /* OFMCQView.xib */,
 				81AD8058BBAD641AA965A398E3D26B09 /* OFNumberCollectionViewCell.xib */,
@@ -727,6 +718,7 @@
 				98E627671816E7FB1F61858BD73DB0DC /* FeedbackAssets.xcassets in Resources */,
 				80E7B42D42EA704A9E28106A8BA02FD0 /* OFdone.gif in Resources */,
 				D157BB351C0899E1811093BC1A4DED93 /* OFFollowupView.xib in Resources */,
+				439072CC2B42771900D85595 /* PrivacyInfo.xcprivacy in Resources */,
 				D67725436EAFBE9F73611B3A1CF22DD0 /* OFMCQView.xib in Resources */,
 				2DF26B2F72280A39BECD99F40383430B /* OFNumberCollectionViewCell.xib in Resources */,
 				817BE1381A2441FD77FB866B547BD64F /* OFOneToTenView.xib in Resources */,
@@ -1052,8 +1044,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};

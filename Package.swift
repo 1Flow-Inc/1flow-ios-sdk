@@ -33,7 +33,8 @@ let package = Package(
             ],
             resources: [
                 .process("Resources/OFdone.gif"),
-                .process("Resources/validator-dev.js")
+                .process("Resources/validator-dev.js"),
+                .process("Resources/PrivacyInfo.xcprivacy")
             ]),
         
         
