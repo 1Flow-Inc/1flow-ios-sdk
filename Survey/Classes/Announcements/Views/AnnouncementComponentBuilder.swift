@@ -202,7 +202,7 @@ static let html =
     <!-- Initialize Quill editor -->
     <script>
         /* color in the next line should be updated with the theme color */
-        document.getElementById('quill-editor').style.setProperty('--oneflow-rich-text-preview-color', '#2f54eb');
+        document.getElementById('quill-editor').style.setProperty('--oneflow-rich-text-preview-color', 'TEXTCOLOR');
 
         var quill = new Quill('#editor-content', {
             theme: 'snow',
@@ -223,23 +223,7 @@ static let html =
 </html>
 """
 
- 
-    /*
-    static let html = """
-<html>
-<head>
-<title>Page Title</title>
-</head>
-<body>
-
-<h1>This is a Heading</h1>
-<p>This is a paragraph.</p>
-
-</body>
-</html>
-"""
-    */
-    static func richTextContentView(with content: String) -> UIView {
+    static func richTextContentView(with content: String, textColor: String) -> UIView {
         let preferences = WKPreferences()
         preferences.javaScriptEnabled = true
         
@@ -256,7 +240,10 @@ static let html =
         conf.userContentController = userContentController
         userContentController.addUserScript(script)
         let webview = WKWebView(frame: CGRect(x: 0, y: 0, width: 400, height: 400), configuration: conf)
-        let text = html.replacingOccurrences(of: "XXXXXX", with: content)
+        
+        let text = html
+            .replacingOccurrences(of: "XXXXXX", with: content)
+            .replacingOccurrences(of: "TEXTCOLOR", with: textColor)
         
         let file = "myHTML\(OFProjectDetailsController.objectId()).html" //this is the file. we will write to and read from it
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
@@ -272,14 +259,6 @@ static let html =
             let request = URLRequest(url: fileURL)
             webview.load(request)
         }
-        
-        
-//              webview.loadFileURL(fileURL, allowingReadAccessTo: fileURL)
-            
-
-//        webview.loadHTMLString(AnnouncementComponentBuilder.html, baseURL: nil)
-        
-//        webview.heightAnchor.constraint(equalToConstant: 300).isActive = true
         return webview
     }
 

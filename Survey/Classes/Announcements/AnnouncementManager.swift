@@ -92,6 +92,7 @@ class AnnouncementManager {
             bundle: OneFlowBundle.bundleForObject(self)
         )
         controller.announcements = self.announcements
+        controller.theme = theme
         controller.uiDelegate = self
         navigationController.navigationBar.isHidden = true
         self.inboxWindow?.makeKeyAndVisible()

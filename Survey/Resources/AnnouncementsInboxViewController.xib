@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,6 +11,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AnnouncementsInboxViewController" customModule="SurveySDK" customModuleProvider="target">
             <connections>
+                <outlet property="closeButton" destination="lwV-Rl-Tvu" id="J4M-zX-ulS"/>
+                <outlet property="headerTitle" destination="Gi4-Xr-1vD" id="8CM-kU-bAc"/>
+                <outlet property="headerView" destination="53X-cT-3tT" id="zDp-I4-YLZ"/>
                 <outlet property="indicatorContainer" destination="dRA-6f-xRj" id="7V7-JG-qWZ"/>
                 <outlet property="indicatorLabel" destination="D63-FD-jdP" id="g1y-9K-RVP"/>
                 <outlet property="loadingIndicator" destination="kkk-5Z-WxY" id="IVT-M8-ap4"/>
@@ -32,8 +35,8 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lwV-Rl-Tvu">
-                            <rect key="frame" x="359" y="19" width="14" height="22"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lwV-Rl-Tvu">
+                            <rect key="frame" x="359" y="21" width="14" height="18"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" image="CloseButton"/>
                             <connections>
