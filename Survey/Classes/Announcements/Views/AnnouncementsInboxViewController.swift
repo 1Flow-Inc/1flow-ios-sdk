@@ -18,8 +18,13 @@ class AnnouncementsInboxViewController: UIViewController {
     @IBOutlet var loadingIndicator: UIActivityIndicatorView!
     @IBOutlet var indicatorLabel: UILabel!
     @IBOutlet var indicatorContainer: UIStackView!
+    @IBOutlet var headerView: UIView!
+    @IBOutlet var headerTitle: UILabel!
+    @IBOutlet var closeButton: UIButton!
+    
     var announcements: [Announcement]?
     var announcementList: [AnnouncementsDetails]?
+    var theme: AnnouncementTheme?
     var heightDic = [Int: CGFloat]()
     var reloadTimer: Timer?
     var indexPaths: [IndexPath]?
@@ -44,6 +49,12 @@ class AnnouncementsInboxViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         setupIndicatorView(state: .loading)
+        let backgroundColor = UIColor.colorFromHex(theme?.backgroundColor ?? "FFFFFF")
+        let textColor = UIColor.colorFromHex(theme?.textColor ?? "000000")
+        tableView.backgroundColor = backgroundColor
+        headerView.backgroundColor = backgroundColor
+        headerTitle.textColor = textColor
+        closeButton.tintColor = textColor
         fetchAnnouncementDetails { details in
             self.announcementList = details
             DispatchQueue.main.async {
@@ -129,18 +140,23 @@ extension AnnouncementsInboxViewController: UITableViewDelegate, UITableViewData
         else {
             return UITableViewCell()
         }
-        cell.isUnread = !(announcements?[indexPath.row].seen ?? false)
         if let details = announcementList?[indexPath.row] {
             cell.index = indexPath.row
             cell.webContentHeight = heightDic[indexPath.row]
-            cell.configureUI(with: details)
+            cell.configureUI(with: details, theme: theme)
         }
+        cell.isUnread = !(announcements?[indexPath.row].seen ?? false)
         cell.delegate = self
         return cell
     }
 }
 
 extension AnnouncementsInboxViewController: AnnouncementsCellDelegate {
+    func didTapActionButton(index: Int) {
+        announcements?[index].seen = true
+        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+    }
+
     func cellDidFinishCalculatingHeight(index: Int, height: CGFloat) {
         self.heightDic[index] = height
         viewedIndex.append(index)

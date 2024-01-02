@@ -106,7 +106,7 @@ class AnnouncementModalViewController: UIViewController {
             AnnouncementComponentBuilder.verticalSpace(with: 10)
         )
         if let content = details.content {
-            guard let webView = AnnouncementComponentBuilder.richTextContentView(with: content) as? WKWebView else {
+            guard let webView = AnnouncementComponentBuilder.richTextContentView(with: content, textColor: theme?.textColor ?? "#2f54eb") as? WKWebView else {
                 return
             }
             webView.navigationDelegate = self

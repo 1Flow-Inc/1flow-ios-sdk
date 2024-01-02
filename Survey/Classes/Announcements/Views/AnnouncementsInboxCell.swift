@@ -10,6 +10,7 @@ import WebKit
 
 protocol AnnouncementsCellDelegate: AnyObject {
     func cellDidFinishCalculatingHeight(index: Int, height: CGFloat)
+    func didTapActionButton(index: Int)
 }
 
 class AnnouncementsInboxCell: UITableViewCell {
@@ -21,6 +22,7 @@ class AnnouncementsInboxCell: UITableViewCell {
     var webContentHeight: CGFloat?
     var details: AnnouncementsDetails?
     weak var delegate: AnnouncementsCellDelegate?
+    var unreadColor = "#2D4EFF"
 
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -38,14 +40,15 @@ class AnnouncementsInboxCell: UITableViewCell {
 
     var isUnread: Bool = false {
         didSet {
-            let color = isUnread ? UIColor.colorFromHex("#2D4EFF") : UIColor.clear
+            let color = isUnread ? UIColor.colorFromHex(unreadColor) : UIColor.clear
             unReadIndicator.backgroundColor = color
         }
     }
 
-
-    func configureUI(with details: AnnouncementsDetails) {
+    func configureUI(with details: AnnouncementsDetails, theme: AnnouncementTheme?) {
         self.details = details
+        self.unreadColor = theme?.brandColor ?? "#2D4EFF"
+        self.backgroundColor = UIColor.colorFromHex(theme?.backgroundColor ?? "FFFFFF")
         let date = Date(timeIntervalSince1970: TimeInterval(details.publishedAt / 1000))
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM dd, yyyy"
@@ -64,14 +67,15 @@ class AnnouncementsInboxCell: UITableViewCell {
         mainStackView.addArrangedSubview(
             AnnouncementComponentBuilder.verticalSpace(with: 5)
         )
+        let textColor = UIColor.colorFromHex(theme?.textColor ?? "000000")
         mainStackView.addArrangedSubview(
-            AnnouncementComponentBuilder.titleView(with: details.title)
+            AnnouncementComponentBuilder.titleView(with: details.title, titleColor: textColor)
         )
         mainStackView.addArrangedSubview(
             AnnouncementComponentBuilder.verticalSpace(with: 10)
         )
         if let content = details.content {
-            guard let webView = AnnouncementComponentBuilder.richTextContentView(with: content) as? WKWebView else {
+            guard let webView = AnnouncementComponentBuilder.richTextContentView(with: content, textColor: theme?.textColor ?? "#2f54eb") as? WKWebView else {
                 return
             }
             webView.navigationDelegate = self
@@ -92,8 +96,9 @@ class AnnouncementsInboxCell: UITableViewCell {
         }
 
         if let action = details.action {
+            let brandColor = theme?.brandColor ?? "2D4EFF"
             mainStackView.addArrangedSubview(
-                AnnouncementComponentBuilder.actionButtonView(with: action.name, target: self, selector: #selector(didTapActionButton(_:)), color: "#2D4EFF")
+                AnnouncementComponentBuilder.actionButtonView(with: action.name, target: self, selector: #selector(didTapActionButton(_:)), color: brandColor)
             )
 
             mainStackView.addArrangedSubview(
@@ -115,6 +120,7 @@ class AnnouncementsInboxCell: UITableViewCell {
         } else {
             OneFlowLog.writeLog("Can not open url: \(url)", .error)
         }
+        delegate?.didTapActionButton(index: index)
     }
 }
 
