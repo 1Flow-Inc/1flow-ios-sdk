@@ -354,4 +354,8 @@ public final class OneFlow: NSObject {
         }
         return userDetailsDic as [String: Any]
     }
+
+    @objc public class func showInbox() {
+        AnnouncementManager.shared.showInbox()
+    }
 }

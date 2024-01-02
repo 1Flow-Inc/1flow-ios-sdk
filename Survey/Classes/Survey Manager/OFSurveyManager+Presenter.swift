@@ -65,7 +65,7 @@ extension OFSurveyManager {
                     .filter({$0.activationState == .foregroundActive})
                     .compactMap({$0 as? UIWindowScene})
                     .first {
-                    self.surveyWindow = UIWindow(windowScene: currentWindowScene)
+                    window = UIWindow(windowScene: currentWindowScene)
                 }
             }
         } else {

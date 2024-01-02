@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AnnouncementModalViewController" customModule="SurveySDK" customModuleProvider="target">
+            <connections>
+                <outlet property="bottomConstraint" destination="Kv1-0l-FTM" id="4sD-Uf-KFf"/>
+                <outlet property="centerVerticalConstraint" destination="dL8-H9-toE" id="o0r-UW-znG"/>
+                <outlet property="closeButton" destination="Yfk-ls-zHw" id="VTC-Pc-VKN"/>
+                <outlet property="scrollView" destination="OKn-Ld-naw" id="Xk4-RO-DQi"/>
+                <outlet property="stackView" destination="BLT-Dc-6KT" id="9iE-jN-TNJ"/>
+                <outlet property="topConstraint" destination="mJq-Qq-XFU" id="zPv-Ch-LmQ"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OKn-Ld-naw">
+                    <rect key="frame" x="0.0" y="326" width="393" height="200"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="BLT-Dc-6KT">
+                            <rect key="frame" x="24" y="0.0" width="345" height="200"/>
+                            <color key="backgroundColor" systemColor="systemBrownColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" priority="250" constant="200" id="s9S-Gc-RHa"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="BLT-Dc-6KT" secondAttribute="bottom" priority="250" id="7dS-PG-XNW"/>
+                        <constraint firstItem="BLT-Dc-6KT" firstAttribute="width" secondItem="OKn-Ld-naw" secondAttribute="width" constant="-48" id="P9S-DI-8Fv"/>
+                        <constraint firstItem="BLT-Dc-6KT" firstAttribute="top" secondItem="OKn-Ld-naw" secondAttribute="top" id="TMR-RB-F23"/>
+                        <constraint firstItem="BLT-Dc-6KT" firstAttribute="leading" secondItem="OKn-Ld-naw" secondAttribute="leading" constant="24" id="etl-ho-jNa"/>
+                        <constraint firstAttribute="trailing" secondItem="BLT-Dc-6KT" secondAttribute="trailing" constant="24" id="g1B-Hg-v6h"/>
+                        <constraint firstAttribute="height" secondItem="BLT-Dc-6KT" secondAttribute="height" priority="250" id="iGP-m3-7G1"/>
+                    </constraints>
+                </scrollView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yfk-ls-zHw">
+                    <rect key="frame" x="341" y="336" width="14" height="18"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" image="CloseButton"/>
+                    <connections>
+                        <action selector="didTapCloseButton:" destination="-1" eventType="touchUpInside" id="Cxa-Jp-3PP"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="Yfk-ls-zHw" firstAttribute="top" secondItem="BLT-Dc-6KT" secondAttribute="top" constant="10" id="CPq-bq-u1n"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Yfk-ls-zHw" secondAttribute="trailing" constant="38" id="DcG-0x-rtt"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="OKn-Ld-naw" secondAttribute="bottom" constant="50" id="Kv1-0l-FTM"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="OKn-Ld-naw" secondAttribute="trailing" id="KzF-bF-mb1"/>
+                <constraint firstItem="OKn-Ld-naw" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Qif-zl-XSf"/>
+                <constraint firstItem="OKn-Ld-naw" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="dL8-H9-toE"/>
+                <constraint firstItem="OKn-Ld-naw" firstAttribute="top" relation="greaterThanOrEqual" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="50" id="mJq-Qq-XFU"/>
+            </constraints>
+            <point key="canvasLocation" x="29.770992366412212" y="0.0"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="CloseButton" width="14" height="14"/>
+        <systemColor name="systemBrownColor">
+            <color red="0.63529411764705879" green="0.51764705882352946" blue="0.36862745098039218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
