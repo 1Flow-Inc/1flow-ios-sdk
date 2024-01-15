@@ -98,7 +98,7 @@ class AnnouncementsInboxCell: UITableViewCell {
         if let action = details.action {
             let brandColor = theme?.brandColor ?? "2D4EFF"
             mainStackView.addArrangedSubview(
-                AnnouncementComponentBuilder.actionButtonView(with: action.name, target: self, selector: #selector(didTapActionButton(_:)), color: brandColor)
+                AnnouncementComponentBuilder.actionButtonInboxView(with: action.name, target: self, selector: #selector(didTapActionButton(_:)), color: brandColor)
             )
 
             mainStackView.addArrangedSubview(
@@ -110,7 +110,8 @@ class AnnouncementsInboxCell: UITableViewCell {
     @objc func didTapActionButton(_ sender: Any) {
         guard
             let urlString = details?.action?.link,
-            let url = URL(string: urlString)
+            let url = URL(string: urlString),
+            let linkText = details?.action?.name
         else {
             OneFlowLog.writeLog("No action available")
             return
@@ -121,6 +122,15 @@ class AnnouncementsInboxCell: UITableViewCell {
             OneFlowLog.writeLog("Can not open url: \(url)", .error)
         }
         delegate?.didTapActionButton(index: index)
+        OneFlow.recordEventName(
+            kEventNameAnnouncementClicked,
+            parameters: [
+                "announcement_id": self.details?.identifier ?? "",
+                "channel": "inbox",
+                "link_text": linkText,
+                "link_url": urlString
+            ]
+        )
     }
 }
 

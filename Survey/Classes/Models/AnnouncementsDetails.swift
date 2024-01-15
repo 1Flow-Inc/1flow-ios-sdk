@@ -72,7 +72,7 @@ struct Announcement: Codable {
                             var field: String?
                             var dataType: String?
                             var condition: String?
-                            var values: [String]?
+                            var values: [Any]?
 
                             enum CodingKeys: String, CodingKey {
                                 case type
@@ -80,6 +80,49 @@ struct Announcement: Codable {
                                 case dataType = "data_type"
                                 case condition
                                 case values
+                            }
+
+                            func encode(to encoder: Encoder) throws {
+                                var container = encoder.container(keyedBy: CodingKeys.self)
+                                try container.encode(type, forKey: .type)
+                                try container.encode(field, forKey: .field)
+                                try container.encode(dataType, forKey: .dataType)
+                                try container.encode(condition, forKey: .condition)
+                                if let stringArray = values as? [String] {
+                                    try container.encode(stringArray, forKey: .values)
+                                } else if let boolArray = values as? [Bool] {
+                                    try container.encode(boolArray, forKey: .values)
+                                } else if let numberArray = values as? [Double] {
+                                    try container.encode(numberArray, forKey: .values)
+                                } else {
+                                    throw EncodingError.invalidValue(
+                                        values as Any,
+                                        EncodingError.Context(codingPath: [CodingKeys.values],
+                                                              debugDescription: "Invalid data type in arrayKey"
+                                                             )
+                                    )
+                                }
+                            }
+
+                            init(from decoder: Decoder) throws {
+                                let container = try decoder.container(keyedBy: CodingKeys.self)
+                                type = try? container.decodeIfPresent(String.self, forKey: .type)
+                                field = try? container.decodeIfPresent(String.self, forKey: .field)
+                                dataType = try? container.decodeIfPresent(String.self, forKey: .dataType)
+                                condition = try? container.decodeIfPresent(String.self, forKey: .condition)
+                                if let stringArray = try? container.decode([String].self, forKey: .values) {
+                                    values = stringArray
+                                } else if let boolArray = try? container.decode([Bool].self, forKey: .values) {
+                                    values = boolArray
+                                } else if let numberArray = try? container.decode([Double].self, forKey: .values) {
+                                    values = numberArray
+                                } else {
+                                    throw DecodingError.dataCorruptedError(
+                                        forKey: .values,
+                                        in: container,
+                                        debugDescription: "Invalid data type in arrayKey"
+                                    )
+                                }
                             }
                         }
                     }

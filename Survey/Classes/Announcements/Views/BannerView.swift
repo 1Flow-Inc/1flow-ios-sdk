@@ -20,8 +20,10 @@ class BannerView: UIView {
     @IBOutlet var textView: UITextView!
     weak var delegate: BannerDelegate?
     var type: BannerType = .top
+    var details: AnnouncementsDetails?
 
     func setupUI(with details: AnnouncementsDetails, theme: AnnouncementTheme?) {
+        self.details = details
         let textColor = UIColor.colorFromHex(theme?.textColor ?? "000000")
         let backgroundColor = UIColor.colorFromHex(theme?.backgroundColor ?? "FFFFFF")
 
@@ -73,6 +75,15 @@ extension BannerView: UITextViewDelegate {
         OneFlowLog.writeLog("Link tapped: \(url.absoluteString)")
         // Open URL or perform any desired action
         UIApplication.shared.open(url)
+        OneFlow.recordEventName(
+            kEventNameAnnouncementClicked,
+            parameters: [
+                "announcement_id": self.details?.identifier ?? "",
+                "channel": "in-app",
+                "link_text": details?.action?.name ?? "",
+                "link_url": details?.action?.link ?? ""
+            ]
+        )
         return false
     }
 }

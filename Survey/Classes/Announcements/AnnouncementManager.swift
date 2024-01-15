@@ -16,14 +16,19 @@ class AnnouncementManager {
     var theme: AnnouncementTheme?
     var temporaryEventArray: [EventStore]?
     let myGroupAnnouncement = DispatchGroup()
+    private var readAnnouncements = [String]()
 
     lazy var bannerView: BannerView = {
         BannerView.loadFromNib()
     }()
 
     private var isFetchingProgress = false
+    var isRunning = false
 
     func loadAnnouncements() {
+        if let directory = AnnouncementComponentBuilder.getAnnouncementDirectory() {
+            try? FileManager.default.removeItem(at: directory)
+        }
         if isFetchingProgress == true, announcements == nil {
             return
         }
@@ -42,7 +47,7 @@ class AnnouncementManager {
                 let announcements = response.result?.announcements?.inbox
                 self.theme = response.result?.theme
                 self.announcements = announcements?.filter({$0.status == "active"})
-                guard let inAppAnnouncements = response.result?.announcements?.inApp else {
+                guard let inAppAnnouncements = response.result?.announcements?.inApp?.filter( { $0.seen == false }) else {
                     return
                 }
                 self.inAppAnnouncements = inAppAnnouncements
@@ -102,6 +107,9 @@ class AnnouncementManager {
     }
 
     func newEventRecorded(_ eventName: String, parameter: [String: Any]?, completion: @escaping(Bool) -> Void) {
+        if isRunning == true {
+            return
+        }
         guard let inAppAnnouncements = inAppAnnouncements else {
             if self.temporaryEventArray == nil {
                 self.temporaryEventArray = [EventStore]()
@@ -115,7 +123,8 @@ class AnnouncementManager {
             completion(false)
             return
         }
-        SurveyScriptValidator.shared.setupForAnnouncement(with: inAppAnnouncements)
+        let filtered = inAppAnnouncements.filter({ !self.readAnnouncements.contains($0.identifier) })
+        SurveyScriptValidator.shared.setupForAnnouncement(with: filtered)
         var event = ["name": eventName] as [String: Any]
         if let param = parameter {
             event["parameters"] = param
@@ -158,6 +167,7 @@ class AnnouncementManager {
                     } else {
                         self.triggerModalAnnouncement(details, style: style)
                     }
+                    self.markAnnouncementAsRead(id)
                 }
             }
         }
@@ -198,6 +208,7 @@ class AnnouncementManager {
         controller.modalTransitionStyle = .crossDissolve
         controller.delegate = self
         controller.theme = theme
+        isRunning = true
         navigationController.present(controller, animated: true)
     }
 
@@ -235,6 +246,7 @@ class AnnouncementManager {
         // Add banner view to the window
         window.addSubview(bannerView)
         // Animate banner appearance
+        isRunning = true
         UIView.animate(withDuration: 0.5, animations: {
             self.bannerView.frame.origin.y = topInset
         }) { _ in
@@ -275,6 +287,7 @@ class AnnouncementManager {
         // Add banner view to the window
         window.addSubview(bannerView)
         // Animate banner appearance
+        isRunning = true
         UIView.animate(withDuration: 0.5, animations: {
             self.bannerView.frame.origin.y = window.frame.maxY - bottomInset - self.bannerView.frame.height
         }) { _ in
@@ -338,6 +351,17 @@ class AnnouncementManager {
         window?.windowLevel = .normal
         return window
     }
+
+    func markAnnouncementAsRead(_ announcementID: String) {
+        readAnnouncements.append(announcementID)
+        OneFlow.recordEventName(
+            kEventNameAnnouncementViewed,
+            parameters: [
+                "announcement_id": announcementID,
+                "channel": "in-app"
+            ]
+        )
+    }
 }
 extension AnnouncementManager: AnnoucementsInboxUIDelegate {
     func inboxDidClosed(_ sender: AnnouncementsInboxViewController) {
@@ -348,6 +372,7 @@ extension AnnouncementManager: AnnoucementsInboxUIDelegate {
             self.inboxWindow?.isHidden = true
             self.inboxWindow = nil
         }
+        isRunning = false
     }
 }
 extension AnnouncementManager: AnnouncementModalDelegate {
@@ -356,11 +381,13 @@ extension AnnouncementManager: AnnouncementModalDelegate {
             self.inboxWindow?.isHidden = true
             self.inboxWindow = nil
         }
+        isRunning = false
     }
 }
 
 extension AnnouncementManager: BannerDelegate {
     func bannerViewDidTapppedClosed(_ sender: BannerView) {
         dismissBanner(type: sender.type)
+        isRunning = false
     }
 }

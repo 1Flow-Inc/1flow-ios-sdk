@@ -126,6 +126,7 @@ class SurveyScriptValidator {
             completion(nil)
             return
         }
-        _ = context.objectForKeyedSubscript("oneflowAnnouncementFilter").call(withArguments: [announcementList, event])
+        let params = [announcementList, event, nil, false] as [Any?]
+        _ = context.objectForKeyedSubscript("oneflowAnnouncementFilter").call(withArguments: params as [Any])
     }
 }

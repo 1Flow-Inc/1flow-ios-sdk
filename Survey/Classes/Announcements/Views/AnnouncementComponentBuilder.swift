@@ -116,123 +116,16 @@ class AnnouncementComponentBuilder {
         return containerView
     }
 
-static let html =
-"""
-<html>
-    <head>
-        <link href="https://cdn.jsdelivr.net/npm/quill-emoji@0.2.0/dist/quill-emoji.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css" integrity="sha512-/FHUK/LsH78K9XTqsR9hbzr21J8B8RwHR/r8Jv9fzry6NVAOVIGFKQCNINsbhK7a1xubVu2r5QZcz2T9cKpubw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-light.min.css" rel="stylesheet">
-
-        <style>
-            .ql-container {
-                font-family: Inter;
-            }
-
-            .ql-toolbar,
-            .ql-blank {
-                display: none;
-            }
-
-            .ql-snow  a {
-                color: #2f54eb;
-            }
-
-            .ql-snow .ql-editor {
-                padding: 0;
-                word-break: break-word;
-            }
-
-            .ql-snow .ql-editor pre.ql-syntax  {
-                padding: 10px;
-                color: var(--oneflow-rich-text-preview-color);
-                background-color: rgba(0, 0, 0, 0.05);
-                border-radius: 8px;
-            }
-
-            .ql-snow .ql-editor blockquote {
-                margin-top: 0;
-                margin-bottom: 0;
-            }
-
-            .ql-container.ql-snow {
-                border: none;
-            }
-
-            .editor {
-                color: var(--oneflow-rich-text-preview-color);
-            }
-
-            .editor-content::-webkit-scrollbar {
-                width: 8px;
-                height: 8px;
-            }
-
-            .editor-content::-webkit-scrollbar-thumb  {
-                cursor: pointer;
-                background-color: rgba(0, 0, 0, 0.2);
-                border-radius: 4px;
-            }
-
-            .editor-content::-webkit-scrollbar-track {
-                background-color: transparent;
-            }
-
-            @media screen and (max-width: 568px) {
-                .editor-content {
-                    max-height: 100vh;
-                }
-            }
-        </style>
-    </head>
-    <body>
-
-    <!-- Create the editor container -->
-    <div id="quill-editor" class="editor">
-        <div id="editor-content" class="editor-content">
-        </div>
-    </div>
-
-    <!-- Include the Quill library -->
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/quill-emoji@0.2.0/dist/quill-emoji.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js" integrity="sha512-H69VMoQ814lKjFuFwLImb4OwoK8Rm8fcvsqZexaxjp/VkJfEnrt5TO7oaOdNlMf/j51QUctfLTe8+rgozW7l2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <!-- Initialize Quill editor -->
-    <script>
-        /* color in the next line should be updated with the theme color */
-        document.getElementById('quill-editor').style.setProperty('--oneflow-rich-text-preview-color', 'TEXTCOLOR');
-
-        var quill = new Quill('#editor-content', {
-            theme: 'snow',
-            modules: {
-                toolbar: [],
-                'emoji-shortname': true,
-                syntax: {
-                    highlight: (text) => hljs.highlightAuto(text).value,
-                },
-            },
-            readOnly: true
-        });
-
-        /* content in the next line should be updated with the real content */
-        quill.setContents(XXXXXX);
-    </script>
-    </body>
-</html>
-"""
-
     static func richTextContentView(with content: String, textColor: String) -> UIView {
         let preferences = WKPreferences()
         preferences.javaScriptEnabled = true
         
         let source: String = "var meta = document.createElement('meta');" +
-            "meta.name = 'viewport';" +
-            "meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';" +
-            "var head = document.getElementsByTagName('head')[0];" +
-            "head.appendChild(meta);"
-
+        "meta.name = 'viewport';" +
+        "meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';" +
+        "var head = document.getElementsByTagName('head')[0];" +
+        "head.appendChild(meta);"
+        
         let script: WKUserScript = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         let userContentController: WKUserContentController = WKUserContentController()
         let conf = WKWebViewConfiguration()
@@ -240,24 +133,31 @@ static let html =
         conf.userContentController = userContentController
         userContentController.addUserScript(script)
         let webview = WKWebView(frame: CGRect(x: 0, y: 0, width: 400, height: 400), configuration: conf)
+        guard 
+            let path = OneFlowBundle.bundleForObject(self).path(forResource: "quill-html", ofType: "html"),
+            let htmlString = try? String(contentsOfFile: path, encoding: .utf8)
+        else {
+            return webview
+        }
         
-        let text = html
+        let text = htmlString
             .replacingOccurrences(of: "XXXXXX", with: content)
-            .replacingOccurrences(of: "TEXTCOLOR", with: textColor)
+            .replacingOccurrences(of: "THEME_COLOR", with: textColor)
         
         let file = "myHTML\(OFProjectDetailsController.objectId()).html" //this is the file. we will write to and read from it
-        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+        guard let dir = AnnouncementComponentBuilder.getAnnouncementDirectory() else {
+            return webview
+        }
 
-            let fileURL = dir.appendingPathComponent(file)
+        let fileURL = dir.appendingPathComponent(file)
+        do {
             //writing
-            do {
-                try text.write(to: fileURL, atomically: false, encoding: .utf8)
-            }
-            catch {
-                OneFlowLog.writeLog(error.localizedDescription, .error)
-            }
+            try text.write(to: fileURL, atomically: true, encoding: .utf8)
             let request = URLRequest(url: fileURL)
             webview.load(request)
+        }
+        catch {
+            OneFlowLog.writeLog(error.localizedDescription, .error)
         }
         return webview
     }
@@ -276,4 +176,49 @@ static let html =
         actionButton.addTarget(target, action: selector, for: .touchUpInside)
         return containerView
     }
+
+    static func actionButtonInboxView(with title: String, target: Any, selector: Selector, color: String) -> UIView {
+        let containerView = UIView()
+        let actionButton = UIButton()
+        actionButton.setTitle(title, for: .normal)
+        if let icon = UIImage(named: "next_icon", in: OneFlowBundle.bundleForObject(self), compatibleWith: nil)?.withRenderingMode(.alwaysTemplate) {
+            actionButton.setImage(icon, for: .normal)
+        }
+        
+        actionButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        let titleColor = UIColor.colorFromHex(color)
+        actionButton.setTitleColor(titleColor, for: .normal)
+        actionButton.tintColor = titleColor
+        if #available(iOS 11.0, *) {
+            actionButton.contentHorizontalAlignment = .leading
+        } else {
+            // Fallback on earlier versions
+        }
+        let insetAmount: CGFloat = 4.0
+        actionButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -insetAmount, bottom: 0, right: insetAmount)
+        actionButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: insetAmount, bottom: 0, right: -insetAmount)
+        actionButton.imageToRight()
+        
+        containerView.addSubview(actionButton)
+        actionButton.pinEdgeToParentWithPadding(top: 0, bottom: 0, leading: 10, trailing: nil)
+        actionButton.heightAnchor.constraint(equalToConstant: 38).isActive = true
+        actionButton.addTarget(target, action: selector, for: .touchUpInside)
+        return containerView
+    }
+
+    static func getAnnouncementDirectory() -> URL? {
+        if var dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let directoryName = "Announcement"
+            dir = dir.appendingPathComponent(directoryName)
+            do {
+                try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+            } catch {
+                OneFlowLog.writeLog(error.localizedDescription, .error)
+                return nil
+            }
+            return dir
+        }
+        return nil
+    }
 }
+

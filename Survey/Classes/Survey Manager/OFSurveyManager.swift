@@ -114,9 +114,9 @@ class OFSurveyManager: NSObject, SurveyManageable {
     }
 
     func networkStatusChanged(_ isReachable: Bool) {
-        self.isNetworkReachable = isReachable
-//        self.configureSurveys()
-//        self.refreshAnnouncements()
+        isNetworkReachable = isReachable
+        configureSurveys()
+        refreshAnnouncements()
     }
 
     func uploadPendingSurveyIfAvailable() {

@@ -143,7 +143,8 @@ class AnnouncementModalViewController: UIViewController {
     @objc func didTapActionButton(_ sender: Any) {
         guard
             let urlString = details?.action?.link,
-            let url = URL(string: urlString)
+            let url = URL(string: urlString),
+            let linkText = details?.action?.name
         else {
             OneFlowLog.writeLog("No action available", .error)
             return
@@ -153,6 +154,15 @@ class AnnouncementModalViewController: UIViewController {
         } else {
             OneFlowLog.writeLog("Can not open url: \(url)", .error)
         }
+        OneFlow.recordEventName(
+            kEventNameAnnouncementClicked,
+            parameters: [
+                "announcement_id": self.details?.identifier ?? "",
+                "channel": "in-app",
+                "link_text": linkText,
+                "link_url": urlString
+            ]
+        )
     }
 }
 
