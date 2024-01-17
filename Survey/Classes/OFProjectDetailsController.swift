@@ -50,10 +50,12 @@ protocol ProjectDetailsManageable {
     var screenHeight: Int { get }
     var isWifiConnection: Bool { get set }
     var careerName: String? { get }
+    var pushToken: String? { get set }
 
     func setLoglevel(_ newLogLevel: OneFlowLogLevel)
     func logNewUserDetails(_ completion: @escaping (Bool) -> Void)
     func getLocalisedLanguageName() -> String
+    func updatePushTokenForUser()
 }
 
 final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
@@ -239,5 +241,39 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
         let pid = String(Int.random(in: 1000 ..< 9999))
         let counter = String(Int.random(in: 100000 ..< 999999))
         return time + machine + pid + counter
+    }
+
+    var pushToken: String? {
+        didSet {
+            updatePushTokenForUser()
+        }
+    }
+
+    func updatePushTokenForUser() {
+        guard
+            let userID = analyticUserID,
+            let token = pushToken
+        else {
+            return
+        }
+        let parameters = [
+            "device_token": token,
+            "device_type": "iOS",
+            "user_id": userID
+        ]
+        OFAPIController.shared.updatePushToken(parameters) { isSuccess, error, data in
+            if isSuccess == true, let data = data {
+                do {
+                    if let json = try JSONSerialization.jsonObject(
+                        with: data,
+                        options: JSONSerialization.ReadingOptions.fragmentsAllowed
+                    ) as? [String: Any] {
+                        OneFlowLog.writeLog(json, .verbose)
+                    }
+                } catch {
+                    OneFlowLog.writeLog(error.localizedDescription, .error)
+                }
+            }
+        }
     }
 }

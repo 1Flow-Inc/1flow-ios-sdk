@@ -25,7 +25,6 @@ class AnnouncementModalViewController: UIViewController {
     weak var delegate: AnnouncementModalDelegate?
     var theme: AnnouncementTheme?
     var style: String?
-    lazy var waterMarkURL = "https://1flow.app/?utm_source=1flow-ios-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -175,7 +174,9 @@ extension AnnouncementModalViewController: WKNavigationDelegate {
         webView.evaluateJavaScript("document.readyState", completionHandler: { (complete, _) in
             if complete != nil {
                 webView.evaluateJavaScript("quill.root.scrollHeight", completionHandler: { (height, _) in
-                    guard let finalHeight = height as? CGFloat else { return }
+                    let maxHeight = self.view.bounds.maxY / 2
+                    guard var finalHeight = height as? CGFloat else { return }
+                    finalHeight = finalHeight < maxHeight ? finalHeight : maxHeight
                     self.webContentHeight = webView.heightAnchor.constraint(equalToConstant: finalHeight + 20)
                     self.webContentHeight?.isActive = true
                 })

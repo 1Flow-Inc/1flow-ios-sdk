@@ -17,6 +17,7 @@
                 <outlet property="indicatorContainer" destination="dRA-6f-xRj" id="7V7-JG-qWZ"/>
                 <outlet property="indicatorLabel" destination="D63-FD-jdP" id="g1y-9K-RVP"/>
                 <outlet property="loadingIndicator" destination="kkk-5Z-WxY" id="IVT-M8-ap4"/>
+                <outlet property="poweredByButton" destination="y3k-HI-RhS" id="K9k-hM-Myd"/>
                 <outlet property="tableView" destination="iQz-CL-Y2f" id="cpM-ek-N97"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -112,6 +113,9 @@
                                     <state key="normal" title=" Powered by 1Flow" image="1FlowLogo">
                                         <color key="titleColor" red="0.31372549020000001" green="0.33333333329999998" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </state>
+                                    <connections>
+                                        <action selector="didTapPoweredByButton:" destination="-1" eventType="touchUpInside" id="og1-nd-l0e"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>

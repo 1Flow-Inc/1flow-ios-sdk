@@ -68,7 +68,6 @@ class OFRatingViewController: UIViewController {
     var centerConstraint: NSLayoutConstraint!
     var stackViewCenterConstraint: NSLayoutConstraint!
     var keyboardRect: CGRect!
-    lazy var waterMarkURL = "https://1flow.app/?utm_source=1flow-ios-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow"
     var isSurveyFullyAnswered = true
     var indexToAddOn = 3
 

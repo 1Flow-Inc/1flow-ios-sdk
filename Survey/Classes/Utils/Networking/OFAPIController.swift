@@ -100,4 +100,14 @@ final class OFAPIController: NSObject, APIProtocol {
     func getAnnouncementsDetails(_ ids: String, completion: @escaping APICompletionBlock) {
         urlRequestManager.getAPIWith(EndPoints.getAnnouncementsDetails(ids), completion: completion)
     }
+
+    // MARK: - Push token
+    func updatePushToken(_ parameter: [String: Any], completion: @escaping APICompletionBlock) {
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: parameter, options: .prettyPrinted)
+            urlRequestManager.postAPIWith(EndPoints.pushToken, parameters: jsonData, completion: completion)
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
 }

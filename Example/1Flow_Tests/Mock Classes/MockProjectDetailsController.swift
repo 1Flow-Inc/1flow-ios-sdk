@@ -17,6 +17,9 @@
 import Foundation
 
 class MockProjectDetailsController: ProjectDetailsManageable {
+    
+    var pushToken: String?
+    
     var appVersion: String = "NA"
 
     var buildVersion: String = "NA"
@@ -69,5 +72,8 @@ class MockProjectDetailsController: ProjectDetailsManageable {
 
     func getLocalisedLanguageName() -> String {
         return "English"
+    }
+
+    func updatePushTokenForUser() {
     }
 }

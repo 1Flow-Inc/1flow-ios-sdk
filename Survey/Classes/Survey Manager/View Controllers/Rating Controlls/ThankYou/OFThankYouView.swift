@@ -32,7 +32,6 @@ class OFThankYouView: UIView {
             self.lblDescription.text = thankyouDescription
         }
     }
-    lazy var waterMarkURL = "https://1flow.app/?utm_source=1flow-ios-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow"
 
     deinit {
         imageView?.animationImages = nil

@@ -32,6 +32,8 @@ var kPlaceholderColor = kPrimaryTitleColor.withAlphaComponent(0.3)
 let kBorderColor = UIColor(red: 0.76, green: 0.76, blue: 0.76, alpha: 1.0)
 let kAppGreyBGColor = UIColor.colorFromHex("F3F3F3")
 
+let waterMarkURL = "https://1flow.app/?utm_source=1flow-ios-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow"
+
 let kEventNameFirstAppOpen = "first_open"
 let kEventNameAppUpdate = "app_updated"
 let kEventNameSessionStart = "session_start"

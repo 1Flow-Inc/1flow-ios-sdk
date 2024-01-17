@@ -21,6 +21,7 @@ class AnnouncementsInboxViewController: UIViewController {
     @IBOutlet var headerView: UIView!
     @IBOutlet var headerTitle: UILabel!
     @IBOutlet var closeButton: UIButton!
+    @IBOutlet var poweredByButton: UIButton!
     
     var announcements: [Announcement]?
     var announcementList: [AnnouncementsDetails]?
@@ -65,6 +66,54 @@ class AnnouncementsInboxViewController: UIViewController {
                     self.tableView.reloadData()
                 }
             }
+        }
+        setupWatermarkButton()
+    }
+
+    func setupWatermarkButton() {
+        let fullText = " Powered by 1Flow"
+        let mainText = " Powered by "
+        let creditsText = "1Flow"
+
+        let fontBig = UIFont.systemFont(ofSize: 12, weight: .regular)
+        let fontSmall = UIFont.systemFont(ofSize: 12, weight: .bold)
+        let attributedString = NSMutableAttributedString(string: fullText, attributes: nil)
+
+        let bigRange = (attributedString.string as NSString).range(of: mainText)
+        let creditsRange = (attributedString.string as NSString).range(of: creditsText)
+        attributedString.setAttributes(
+            [
+                NSAttributedString.Key.font: fontBig as Any,
+                NSAttributedString.Key.foregroundColor: kWatermarkColor
+            ],
+            range: bigRange
+        )
+        attributedString.setAttributes(
+            [
+                NSAttributedString.Key.font: fontSmall as Any,
+                NSAttributedString.Key.foregroundColor: kWatermarkColor
+            ],
+            range: creditsRange
+        )
+        poweredByButton.setAttributedTitle(attributedString, for: .normal)
+        let highlightedString = NSMutableAttributedString(string: fullText, attributes: nil)
+        highlightedString.setAttributes(
+            [
+                NSAttributedString.Key.font: fontBig as Any,
+                NSAttributedString.Key.foregroundColor: kWatermarkColorHightlighted
+            ],
+            range: bigRange
+        )
+        highlightedString.setAttributes(
+            [
+                NSAttributedString.Key.font: fontSmall as Any,
+                NSAttributedString.Key.foregroundColor: kWatermarkColorHightlighted
+            ],
+            range: creditsRange
+        )
+        poweredByButton.setAttributedTitle(highlightedString, for: .highlighted)
+        if let powerByImage = UIImage(named: "1FlowLogo", in: OneFlowBundle.bundleForObject(self), compatibleWith: nil) {
+            poweredByButton.setImage(powerByImage, for: .normal)
         }
     }
 
@@ -123,6 +172,15 @@ class AnnouncementsInboxViewController: UIViewController {
             )
         }
         uiDelegate?.inboxDidClosed(self)
+    }
+
+    @IBAction func didTapPoweredByButton(_ sender: Any) {
+        guard let url = URL(string: waterMarkURL) else {
+            return
+        }
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
 }
 

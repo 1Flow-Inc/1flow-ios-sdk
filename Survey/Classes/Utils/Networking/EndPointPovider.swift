@@ -29,6 +29,7 @@ enum EndPoints: EndPointProtocol {
     case scriptUpdate
     case getAnnouncements
     case getAnnouncementsDetails(String)
+    case pushToken
 
     var url: String {
         let baseURL: String = {
@@ -92,8 +93,9 @@ enum EndPoints: EndPointProtocol {
             }
             return announcementUrl
         case .getAnnouncementsDetails(let ids):
-            var announcementUrl = baseURL + "/v3/announcements/inbox?ids=\(ids)"
-           return announcementUrl
+            return baseURL + "/v3/announcements/inbox?ids=\(ids)"
+        case .pushToken:
+            return "https://dev-dashboard-api.1flow.app/api/v1/2021-06-15/details/device"
         }
     }
 }
