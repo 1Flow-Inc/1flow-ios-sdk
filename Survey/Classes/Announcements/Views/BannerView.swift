@@ -18,6 +18,8 @@ enum BannerType {
 @objc(OBJCBannerView)
 class BannerView: UIView {
     @IBOutlet var textView: UITextView!
+    @IBOutlet var closeButton: UIButton!
+
     weak var delegate: BannerDelegate?
     var type: BannerType = .top
     var details: AnnouncementsDetails?
@@ -26,7 +28,9 @@ class BannerView: UIView {
         self.details = details
         let textColor = UIColor.colorFromHex(theme?.textColor ?? "000000")
         let backgroundColor = UIColor.colorFromHex(theme?.backgroundColor ?? "FFFFFF")
+        let themeColor = UIColor.colorFromHex(theme?.brandColor ?? "808080")
 
+        closeButton.tintColor = themeColor
         let attributedString = NSMutableAttributedString(
             string: details.title + "  ",
             attributes: [

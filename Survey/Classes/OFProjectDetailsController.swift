@@ -251,13 +251,12 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
 
     func updatePushTokenForUser() {
         guard
-            let userID = analyticUserID,
-            let token = pushToken
+            let userID = analyticUserID
         else {
             return
         }
         let parameters = [
-            "device_token": token,
+            "device_token": pushToken ?? "",
             "device_type": "iOS",
             "user_id": userID
         ]

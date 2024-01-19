@@ -79,21 +79,12 @@ class AnnouncementModalViewController: UIViewController {
         let textColor = UIColor.colorFromHex(theme?.textColor ?? "000000")
         let backgroundColor = UIColor.colorFromHex(theme?.backgroundColor ?? "FFFFFF")
         closeButton.tintColor = textColor
-//        let date = Date(timeIntervalSince1970: TimeInterval(details.publishedAt / 1000))
-//        let formatter = DateFormatter()
-//        formatter.dateFormat = "MMM dd, yyyy"
-//        let dateString = formatter.string(from: date)
         
         if let category = details.category {
             stackView.addArrangedSubview(
                 AnnouncementComponentBuilder.categoryView(with: category, date: nil)
             )
         }
-//        else {
-//            stackView.addArrangedSubview(
-//                AnnouncementComponentBuilder.categoryView(with: nil, date: dateString)
-//            )
-//        }
         
         stackView.addArrangedSubview(
             AnnouncementComponentBuilder.verticalSpace(with: 5)
@@ -174,7 +165,7 @@ extension AnnouncementModalViewController: WKNavigationDelegate {
         webView.evaluateJavaScript("document.readyState", completionHandler: { (complete, _) in
             if complete != nil {
                 webView.evaluateJavaScript("quill.root.scrollHeight", completionHandler: { (height, _) in
-                    let maxHeight = self.view.bounds.maxY / 2
+                    let maxHeight = self.view.bounds.maxY * 0.45
                     guard var finalHeight = height as? CGFloat else { return }
                     finalHeight = finalHeight < maxHeight ? finalHeight : maxHeight
                     self.webContentHeight = webView.heightAnchor.constraint(equalToConstant: finalHeight + 20)
