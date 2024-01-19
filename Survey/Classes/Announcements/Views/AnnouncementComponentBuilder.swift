@@ -133,7 +133,7 @@ class AnnouncementComponentBuilder {
         conf.userContentController = userContentController
         userContentController.addUserScript(script)
         let webview = WKWebView(frame: CGRect(x: 0, y: 0, width: 400, height: 400), configuration: conf)
-        guard 
+        guard
             let path = OneFlowBundle.bundleForObject(self).path(forResource: "quill-html", ofType: "html"),
             let htmlString = try? String(contentsOfFile: path, encoding: .utf8)
         else {

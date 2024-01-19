@@ -26,15 +26,14 @@ class BannerView: UIView {
 
     func setupUI(with details: AnnouncementsDetails, theme: AnnouncementTheme?) {
         self.details = details
-        let textColor = UIColor.colorFromHex(theme?.textColor ?? "000000")
-        let backgroundColor = UIColor.colorFromHex(theme?.backgroundColor ?? "FFFFFF")
-        let themeColor = UIColor.colorFromHex(theme?.brandColor ?? "808080")
-
-        closeButton.tintColor = themeColor
+        let backColor = details.category?.color ?? "808080"
+        let backgroundColor = UIColor.colorFromHex(backColor)
+        let textColor = UIColor.getTextColorForBackground(backColor)
+        closeButton.tintColor = textColor
         let attributedString = NSMutableAttributedString(
             string: details.title + "  ",
             attributes: [
-            .font: UIFont.systemFont(ofSize: 16),
+                .font: UIFont.systemFont(ofSize: 16, weight: .medium),
             .foregroundColor: textColor
             ]
         )
@@ -42,7 +41,7 @@ class BannerView: UIView {
             let actionString = NSMutableAttributedString(
                 string: actionTitle,
                 attributes: [
-                    .font: UIFont.systemFont(ofSize: 16, weight: .medium),
+                    .font: UIFont.systemFont(ofSize: 16, weight: .semibold),
                     .foregroundColor: textColor,
                     .link: link
                     ]

@@ -67,4 +67,17 @@ extension UIColor {
                  blue: .init(strtoul(String(chars[6...7]), nil, 16)) / 255,
                 alpha: .init(strtoul(String(chars[0...1]), nil, 16)) / 255)
     }
+
+    static func getTextColorForBackground(_ bgColor: String) -> UIColor {
+        let color = bgColor.hasPrefix("#") ? String(bgColor.dropFirst()) : bgColor
+        guard
+            let r = Int(color.prefix(2), radix: 16),
+            let g = Int(color.dropFirst(2).prefix(2), radix: 16),
+            let b = Int(color.dropFirst(4).prefix(2), radix: 16)
+        else {
+            return UIColor.black
+        }
+        let total = Double(r) * 0.299 + Double(g) * 0.587 + Double(b) * 0.114
+        return total > 186 ? UIColor.black : UIColor.white
+    }
 }
