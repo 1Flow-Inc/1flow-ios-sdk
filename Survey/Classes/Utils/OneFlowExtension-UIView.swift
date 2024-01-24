@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension UIView {
     func pinEdgeToParentWithPadding(top: CGFloat?, bottom: CGFloat?, leading: CGFloat?, trailing: CGFloat?) {

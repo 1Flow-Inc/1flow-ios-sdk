@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class AnnouncementManager {
     static let shared = AnnouncementManager()
