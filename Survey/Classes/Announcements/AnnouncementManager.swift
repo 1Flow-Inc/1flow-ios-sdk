@@ -25,6 +25,7 @@ class AnnouncementManager {
 
     private var isFetchingProgress = false
     var isRunning = false
+    var isSurveyRunning = false
 
     func loadAnnouncements() {
         if let directory = AnnouncementComponentBuilder.getAnnouncementDirectory() {
@@ -152,6 +153,9 @@ class AnnouncementManager {
             }
             completion(true)
             self.fetchAnnouncementDetails(id) { detailsList in
+                guard !self.isSurveyRunning else {
+                    return
+                }
                 guard let details = detailsList?.first else {
                     return
                 }

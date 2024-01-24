@@ -200,6 +200,9 @@ extension OFSurveyManager {
     }
 
     func startSurvey(_ survey: SurveyListResponse.Survey, eventName: String) {
+        guard !AnnouncementManager.shared.isRunning else {
+            return
+        }
         guard validatePresentationAndThrottling(survey) == true else {
             return
         }
@@ -216,6 +219,7 @@ extension OFSurveyManager {
             parameters: [InternalKey.flowId: survey.identifier]
         )
         DispatchQueue.main.async {
+            AnnouncementManager.shared.isSurveyRunning = true
             guard let surveyWindow = self.getSurveyWindow() else {
                 return
             }
@@ -234,6 +238,7 @@ extension OFSurveyManager {
                 DispatchQueue.main.async {
                     self.surveyWindow?.isHidden = true
                     self.surveyWindow = nil
+                    AnnouncementManager.shared.isSurveyRunning = false
                 }
                 self.saveSubmittedDetails(
                     for: survey,

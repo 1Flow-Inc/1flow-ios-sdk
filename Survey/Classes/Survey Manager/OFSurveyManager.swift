@@ -129,10 +129,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
 
     func refreshAnnouncements() {
         OneFlowLog.writeLog("refreshAnnouncements called")
-//        let queue = DispatchQueue(label: "com.1flow.queue", attributes: .concurrent)
-//        queue.async(execute: {
             AnnouncementManager.shared.loadAnnouncements()
-//        })
     }
 
     private func fetchAllSurvey() {
