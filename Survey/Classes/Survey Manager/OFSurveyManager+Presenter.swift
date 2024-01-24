@@ -246,6 +246,9 @@ extension OFSurveyManager {
                     isCompleted: isCompleted,
                     eventName: eventName
                 )
+                guard !surveyResponse.isEmpty else {
+                    return
+                }
                 self.submitSurveyResponse(
                     survey,
                     surveyResponse: surveyResponse,

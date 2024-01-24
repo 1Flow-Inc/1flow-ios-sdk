@@ -109,6 +109,7 @@ class AnnouncementManager {
 
     func newEventRecorded(_ eventName: String, parameter: [String: Any]?, completion: @escaping(Bool) -> Void) {
         if isRunning == true {
+            completion(true)
             return
         }
         guard let inAppAnnouncements = inAppAnnouncements else {
@@ -125,6 +126,10 @@ class AnnouncementManager {
             return
         }
         let filtered = inAppAnnouncements.filter({ !self.readAnnouncements.contains($0.identifier) })
+        if filtered.isEmpty {
+            completion(false)
+            return
+        }
         SurveyScriptValidator.shared.setupForAnnouncement(with: filtered)
         var event = ["name": eventName] as [String: Any]
         if let param = parameter {
