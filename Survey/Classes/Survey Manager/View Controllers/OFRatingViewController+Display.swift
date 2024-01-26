@@ -36,7 +36,7 @@ extension OFRatingViewController {
                             }
                         let extraScreens = (surveyScreens.count - filteredSurveyScreens.count) > 0 ? 1 : 0
                         self.progressBar.setProgress(
-                            Float((self.currentScreenIndex + 1)/(filteredSurveyScreens.count + extraScreens)),
+                            Float(CGFloat(self.currentScreenIndex + 1)/CGFloat(filteredSurveyScreens.count + extraScreens)),
                             animated: true
                         )
                     }

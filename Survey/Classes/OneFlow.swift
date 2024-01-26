@@ -354,4 +354,18 @@ public final class OneFlow: NSObject {
         }
         return userDetailsDic as [String: Any]
     }
+
+    @objc public class func showInbox() {
+        AnnouncementManager.shared.showInbox()
+    }
+
+    @objc
+    public class var pushToken: String? {
+        set {
+            shared.projectDetailsController.pushToken = newValue
+        }
+        get {
+            return shared.projectDetailsController.pushToken
+        }
+    }
 }

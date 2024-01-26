@@ -24,6 +24,8 @@ protocol APIProtocol {
     func addEvents(_ parameter: [String: Any], completion: @escaping APICompletionBlock)
     func fetchSurvey(_ flowID: String, completion: @escaping APICompletionBlock)
     func fetchUpdatedValidationScript(_ completion: @escaping APICompletionBlock)
+    func getAnnouncements(_ completion: @escaping APICompletionBlock)
+    func getAnnouncementsDetails(_ ids: String, completion: @escaping APICompletionBlock)
 }
 
 final class OFAPIController: NSObject, APIProtocol {
@@ -33,7 +35,7 @@ final class OFAPIController: NSObject, APIProtocol {
         super.init()
     }
 
-    var urlRequestManager: URLRequestManagerProtocol = URLRequestManager()
+    var urlRequestManager: URLRequestManagerProtocol = URLRequestManager.shared
 
     // MARK: - Surveys
     func getAllSurveys(_ completion: @escaping APICompletionBlock) {
@@ -47,6 +49,14 @@ final class OFAPIController: NSObject, APIProtocol {
         } catch {
             fatalError(error.localizedDescription)
         }
+    }
+
+    func fetchSurvey(_ flowID: String, completion: @escaping APICompletionBlock) {
+        urlRequestManager.getAPIWith(EndPoints.fetchSurvey(flowID), completion: completion)
+    }
+
+    func fetchUpdatedValidationScript(_ completion: @escaping APICompletionBlock) {
+        urlRequestManager.getAPIWith(EndPoints.scriptUpdate, completion: completion)
     }
 
     // MARK: - User
@@ -82,11 +92,22 @@ final class OFAPIController: NSObject, APIProtocol {
         urlRequestManager.getAPIWith(EndPoints.appStoreRating, completion: completion)
     }
 
-    func fetchSurvey(_ flowID: String, completion: @escaping APICompletionBlock) {
-        urlRequestManager.getAPIWith(EndPoints.fetchSurvey(flowID), completion: completion)
+    // MARK: - Announcements
+    func getAnnouncements(_ completion: @escaping APICompletionBlock) {
+        urlRequestManager.getAPIWith(EndPoints.getAnnouncements, completion: completion)
     }
 
-    func fetchUpdatedValidationScript(_ completion: @escaping APICompletionBlock) {
-        urlRequestManager.getAPIWith(EndPoints.scriptUpdate, completion: completion)
+    func getAnnouncementsDetails(_ ids: String, completion: @escaping APICompletionBlock) {
+        urlRequestManager.getAPIWith(EndPoints.getAnnouncementsDetails(ids), completion: completion)
+    }
+
+    // MARK: - Push token
+    func updatePushToken(_ parameter: [String: Any], completion: @escaping APICompletionBlock) {
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: parameter, options: .prettyPrinted)
+            urlRequestManager.postAPIWith(EndPoints.pushToken, parameters: jsonData, completion: completion)
+        } catch {
+            fatalError(error.localizedDescription)
+        }
     }
 }

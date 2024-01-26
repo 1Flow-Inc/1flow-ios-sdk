@@ -28,27 +28,28 @@ class ViewController: UIViewController {
     }
 
     @IBAction func onRecordEvent_startSurvey(_ sender: Any) {
-        OneFlow.recordEventName("4", parameters: nil)
+        OneFlow.recordEventName("modal", parameters: nil)
     }
 
     @IBAction func onRecordEvent_withParams(_ sender: Any) {
-        OneFlow.recordEventName("5", parameters: nil)
+        OneFlow.recordEventName("Banner_Top", parameters: nil)
     }
 
     @IBAction func onLogUser(_ sender: Any) {
-        OneFlow.recordEventName("6", parameters: nil)
+        OneFlow.recordEventName("Banner_Bottom", parameters: nil)
     }
 
     @IBAction func onButton1(_ sender: Any) {
-        OneFlow.recordEventName("button1", parameters: nil)
+//        OneFlow.recordEventName("button1", parameters: nil)
+        OneFlow.showInbox()
     }
 
     @IBAction func onButton2(_ sender: Any) {
-        OneFlow.recordEventName("secondEvent", parameters: ["first_name": "john", "roll_number": 10])
+        OneFlow.recordEventName("slideout_top", parameters: nil)
     }
 
     @IBAction func onButton3(_ sender: Any) {
-        OneFlow.recordEventName("3", parameters: nil)
+        OneFlow.recordEventName("slideout_bottom", parameters: nil)
 //        OneFlow.useFont(fontFamily: "Zapfino")
     }
 }

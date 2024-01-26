@@ -20,6 +20,21 @@
 		3797DFB2E8C1452922D5E21E761A8A87 /* OneFlowDataLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8375C2350850CEC978D45256A90443BD /* OneFlowDataLogic.swift */; };
 		3AA2CEB5D65D1DE5FD8B062565AE52CE /* validator-dev.js in Resources */ = {isa = PBXBuildFile; fileRef = 37776403EF1258C61358F430F400C5F7 /* validator-dev.js */; };
 		4140C6DA16B4985E44457F0E14A05415 /* OFRatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43B07C21604FEF656990912B6D43D5F7 /* OFRatingViewController.xib */; };
+		439072CC2B42771900D85595 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 439072CB2B42771900D85595 /* PrivacyInfo.xcprivacy */; };
+		439072D02B4C1FB500D85595 /* OneFlowExtension-UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439072CF2B4C1FB500D85595 /* OneFlowExtension-UIButton.swift */; };
+		439072D32B55262900D85595 /* quill-html.html in Resources */ = {isa = PBXBuildFile; fileRef = 439072D12B55262000D85595 /* quill-html.html */; };
+		43932CC62B27839C004EE256 /* AnnouncementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43932CC02B27839C004EE256 /* AnnouncementManager.swift */; };
+		43932CC72B27839C004EE256 /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43932CC22B27839C004EE256 /* BannerView.swift */; };
+		43932CC82B27839C004EE256 /* AnnouncementsInboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43932CC32B27839C004EE256 /* AnnouncementsInboxViewController.swift */; };
+		43932CC92B27839C004EE256 /* AnnouncementComponentBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43932CC42B27839C004EE256 /* AnnouncementComponentBuilder.swift */; };
+		43932CCA2B27839C004EE256 /* AnnouncementsInboxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43932CC52B27839C004EE256 /* AnnouncementsInboxCell.swift */; };
+		43932CCE2B2783E6004EE256 /* AnnouncementsInboxCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43932CCB2B2783E6004EE256 /* AnnouncementsInboxCell.xib */; };
+		43932CCF2B2783E6004EE256 /* BannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43932CCC2B2783E6004EE256 /* BannerView.xib */; };
+		43932CD02B2783E6004EE256 /* AnnouncementsInboxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43932CCD2B2783E6004EE256 /* AnnouncementsInboxViewController.xib */; };
+		43932CD72B2EF94B004EE256 /* AnnouncementModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43932CD52B2EF94B004EE256 /* AnnouncementModalViewController.swift */; };
+		43BBD7A82AE3CE0D00E2192F /* OneFlowExtension-UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BBD7A72AE3CE0D00E2192F /* OneFlowExtension-UIView.swift */; };
+		43BBD7AA2AECFBE400E2192F /* AnnouncementsDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BBD7A92AECFBE400E2192F /* AnnouncementsDetails.swift */; };
+		43DE4B592B2EF9F100959271 /* AnnouncementModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43DE4B582B2EF9F100959271 /* AnnouncementModalViewController.xib */; };
 		4558A4D7C7D03AD1B80A54749F71DD51 /* OneFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B46F002710D355BA5BF5B5111C8854 /* OneFlow.swift */; };
 		49E837D6C4FFFF53E9A3322D40AB3DD7 /* OFScreenTrackingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4753A3636119B6C294E3F40B7DDDD55 /* OFScreenTrackingController.swift */; };
 		4A76035E0E987158E60113E1382D7CEE /* OFStarsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89ECE15F8D6BC7D188746B4DE57151B0 /* OFStarsView.xib */; };
@@ -124,12 +139,27 @@
 		2CA9653DF85532185440439776159915 /* OFSwiftGIF.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFSwiftGIF.swift; sourceTree = "<group>"; };
 		2DC62E07F3AE679FAF52BE785B12CFD9 /* 1Flow.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = 1Flow.debug.xcconfig; sourceTree = "<group>"; };
 		35D6960850779D98FF229412FED4CDD0 /* Pods-1Flow_Example */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-1Flow_Example"; path = Pods_1Flow_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		37776403EF1258C61358F430F400C5F7 /* validator-dev.js */ = {isa = PBXFileReference; includeInIndex = 1; name = "validator-dev.js"; path = "Survey/Resources/validator-dev.js"; sourceTree = "<group>"; };
+		37776403EF1258C61358F430F400C5F7 /* validator-dev.js */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.javascript; name = "validator-dev.js"; path = "Survey/Resources/validator-dev.js"; sourceTree = "<group>"; };
 		3A67C30E43EC8CB22716D6A4E8296B9B /* OFProjectDetailsController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OFProjectDetailsController.swift; path = Survey/Classes/OFProjectDetailsController.swift; sourceTree = "<group>"; };
 		3CCC75E0B186E4FB1AC4AFD99781956B /* 1Flow-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "1Flow-umbrella.h"; sourceTree = "<group>"; };
 		40B92122F2F6F4F11BD04361E19113D1 /* OFOneToTenView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFOneToTenView.swift; sourceTree = "<group>"; };
 		4385E10AC6E4BC7503B447884B9DB0B7 /* Pods-1Flow_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-1Flow_Example-frameworks.sh"; sourceTree = "<group>"; };
+		439072CB2B42771900D85595 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Survey/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		439072CF2B4C1FB500D85595 /* OneFlowExtension-UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OneFlowExtension-UIButton.swift"; sourceTree = "<group>"; };
+		439072D12B55262000D85595 /* quill-html.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "quill-html.html"; path = "Survey/Resources/quill-html.html"; sourceTree = "<group>"; };
+		43932CC02B27839C004EE256 /* AnnouncementManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementManager.swift; sourceTree = "<group>"; };
+		43932CC22B27839C004EE256 /* BannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
+		43932CC32B27839C004EE256 /* AnnouncementsInboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementsInboxViewController.swift; sourceTree = "<group>"; };
+		43932CC42B27839C004EE256 /* AnnouncementComponentBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementComponentBuilder.swift; sourceTree = "<group>"; };
+		43932CC52B27839C004EE256 /* AnnouncementsInboxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementsInboxCell.swift; sourceTree = "<group>"; };
+		43932CCB2B2783E6004EE256 /* AnnouncementsInboxCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AnnouncementsInboxCell.xib; path = Survey/Resources/AnnouncementsInboxCell.xib; sourceTree = "<group>"; };
+		43932CCC2B2783E6004EE256 /* BannerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BannerView.xib; path = Survey/Resources/BannerView.xib; sourceTree = "<group>"; };
+		43932CCD2B2783E6004EE256 /* AnnouncementsInboxViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AnnouncementsInboxViewController.xib; path = Survey/Resources/AnnouncementsInboxViewController.xib; sourceTree = "<group>"; };
+		43932CD52B2EF94B004EE256 /* AnnouncementModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementModalViewController.swift; sourceTree = "<group>"; };
 		43B07C21604FEF656990912B6D43D5F7 /* OFRatingViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFRatingViewController.xib; path = Survey/Resources/OFRatingViewController.xib; sourceTree = "<group>"; };
+		43BBD7A72AE3CE0D00E2192F /* OneFlowExtension-UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OneFlowExtension-UIView.swift"; sourceTree = "<group>"; };
+		43BBD7A92AECFBE400E2192F /* AnnouncementsDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsDetails.swift; sourceTree = "<group>"; };
+		43DE4B582B2EF9F100959271 /* AnnouncementModalViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AnnouncementModalViewController.xib; path = Survey/Resources/AnnouncementModalViewController.xib; sourceTree = "<group>"; };
 		440F4D66CCB5CF18D2FE5D168806D26B /* Pods-1Flow_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Example-Info.plist"; sourceTree = "<group>"; };
 		4A157D984D6159B317C6A42939AA2370 /* 1Flow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = 1Flow.release.xcconfig; sourceTree = "<group>"; };
 		4D4DC93E32C3FCF2C2F13B5E1C1369E3 /* Pods-1Flow_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Example-acknowledgements.plist"; sourceTree = "<group>"; };
@@ -153,7 +183,7 @@
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		750FBFA9D1BC5E9D197CF0F922CC168D /* OFMCQView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFMCQView.swift; sourceTree = "<group>"; };
 		77C93380EE1088BBEAF785B7B1FF9B27 /* OFWebContainerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFWebContainerView.swift; sourceTree = "<group>"; };
-		7987C7291E7C8240015E9F38A386B940 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		7987C7291E7C8240015E9F38A386B940 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		7C1DB373993825A5B16B783A9D4D83A7 /* OFThankYouView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFThankYouView.swift; sourceTree = "<group>"; };
 		7CBA637C0314CEFA369F8A44E07ADE47 /* ReplaceMe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReplaceMe.swift; path = 1Flow/Classes/ReplaceMe.swift; sourceTree = "<group>"; };
 		81AD8058BBAD641AA965A398E3D26B09 /* OFNumberCollectionViewCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = OFNumberCollectionViewCell.xib; path = Survey/Resources/OFNumberCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -170,7 +200,7 @@
 		8EF85528B3D4E76F54459A1C873BEE4E /* 1Flow-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "1Flow-prefix.pch"; sourceTree = "<group>"; };
 		90530D64891F5316CBA9146D6CA30140 /* OFdone.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; name = OFdone.gif; path = Survey/Resources/OFdone.gif; sourceTree = "<group>"; };
 		980926337F030427951F046486118D14 /* OFSurveyManager+Presenter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "OFSurveyManager+Presenter.swift"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9E86AEA2D16E0E252F740B5BD1D20DEB /* ScriptsManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScriptsManager.swift; sourceTree = "<group>"; };
 		9EB12B83B8ED9E9D43482138BC8788F9 /* OFReachability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFReachability.swift; sourceTree = "<group>"; };
 		A0252B367D082FD4065F54DCF9DA25DC /* CreateSessionRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateSessionRequest.swift; sourceTree = "<group>"; };
@@ -184,7 +214,7 @@
 		C338782D475B125A1A54AF497461ED74 /* Pods-1Flow_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		C4753A3636119B6C294E3F40B7DDDD55 /* OFScreenTrackingController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFScreenTrackingController.swift; sourceTree = "<group>"; };
 		C58979C19517AD2B6390E003FA0E526C /* OFRatingViewController+DataLogic.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "OFRatingViewController+DataLogic.swift"; sourceTree = "<group>"; };
-		C85A504F04C7142CA0D1337A7FDB9260 /* 1Flow.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = 1Flow.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		C85A504F04C7142CA0D1337A7FDB9260 /* 1Flow.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = 1Flow.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		C96ED6E9CE00FF0940B69D355D6A94C9 /* Pods-1Flow_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-1Flow_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		D42EEDDB2F46310F0F4E4E459D3B6DB2 /* OFSurveyManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFSurveyManager.swift; sourceTree = "<group>"; };
 		D70E600D073D57AE9C7FBD93EBDB21EC /* 1Flow-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "1Flow-Info.plist"; sourceTree = "<group>"; };
@@ -245,7 +275,6 @@
 			children = (
 				280C114AD4B928BD815F891806D82B0C /* OFShortAnswerView.swift */,
 			);
-			name = ShortAnswer;
 			path = ShortAnswer;
 			sourceTree = "<group>";
 		};
@@ -266,7 +295,6 @@
 			children = (
 				F62C2F5F5AD405ECF19933A0067B8B4A /* OFFollowupView.swift */,
 			);
-			name = Followup;
 			path = Followup;
 			sourceTree = "<group>";
 		};
@@ -301,7 +329,6 @@
 			children = (
 				EB92360BFBE3DE95A338C15AD49E4015 /* OFWelcomeView.swift */,
 			);
-			name = Welcome;
 			path = Welcome;
 			sourceTree = "<group>";
 		};
@@ -312,7 +339,6 @@
 				00DC00047F37979BF05FF95EC3687C7B /* OFAPIController.swift */,
 				62AC2D3BD38D8BF16560987FCE7CD00C /* URLRequestManager.swift */,
 			);
-			name = Networking;
 			path = Networking;
 			sourceTree = "<group>";
 		};
@@ -321,7 +347,6 @@
 			children = (
 				77C93380EE1088BBEAF785B7B1FF9B27 /* OFWebContainerView.swift */,
 			);
-			name = WebContainer;
 			path = WebContainer;
 			sourceTree = "<group>";
 		};
@@ -339,7 +364,6 @@
 			children = (
 				750FBFA9D1BC5E9D197CF0F922CC168D /* OFMCQView.swift */,
 			);
-			name = MCQ;
 			path = MCQ;
 			sourceTree = "<group>";
 		};
@@ -352,6 +376,28 @@
 				129F5B23C9DB6DF1374F687B58A680CD /* Pods-1Flow_Tests */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		43932CBF2B27839C004EE256 /* Announcements */ = {
+			isa = PBXGroup;
+			children = (
+				43932CC02B27839C004EE256 /* AnnouncementManager.swift */,
+				43932CC12B27839C004EE256 /* Views */,
+			);
+			name = Announcements;
+			path = Survey/Classes/Announcements;
+			sourceTree = "<group>";
+		};
+		43932CC12B27839C004EE256 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				43932CC22B27839C004EE256 /* BannerView.swift */,
+				43932CC32B27839C004EE256 /* AnnouncementsInboxViewController.swift */,
+				43932CD52B2EF94B004EE256 /* AnnouncementModalViewController.swift */,
+				43932CC42B27839C004EE256 /* AnnouncementComponentBuilder.swift */,
+				43932CC52B27839C004EE256 /* AnnouncementsInboxCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		4D844BDAB7F85D9BBF25681FA32064E4 /* Rating Controlls */ = {
@@ -372,7 +418,6 @@
 				1ABE5FCF54EA6FFF9D141FD6BC577B7C /* WebContainer */,
 				14F1A9B0371A91E2407A90676678A84E /* Welcome */,
 			);
-			name = "Rating Controlls";
 			path = "Rating Controlls";
 			sourceTree = "<group>";
 		};
@@ -427,7 +472,6 @@
 				0F6B73A348375DA20F3BC8E256BC52D4 /* OFRatingViewController+WidgetPosition.swift */,
 				4D844BDAB7F85D9BBF25681FA32064E4 /* Rating Controlls */,
 			);
-			name = "View Controllers";
 			path = "View Controllers";
 			sourceTree = "<group>";
 		};
@@ -439,6 +483,8 @@
 				5DC1D89D95FEFD5542A7CA74EB18CA50 /* OneFlowConstant.swift */,
 				AADB68916ABB05C56B673BC3D73BF8AB /* OneFlowExtension-UIColor.swift */,
 				631B3C165594474B8878EBF986ED8AB8 /* OneFlowExtension-UIImage.swift */,
+				43BBD7A72AE3CE0D00E2192F /* OneFlowExtension-UIView.swift */,
+				439072CF2B4C1FB500D85595 /* OneFlowExtension-UIButton.swift */,
 				E028B5B0149128B42DEA51C6034BB1EB /* OneFlowLog.swift */,
 				1A35AD3E1E36EC2CB191BEE0BF461F9F /* Networking */,
 			);
@@ -451,7 +497,6 @@
 			children = (
 				8B36C93AF38AD31F31358C1CA7DBC699 /* OFStarsView.swift */,
 			);
-			name = Stars;
 			path = Stars;
 			sourceTree = "<group>";
 		};
@@ -461,7 +506,6 @@
 				6DC49D40D64413B82EA72983A7163664 /* OFNumberCollectionViewCell.swift */,
 				40B92122F2F6F4F11BD04361E19113D1 /* OFOneToTenView.swift */,
 			);
-			name = OneToTen;
 			path = OneToTen;
 			sourceTree = "<group>";
 		};
@@ -470,7 +514,6 @@
 			children = (
 				5E35A2F5E81169FB14F75EA1D17C3A89 /* ScriptsManageable.swift */,
 			);
-			name = Protocols;
 			path = Protocols;
 			sourceTree = "<group>";
 		};
@@ -518,7 +561,6 @@
 				2CA9653DF85532185440439776159915 /* OFSwiftGIF.swift */,
 				7C1DB373993825A5B16B783A9D4D83A7 /* OFThankYouView.swift */,
 			);
-			name = ThankYou;
 			path = ThankYou;
 			sourceTree = "<group>";
 		};
@@ -527,6 +569,7 @@
 			children = (
 				0E838FD0639AAC920E0E9C06F118B975 /* FeedbackAssets.xcassets */,
 				90530D64891F5316CBA9146D6CA30140 /* OFdone.gif */,
+				439072CB2B42771900D85595 /* PrivacyInfo.xcprivacy */,
 				C18D2FCAC8DC2297A3048BC7BCCFBB79 /* OFFollowupView.xib */,
 				29C4E3A67BFFF3624FDB0428044468D2 /* OFMCQView.xib */,
 				81AD8058BBAD641AA965A398E3D26B09 /* OFNumberCollectionViewCell.xib */,
@@ -537,8 +580,14 @@
 				89ECE15F8D6BC7D188746B4DE57151B0 /* OFStarsView.xib */,
 				07F29B561FBC1582085D58A770214C4A /* OFThankYouView.xib */,
 				84F7BCEFAFBC6924AF159AF0B42E54A8 /* OFWelcomeView.xib */,
+				43932CCB2B2783E6004EE256 /* AnnouncementsInboxCell.xib */,
+				43932CCD2B2783E6004EE256 /* AnnouncementsInboxViewController.xib */,
+				43DE4B582B2EF9F100959271 /* AnnouncementModalViewController.xib */,
+				43932CCC2B2783E6004EE256 /* BannerView.xib */,
 				70B46F002710D355BA5BF5B5111C8854 /* OneFlow.swift */,
 				37776403EF1258C61358F430F400C5F7 /* validator-dev.js */,
+				439072D12B55262000D85595 /* quill-html.html */,
+				43932CBF2B27839C004EE256 /* Announcements */,
 				CC330CA31458B45E153276B8748F9DD6 /* Event Manager */,
 				F56C976D6B8FA86E0E3F3724569484CE /* Models */,
 				5C7D4B4559C41A68A2191343442E3A3A /* Survey Manager */,
@@ -556,6 +605,7 @@
 				06B158E0EECE1CB9C6E988B2B742CE8E /* LogUserResponse.swift */,
 				89D401484C1B09B6302DFA73D5234239 /* SubmittedSurvey.swift */,
 				8EEF462276FC79F4AA1E1669F222128B /* SurveyListResponse.swift */,
+				43BBD7A92AECFBE400E2192F /* AnnouncementsDetails.swift */,
 				E595C5D1515C52D125A0E3E1FE66D317 /* SurveySubmitRequest.swift */,
 			);
 			name = Models;
@@ -724,9 +774,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43932CCF2B2783E6004EE256 /* BannerView.xib in Resources */,
 				98E627671816E7FB1F61858BD73DB0DC /* FeedbackAssets.xcassets in Resources */,
+				43932CD02B2783E6004EE256 /* AnnouncementsInboxViewController.xib in Resources */,
 				80E7B42D42EA704A9E28106A8BA02FD0 /* OFdone.gif in Resources */,
 				D157BB351C0899E1811093BC1A4DED93 /* OFFollowupView.xib in Resources */,
+				439072CC2B42771900D85595 /* PrivacyInfo.xcprivacy in Resources */,
+				43932CCE2B2783E6004EE256 /* AnnouncementsInboxCell.xib in Resources */,
+				439072D32B55262900D85595 /* quill-html.html in Resources */,
 				D67725436EAFBE9F73611B3A1CF22DD0 /* OFMCQView.xib in Resources */,
 				2DF26B2F72280A39BECD99F40383430B /* OFNumberCollectionViewCell.xib in Resources */,
 				817BE1381A2441FD77FB866B547BD64F /* OFOneToTenView.xib in Resources */,
@@ -735,6 +790,7 @@
 				4A76035E0E987158E60113E1382D7CEE /* OFStarsView.xib in Resources */,
 				4DA3F2707F4DE7827C8C0A74EE8079B8 /* OFThankYouView.xib in Resources */,
 				F9E2DA6204C1E9292B1CBB0B98BD05D8 /* OFWelcomeView.xib in Resources */,
+				43DE4B592B2EF9F100959271 /* AnnouncementModalViewController.xib in Resources */,
 				3AA2CEB5D65D1DE5FD8B062565AE52CE /* validator-dev.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -791,9 +847,12 @@
 				CFBE5C17F7690DC6CCA85EBCBC9AB133 /* EndPointPovider.swift in Sources */,
 				3213C4D91A782D225DC5228A14BE813D /* LogUserResponse.swift in Sources */,
 				614617B5B88A6BAB194885A40BA34132 /* OFAPIController.swift in Sources */,
+				43932CC62B27839C004EE256 /* AnnouncementManager.swift in Sources */,
 				F887FA9EAC8A7751C849AA36F2A7DF45 /* OFDraggableView.swift in Sources */,
 				A4B6D9859754AC98338B6ADB37700E93 /* OFEventManager.swift in Sources */,
+				43BBD7A82AE3CE0D00E2192F /* OneFlowExtension-UIView.swift in Sources */,
 				1FD3E8684A4B6B81C8AED64AF123E758 /* OFFollowupView.swift in Sources */,
+				43BBD7AA2AECFBE400E2192F /* AnnouncementsDetails.swift in Sources */,
 				C4DA0A28236FE65216F95D3CA872AB0D /* OFInAppPurchaseEventsController.swift in Sources */,
 				9DD2C7FBD41F191A2B6A3E9450BE27F8 /* OFMCQView.swift in Sources */,
 				255F9D968B3FE4877C7164E495137949 /* OFNumberButton.swift in Sources */,
@@ -803,14 +862,17 @@
 				D2C5D9E0B1DF876718D2F14AC94CDB06 /* OFRadioButton.swift in Sources */,
 				D2613545E30C07D0CFBFEE8A55D55BFF /* OFRatingViewController.swift in Sources */,
 				94296FF55D86C7CE6817B88E0A059FDE /* OFRatingViewController+DataLogic.swift in Sources */,
+				43932CC82B27839C004EE256 /* AnnouncementsInboxViewController.swift in Sources */,
 				0B0FE1C982014B9A3A73714C1EB799C4 /* OFRatingViewController+Display.swift in Sources */,
 				D3E6A47D0F592D0669E641788EF41DD8 /* OFRatingViewController+Keyboard.swift in Sources */,
 				96BAF67EF060F1DCF00DC7B33159F385 /* OFRatingViewController+OFRatingViewDelegate.swift in Sources */,
 				690550CD22B456E870AC069B19938C33 /* OFRatingViewController+WidgetPosition.swift in Sources */,
 				5314841632D5A23D14702F78C1CC26A6 /* OFRatingViewDelegate.swift in Sources */,
 				27F4140732168083F6D878378F8D80B3 /* OFReachability.swift in Sources */,
+				43932CC72B27839C004EE256 /* BannerView.swift in Sources */,
 				15A2E3D12147A338125FA14914263386 /* OFRoundedConrnerView.swift in Sources */,
 				49E837D6C4FFFF53E9A3322D40AB3DD7 /* OFScreenTrackingController.swift in Sources */,
+				43932CCA2B27839C004EE256 /* AnnouncementsInboxCell.swift in Sources */,
 				5BA8F43241A83E4747665918E66B8473 /* OFShortAnswerView.swift in Sources */,
 				95056EEFFCCDADD203BE7DD60282EB53 /* OFStarsView.swift in Sources */,
 				BEFFC0F8CF651FBCC6F2833E4CEF6539 /* OFSurveyManager.swift in Sources */,
@@ -819,6 +881,7 @@
 				811E4484B99ACC8C6EF12A2565BE4E80 /* OFThankYouView.swift in Sources */,
 				7FEDE34B64574E8819461BFF08C8624B /* OFViewLoading.swift in Sources */,
 				259EF218DB17A166414FB9DF7759C9B8 /* OFWebContainerView.swift in Sources */,
+				43932CD72B2EF94B004EE256 /* AnnouncementModalViewController.swift in Sources */,
 				BDD871BEC9A812F7DC258E29451355D8 /* OFWelcomeView.swift in Sources */,
 				4558A4D7C7D03AD1B80A54749F71DD51 /* OneFlow.swift in Sources */,
 				9F83FB2802F8228C704013F06B27B92E /* OneFlowBundle.swift in Sources */,
@@ -829,12 +892,14 @@
 				A4CCB3374A480778304C6ABF79DAB907 /* OneFlowLog.swift in Sources */,
 				97D9806F94389C16D0D93A2606B95256 /* ReplaceMe.swift in Sources */,
 				AC105272E11C6E2C82C6644A84051FE4 /* ScriptExecuter.swift in Sources */,
+				439072D02B4C1FB500D85595 /* OneFlowExtension-UIButton.swift in Sources */,
 				DB703EB3AFC483C15DE67EEB85F3C9EC /* ScriptsManageable.swift in Sources */,
 				E3C425EC370DF7E5AB2A8984E271C7A1 /* ScriptsManager.swift in Sources */,
 				9772DEE563BE2B7CF655FE83143AD8FD /* SubmittedSurvey.swift in Sources */,
 				C89701ECEDD65D55FBC03D3860C4E9A6 /* SurveyFontConfiguration.swift in Sources */,
 				1B2A924E606EB1360F0C30ABA1FB6F3C /* SurveyListResponse.swift in Sources */,
 				DFDDC0B6366294E0BB2EA7B439125E37 /* SurveySubmitRequest.swift in Sources */,
+				43932CC92B27839C004EE256 /* AnnouncementComponentBuilder.swift in Sources */,
 				6EBB92D15CF2B6B3BA063F1D5BA1E582 /* URLRequestManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1052,8 +1117,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};

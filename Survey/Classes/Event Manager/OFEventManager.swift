@@ -104,6 +104,7 @@ class OFEventManager: NSObject, EventManagerProtocol {
             self.surveyManager.cleanUpSurveyArray()
         }
         self.surveyManager.isNetworkReachable = true
+        self.surveyManager.refreshAnnouncements()
         self.surveyManager.configureSurveys()
     }
 

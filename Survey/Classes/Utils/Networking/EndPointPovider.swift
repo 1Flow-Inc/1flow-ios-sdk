@@ -27,6 +27,9 @@ enum EndPoints: EndPointProtocol {
     case appStoreRating
     case fetchSurvey(String)
     case scriptUpdate
+    case getAnnouncements
+    case getAnnouncementsDetails(String)
+    case pushToken
 
     var url: String {
         let baseURL: String = {
@@ -34,6 +37,7 @@ enum EndPoints: EndPointProtocol {
                     return "https://dev-sdk.1flow.app/api/2021-06-15"
                 } else {
                     return "https://api-sdk.1flow.app/api/2021-06-15"
+//                    return "https://beta-sdk.1flow.app/api/2021-06-15"
                 }
         }()
         switch self {
@@ -82,6 +86,16 @@ enum EndPoints: EndPointProtocol {
             } else {
                 return "https://cdn.1flow.app/index.js"
             }
+        case .getAnnouncements:
+            var announcementUrl = baseURL + "/v3/announcements?platform=iOS"
+            if let userID = OFProjectDetailsController.shared.analyticUserID {
+                announcementUrl = announcementUrl + "&user_id=" + userID
+            }
+            return announcementUrl
+        case .getAnnouncementsDetails(let ids):
+            return baseURL + "/v3/announcements/inbox?ids=\(ids)"
+        case .pushToken:
+            return "https://dev-dashboard-api.1flow.app/api/v1/2021-06-15/details/device"
         }
     }
 }
