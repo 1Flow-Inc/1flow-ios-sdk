@@ -13,11 +13,7 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-<<<<<<< HEAD
-	<string>2023.10.02</string>
-=======
-	<string>2023.10.01</string>
->>>>>>> 87fa238 (Release 2023.10.01)
+	<string>2024.01.26</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
