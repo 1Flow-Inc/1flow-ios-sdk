@@ -129,7 +129,7 @@ class OFSurveyManager: NSObject, SurveyManageable {
 
     func refreshAnnouncements() {
         OneFlowLog.writeLog("refreshAnnouncements called")
-            AnnouncementManager.shared.loadAnnouncements()
+        AnnouncementManager.shared.loadAnnouncements()
     }
 
     private func fetchAllSurvey() {

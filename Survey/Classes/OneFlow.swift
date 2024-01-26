@@ -116,7 +116,6 @@ public final class OneFlow: NSObject {
 
                         OneFlowLog.writeLog("Add user - Success")
                         OneFlow.shared.projectDetailsController.analyticUserID = userID
-                        OneFlow.shared.projectDetailsController.updatePushTokenForUser()
                         if OneFlow.shared.identifyCallPending {
                             OneFlowLog.writeLog("Calling pending log user", .info)
                             OneFlow.shared.identifyCallPending = false
@@ -366,7 +365,7 @@ public final class OneFlow: NSObject {
             shared.projectDetailsController.pushToken = newValue
         }
         get {
-            return shared.projectDetailsController.analyticUserID
+            return shared.projectDetailsController.pushToken
         }
     }
 }
