@@ -318,14 +318,35 @@ public final class OneFlow: NSObject {
     public class func showInbox() {
         AnnouncementManager.shared.showInbox()
     }
+    
+    @objc 
+    public class func setupAnnouncementPushNotification(_ option: UNAuthorizationOptions, fromClass: AnyClass, delegate: OneFlowNotificationDelegate?) {
+        NotificationManager.shared.setupNotifications(for: option, fromClass: fromClass, delegate: delegate)
+    }
 
     @objc
     public class var pushToken: String? {
         set {
             shared.projectDetailsController.pushToken = newValue
+            NotificationManager.shared.didSubscribedToNotification(newValue)
         }
         get {
             return shared.projectDetailsController.pushToken
         }
+    }
+
+    @objc
+    public class func appDidReceiveResponseForRemoteNotification(_ userInfo: [AnyHashable : Any]) {
+        NotificationManager.shared.didReceivedResponse(userInfo)
+    }
+
+    @objc
+    public class func appWillPresentRemoteNotification(_ userInfo: [AnyHashable : Any]) {
+        NotificationManager.shared.willPresentNotification(userInfo)
+    }
+
+    @objc
+    public class func appDidLaunchedWith(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+        NotificationManager.shared.didLaunchedWith(launchOptions)
     }
 }

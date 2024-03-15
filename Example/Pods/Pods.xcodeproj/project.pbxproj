@@ -23,6 +23,11 @@
 		438433462BF34B66006A8C9D /* OneFlowExtension-Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438433452BF34B66006A8C9D /* OneFlowExtension-Data.swift */; };
 		438433482BF34B91006A8C9D /* OneFlowJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438433472BF34B91006A8C9D /* OneFlowJSON.swift */; };
 		4384334B2BF34C06006A8C9D /* OneFlowObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384334A2BF34C06006A8C9D /* OneFlowObserver.swift */; };
+		435B8DD92B9EF29000EF1E24 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B8DD72B9EF28900EF1E24 /* NotificationManager.swift */; };
+		435B8DDB2B9EF37E00EF1E24 /* OneFlowExtension-Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B8DDA2B9EF37E00EF1E24 /* OneFlowExtension-Data.swift */; };
+		435B8DDE2B9EF4F300EF1E24 /* OneFlowJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B8DDC2B9EF44100EF1E24 /* OneFlowJSON.swift */; };
+		435B8DE12B9EF6EF00EF1E24 /* OneFlowNotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B8DE02B9EF6EF00EF1E24 /* OneFlowNotificationDelegate.swift */; };
+		435B8DE32B9EF70B00EF1E24 /* OneFlowObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B8DE22B9EF70B00EF1E24 /* OneFlowObserver.swift */; };
 		439072CC2B42771900D85595 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 439072CB2B42771900D85595 /* PrivacyInfo.xcprivacy */; };
 		439072D02B4C1FB500D85595 /* OneFlowExtension-UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439072CF2B4C1FB500D85595 /* OneFlowExtension-UIButton.swift */; };
 		439072D32B55262900D85595 /* quill-html.html in Resources */ = {isa = PBXBuildFile; fileRef = 439072D12B55262000D85595 /* quill-html.html */; };
@@ -43,7 +48,7 @@
 		4A76035E0E987158E60113E1382D7CEE /* OFStarsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89ECE15F8D6BC7D188746B4DE57151B0 /* OFStarsView.xib */; };
 		4DA3F2707F4DE7827C8C0A74EE8079B8 /* OFThankYouView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07F29B561FBC1582085D58A770214C4A /* OFThankYouView.xib */; };
 		5314841632D5A23D14702F78C1CC26A6 /* OFRatingViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99FE1DFAE0673C71FA84E6E741BD209 /* OFRatingViewDelegate.swift */; };
-		53982BD2DB546E65A113915338E98AA7 /* 1Flow-SurveySDK in Resources */ = {isa = PBXBuildFile; fileRef = 528DEFCB4735A3F217174EEA89E94E89 /* 1Flow-SurveySDK */; };
+		53982BD2DB546E65A113915338E98AA7 /* SurveySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528DEFCB4735A3F217174EEA89E94E89 /* SurveySDK.bundle */; };
 		54AB9755D349B12EEC69E30B48C2B0C4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
 		5BA8F43241A83E4747665918E66B8473 /* OFShortAnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280C114AD4B928BD815F891806D82B0C /* OFShortAnswerView.swift */; };
 		5DCE98EDFBCAE44A67517862B7E012B4 /* OFProjectDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A67C30E43EC8CB22716D6A4E8296B9B /* OFProjectDetailsController.swift */; };
@@ -149,6 +154,11 @@
 		438433452BF34B66006A8C9D /* OneFlowExtension-Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OneFlowExtension-Data.swift"; sourceTree = "<group>"; };
 		438433472BF34B91006A8C9D /* OneFlowJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneFlowJSON.swift; sourceTree = "<group>"; };
 		4384334A2BF34C06006A8C9D /* OneFlowObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneFlowObserver.swift; sourceTree = "<group>"; };
+		435B8DD72B9EF28900EF1E24 /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		435B8DDA2B9EF37E00EF1E24 /* OneFlowExtension-Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OneFlowExtension-Data.swift"; sourceTree = "<group>"; };
+		435B8DDC2B9EF44100EF1E24 /* OneFlowJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneFlowJSON.swift; sourceTree = "<group>"; };
+		435B8DE02B9EF6EF00EF1E24 /* OneFlowNotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneFlowNotificationDelegate.swift; sourceTree = "<group>"; };
+		435B8DE22B9EF70B00EF1E24 /* OneFlowObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneFlowObserver.swift; sourceTree = "<group>"; };
 		4385E10AC6E4BC7503B447884B9DB0B7 /* Pods-1Flow_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-1Flow_Example-frameworks.sh"; sourceTree = "<group>"; };
 		439072CB2B42771900D85595 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Survey/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		439072CF2B4C1FB500D85595 /* OneFlowExtension-UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OneFlowExtension-UIButton.swift"; sourceTree = "<group>"; };
@@ -169,7 +179,7 @@
 		440F4D66CCB5CF18D2FE5D168806D26B /* Pods-1Flow_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Example-Info.plist"; sourceTree = "<group>"; };
 		4A157D984D6159B317C6A42939AA2370 /* 1Flow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = 1Flow.release.xcconfig; sourceTree = "<group>"; };
 		4D4DC93E32C3FCF2C2F13B5E1C1369E3 /* Pods-1Flow_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-1Flow_Example-acknowledgements.plist"; sourceTree = "<group>"; };
-		528DEFCB4735A3F217174EEA89E94E89 /* 1Flow-SurveySDK */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "1Flow-SurveySDK"; path = SurveySDK.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		528DEFCB4735A3F217174EEA89E94E89 /* SurveySDK.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SurveySDK.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		52F80AA8F6D516DC14E5ED7C3AC4F042 /* AddUserResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddUserResponse.swift; sourceTree = "<group>"; };
 		5891BAF299B391CFDFD60E8E103B6FB3 /* ResourceBundle-SurveySDK-1Flow-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-SurveySDK-1Flow-Info.plist"; sourceTree = "<group>"; };
 		5938DB5E8EA97D0A544F442225F43934 /* OFViewLoading.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFViewLoading.swift; sourceTree = "<group>"; };
@@ -377,7 +387,7 @@
 			isa = PBXGroup;
 			children = (
 				E262A6333816A67FC1DC3F18ADFD3B2E /* 1Flow */,
-				528DEFCB4735A3F217174EEA89E94E89 /* 1Flow-SurveySDK */,
+				528DEFCB4735A3F217174EEA89E94E89 /* SurveySDK.bundle */,
 				35D6960850779D98FF229412FED4CDD0 /* Pods-1Flow_Example */,
 				129F5B23C9DB6DF1374F687B58A680CD /* Pods-1Flow_Tests */,
 			);
@@ -388,6 +398,19 @@
 			isa = PBXGroup;
 			children = (
 				4384334A2BF34C06006A8C9D /* OneFlowObserver.swift */,
+		435B8DD62B9EF21B00EF1E24 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				435B8DD72B9EF28900EF1E24 /* NotificationManager.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		435B8DDF2B9EF6B800EF1E24 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				435B8DE02B9EF6EF00EF1E24 /* OneFlowNotificationDelegate.swift */,
+				435B8DE22B9EF70B00EF1E24 /* OneFlowObserver.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -396,6 +419,7 @@
 			isa = PBXGroup;
 			children = (
 				43932CC02B27839C004EE256 /* AnnouncementManager.swift */,
+				435B8DD62B9EF21B00EF1E24 /* Notifications */,
 				43932CC12B27839C004EE256 /* Views */,
 			);
 			name = Announcements;
@@ -492,6 +516,7 @@
 		9AE9590DBEB6FA524C09E5D123E3EB2B /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				435B8DDF2B9EF6B800EF1E24 /* Protocols */,
 				9EB12B83B8ED9E9D43482138BC8788F9 /* OFReachability.swift */,
 				0E2CB65ADF917E23783BE1DCC2B653F6 /* OneFlowBundle.swift */,
 				5DC1D89D95FEFD5542A7CA74EB18CA50 /* OneFlowConstant.swift */,
@@ -501,6 +526,8 @@
 				631B3C165594474B8878EBF986ED8AB8 /* OneFlowExtension-UIImage.swift */,
 				43BBD7A72AE3CE0D00E2192F /* OneFlowExtension-UIView.swift */,
 				439072CF2B4C1FB500D85595 /* OneFlowExtension-UIButton.swift */,
+				435B8DDA2B9EF37E00EF1E24 /* OneFlowExtension-Data.swift */,
+				435B8DDC2B9EF44100EF1E24 /* OneFlowJSON.swift */,
 				E028B5B0149128B42DEA51C6034BB1EB /* OneFlowLog.swift */,
 				438433492BF34BEE006A8C9D /* Protocols */,
 				1A35AD3E1E36EC2CB191BEE0BF461F9F /* Networking */,
@@ -689,7 +716,7 @@
 			);
 			name = "1Flow-SurveySDK";
 			productName = SurveySDK;
-			productReference = 528DEFCB4735A3F217174EEA89E94E89 /* 1Flow-SurveySDK */;
+			productReference = 528DEFCB4735A3F217174EEA89E94E89 /* SurveySDK.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		37DC2BD35530AAFFCBFCF00785D455F7 /* Pods-1Flow_Example */ = {
@@ -757,6 +784,11 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					15ECB5A08AF26C41C1FFF13630AE92F3 = {
+						LastSwiftMigration = 1510;
+					};
+				};
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -816,7 +848,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53982BD2DB546E65A113915338E98AA7 /* 1Flow-SurveySDK in Resources */,
+				53982BD2DB546E65A113915338E98AA7 /* SurveySDK.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -842,6 +874,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				435B8DE12B9EF6EF00EF1E24 /* OneFlowNotificationDelegate.swift in Sources */,
+				435B8DDB2B9EF37E00EF1E24 /* OneFlowExtension-Data.swift in Sources */,
+				435B8DE32B9EF70B00EF1E24 /* OneFlowObserver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -880,6 +915,7 @@
 				D2C5D9E0B1DF876718D2F14AC94CDB06 /* OFRadioButton.swift in Sources */,
 				D2613545E30C07D0CFBFEE8A55D55BFF /* OFRatingViewController.swift in Sources */,
 				94296FF55D86C7CE6817B88E0A059FDE /* OFRatingViewController+DataLogic.swift in Sources */,
+				435B8DD92B9EF29000EF1E24 /* NotificationManager.swift in Sources */,
 				43932CC82B27839C004EE256 /* AnnouncementsInboxViewController.swift in Sources */,
 				0B0FE1C982014B9A3A73714C1EB799C4 /* OFRatingViewController+Display.swift in Sources */,
 				D3E6A47D0F592D0669E641788EF41DD8 /* OFRatingViewController+Keyboard.swift in Sources */,
@@ -918,7 +954,7 @@
 				C89701ECEDD65D55FBC03D3860C4E9A6 /* SurveyFontConfiguration.swift in Sources */,
 				1B2A924E606EB1360F0C30ABA1FB6F3C /* SurveyListResponse.swift in Sources */,
 				DFDDC0B6366294E0BB2EA7B439125E37 /* SurveySubmitRequest.swift in Sources */,
-				438433482BF34B91006A8C9D /* OneFlowJSON.swift in Sources */,
+				435B8DDE2B9EF4F300EF1E24 /* OneFlowJSON.swift in Sources */,
 				43932CC92B27839C004EE256 /* AnnouncementComponentBuilder.swift in Sources */,
 				6EBB92D15CF2B6B3BA063F1D5BA1E582 /* URLRequestManager.swift in Sources */,
 			);
@@ -984,6 +1020,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4A157D984D6159B317C6A42939AA2370 /* 1Flow.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/1Flow";
 				IBSC_MODULE = _1Flow;
@@ -992,6 +1029,7 @@
 				PRODUCT_NAME = SurveySDK;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -1069,6 +1107,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2DC62E07F3AE679FAF52BE785B12CFD9 /* 1Flow.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/1Flow";
 				IBSC_MODULE = _1Flow;
@@ -1077,6 +1116,8 @@
 				PRODUCT_NAME = SurveySDK;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = bundle;
 			};

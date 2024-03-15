@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         setupOneFlow()
         NotificationCenter.default.addObserver(self, selector: #selector(surveyDidFinished(notification:)), name: SurveyFinishNotification, object: nil)
+        OneFlow.setupAnnouncementPushNotification([.alert, .badge, .sound], fromClass: AppDelegate, delegate: self)
         return true
     }
      
