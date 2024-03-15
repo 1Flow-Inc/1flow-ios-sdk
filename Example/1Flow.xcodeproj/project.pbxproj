@@ -45,6 +45,7 @@
 		43366DA6285881CC00F302F7 /* SavedSurveyResponses.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SavedSurveyResponses.json; sourceTree = "<group>"; };
 		43366DA8285882BC00F302F7 /* GetSurveyResponses.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetSurveyResponses.json; sourceTree = "<group>"; };
 		43366DAA285A18A500F302F7 /* EventManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManagerTests.swift; sourceTree = "<group>"; };
+		435B8DE42B9EF76D00EF1E24 /* 1Flow_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = 1Flow_Example.entitlements; sourceTree = "<group>"; };
 		435CC2D129BB038900CAB03A /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Main.strings; sourceTree = "<group>"; };
 		435CC2D229BB038900CAB03A /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		437B678A281D1B63009D96FA /* MockAPIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIController.swift; sourceTree = "<group>"; };
@@ -144,6 +145,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				435B8DE42B9EF76D00EF1E24 /* 1Flow_Example.entitlements */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for 1Flow */,
 				43F7E91F279826AC00C4883B /* 1Flow_Tests */,
@@ -609,6 +611,7 @@
 			baseConfigurationReference = 6E329F3232B14AEBE7023E86 /* Pods-1Flow_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = 1Flow_Example.entitlements;
 				DEVELOPMENT_TEAM = DQVMM49PG9;
 				INFOPLIST_FILE = "$(SRCROOT)/1Flow/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -627,6 +630,7 @@
 			baseConfigurationReference = BECAD99124CB15DBE9CDDD38 /* Pods-1Flow_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = 1Flow_Example.entitlements;
 				DEVELOPMENT_TEAM = DQVMM49PG9;
 				INFOPLIST_FILE = "$(SRCROOT)/1Flow/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

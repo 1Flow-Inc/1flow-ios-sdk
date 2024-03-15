@@ -15,12 +15,6 @@
 import Foundation
 import UIKit
 
-/// get call back when SDK configuration failed and succeeded
-@objc public protocol OneFlowObserver {
-    func oneFlowSetupDidFinish()
-    func oneFlowSetupDidFail()
-}
-
 public final class OneFlow: NSObject {
     static let shared = OneFlow()
     private var networkTimer: Timer?
@@ -257,7 +251,7 @@ public final class OneFlow: NSObject {
             return
         }
         var parameterDic: [String: Any]?
-        if let updatedParameterDic: [String: Any] = OneFlow.removeUnsupportedKeys(parameters) {
+        if let updatedParameterDic: [String: Any] = OneFlowJSON.removeUnsupportedKeys(parameters) {
             parameterDic = updatedParameterDic
         }
         DispatchQueue.global().async {
@@ -273,7 +267,7 @@ public final class OneFlow: NSObject {
             return
         }
 
-        if let userDetailsDic: [String: Any] = OneFlow.removeUnsupportedKeys(userDetails) {
+        if let userDetailsDic: [String: Any] = OneFlowJSON.removeUnsupportedKeys(userDetails) {
             let logUserInfo = ["UserID": userID, "userDetails": userDetailsDic] as [String: Any]
             UserDefaults.standard.set(logUserInfo, forKey: "OFlogUserInfo")
             shared.projectDetailsController.newUserData = userDetailsDic
@@ -310,62 +304,39 @@ public final class OneFlow: NSObject {
         }
     }
 
-    @objc class private func getSerialisedString(_ value: Any) -> Any? {
-        if let valueDate = value as? Date {
-            let interval = Int(valueDate.timeIntervalSince1970)
-            return interval
-        } else if let valueUrl = value as? URL {
-            return valueUrl.absoluteString
-        }
-        return nil
-    }
-
-    @objc class private func removeUnsupportedKeys(_ userDetails: [String: Any]?) ->  [String: Any]? {
-        guard var userDetailsDic: [String: Any?] = userDetails else {return nil}
-        for (key, value) in userDetailsDic {
-            if value == nil {
-                userDetailsDic.removeValue(forKey: key)
-                continue
-            }
-            if !JSONSerialization.isValidJSONObject([key: value]) {
-                if let dicValue: [String: Any] = value as? [String: Any] {
-                    if let newDic: [String: Any] = self.removeUnsupportedKeys(dicValue) {
-                        userDetailsDic.updateValue(newDic, forKey: key)
-                    }
-                } else if let arrayValue: [Any?] = value as? [Any] {
-                    var newArray: [Any?] = []
-                    for arrayObj in arrayValue {
-                        if arrayObj == nil {
-                           continue
-                        }
-                        if JSONSerialization.isValidJSONObject(["key": arrayObj]) {
-                            newArray.append(arrayObj)
-                        } else if let newValue = OneFlow.getSerialisedString(arrayObj as Any) {
-                            newArray.append(newValue)
-                        }
-                    }
-                    userDetailsDic.updateValue(newArray, forKey: key)
-                } else if let newValue = OneFlow.getSerialisedString(value as Any) {
-                    userDetailsDic.updateValue(newValue, forKey: key)
-                } else {
-                    userDetailsDic.removeValue(forKey: key)
-                }
-            }
-        }
-        return userDetailsDic as [String: Any]
-    }
-
-    @objc public class func showInbox() {
+    @objc 
+    public class func showInbox() {
         AnnouncementManager.shared.showInbox()
+    }
+    
+    @objc 
+    public class func setupAnnouncementPushNotification(_ option: UNAuthorizationOptions, fromClass: AnyClass, delegate: OneFlowNotificationDelegate?) {
+        NotificationManager.shared.setupNotifications(for: option, fromClass: fromClass, delegate: delegate)
     }
 
     @objc
     public class var pushToken: String? {
         set {
             shared.projectDetailsController.pushToken = newValue
+            NotificationManager.shared.didSubscribedToNotification(newValue)
         }
         get {
             return shared.projectDetailsController.pushToken
         }
+    }
+
+    @objc
+    public class func appDidReceiveResponseForRemoteNotification(_ userInfo: [AnyHashable : Any]) {
+        NotificationManager.shared.didReceivedResponse(userInfo)
+    }
+
+    @objc
+    public class func appWillPresentRemoteNotification(_ userInfo: [AnyHashable : Any]) {
+        NotificationManager.shared.willPresentNotification(userInfo)
+    }
+
+    @objc
+    public class func appDidLaunchedWith(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+        NotificationManager.shared.didLaunchedWith(launchOptions)
     }
 }
