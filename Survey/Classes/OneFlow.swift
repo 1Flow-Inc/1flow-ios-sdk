@@ -319,9 +319,9 @@ public final class OneFlow: NSObject {
         AnnouncementManager.shared.showInbox()
     }
     
-    @objc 
-    public class func setupAnnouncementPushNotification(_ option: UNAuthorizationOptions, fromClass: AnyClass, delegate: OneFlowNotificationDelegate?) {
-        NotificationManager.shared.setupNotifications(for: option, fromClass: fromClass, delegate: delegate)
+    @objc
+    public class func setupAnnouncementPushNotification(_ option: UNAuthorizationOptions, fromClass: AnyClass) {
+        NotificationManager.shared.setupNotifications(for: option, fromClass: fromClass)
     }
 
     @objc

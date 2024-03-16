@@ -26,8 +26,7 @@
 		435B8DD92B9EF29000EF1E24 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B8DD72B9EF28900EF1E24 /* NotificationManager.swift */; };
 		435B8DDB2B9EF37E00EF1E24 /* OneFlowExtension-Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B8DDA2B9EF37E00EF1E24 /* OneFlowExtension-Data.swift */; };
 		435B8DDE2B9EF4F300EF1E24 /* OneFlowJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B8DDC2B9EF44100EF1E24 /* OneFlowJSON.swift */; };
-		435B8DE12B9EF6EF00EF1E24 /* OneFlowNotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B8DE02B9EF6EF00EF1E24 /* OneFlowNotificationDelegate.swift */; };
-		435B8DE32B9EF70B00EF1E24 /* OneFlowObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B8DE22B9EF70B00EF1E24 /* OneFlowObserver.swift */; };
+		435B8DE52BA4692E00EF1E24 /* OneFlowObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B8DE22B9EF70B00EF1E24 /* OneFlowObserver.swift */; };
 		439072CC2B42771900D85595 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 439072CB2B42771900D85595 /* PrivacyInfo.xcprivacy */; };
 		439072D02B4C1FB500D85595 /* OneFlowExtension-UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439072CF2B4C1FB500D85595 /* OneFlowExtension-UIButton.swift */; };
 		439072D32B55262900D85595 /* quill-html.html in Resources */ = {isa = PBXBuildFile; fileRef = 439072D12B55262000D85595 /* quill-html.html */; };
@@ -157,7 +156,6 @@
 		435B8DD72B9EF28900EF1E24 /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		435B8DDA2B9EF37E00EF1E24 /* OneFlowExtension-Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OneFlowExtension-Data.swift"; sourceTree = "<group>"; };
 		435B8DDC2B9EF44100EF1E24 /* OneFlowJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneFlowJSON.swift; sourceTree = "<group>"; };
-		435B8DE02B9EF6EF00EF1E24 /* OneFlowNotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneFlowNotificationDelegate.swift; sourceTree = "<group>"; };
 		435B8DE22B9EF70B00EF1E24 /* OneFlowObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneFlowObserver.swift; sourceTree = "<group>"; };
 		4385E10AC6E4BC7503B447884B9DB0B7 /* Pods-1Flow_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-1Flow_Example-frameworks.sh"; sourceTree = "<group>"; };
 		439072CB2B42771900D85595 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Survey/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -409,7 +407,6 @@
 		435B8DDF2B9EF6B800EF1E24 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				435B8DE02B9EF6EF00EF1E24 /* OneFlowNotificationDelegate.swift */,
 				435B8DE22B9EF70B00EF1E24 /* OneFlowObserver.swift */,
 			);
 			path = Protocols;
@@ -874,9 +871,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				435B8DE12B9EF6EF00EF1E24 /* OneFlowNotificationDelegate.swift in Sources */,
 				435B8DDB2B9EF37E00EF1E24 /* OneFlowExtension-Data.swift in Sources */,
-				435B8DE32B9EF70B00EF1E24 /* OneFlowObserver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -943,7 +938,7 @@
 				3797DFB2E8C1452922D5E21E761A8A87 /* OneFlowDataLogic.swift in Sources */,
 				FE1E17C76EF0945D53EACE3B206317BC /* OneFlowExtension-UIColor.swift in Sources */,
 				A3477D1F926EC4233DC793CE0A93BA56 /* OneFlowExtension-UIImage.swift in Sources */,
-				4384334B2BF34C06006A8C9D /* OneFlowObserver.swift in Sources */,
+				435B8DE52BA4692E00EF1E24 /* OneFlowObserver.swift in Sources */,
 				A4CCB3374A480778304C6ABF79DAB907 /* OneFlowLog.swift in Sources */,
 				97D9806F94389C16D0D93A2606B95256 /* ReplaceMe.swift in Sources */,
 				AC105272E11C6E2C82C6644A84051FE4 /* ScriptExecuter.swift in Sources */,

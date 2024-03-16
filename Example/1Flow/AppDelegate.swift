@@ -25,7 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         setupOneFlow()
         NotificationCenter.default.addObserver(self, selector: #selector(surveyDidFinished(notification:)), name: SurveyFinishNotification, object: nil)
-        OneFlow.setupAnnouncementPushNotification([.alert, .badge, .sound], fromClass: AppDelegate, delegate: self)
         return true
     }
      
@@ -40,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         OneFlow.observer = self
         OneFlow.configure(kOneProjectKey)
         OneFlow.useFont(fontFamily: "Avenir Next")
+        OneFlow.setupAnnouncementPushNotification([.alert, .badge, .sound], fromClass: AppDelegate.self)
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -63,9 +63,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("In app delegate: didRegisterForRemoteNotificationsWithDeviceToken")
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("In app delegate: didFailToRegisterForRemoteNotificationsWithError")
+    }
 }
 
 extension AppDelegate: OneFlowObserver {
+    func oneFlowDidGeneratePushToken(_ pushToken: String) {
+        print("App delegate oneflow call back: \(pushToken)")
+    }
+    
+    func oneFlowDidFailedToGeneratePushToken(_ error: Error) {
+        print("App delegate oneflow call back oneFlowDidFailedToGeneratePushToken: \(error)")
+    }
+    
+    func oneFlowNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        completionHandler()
+    }
+    
+    func oneFlowNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        if #available(iOS 14.0, *) {
+            completionHandler(.banner)
+        } else {
+            // Fallback on earlier versions
+            completionHandler(.alert)
+        }
+    }
+    
     func oneFlowSetupDidFail() {
         print("OneFlow did failed setup")
     }
