@@ -23,17 +23,20 @@ public protocol OneFlowObserver {
 
 extension OneFlowObserver {
 
-    func oneFlowSetupDidFinish() {
+    func oneFlowSetupDidFail() {
     }
 
-    func oneFlowSetupDidFail() {
+    func oneFlowDidGeneratePushToken(_ pushToken: String) {
+    }
+
+    func oneFlowDidFailedToGeneratePushToken(_ error: Error) {
     }
 
     func oneFlowNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         completionHandler()
     }
 
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    func oneFlowNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         if #available(iOS 14.0, *) {
             completionHandler(.banner)
         } else {
