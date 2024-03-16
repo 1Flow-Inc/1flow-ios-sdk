@@ -11,7 +11,7 @@ public class NotificationManager: NSObject {
     static let shared = NotificationManager()
     let keyDelivered = "DeliveredAnnouncements"
     let keyClicked = "ClickedAnnouncements"
-    var delegate: OneFlowNotificationDelegate?
+//    var delegate: OneFlowNotificationDelegate?
     
     var deliveredAnnouncements = [String]() {
         didSet {
@@ -166,7 +166,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         let userInfo = notification.request.content.userInfo
         print("userNotificationCenter willPresent: \(userInfo)")
         OneFlow.appWillPresentRemoteNotification(userInfo)
-        guard let delegate = delegate else {
+        guard let delegate = OneFlow.observer else {
             if #available(iOS 14.0, *) {
                 completionHandler(.banner)
             } else {
@@ -181,7 +181,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         let userInfo = response.notification.request.content.userInfo
         print("userNotificationCenter didReceive response: \(userInfo)")
         OneFlow.appDidReceiveResponseForRemoteNotification(userInfo)
-        guard let delegate = delegate else {
+        guard let delegate = OneFlow.observer else {
             completionHandler()
             return
         }
@@ -205,33 +205,50 @@ extension NotificationManager {
 
     @objc dynamic func _swizzled_application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        print("Notification Token: \(token)")
         OFProjectDetailsController.shared.pushToken = token
-        delegate?.oneFlowDidGeneratePushToken(token)
+        OneFlow.observer?.oneFlowDidGeneratePushToken(token)
     }
 
     @objc func _swizzled_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register: ", error)
         OFProjectDetailsController.shared.pushToken = nil
-        delegate?.oneFlowDidFailedToGeneratePushToken(error)
+        OneFlow.observer?.oneFlowDidFailedToGeneratePushToken(error)
     }
 
-    func setupNotifications(for options: UNAuthorizationOptions, fromClass: AnyClass, delegate: OneFlowNotificationDelegate?) {
-        self.delegate = delegate
+    func setupNotifications(for options: UNAuthorizationOptions, fromClass: AnyClass) {
+        defer {
+            registerPushNotification(option: options)
+        }
         let selector1 = #selector(UIApplicationDelegate.application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
         let selector2 = #selector(NotificationManager._swizzled_application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
         
-        let originalMethod1 = class_getInstanceMethod(fromClass.self, selector1)!
-        let swizzleMethod1 = class_getInstanceMethod(NotificationManager.self, selector2)!
+        guard
+            let originalMethod1 = class_getInstanceMethod(fromClass.self, selector1),
+            let swizzleMethod1 = class_getInstanceMethod(NotificationManager.self, selector2)
+        else {
+            return
+        }
         method_exchangeImplementations(originalMethod1, swizzleMethod1)
 
         let selector3 = #selector(UIApplicationDelegate.application(_:didFailToRegisterForRemoteNotificationsWithError:))
         let selector4 = #selector(NotificationManager._swizzled_application(_:didFailToRegisterForRemoteNotificationsWithError:))
         
-        let originalMethod2 = class_getInstanceMethod(fromClass.self, selector3)!
-        let swizzleMethod2 = class_getInstanceMethod(NotificationManager.self, selector4)!
+        guard
+            let originalMethod2 = class_getInstanceMethod(fromClass.self, selector3),
+            let swizzleMethod2 = class_getInstanceMethod(NotificationManager.self, selector4)
+        else {
+            return
+        }
         method_exchangeImplementations(originalMethod2, swizzleMethod2)
+    }
+}
 
-        registerPushNotification(option: options)
+extension UIApplication: UIApplicationDelegate {
+    public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("Rohan: didRegisterForRemoteNotificationsWithDeviceToken")
+    }
+
+    public func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Rohan: didFailToRegisterForRemoteNotificationsWithError")
     }
 }
