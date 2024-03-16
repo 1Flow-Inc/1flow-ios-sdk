@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import UIKit
+import UserNotifications
 
 public class NotificationManager: NSObject {
     static let shared = NotificationManager()
     let keyDelivered = "DeliveredAnnouncements"
     let keyClicked = "ClickedAnnouncements"
-//    var delegate: OneFlowNotificationDelegate?
     
     var deliveredAnnouncements = [String]() {
         didSet {
@@ -240,15 +241,5 @@ extension NotificationManager {
             return
         }
         method_exchangeImplementations(originalMethod2, swizzleMethod2)
-    }
-}
-
-extension UIApplication: UIApplicationDelegate {
-    public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        print("Rohan: didRegisterForRemoteNotificationsWithDeviceToken")
-    }
-
-    public func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print("Rohan: didFailToRegisterForRemoteNotificationsWithError")
     }
 }
