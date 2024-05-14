@@ -11608,7 +11608,7 @@ const dateDiffrence = (e, a) => {
             let n = [],
                 r = !1;
             return e.map((async e => {
-                console.log(e), n.push(new Promise((async t => {
+                n.push(new Promise((async t => {
                     await isGroupTypeFilter(e.type) ? (r = await filterRules(e.filters, a, e.operator, s), t(r)) : (a.parameters && Object.keys(a.parameters || {}).length > 0 ? r = await filterProperty(e.values, e.condition.replaceAll(" ", "-"), void 0 === a.parameters[e.field] ? null : a.parameters[e.field]) : s ? (e.values = e.values.map((e => removeHttpElements(e))), r = await filterProperty(e.values, e.condition.replaceAll(" ", "-"), getCurrentPageValueAsPerCondition(a, e.field))) : "is unknown" === e.condition && void 0 === a.parameters && (r = !0), t(r))
                 })))
             })), n = await Promise.all(n), "OR" == t ? n.includes(!0) : !n.includes(!1)
@@ -11638,31 +11638,31 @@ const dateDiffrence = (e, a) => {
             case "url":
                 return "/" == e.pathName ? e.fullPath.slice(0, -1) : e.fullPath
         }
-    }, triggerEventFilter = async (e, a, t, s) => {
+    }, triggerEventFilter = async (e, a, t, s, n = []) => {
         try {
             if (null !== t) {
                 const a = getDefaultPageValue(),
-                    n = e.filter((e => e.survey_settings.trigger_filters.find((({
+                    r = e.filter((e => e.survey_settings.trigger_filters.find((({
                         field: e,
                         type: a
                     }) => e == t && "page" == a))));
-                if (n.length > 0) {
+                if (r.length > 0) {
                     let e = 0,
-                        r = 0,
-                        d = !1;
-                    for (e = 0; e < n.length; e++) {
-                        const i = n[e].survey_settings.trigger_filters.filter((({
+                        d = 0,
+                        i = !1;
+                    for (e = 0; e < r.length; e++) {
+                        const u = r[e].survey_settings.trigger_filters.filter((({
                             field: e,
                             type: a
                         }) => e == t && "page" == a));
-                        for (r = 0; r < i.length && (d = await filterRules(i[r].property_filters.filters, a, i[r].property_filters.operator, !0), !d); r++);
-                        if (d) {
-                            if (!0 === d && "show_after" == i[r].timingOption.type && 1 == s) return await Promise.all([new Promise((e => {
+                        for (d = 0; d < u.length && (i = await filterRules(u[d].property_filters.filters, a, u[d].property_filters.operator, !0), !i || 0 != n.includes(r[e]._id)); d++) i = !1;
+                        if (i) {
+                            if (!0 === i && "show_after" == u[d].timingOption.type && 1 == s) return await Promise.all([new Promise((e => {
                                 setTimeout((() => {
                                     e(!0)
-                                }), 1e3 * i[r].timingOption.value)
-                            }))]), n[e];
-                            if (1 == d) return n[e]
+                                }), 1e3 * u[d].timingOption.value)
+                            }))]), r[e];
+                            if (1 == i) return r[e]
                         }
                     }
                 }
@@ -11719,10 +11719,10 @@ const dateDiffrence = (e, a) => {
 function isCallBackAvilable() {
     return "function" == typeof oneFlowCallBack
 }
-async function oneFlowFilterSurvey(e, a, t = null, s = !1, n = !1) {
+async function oneFlowFilterSurvey(e, a, t = null, s = !1, n = !1, r = []) {
     try {
         let n = null;
-        return e.length > 0 && (n = await triggerEventFilter(e, a, t, s)), null === n ? (isCallBackAvilable() && oneFlowCallBack(null), null) : (isCallBackAvilable() && oneFlowCallBack(n), n)
+        return e.length > 0 && (n = await triggerEventFilter(e, a, t, s, r)), null === n ? (isCallBackAvilable() && oneFlowCallBack(null), null) : (isCallBackAvilable() && oneFlowCallBack(n), n)
     } catch (e) {
         return e.message
     }
@@ -11806,7 +11806,7 @@ function isAnnouncementCallBackAvilable() {
 async function oneflowAnnouncementFilter(e, a, t = null, s = !0) {
     try {
         let n = null;
-        return e.length > 0 && (n = await triggerAnnouncementFilter(e, a, t, s), isAnnouncementCallBackAvilable() && oneFlowAnnouncementCallBack(n)), n
+        return e.length > 0 && (n = await triggerAnnouncementFilter(e, a, t, s)), isAnnouncementCallBackAvilable() && oneFlowAnnouncementCallBack(n), n
     } catch (e) {
         console.log("ANNOUNCEMENT FILTER ERROR:-", e.message)
     }

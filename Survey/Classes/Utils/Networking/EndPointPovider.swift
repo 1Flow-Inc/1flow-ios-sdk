@@ -37,7 +37,6 @@ enum EndPoints: EndPointProtocol {
                     return "https://dev-sdk.1flow.app/api/2021-06-15"
                 } else {
                     return "https://api-sdk.1flow.app/api/2021-06-15"
-//                    return "https://beta-sdk.1flow.app/api/2021-06-15"
                 }
         }()
         switch self {
@@ -84,7 +83,7 @@ enum EndPoints: EndPointProtocol {
             if OFProjectDetailsController.shared.currentEnviromment == .dev {
                 return "https://cdn-development.1flow.ai/js-sdk/filter.js"
             } else {
-                return "https://cdn.1flow.app/index.js"
+                return "https://d3mzhte9nefzbe.cloudfront.net/js-sdk/filter.js"
             }
         case .getAnnouncements:
             var announcementUrl = baseURL + "/v3/announcements?platform=iOS"
@@ -95,7 +94,10 @@ enum EndPoints: EndPointProtocol {
         case .getAnnouncementsDetails(let ids):
             return baseURL + "/v3/announcements/inbox?ids=\(ids)"
         case .pushToken:
-            return "https://dev-dashboard-api.1flow.app/api/v1/2021-06-15/details/device"
+            guard let userID = OFProjectDetailsController.shared.analyticUserID else {
+                return baseURL + "/v3/user/device"
+            }
+            return baseURL + "/v3/user/device/\(userID)"   
         }
     }
 }

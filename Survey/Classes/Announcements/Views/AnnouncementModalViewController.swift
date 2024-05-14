@@ -126,6 +126,10 @@ class AnnouncementModalViewController: UIViewController {
             AnnouncementComponentBuilder.poweredBy1FlowView(with: self, selector: #selector(didTapPoweredByButton(_:)))
         )
         stackView.backgroundColor = backgroundColor
+        scrollView.layer.shadowColor = UIColor.black.cgColor
+        scrollView.layer.shadowRadius = 12
+        scrollView.layer.shadowOpacity = 0.25
+        scrollView.layer.masksToBounds = false
     }
 
     @objc func didTapPoweredByButton(_ sender: Any) {

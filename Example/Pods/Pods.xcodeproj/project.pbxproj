@@ -20,6 +20,9 @@
 		3797DFB2E8C1452922D5E21E761A8A87 /* OneFlowDataLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8375C2350850CEC978D45256A90443BD /* OneFlowDataLogic.swift */; };
 		3AA2CEB5D65D1DE5FD8B062565AE52CE /* validator-dev.js in Resources */ = {isa = PBXBuildFile; fileRef = 37776403EF1258C61358F430F400C5F7 /* validator-dev.js */; };
 		4140C6DA16B4985E44457F0E14A05415 /* OFRatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43B07C21604FEF656990912B6D43D5F7 /* OFRatingViewController.xib */; };
+		438433462BF34B66006A8C9D /* OneFlowExtension-Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438433452BF34B66006A8C9D /* OneFlowExtension-Data.swift */; };
+		438433482BF34B91006A8C9D /* OneFlowJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438433472BF34B91006A8C9D /* OneFlowJSON.swift */; };
+		4384334B2BF34C06006A8C9D /* OneFlowObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384334A2BF34C06006A8C9D /* OneFlowObserver.swift */; };
 		439072CC2B42771900D85595 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 439072CB2B42771900D85595 /* PrivacyInfo.xcprivacy */; };
 		439072D02B4C1FB500D85595 /* OneFlowExtension-UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439072CF2B4C1FB500D85595 /* OneFlowExtension-UIButton.swift */; };
 		439072D32B55262900D85595 /* quill-html.html in Resources */ = {isa = PBXBuildFile; fileRef = 439072D12B55262000D85595 /* quill-html.html */; };
@@ -143,6 +146,9 @@
 		3A67C30E43EC8CB22716D6A4E8296B9B /* OFProjectDetailsController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OFProjectDetailsController.swift; path = Survey/Classes/OFProjectDetailsController.swift; sourceTree = "<group>"; };
 		3CCC75E0B186E4FB1AC4AFD99781956B /* 1Flow-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "1Flow-umbrella.h"; sourceTree = "<group>"; };
 		40B92122F2F6F4F11BD04361E19113D1 /* OFOneToTenView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OFOneToTenView.swift; sourceTree = "<group>"; };
+		438433452BF34B66006A8C9D /* OneFlowExtension-Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OneFlowExtension-Data.swift"; sourceTree = "<group>"; };
+		438433472BF34B91006A8C9D /* OneFlowJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneFlowJSON.swift; sourceTree = "<group>"; };
+		4384334A2BF34C06006A8C9D /* OneFlowObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneFlowObserver.swift; sourceTree = "<group>"; };
 		4385E10AC6E4BC7503B447884B9DB0B7 /* Pods-1Flow_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-1Flow_Example-frameworks.sh"; sourceTree = "<group>"; };
 		439072CB2B42771900D85595 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Survey/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		439072CF2B4C1FB500D85595 /* OneFlowExtension-UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OneFlowExtension-UIButton.swift"; sourceTree = "<group>"; };
@@ -378,6 +384,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		438433492BF34BEE006A8C9D /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				4384334A2BF34C06006A8C9D /* OneFlowObserver.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		43932CBF2B27839C004EE256 /* Announcements */ = {
 			isa = PBXGroup;
 			children = (
@@ -482,10 +496,13 @@
 				0E2CB65ADF917E23783BE1DCC2B653F6 /* OneFlowBundle.swift */,
 				5DC1D89D95FEFD5542A7CA74EB18CA50 /* OneFlowConstant.swift */,
 				AADB68916ABB05C56B673BC3D73BF8AB /* OneFlowExtension-UIColor.swift */,
+				438433452BF34B66006A8C9D /* OneFlowExtension-Data.swift */,
+				438433472BF34B91006A8C9D /* OneFlowJSON.swift */,
 				631B3C165594474B8878EBF986ED8AB8 /* OneFlowExtension-UIImage.swift */,
 				43BBD7A72AE3CE0D00E2192F /* OneFlowExtension-UIView.swift */,
 				439072CF2B4C1FB500D85595 /* OneFlowExtension-UIButton.swift */,
 				E028B5B0149128B42DEA51C6034BB1EB /* OneFlowLog.swift */,
+				438433492BF34BEE006A8C9D /* Protocols */,
 				1A35AD3E1E36EC2CB191BEE0BF461F9F /* Networking */,
 			);
 			name = Utils;
@@ -846,6 +863,7 @@
 				A318B56323EE6A9D8EE6226CF4D82585 /* CreateSessionRequest.swift in Sources */,
 				CFBE5C17F7690DC6CCA85EBCBC9AB133 /* EndPointPovider.swift in Sources */,
 				3213C4D91A782D225DC5228A14BE813D /* LogUserResponse.swift in Sources */,
+				438433462BF34B66006A8C9D /* OneFlowExtension-Data.swift in Sources */,
 				614617B5B88A6BAB194885A40BA34132 /* OFAPIController.swift in Sources */,
 				43932CC62B27839C004EE256 /* AnnouncementManager.swift in Sources */,
 				F887FA9EAC8A7751C849AA36F2A7DF45 /* OFDraggableView.swift in Sources */,
@@ -889,6 +907,7 @@
 				3797DFB2E8C1452922D5E21E761A8A87 /* OneFlowDataLogic.swift in Sources */,
 				FE1E17C76EF0945D53EACE3B206317BC /* OneFlowExtension-UIColor.swift in Sources */,
 				A3477D1F926EC4233DC793CE0A93BA56 /* OneFlowExtension-UIImage.swift in Sources */,
+				4384334B2BF34C06006A8C9D /* OneFlowObserver.swift in Sources */,
 				A4CCB3374A480778304C6ABF79DAB907 /* OneFlowLog.swift in Sources */,
 				97D9806F94389C16D0D93A2606B95256 /* ReplaceMe.swift in Sources */,
 				AC105272E11C6E2C82C6644A84051FE4 /* ScriptExecuter.swift in Sources */,
@@ -899,6 +918,7 @@
 				C89701ECEDD65D55FBC03D3860C4E9A6 /* SurveyFontConfiguration.swift in Sources */,
 				1B2A924E606EB1360F0C30ABA1FB6F3C /* SurveyListResponse.swift in Sources */,
 				DFDDC0B6366294E0BB2EA7B439125E37 /* SurveySubmitRequest.swift in Sources */,
+				438433482BF34B91006A8C9D /* OneFlowJSON.swift in Sources */,
 				43932CC92B27839C004EE256 /* AnnouncementComponentBuilder.swift in Sources */,
 				6EBB92D15CF2B6B3BA063F1D5BA1E582 /* URLRequestManager.swift in Sources */,
 			);
