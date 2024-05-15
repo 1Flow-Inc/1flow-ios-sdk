@@ -31,7 +31,7 @@ class URLRequestManager: URLRequestManagerProtocol {
         }
         OneFlowLog.writeLog("API Call: \(endPoint.url)")
         URLSession.shared.dataTask(with: request) {[weak self] data, _, error in
-            guard let self = self else {
+            guard self != nil else {
                 return
             }
             if let error = error {

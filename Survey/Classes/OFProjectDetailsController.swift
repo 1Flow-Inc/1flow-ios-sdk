@@ -250,7 +250,7 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
     }
 
     func updatePushTokenForUser() {
-        guard let userID = analyticUserID else {
+        guard analyticUserID != nil else {
             return
         }
         let parameters = [
