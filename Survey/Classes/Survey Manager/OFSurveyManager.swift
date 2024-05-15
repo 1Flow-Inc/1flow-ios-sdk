@@ -177,12 +177,11 @@ class OFSurveyManager: NSObject, SurveyManageable {
         for event in eventsArray {
             dispatchGroup.enter()
 
-            var previousEvent = ["name": event.eventName] as [String: Any]
-            if let param = event.parameters {
-                previousEvent["parameters"] = param
-            }
-
             dispatchQueue.async {
+                var previousEvent = ["name": event.eventName] as [String: Any]
+                if let param = event.parameters {
+                    previousEvent["parameters"] = param
+                }
                 SurveyScriptValidator.shared.validateSurvey(event: previousEvent) { [weak self] survey in
                     defer {
                         dispatchGroup.leave()
