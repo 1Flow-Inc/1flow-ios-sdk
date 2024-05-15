@@ -250,15 +250,11 @@ final class OFProjectDetailsController: NSObject, ProjectDetailsManageable {
     }
 
     func updatePushTokenForUser() {
-        guard
-            let userID = analyticUserID
-        else {
+        guard let userID = analyticUserID else {
             return
         }
         let parameters = [
-            "device_token": pushToken ?? "",
-            "device_type": "iOS",
-            "user_id": userID
+            "token": pushToken ?? ""
         ]
         OFAPIController.shared.updatePushToken(parameters) { isSuccess, error, data in
             if isSuccess == true, let data = data {

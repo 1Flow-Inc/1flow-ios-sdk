@@ -48,7 +48,6 @@ class OFSurveyManager: NSObject, SurveyManageable {
     var activatedBySurveyID: String?
     var throttlingActivatedTime: Int?
     var deactivateItem: DispatchWorkItem?
-    let myGroup = DispatchGroup()
 
     var pendingSurveySubmission: [String: SurveySubmitRequest]? {
         get {
@@ -168,41 +167,58 @@ class OFSurveyManager: NSObject, SurveyManageable {
     }
 
     func checkAfterSurveyLoadForExistingEvents() {
-        if let eventsArray = self.temporaryEventArray {
-            for event in eventsArray {
-                myGroup.enter()
-                var previousEvent = ["name": event.eventName] as [String: Any]
-                if let param = event.parameters {
-                    previousEvent["parameters"] = param
-                }
-                SurveyScriptValidator.shared.validateSurvey(event: previousEvent, completion: { [weak self] survey in
-                    guard let self = self else {
-                        return
-                    }
+        guard let eventsArray = self.temporaryEventArray else {
+            return
+        }
+
+        let dispatchGroup = DispatchGroup()
+        let dispatchQueue = DispatchQueue(label: "com.oneFlow.surveyQueue", attributes: .concurrent)
+        
+        for event in eventsArray {
+            dispatchGroup.enter()
+
+            var previousEvent = ["name": event.eventName] as [String: Any]
+            if let param = event.parameters {
+                previousEvent["parameters"] = param
+            }
+
+            dispatchQueue.async {
+                SurveyScriptValidator.shared.validateSurvey(event: previousEvent) { [weak self] survey in
                     defer {
-                        self.myGroup.leave()
+                        dispatchGroup.leave()
                     }
-                    guard let survey = survey else {
+
+                    guard let self = self, let survey = survey else {
                         return
                     }
-                    OneFlowLog.writeLog("Survey validator returns: \(survey as Any)", .info)
-                    if self.validateTheSurvey(survey) == true {
-                        if
-                            survey.surveyTimeInterval?.type == "show_after",
-                            let delay = survey.surveyTimeInterval?.value {
-                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(delay), execute: {
+
+                    OneFlowLog.writeLog("Survey validator returns: \(survey)", .info)
+
+                    if self.validateTheSurvey(survey) {
+                        if let intervalType = survey.surveyTimeInterval?.type,
+                           intervalType == "show_after",
+                           let delay = survey.surveyTimeInterval?.value {
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + Double(delay)) {
                                 self.startSurvey(survey, eventName: event.eventName)
-                            })
+                            }
                         } else {
                             self.startSurvey(survey, eventName: event.eventName)
                         }
                     } else {
                         OneFlowLog.writeLog("Survey validation not passed. Looking for next survey", .info)
                     }
-                })
-                
-                self.myGroup.wait()
+                }
             }
+        }
+
+        let timeout = DispatchTime.now() + DispatchTimeInterval.seconds(5)
+
+        // Notify when all tasks are complete or after a timeout
+        let timeoutResult = dispatchGroup.wait(timeout: timeout)
+        if timeoutResult == .timedOut {
+            OneFlowLog.writeLog("Timeout: Some tasks did not complete within the specified time.", .error)
+        } else {
             self.temporaryEventArray = nil
         }
     }
@@ -250,51 +266,64 @@ class OFSurveyManager: NSObject, SurveyManageable {
         if self.surveyWindow != nil {
             return
         }
+        
         if let allSurveys = self.surveyList {
-            AnnouncementManager.shared.newEventRecorded(eventName, parameter: parameter, completion: { isTriggered in
-                guard isTriggered == false else {
-                    OneFlowLog.writeLog("Announcement is triggered. Dont trigger survey")
+            AnnouncementManager.shared.newEventRecorded(eventName, parameter: parameter) { [weak self] isTriggered in
+                guard let self = self else { return }
+                
+                if isTriggered {
+                    OneFlowLog.writeLog("Announcement is triggered. Don't trigger survey")
                     return
                 }
-                let filters = allSurveys.result.filter({ self.validateTheSurvey($0)})
+                
+                let filters = allSurveys.result.filter { survey in
+                    // Ensure validateTheSurvey is safe to call even with an empty survey
+                    return self.validateTheSurvey(survey)
+                }
+                
                 SurveyScriptValidator.shared.setup(with: filters)
+                
                 DispatchQueue.main.async {
                     var event = ["name": eventName] as [String: Any]
                     if let param = parameter {
                         event["parameters"] = param
                     }
-                    SurveyScriptValidator.shared.validateSurvey(event: event, completion: { [weak self] survey in
-                        guard let self = self else {
-                            return
-                        }
-                        guard let survey = survey else {
-                            return
-                        }
-                        OneFlowLog.writeLog("Survey validator returns: \(survey as Any)", .info)
-                        if
-                            survey.surveyTimeInterval?.type == "show_after",
-                            let delay = survey.surveyTimeInterval?.value {
-                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(delay), execute: {
+                    
+                    SurveyScriptValidator.shared.validateSurvey(event: event) { [weak self] survey in
+                        guard let self = self else { return }
+                        guard let survey = survey else { return }
+                        
+                        OneFlowLog.writeLog("Survey validator returns: \(survey)", .info)
+                        
+                        if let surveyTimeInterval = survey.surveyTimeInterval,
+                           surveyTimeInterval.type == "show_after",
+                           let delay = surveyTimeInterval.value {
+                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(delay)) {
                                 self.startSurvey(survey, eventName: eventName)
-                            })
+                            }
                         } else {
                             self.startSurvey(survey, eventName: eventName)
                         }
-                    })
+                    }
                 }
-            })
-        } else {
-            AnnouncementManager.shared.newEventRecorded(eventName, parameter: parameter) { isTriggered in
             }
+        } else {
+            AnnouncementManager.shared.newEventRecorded(eventName, parameter: parameter) { _ in
+                // Handle completion if needed
+            }
+            
             OneFlowLog.writeLog("Survey not loaded yet", .info)
+            
             if self.temporaryEventArray == nil {
                 self.temporaryEventArray = [EventStore]()
             }
+            
             let eventObj = EventStore(
                 eventName: eventName,
                 timeInterval: Int(Date().timeIntervalSince1970),
                 parameters: parameter
             )
+            
             self.temporaryEventArray?.append(eventObj)
         }
     }

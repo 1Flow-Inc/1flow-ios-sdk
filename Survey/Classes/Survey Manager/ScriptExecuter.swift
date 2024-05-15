@@ -28,6 +28,8 @@ class SurveyScriptValidator {
     static let shared = SurveyScriptValidator()
     var scriptManager: ScriptManageable?
     var managedValue: JSManagedValue?
+    var swiftHandler: (@convention(block) (JSValue?) -> Void)?
+    var announcementSwiftHandler: (@convention(block) (JSValue?) -> Void)?
 
     func setup(with surveys: [SurveyListResponse.Survey]) {
         let jsonEncoder = JSONEncoder()
@@ -74,33 +76,50 @@ class SurveyScriptValidator {
         self.context = context
     }
 
-    let swiftHandler: @convention(block) (JSValue?) -> Void = {(result) in
-
-        guard let dictionary = result?.toDictionary() else {
-            SurveyScriptValidator.shared.validatorCompletion?(nil)
-            return
+    func setupSwiftHandler() {
+        let swiftHandler: @convention(block) (JSValue?) -> Void = { [weak self] result in
+            guard let self = self else {
+                SurveyScriptValidator.shared.validatorCompletion?(nil)
+                return
+            }
+            
+            guard let dictionary = result?.toDictionary() else {
+                self.validatorCompletion?(nil)
+                return
+            }
+            do {
+                let json = try JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)
+                let decoder = JSONDecoder()
+                let survey = try decoder.decode(SurveyListResponse.Survey.self, from: json)
+                self.validatorCompletion?(survey)
+            } catch {
+                OneFlowLog.writeLog(error.localizedDescription, .error)
+            }
         }
-        do {
-            let json = try JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)
-            let decoder = JSONDecoder()
-            let survey = try decoder.decode(SurveyListResponse.Survey.self, from: json)
-            SurveyScriptValidator.shared.validatorCompletion?(survey)
-        } catch {
-            OneFlowLog.writeLog(error.localizedDescription, .error)
-        }
+        self.swiftHandler = swiftHandler
     }
 
-    let announcementSwiftHandler: @convention(block) (JSValue?) -> Void = {(result) in
-
-        guard let dictionary = result?.toDictionary() as? [String: Any] else {
-            SurveyScriptValidator.shared.announcementValidatorCompletion?(nil)
-            return
+    func setupAnnouncementSwiftHandler() {
+        let announcementSwiftHandler: @convention(block) (JSValue?) -> Void = { [weak self] result in
+            guard let self = self else {
+                SurveyScriptValidator.shared.announcementValidatorCompletion?(nil)
+                return
+            }
+            
+            guard let dictionary = result?.toDictionary() as? [String: Any] else {
+                self.announcementValidatorCompletion?(nil)
+                return
+            }
+            self.announcementValidatorCompletion?(dictionary)
         }
-        SurveyScriptValidator.shared.announcementValidatorCompletion?(dictionary)
+        self.announcementSwiftHandler = announcementSwiftHandler
     }
 
     func validateSurvey(event: [String: Any], completion: @escaping ValidatorCompletion) {
         self.validatorCompletion = completion
+        if self.swiftHandler == nil {
+            setupSwiftHandler()
+        }
         let swiftBlock = unsafeBitCast(swiftHandler, to: AnyObject.self)
         guard let context = context else {
             completion(nil)
@@ -116,6 +135,9 @@ class SurveyScriptValidator {
 
     func validateAnnouncement(event: [String: Any], completion: @escaping AnnouncementValidatorCompletion) {
         self.announcementValidatorCompletion = completion
+        if self.announcementSwiftHandler == nil {
+            setupAnnouncementSwiftHandler()
+        }
         let swiftBlock = unsafeBitCast(announcementSwiftHandler, to: AnyObject.self)
         guard let context = context else {
             completion(nil)
