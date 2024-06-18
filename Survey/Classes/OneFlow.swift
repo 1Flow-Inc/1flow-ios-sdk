@@ -21,12 +21,12 @@ public final class OneFlow: NSObject {
     var eventManager: EventManagerProtocol = OFEventManager()
     private var isSetupRunning: Bool = false
     private var retryCount: Int = 0
-    var identifyCallPending = false
+    private var identifyCallPending = false
     private override init() {}
-    let reachability = try? OFReachability(hostname: "www.apple.com")
+    private let reachability = try? OFReachability(hostname: "www.apple.com")
     static var fontConfiguration: SurveyFontConfigurable? = SurveyFontConfiguration()
-    var apiController: APIProtocol = OFAPIController.shared
-    var projectDetailsController: ProjectDetailsManageable = OFProjectDetailsController.shared
+    private var apiController: APIProtocol = OFAPIController.shared
+    private var projectDetailsController: ProjectDetailsManageable = OFProjectDetailsController.shared
     @objc static public var observer: OneFlowObserver?
     /// determine whether SDK configuration completed or not.
     @objc static public var isSetupCompleted: Bool = false
@@ -129,7 +129,7 @@ public final class OneFlow: NSObject {
                             OneFlow.shared.eventManager.isNetworkReachable = true
                             OneFlow.shared.eventManager.configure()
                         }
-                        OneFlow.shared.projectDetailsController.updatePushTokenForUser()
+                        self.projectDetailsController.updatePushTokenForUser()
                         OneFlow.isSetupCompleted = true
                         OneFlow.observer?.oneFlowSetupDidFinish()
                     } else {
@@ -167,7 +167,7 @@ public final class OneFlow: NSObject {
     }
 
     @objc 
-    func reachabilityChanged(note: Notification) {
+    private func reachabilityChanged(note: Notification) {
         guard let reachability = note.object as? OFReachability else {
             return
         }
@@ -318,14 +318,35 @@ public final class OneFlow: NSObject {
     public class func showInbox() {
         AnnouncementManager.shared.showInbox()
     }
+    
+    @objc
+    public class func setupAnnouncementPushNotification(_ option: UNAuthorizationOptions, fromClass: AnyClass) {
+        NotificationManager.shared.setupNotifications(for: option, fromClass: fromClass)
+    }
 
     @objc
     public class var pushToken: String? {
         set {
             shared.projectDetailsController.pushToken = newValue
+            NotificationManager.shared.didSubscribedToNotification(newValue)
         }
         get {
             return shared.projectDetailsController.pushToken
         }
+    }
+
+    @objc
+    public class func appDidReceiveResponseForRemoteNotification(_ userInfo: [AnyHashable : Any]) {
+        NotificationManager.shared.didReceivedResponse(userInfo)
+    }
+
+    @objc
+    public class func appWillPresentRemoteNotification(_ userInfo: [AnyHashable : Any]) {
+        NotificationManager.shared.willPresentNotification(userInfo)
+    }
+
+    @objc
+    public class func appDidLaunchedWith(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+        NotificationManager.shared.didLaunchedWith(launchOptions)
     }
 }

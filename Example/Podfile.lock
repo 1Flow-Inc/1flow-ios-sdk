@@ -1,7 +1,7 @@
 PODS:
-  - 1Flow (2023.09.23):
-    - 1Flow/Survey (= 2023.09.23)
-  - 1Flow/Survey (2023.09.23)
+  - 1Flow (2024.06.18):
+    - 1Flow/Survey (= 2024.06.18)
+  - 1Flow/Survey (2024.06.18)
 
 DEPENDENCIES:
   - 1Flow (from `../`)
@@ -11,8 +11,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  1Flow: 4df7e84e8be7a17d3983ceed8e453c62786bb1d6
+  1Flow: 8459d3b851804b9956604d5d3f25ef43bb704c53
 
-PODFILE CHECKSUM: 9829bb51fd4c14a5203098125eb7e3b83bde8e49
+PODFILE CHECKSUM: b38e1266dbc47da9c39cc34e2c8b8e4d63b8c637
 
 COCOAPODS: 1.12.1
