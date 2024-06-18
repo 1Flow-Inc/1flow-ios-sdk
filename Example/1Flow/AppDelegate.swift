@@ -19,7 +19,7 @@ import _1Flow
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    let kOneProjectKey = "YOUR_1FLOW_PROJECT_KEY"
+    let kOneProjectKey = "oneflow_sandbox_Shy6EEvOM+XvFeqjVrLbDYMACeTYBHlifqxh0/UP4HTIlfuR7AKLO5xkVEcPSL5FyVBZxu0PvJXOAmaLgXTKEA=="
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

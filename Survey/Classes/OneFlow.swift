@@ -166,12 +166,8 @@ public final class OneFlow: NSObject {
         })
     }
 
-<<<<<<< HEAD
     @objc 
-    func reachabilityChanged(note: Notification) {
-=======
-    @objc private func reachabilityChanged(note: Notification) {
->>>>>>> cf34da5 (Announcement notifications)
+    private func reachabilityChanged(note: Notification) {
         guard let reachability = note.object as? OFReachability else {
             return
         }
