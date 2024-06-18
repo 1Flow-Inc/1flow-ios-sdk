@@ -97,7 +97,7 @@ enum EndPoints: EndPointProtocol {
             guard let userID = OFProjectDetailsController.shared.analyticUserID else {
                 return baseURL + "/v3/user/device"
             }
-            return baseURL + "/v3/user/device/\(userID)"   
+            return baseURL + "/v3/user/device/\(userID)"
         }
     }
 }

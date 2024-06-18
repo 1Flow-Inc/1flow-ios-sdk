@@ -50,6 +50,5 @@ class ViewController: UIViewController {
 
     @IBAction func onButton3(_ sender: Any) {
         OneFlow.recordEventName("slideout_bottom", parameters: nil)
-//        OneFlow.useFont(fontFamily: "Zapfino")
     }
 }

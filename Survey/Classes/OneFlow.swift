@@ -21,12 +21,12 @@ public final class OneFlow: NSObject {
     var eventManager: EventManagerProtocol = OFEventManager()
     private var isSetupRunning: Bool = false
     private var retryCount: Int = 0
-    var identifyCallPending = false
+    private var identifyCallPending = false
     private override init() {}
-    let reachability = try? OFReachability(hostname: "www.apple.com")
+    private let reachability = try? OFReachability(hostname: "www.apple.com")
     static var fontConfiguration: SurveyFontConfigurable? = SurveyFontConfiguration()
-    var apiController: APIProtocol = OFAPIController.shared
-    var projectDetailsController: ProjectDetailsManageable = OFProjectDetailsController.shared
+    private var apiController: APIProtocol = OFAPIController.shared
+    private var projectDetailsController: ProjectDetailsManageable = OFProjectDetailsController.shared
     @objc static public var observer: OneFlowObserver?
     /// determine whether SDK configuration completed or not.
     @objc static public var isSetupCompleted: Bool = false
@@ -129,7 +129,7 @@ public final class OneFlow: NSObject {
                             OneFlow.shared.eventManager.isNetworkReachable = true
                             OneFlow.shared.eventManager.configure()
                         }
-                        OneFlow.shared.projectDetailsController.updatePushTokenForUser()
+                        self.projectDetailsController.updatePushTokenForUser()
                         OneFlow.isSetupCompleted = true
                         OneFlow.observer?.oneFlowSetupDidFinish()
                     } else {
@@ -166,8 +166,12 @@ public final class OneFlow: NSObject {
         })
     }
 
+<<<<<<< HEAD
     @objc 
     func reachabilityChanged(note: Notification) {
+=======
+    @objc private func reachabilityChanged(note: Notification) {
+>>>>>>> cf34da5 (Announcement notifications)
         guard let reachability = note.object as? OFReachability else {
             return
         }

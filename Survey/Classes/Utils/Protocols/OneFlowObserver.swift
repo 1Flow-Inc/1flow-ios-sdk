@@ -10,7 +10,7 @@ import UserNotifications
 
 /// get call back when SDK configuration failed and succeeded
 @objc 
-public protocol OneFlowObserver {
+public protocol OneFlowObserver: AnyObject {
     func oneFlowSetupDidFinish()
     func oneFlowSetupDidFail()
     func oneFlowDidGeneratePushToken(_ pushToken: String)

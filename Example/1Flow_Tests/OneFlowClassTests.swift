@@ -22,8 +22,8 @@ class OneFlowTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        OneFlow.shared.apiController = apiController
-        OneFlow.shared.projectDetailsController = projectDetailsControler
+//        OneFlow.shared.apiController = apiController
+//        OneFlow.shared.projectDetailsController = projectDetailsControler
 //        apiController = MockAPIController()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -132,7 +132,7 @@ class OneFlowTests: XCTestCase {
         let obj = MockClass(name: "FirstName")
         let params = ["Number": "1234567890", "SomeObject": obj] as [String : Any]
         let projectDetailsController = MockProjectDetailsController()
-        OneFlow.shared.projectDetailsController = projectDetailsController
+//        OneFlow.shared.projectDetailsController = projectDetailsController
         OneFlow.logUser("abc", userDetails: params)
         guard let receivedParams = projectDetailsController.newUserData else {
             XCTFail("Event manager should receive parameter")
