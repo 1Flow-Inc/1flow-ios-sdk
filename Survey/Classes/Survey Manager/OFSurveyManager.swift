@@ -170,54 +170,16 @@ class OFSurveyManager: NSObject, SurveyManageable {
         guard let eventsArray = self.temporaryEventArray else {
             return
         }
-
-        let dispatchGroup = DispatchGroup()
-        let dispatchQueue = DispatchQueue(label: "com.oneFlow.surveyQueue", attributes: .concurrent)
+        
+        let operationQueue = OperationQueue()
+        operationQueue.maxConcurrentOperationCount = 1
         
         for event in eventsArray {
-            dispatchGroup.enter()
-
-            dispatchQueue.async {
-                var previousEvent = ["name": event.eventName] as [String: Any]
-                if let param = event.parameters {
-                    previousEvent["parameters"] = param
-                }
-                SurveyScriptValidator.shared.validateSurvey(event: previousEvent) { [weak self] survey in
-                    defer {
-                        dispatchGroup.leave()
-                    }
-
-                    guard let self = self, let survey = survey else {
-                        return
-                    }
-
-                    OneFlowLog.writeLog("Survey validator returns: \(survey)", .info)
-
-                    if self.validateTheSurvey(survey) {
-                        if let intervalType = survey.surveyTimeInterval?.type,
-                           intervalType == "show_after",
-                           let delay = survey.surveyTimeInterval?.value {
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + Double(delay)) {
-                                self.startSurvey(survey, eventName: event.eventName)
-                            }
-                        } else {
-                            self.startSurvey(survey, eventName: event.eventName)
-                        }
-                    } else {
-                        OneFlowLog.writeLog("Survey validation not passed. Looking for next survey", .info)
-                    }
-                }
-            }
+            let operation = SurveyValidationOperation(event: event, timeout: 5, manager: self)
+            operationQueue.addOperation(operation)
         }
-
-        let timeout = DispatchTime.now() + DispatchTimeInterval.seconds(5)
-
-        // Notify when all tasks are complete or after a timeout
-        let timeoutResult = dispatchGroup.wait(timeout: timeout)
-        if timeoutResult == .timedOut {
-            OneFlowLog.writeLog("Timeout: Some tasks did not complete within the specified time.", .error)
-        } else {
+        
+        operationQueue.addOperation {
             self.temporaryEventArray = nil
         }
     }
@@ -282,29 +244,12 @@ class OFSurveyManager: NSObject, SurveyManageable {
                 
                 SurveyScriptValidator.shared.setup(with: filters)
                 
-                DispatchQueue.main.async {
-                    var event = ["name": eventName] as [String: Any]
-                    if let param = parameter {
-                        event["parameters"] = param
-                    }
-                    
-                    SurveyScriptValidator.shared.validateSurvey(event: event) { [weak self] survey in
-                        guard let self = self else { return }
-                        guard let survey = survey else { return }
-                        
-                        OneFlowLog.writeLog("Survey validator returns: \(survey)", .info)
-                        
-                        if let surveyTimeInterval = survey.surveyTimeInterval,
-                           surveyTimeInterval.type == "show_after",
-                           let delay = surveyTimeInterval.value {
-                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(delay)) {
-                                self.startSurvey(survey, eventName: eventName)
-                            }
-                        } else {
-                            self.startSurvey(survey, eventName: eventName)
-                        }
-                    }
-                }
+                let event = EventStore(eventName: eventName, timeInterval: 0, parameters: parameter)
+                let operationQueue = OperationQueue()
+                operationQueue.maxConcurrentOperationCount = 1
+                
+                let operation = SurveyValidationOperation(event: event, timeout: 5, manager: self)
+                operationQueue.addOperation(operation)
             }
         } else {
             AnnouncementManager.shared.newEventRecorded(eventName, parameter: parameter) { _ in
